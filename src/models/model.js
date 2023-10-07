@@ -1,0 +1,1 @@
+console.log("Esse arquivo só serve para salvar a pasta no github")
