@@ -1,1 +1,9 @@
-console.log("Esse arquivo só serve para salvar a pasta no github")
+class Food{
+    constructor(name, kcal, carb, protein, fat){
+        this.name = name;
+        this.kcal = kcal;
+        this.carb = carb;
+        this.protein = protein;
+        this.fat = fat;
+    }
+}
