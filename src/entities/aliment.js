@@ -1,3 +1,4 @@
+//Class aliment for foods in general
 class Aliment{
     constructor(group, kcal, carb, protein, fat){
         this.group = group;
