@@ -39,3 +39,30 @@ class Meal {
       return totalNutrition
     }
 }
+
+// Exemplo de uso
+const mealConfig = {
+  obs: "Segunda refeição do dia!",
+  dayOfWeek: "Segunda-feira",
+  mealTime: "Almoço",
+  portionSize: "Médio"
+}
+
+const meal = new Meal(mealConfig)
+
+// Exemplos de Alimentos para fazer
+const apple = { name: "Maçã", protein: 0.47, carbohydrates: 25.13, 
+fats: 0.25, vitamins: 8, foodGroup: "Frutas" }
+
+const chickenBreast = { name: "Peito de Frango", protein: 30, 
+carbohydrates: 0, fats: 3.6, vitamins: 2, foodGroup: "Proteínas" }
+
+// Adicionando alimentos à refeição
+meal.addFood(apple)
+meal.addFood(chickenBreast)
+
+// Valor nutricional da refeição
+const nutritionalValue = meal.calculateNutritionalValue()
+
+console.log("Refeição:", meal)
+console.log("Valor Nutricional Total:", nutritionalValue)
