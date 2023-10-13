@@ -1,4 +1,7 @@
-class Meal {
+/**
+ * Classe para a definição de [Refeições]
+ */
+export default class Meal {
     constructor(config) {
       this.obs = config.obs || ""
       this.hour = config.hour || ""
@@ -7,8 +10,7 @@ class Meal {
     }
 
   /**
-   * 
-   * Método para definir a lista de alimentos com controle de substituições {*} foodsArray 
+   * Método para definir a lista de alimentos com controle de substituições {*} foodsArray
    */
   setFoods(foodsArray) {
     this.foods = foodsArray
