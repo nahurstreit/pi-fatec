@@ -22,7 +22,7 @@ const dbAlimentTACO = [
 const dbAlimentCUSTOM = [
     {
         id: 1,
-        name: "testando",
+        name: "Alimento Customizado 1",
         kcal: 300,
         carb: 4,
         protein: 2,

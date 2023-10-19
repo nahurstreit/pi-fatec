@@ -8,7 +8,7 @@ function getInfoAlimentCustom(id) {
     return dbSimulation.dbAlimentCUSTOM[id]
 }
 
-async function getInfoCustomer(id) {
+function getInfoCustomer(id) {
     return dbSimulation.dbCustomers[id]
 }
 
