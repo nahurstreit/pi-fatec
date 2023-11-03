@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize"
 const sequelize = new sequelize('questNutri', 'User', 'password',{
-    host: 'localHost',
+    host: './questNutri.db',
     dialect: 'sqlite'
 })
 

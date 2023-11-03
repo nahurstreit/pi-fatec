@@ -1,10 +1,11 @@
 import Food from "./Foods/Food.js"
 import {Model,DataTypes} from "sequelize"
+import sequelize from "../controllers/database/dbConfig.js"
 
 /**
  * Classe para a definição de Meals[refeições] como atributos do atributo diet de uma instância da classe Customer.
  */
-export default class Meal{
+export default class Meal extends Model{
     /**
      * @param {Object} config
      * @param {string} config.name - Nome da refeição. Exemplo: "Almoço", "Janta" etc.
@@ -13,6 +14,7 @@ export default class Meal{
      * @param {Array<Food>} config.foods - Array de Foods daquela refeição
      */
     constructor(config) {
+        super()
         this.obs = config.obs || ""
         this.hour = config.hour || ""
         this.name = config.name || ""

@@ -1,11 +1,12 @@
 import Aliment from "../Aliment.js"
 import dbConnect from "../../models/dbConnect.js"
 import {Model,DataTypes} from "sequelize"
+import sequelize from "../../controllers/database/dbConfig.js"
 
 /**
  * Classe para a definição de SubFood[Comidas Substitutas] de uma Food[Comida] principal. O termo Foods ou SubFoods dirá respeito a um alimento/comida quando referido em uma Meal[Refeição], enquanto o termo Aliment dirá respeito de alimento/comida quando referido no banco de dados, contendo informações nutricionais daquele alimento.
  */
-export default class SubFood {
+export default class SubFood extends Model {
     /**
      * @param {Object} config
      * @param {number | null} config.idAlimentTaco - id do alimento na tabela TACO
@@ -15,6 +16,7 @@ export default class SubFood {
      * @param {number | null} config.idAlimentCustom - id do alimento na tabela de alimentos CUSTOM
      */
     constructor(config) {
+        super()
         this.mainAliment = null
         this.quantity = config.quantity || 0
         this.unityQt = config.unityQt || ""

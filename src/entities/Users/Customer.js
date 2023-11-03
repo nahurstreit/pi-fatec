@@ -1,7 +1,8 @@
 import Address from "./Address.js"
 import User from "./User.js"
 import Meal from "../Meal.js"
-import {Model,DataTypes} from "sequelize"
+import {DataTypes} from "sequelize"
+import sequelize from "../../controllers/database/dbConfig.js"
 
 /**
  * Classe Customer [Cliente], que é uma subclasse de User. Essa classe servirá para armazenar os atributos e métodos de clientes no sistema.
