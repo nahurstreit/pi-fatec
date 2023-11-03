@@ -1,7 +1,7 @@
 import Address from "./Address.js"
 import User from "./User.js"
 import Meal from "../Meal.js"
-import {DataTypes} from "sequelize"
+import { DataTypes } from "sequelize"
 import sequelize from "../../controllers/database/dbConfig.js"
 
 /**
@@ -87,7 +87,7 @@ export default class Customer extends User {
     }
 }
 
-Costumer.init({
+Customer.init({
     idCostumer: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -123,9 +123,9 @@ Costumer.init({
     birth: {
         type: DataTypes.STRING
     }
-
-},{
+} , {
     sequelize,
-    modelName: "Costumer",
-    timestamps: false
+    modelName: "Customer",
+    timestamps: false,
+    tableName: "Customers"
 })
