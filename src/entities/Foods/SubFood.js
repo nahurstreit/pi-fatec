@@ -1,5 +1,6 @@
 import Aliment from "../Aliment.js"
 import dbConnect from "../../models/dbConnect.js"
+import {Model,DataTypes} from "sequelize"
 
 /**
  * Classe para a definição de SubFood[Comidas Substitutas] de uma Food[Comida] principal. O termo Foods ou SubFoods dirá respeito a um alimento/comida quando referido em uma Meal[Refeição], enquanto o termo Aliment dirá respeito de alimento/comida quando referido no banco de dados, contendo informações nutricionais daquele alimento.
@@ -38,3 +39,24 @@ export default class SubFood {
         }
     }
 }
+
+SubFood.init({
+    idSubFood: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    mainAliment: {
+        type: DataTypes.STRING
+    },
+    unityQt: {
+        type: DataTypes.STRING,
+    },
+    obs: {
+        type: DataTypes.STRING
+    }
+},{
+    sequelize,
+    modelName: "SubFood",
+    timestamps: false
+})

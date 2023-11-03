@@ -1,4 +1,5 @@
 import Food from "./Foods/Food.js"
+import {Model,DataTypes} from "sequelize"
 
 /**
  * Classe para a definição de Meals[refeições] como atributos do atributo diet de uma instância da classe Customer.
@@ -36,3 +37,24 @@ export default class Meal{
         });
     }
 }
+
+Meal.init({
+    idMeal: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    obs: {
+        type: DataTypes.STRING
+    },
+    hour: {
+        type: DataTypes.STRING,
+    },
+    name: {
+        type: DataTypes.STRING
+    }
+},{
+    sequelize,
+    modelName: "Meal",
+    timestamps: false
+})

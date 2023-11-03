@@ -1,6 +1,7 @@
 import Address from "./Address.js"
 import User from "./User.js"
 import Meal from "../Meal.js"
+import {Model,DataTypes} from "sequelize"
 
 /**
  * Classe Customer [Cliente], que é uma subclasse de User. Essa classe servirá para armazenar os atributos e métodos de clientes no sistema.
@@ -84,3 +85,46 @@ export default class Customer extends User {
         })
     }
 }
+
+Costumer.init({
+    idCostumer: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    name: {
+        type: DataTypes.STRING
+    },
+    email: {
+        type: DataTypes.STRING,
+    },
+    password: {
+        type: DataTypes.STRING
+    },
+    cpf: {
+        type: DataTypes.STRING
+    },
+    cellphone: {
+        type: DataTypes.STRING
+    },
+    address: {
+        type: DataTypes.STRING
+    },
+    gender: {
+        type: DataTypes.STRING
+    },
+    height: {
+        type: DataTypes.STRING
+    },
+    weight: {
+        type: DataTypes.STRING
+    },
+    birth: {
+        type: DataTypes.STRING
+    }
+
+},{
+    sequelize,
+    modelName: "Costumer",
+    timestamps: false
+})

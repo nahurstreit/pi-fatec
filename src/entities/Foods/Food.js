@@ -1,5 +1,5 @@
 import SubFood from "./SubFood.js"
-
+import {Model,DataTypes} from "sequelize"
 /**
  * Classe de definição de Foods[comidas] em uma Meal[refeição]. O termo Foods dirá respeito a um alimento/comida quando referido em uma Meal[refeição], enquanto o termo Aliment dirá respeito de alimento/comida quando referido no banco de dados, contendo informações nutricionais daquele alimento. Nessa classe conterá atributos como: quantidade de comida, unidade de medida da comida, observações, e um array de subFood[comidas substitutas], que serão instâncias de SubFood, que têm as mesmas propriedades de uma Food, com exceção de não poderem ter um array de subFood. Ou seja, uma Food pode ter SubFood, enquanto uma SubFood não pode ter uma outra SubFood.
  */
@@ -38,3 +38,24 @@ export default class Food extends SubFood {
         })
     }
 }
+
+Food.init({
+    idFood: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    quantity: {
+        type: DataTypes.STRING
+    },
+    unityQt: {
+        type: DataTypes.STRING,
+    },
+    obs: {
+        type: DataTypes.STRING
+    }
+},{
+    sequelize,
+    modelName: "Food",
+    timestamps: false
+})
