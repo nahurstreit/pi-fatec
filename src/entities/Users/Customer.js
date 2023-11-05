@@ -23,14 +23,14 @@ export default class Customer extends User {
      */
     constructor(config) {
         super(config.name, config.email, config.password)
+        this.idCustomer = config.idCustomer
         this.cpf = config.cpf
         this.cellphone = config.cellphone
-        this.address = new Address(config.address)
         this.gender = config.gender
         this.height = config.height
         this.weight = config.weight
         this.birth = config.birth
-        this.#setDiet(config.diet)
+        //this.#setDiet(config.diet)
     }
 
     /**

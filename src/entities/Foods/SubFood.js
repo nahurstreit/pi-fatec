@@ -1,4 +1,4 @@
-import Aliment from "../Aliment.js"
+import Aliment from "../Aliments/Aliment.js"
 import dbConnect from "../../models/dbConnect.js"
 import { Model, DataTypes } from "sequelize"
 import sequelize from "../../database/dbConfig.js"
@@ -17,11 +17,14 @@ export default class SubFood extends Model {
      */
     constructor(config) {
         super()
-        this.mainAliment = null
-        this.quantity = config.quantity || 0
-        this.unityQt = config.unityQt || ""
-        this.obs = config.obs || ""
-        this.configAliment(config)
+        this.idFood = config.idFood
+        this.idSubFood = config.idSubFood
+        this.idAliment = config.idAliment
+        this.idMeal = config.idMeal
+        this.taco = config.taco
+        this.quantity = config.quantity
+        this.unityQt = config.unityQt
+        this.obs = config.obs
     }
 
     /**
@@ -48,18 +51,24 @@ SubFood.init({
         autoIncrement: true,
         primaryKey: true
     },
+    idAliment: {
+        type: DataTypes.INTEGER
+    },
+    taco: {
+        type: DataTypes.INTEGER
+    },
     quantity: {
         type: DataTypes.STRING
     },
     unityQt: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING
     },
     obs: {
         type: DataTypes.STRING
-    }
-},{
+    },
+}, {
     sequelize,
     modelName: "SubFood",
     timestamps: false,
-    tableName: "SubFoods"
+    tableName: "SubFoods",
 })

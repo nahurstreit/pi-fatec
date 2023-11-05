@@ -16,8 +16,7 @@ export default class Food extends SubFood {
    */
     constructor(config) {
         super(config)
-        this.subFood = []
-        this.configSubFood(config.subFood || [])
+        delete this.idSubFood
     }
 
     /**
@@ -46,18 +45,32 @@ Food.init({
         autoIncrement: true,
         primaryKey: true
     },
+    idAliment: {
+        type: DataTypes.INTEGER
+    },
+    taco: {
+        type: DataTypes.INTEGER
+    },
     quantity: {
         type: DataTypes.STRING
     },
     unityQt: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING
     },
     obs: {
         type: DataTypes.STRING
-    }
-},{
+    },
+}, {
     sequelize,
     modelName: "Food",
     timestamps: false,
     tableName: "Foods"
+})
+
+Food.hasMany(SubFood, {
+    foreignKey: 'idFood'
+})
+
+SubFood.belongsTo(Food, {
+    foreignKey: 'idFood'
 })

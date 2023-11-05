@@ -15,10 +15,12 @@ export default class Meal extends Model {
      */
     constructor(config) {
         super()
-        this.obs = config.obs || ""
-        this.hour = config.hour || ""
-        this.name = config.name || ""
-        this.setFoods(config.foods || [])
+        super()
+        this.idMeal = config.idMeal
+        this.idCustomer = config.idCustomer
+        this.obs = config.obs
+        this.hour = config.hour
+        this.name = config.name
     }
 
     /**
@@ -50,14 +52,22 @@ Meal.init({
         type: DataTypes.STRING
     },
     hour: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING
     },
     name: {
         type: DataTypes.STRING
     }
-},{
+}, {
     sequelize,
     modelName: "Meal",
     timestamps: false,
     tableName: "Meals"
+})
+
+Meal.hasMany(Food, {
+    foreignKey: 'idMeal',
+})
+
+Food.belongsTo(Meal, {
+    foreignKey: 'idMeal'
 })
