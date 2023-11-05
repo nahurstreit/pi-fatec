@@ -1,6 +1,6 @@
 import Schema from "validate"
 
-const costumer = new Schema ({
+const customerSchema = new Schema ({
   name: {
     type: String,
     required: true,
@@ -14,7 +14,7 @@ const costumer = new Schema ({
   password: {
     type: String,
     required: true,
-    message: "a senha é OBRIGATÓRIA"
+    message: "enviar a senha é OBRIGATÓRIO"
   },
   cpf: {
     type: String,
@@ -47,3 +47,5 @@ const costumer = new Schema ({
     message: "enviar a data de nascimento é OBRIGATÓRIO"
   }
 })
+
+export default customerSchema
