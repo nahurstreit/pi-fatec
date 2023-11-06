@@ -4,47 +4,47 @@ const customerSchema = new Schema ({
   name: {
     type: String,
     required: true,
-    message: "enviar o nome é OBRIGATÓRIO"
+    message: "enviar o NOME é obrigatório"
   },
   email: {
     type: String,
     required: true,
-    message: "enviar o email é OBRIGATÓRIO"
+    message: "enviar o EMAIL é obrigatório"
   },
   password: {
     type: String,
     required: true,
-    message: "enviar a senha é OBRIGATÓRIO"
+    message: "enviar a SENHA é obrigatório"
   },
   cpf: {
     type: String,
     required: true,
-    message: "enviar o CPF é OBRIGATÓRIO"
+    message: "enviar o CPF é obrigatório"
   },
   cellphone: {
     type: String,
     required: true,
-    message: "enviar o telefone é OBRIGATÓRIO"
+    message: "enviar o TELEFONE é obrigatório"
   },
   height: {
     type: String,
     required: true,
-    message: "enviar a altura é OBRIGATÓRIO"
+    message: "enviar a ALTURA é obrigatório"
   },
   weight: {
     type: String,
     required: true,
-    message: "enviar o peso é OBRIGATÓRIO"
+    message: "enviar o PESO é obrigatório"
   },
   gender: {
     type: String,
     required: true,
-    message: "enviar o sexo é OBRIGATÓRIO"
+    message: "enviar o SEXO é obrigatório"
   },
   birth: {
     type: String,
     required: true,
-    message: "enviar a data de nascimento é OBRIGATÓRIO"
+    message: "enviar a DATA DE NASCIMENTO é obrigatório"
   }
 })
 
