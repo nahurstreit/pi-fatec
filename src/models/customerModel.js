@@ -4,9 +4,6 @@ import customerSchema from "../helpers/validator/schemas/customerSchema.js"
 import { successResult, errorResult, serverError } from "../helpers/responseUtils.js"
 
 export default {
-    constructor(db,entity) {
-        this.db = db[entity]
-    },
     
     async all() {
         try {
@@ -16,20 +13,6 @@ export default {
             return serverError(error)
         }
     },
-    
-    async findById(params) {
-        try {
-            const { idCustomer } = params
-            const customer = await Customer.findByPk(idCustomer)
-            if (customer) {
-                return successResult(customer, 200)
-            } else {
-                return errorResult("Usuário não encontrado.", 404)
-            }
-        } catch (error) {
-            return serverError(error)
-        }
-    },    
 
     async findById(params){
         try{
@@ -77,7 +60,7 @@ export default {
             }
             try {
                 await customer.update(body)
-                customer.reload()
+                await customer.reload()
                 return successResult(customer, 200)
             } catch (error) {
                 return errorResult("Erro ao tentar atualizar o usuário.", 400, error)
