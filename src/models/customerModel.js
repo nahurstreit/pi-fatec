@@ -4,7 +4,6 @@ import customerSchema from "../helpers/validator/schemas/customerSchema.js"
 import { successResult, errorResult, serverError } from "../helpers/responseUtils.js"
 
 export default {
-    
     async all() {
         try {
             const customers = await Customer.findAll()

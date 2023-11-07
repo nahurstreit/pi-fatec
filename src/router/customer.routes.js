@@ -1,9 +1,7 @@
 import { Router } from "express"
 import customerModel from "../models/customerModel.js"
 
-
 export default class CustomerRoutes {
-
     routes() {
         const router = Router()
 

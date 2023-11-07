@@ -1,5 +1,4 @@
 import Aliment from "../Aliments/Aliment.js"
-import dbConnect from "../../models/dbConnect.js"
 import { Model, DataTypes } from "sequelize"
 import sequelize from "../../database/dbConfig.js"
 

@@ -1,6 +1,6 @@
 import Food from "./Foods/Food.js"
 import { Model, DataTypes } from "sequelize"
-import sequelize from "../controllers/database/dbConfig.js"
+import sequelize from "../database/dbConfig.js"
 
 /**
  * Classe para a definição de Meals[refeições] como atributos do atributo diet de uma instância da classe Customer.
