@@ -3,7 +3,7 @@ import { Model, DataTypes } from "sequelize"
 import sequelize from "../database/dbConfig.js"
 
 /**
- * Classe para a definição de Meals[refeições] como atributos do atributo diet de uma instância da classe Customer.
+ * @class Classe para a definição de Meals[refeições].
  */
 export default class Meal extends Model {
     /**
@@ -15,33 +15,15 @@ export default class Meal extends Model {
      */
     constructor(config) {
         super()
-        super()
         this.idMeal = config.idMeal
         this.idCustomer = config.idCustomer
         this.obs = config.obs
         this.hour = config.hour
         this.name = config.name
     }
-
-    /**
-     * Método para definir as Foods[comidas] da instância Meal[refeição].
-     * @param {Array<Object>} arrayFoods - Array com Objetos para a criação de Foods.
-     */
-    setFoods(arrayFoods) {
-        this.foods = []
-        arrayFoods.forEach((food) => {
-            this.foods.push(new Food({
-                idAlimentTaco: food.idAlimentTaco,
-                idAlimentCustom: food.idAlimentCustom,
-                quantity: food.quantity,
-                unityQt: food.unityQt,
-                obs: food.obs,
-                subFood: food.subFood
-            }))
-        });
-    }
 }
 
+//Definição das colunas da tabela "Meal" do banco de dados, para o sequelize.
 Meal.init({
     idMeal: {
         type: DataTypes.INTEGER,
@@ -60,8 +42,7 @@ Meal.init({
 }, {
     sequelize,
     modelName: "Meal",
-    timestamps: false,
-    tableName: "Meals"
+    timestamps: false
 })
 
 Meal.hasMany(Food, {

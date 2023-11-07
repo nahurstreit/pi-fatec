@@ -6,12 +6,12 @@ import { Model } from "sequelize"
 export default class Aliment extends Model{
     /**
      * @param {Object} config
-     * @param {string} config.name 
-     * @param {string | null} config.group
-     * @param {string} config.kcal
-     * @param {string} config.carb
-     * @param {string} config.protein
-     * @param {string} config.fat
+     * @param {Number} config.idAliment
+     * @param {String} config.name 
+     * @param {String} config.kcal
+     * @param {String} config.carb
+     * @param {String} config.protein
+     * @param {String} config.fat
      */
     constructor(config){
         super()

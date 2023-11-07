@@ -1,12 +1,15 @@
 import Schema from "validate"
 
+/**
+ * Schema para validar o corpo de uma Requisição ao tentar fazer um POST de um nova Food ou SubFood.
+ */
 const foodSchema = new Schema ({
     idAliment: {
         type: Number,
         required: true,
         message: "enviar o ID DO ALIMENTO é obrigatório"
     },
-    taco: {
+    isTaco: {
         type: Boolean,
         required: true,
         message: "declarar se É DA TABELA TACO é obrigatório (apenas true ou false)"
@@ -17,7 +20,7 @@ const foodSchema = new Schema ({
         message: "enviar a QUANTIDADE é obrigatório"
     },
     unityQt: {
-        type: Number,
+        type: String,
         required: true,
         message: "enviar a UNIDADE DE MEDIDA é obrigatório"
     },

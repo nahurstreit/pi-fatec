@@ -88,3 +88,11 @@ export function serverError(erro, message="Erro no servidor.", status=500) {
 export function successResult(obj, status=200, aditional) {
     return {status: status, obj: obj, ...aditional}
 }
+
+/**
+ * Função para facilitar a declaração de rotas incorretas para POST.
+ * @returns {JSON}
+ */
+export function wrongPostPath() {
+    return {status: 404, obj: {message: "Rota incorreta para POST."}}
+}

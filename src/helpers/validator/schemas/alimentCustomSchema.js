@@ -1,5 +1,8 @@
 import Schema from "validate"
 
+/**
+ * Schema para validar o corpo de uma Requisição ao tentar fazer um POST de um novo AlimentCustom.
+ */
 const alimentCustomSchema = new Schema ({
     name: {
         type: String,
