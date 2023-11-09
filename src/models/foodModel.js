@@ -25,6 +25,7 @@ export default {
                 return errorResult("O usuário não tem esses dados.", 404)
 
             const foodAll = await Food.findAll({where: {idMeal: idMeal}})
+            if(foodAll.length < 1) return successResult({message: "Ainda não existem alimentos para essa refeição."}, 202)
 
             const foodPromises = foodAll.map(async (food) => {
                 return await setMainAliment(food)
@@ -88,7 +89,7 @@ export default {
         try {
             const {idCustomer, idMeal} = params
             if(!await isCustomerMeal(idCustomer, idMeal)) 
-                return errorResult("O usuário não tem esses dados.", 404)
+                return errorResult("Usuário ou Refeição não encontrada.", 404)
 
             const errors = validateReq.post(obj, foodSchema)
             if(errors) return errorResult(errors, 400)

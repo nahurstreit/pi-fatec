@@ -2,6 +2,7 @@ import Meal from "../entities/Meal.js"
 import * as validateReq from "../helpers/validator/validateReq.js"
 import mealSchema from "../helpers/validator/schemas/mealSchema.js"
 import { successResult, errorResult, serverError } from "../helpers/responseUtils.js"
+import Customer from "../entities/Users/Customer.js"
 
 export default {
     /**
@@ -17,6 +18,8 @@ export default {
         const {idCustomer} = params
         try {
             const meals = await Meal.findAll({where: {idCustomer: idCustomer}})
+            if(meals.length < 1) return successResult({message: "Esse usuário ainda não tem refeições cadastradas."}, 202)
+
             return successResult(meals, 200)
         } catch (error) {
             return serverError(error)
@@ -65,6 +68,9 @@ export default {
             if(errors) return errorResult(errors, 400)
             try {
                 const {idCustomer} = params
+                const customer = Customer.findByPk(idCustomer)
+                if(!customer) return errorResult("Esse usuário não existe.")
+
                 const meal = await Meal.create({
                     ...obj,
                     idCustomer: Number(idCustomer)

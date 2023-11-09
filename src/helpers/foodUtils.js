@@ -75,4 +75,3 @@ export async function setMainAliment(food) {
         mainAliment: objFood.mainAliment,
     }
 }
-

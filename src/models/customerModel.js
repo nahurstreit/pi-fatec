@@ -11,6 +11,8 @@ export default {
     async all() {
         try {
             const customers = await Customer.findAll()
+            if(customers.length < 1) return successResult({message: "Nenhum usuário cadastrado."}, 202)
+
             return successResult(customers, 200)
         } catch (error) {
             return serverError(error)
@@ -85,7 +87,7 @@ export default {
         try {
             const result = await Customer.destroy({where: {idCustomer: idCustomer}})
             if(result != 1) return errorResult("Usuário não encontrado.", 404) 
-            return successResult({mensagem: "Registro excluído."}, 200)
+            return successResult({message: "Registro excluído."}, 200)
         } catch (error) {
             return serverError(error)
         }

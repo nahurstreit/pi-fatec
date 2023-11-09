@@ -26,7 +26,7 @@ export default {
                 return errorResult("Esse usuário não tem esses dados.", 404)
 
             const subFoodsAll = await SubFood.findAll({where: {idFood: idFood}})
-            if(subFoodsAll.length < 1) return successResult({message: "Ainda não existe alimentos substitutos."}, 202)
+            if(subFoodsAll.length < 1) return successResult({message: "Ainda não existem alimentos substitutos."}, 202)
 
             const subFoodsPromises = subFoodsAll.map(async (subFood) => {
                 return await setMainAliment(subFood)
@@ -61,7 +61,7 @@ export default {
                 return errorResult("Esse usuário não tem esses dados.", 404)
 
             const subFood = await SubFood.findOne({where: {idSubFood: idSubFood, idFood: Number(idFood)}})
-            if(!subFood) return errorResult("Alimento não encontrado.", 404)
+            if(!subFood) return errorResult("Alimento substituto não encontrado.", 404)
 
             return successResult(await setMainAliment(subFood), 200)
         } catch (error) {
@@ -94,7 +94,7 @@ export default {
         try {
             const {idCustomer, idMeal, idFood} = params
             if(!await isCustomerMealFoodProperty(idCustomer, idMeal, idFood)) 
-                return errorResult("Esse usuário não tem esses dados.", 404)
+                return errorResult("Usuário, refeição ou alimento principal não encontrado.", 404)
 
             const errors = validateReq.post(obj, foodSchema)
             if(errors) return errorResult(errors, 400)
@@ -137,7 +137,7 @@ export default {
 
         try {
             const result = await SubFood.destroy({where: {idSubFood: idSubFood, idFood: idFood}})
-            if(result === 0) return errorResult("Alimento não encontrado.", 400)
+            if(result === 0) return errorResult("Alimento substituto não encontrado.", 400)
             return successResult({mensagem: "Registro excluído."}, 200) 
         } catch (error) {
             return serverError(error)
@@ -173,13 +173,13 @@ export default {
             if(!await isCustomerMealFoodProperty(idCustomer, idMeal, idFood)) 
                 return errorResult("Esse usuário não tem esses dados.", 404)
 
-            const subFood = await SubFood.findByPk(idSubFood)
-            if(!subFood) return errorResult("Alimento não encontrado.", 404)
+            const subFood = await SubFood.findOne({where: {idSubFood: idSubFood, idFood: idFood}})
+            if(!subFood) return errorResult("Alimento substituto não encontrado.", 404)
 
-            if("taco" in obj) {
-                if(typeof(obj["taco"]) == "boolean")
-                    obj["taco"] = obj.isTaco? 1 : 0
-                else return errorResult("Não foi possível atualizar. Campo 'taco' foi enviado incorretamente: só aceita os valores true ou false.")
+            if("isTaco" in obj) {
+                if(typeof(obj["isTaco"]) == "boolean")
+                    obj["isTaco"] = obj.isTaco? 1 : 0
+                else return errorResult("Não foi possível atualizar. Campo 'isTaco' foi enviado incorretamente: só aceita os valores true ou false.")
             }
 
             try {
