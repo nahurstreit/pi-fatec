@@ -1,40 +1,100 @@
-import Aliment from "../Aliment.js"
-import dbConnect from "../../models/dbConnect.js"
+import { Model, DataTypes } from "sequelize"
+import sequelize from "../../database/dbConfig.js"
+
+import alimentCustomModel from "../../models/alimentCustomModel.js"
+import tacoModel from "../../models/tacoModel.js"
 
 /**
  * Classe para a definição de SubFood[Comidas Substitutas] de uma Food[Comida] principal. O termo Foods ou SubFoods dirá respeito a um alimento/comida quando referido em uma Meal[Refeição], enquanto o termo Aliment dirá respeito de alimento/comida quando referido no banco de dados, contendo informações nutricionais daquele alimento.
  */
-export default class SubFood {
-    /**
-     * @param {Object} config
-     * @param {number | null} config.idAlimentTaco - id do alimento na tabela TACO
-     * @param {number} config.quantity - quantidade do alimento na refeição
-     * @param {string} config.unityQt - unidade de medida principal
-     * @param {string} config.obs - observação do alimento
-     * @param {number | null} config.idAlimentCustom - id do alimento na tabela de alimentos CUSTOM
-     */
+export default class SubFood extends Model {
+  /**
+   * @param {Object} config
+   * @param {Number} idSubFood - id da subfood no banco de dados
+   * @param {Number} idFood - id da chave estrangeira food
+   * @param {Number} config.idAliment - id do alimento (ou na tabela Taco ou AlimentCustom)
+   * @param {Number} config.isTaco - se é da tabela taco (1 = sim, 0 = não)
+   * @param {Number} config.quantity - quantidade do alimento na refeição
+   * @param {String} config.unityQt - unidade de medida principal
+   * @param {String} config.obs - observação do alimento
+   */
     constructor(config) {
-        this.mainAliment = null
-        this.quantity = config.quantity || 0
-        this.unityQt = config.unityQt || ""
-        this.obs = config.obs || ""
-        this.configAliment(config)
+        super()
+        this.idFood = config.idFood
+        this.idSubFood = config.idSubFood
+        this.idAliment = config.idAliment
+        this.idMeal = config.idMeal
+        this.isTaco = config.isTaco
+        this.quantity = config.quantity
+        this.unityQt = config.unityQt
+        this.obs = config.obs
     }
 
     /**
-     * Método para a configuração do alimento principal como um objeto da classe Aliment. Para isso serão acessadas, através do idAlimentTaco OU então idAlimentCustom, as informações nutricionais daquele alimento em um dos banco de dados. O programa sempre dará prioridade para procurar as informações nutricionais no banco de dados da tabela TACO, buscando idAlimentTaco dentro da chave primária de id dos alimentos da tabela TACO. Se idAlimentTaco for {null} o programa deverá procurar o idAlimentCustom na tabela de alimentos Custom. Em seguida, as informações serão passadas para o constructor da classe Aliment, fazendo com que o mainAliment seja uma instância de Aliment.
-     * @method
-     * @param {Object} config
-     * @param {number | null} config.idAlimentTaco
-     * @param {number | null} config.idAlimentCustom 
+     * @summary Método para a configuração do atributo mainAliment através do atributo idAliment e isTaco.
+     * @description O método procura em um dos dois possíveis banco de dados de Alimentos, algum registro que tenha
+     * como chave primária , o valor da propriedade idAliment deste mesmo objeto.
+     * 
+     * O registro pode ser encontrado ou na tabela 'Taco' ou na tabela 'AlimentCustom'. Ambas tabelas têm como nome da chave
+     * primária: 'idAliment'. A tabela escolhida para buscar as informações do alimento será definida através da propriedade
+     * 'isTaco' deste mesmo objeto.
+     *  
+     * Na hora de criar a instância do objeto [Food ou SubFood], será definida a propriedade 'isTaco' de acordo com a coluna
+     * com esse mesmo nome. Essa coluna armazena apenas os valores 1 ou 0, representando {Sim} ou {Não}.
+     * - Se a propriedade 'isTaco' == 1, idAliment será chave estrangeira da tabela 'Taco'.
+     * - Se a propriedade 'isTaco' == 0, idAliment será chave estrangeira da tabela 'AlimentCustom'.
+     * 
+     * @returns {Promise<Food | SubFood>} Retorna o próprio objeto [Food ou SubFood] quando mainAliment for definido.
      */
-    configAliment(config) {
-        if(config.idAlimentTaco !== null) {
-            const result = dbConnect.getInfoTaco(config.idAlimentTaco)
-            this.mainAliment = new Aliment(result)
-        } else {
-            const result = dbConnect.getInfoAlimentCustom(config.idAlimentCustom)
-            this.mainAliment = new Aliment(result)
+    async searchMainAliment() {
+        try {
+            if(this.isTaco == 1) {
+                const aliment = await tacoModel.findById({idAliment: this.idAliment})
+                const {idAliment, ...info} = aliment.obj.dataValues
+                this.mainAliment = {
+                    tableName: "Tabela TACO",
+                    ...info
+                }
+            } else {
+                const aliment = await alimentCustomModel.findById({idAliment: this.idAliment})
+                const {idAliment, ...info} = aliment.obj.dataValues
+                this.mainAliment = {
+                    tableName: "Alimentos Personalizados", 
+                    ...info
+                }
+            }
+            return this
+        } catch (error) {
+            return this
         }
     }
 }
+
+//Definição das colunas da tabela "SubFood" do banco de dados, para o sequelize.
+SubFood.init({
+    idSubFood: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    idAliment: {
+        type: DataTypes.INTEGER
+    },
+    isTaco: {
+        type: DataTypes.INTEGER
+    },
+    quantity: {
+        type: DataTypes.STRING
+    },
+    unityQt: {
+        type: DataTypes.STRING
+    },
+    obs: {
+        type: DataTypes.STRING
+    },
+}, {
+    sequelize,
+    modelName: "SubFood",
+    timestamps: false,
+    tableName: "SubFoods",
+})
