@@ -27,7 +27,7 @@ export const alimentGetSchema = {
         fat: {
             type: "string",
             description: "Quantidade de gramas de gordura total por 100g de alimento."
-        },
+        }
     },
     example: {
         "infoTable": "Tabela Taco",
@@ -75,7 +75,7 @@ export const alimentPostSchema = {
         fat: {
             type: "string",
             description: "Quantidade de gramas de gordura total por 100g de alimento."
-        },
+        }
     },
     example: {
         "name": "Banana, prata, crua",
@@ -85,4 +85,3 @@ export const alimentPostSchema = {
         "fat": "0,065"
     }
 }
-
