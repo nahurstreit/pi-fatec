@@ -1,10 +1,11 @@
 import Food from "../entities/Foods/Food.js"
-import { isCustomerMeal, setMainAliment, isCustomerMealFoodProperty } from "../helpers/foodUtils.js"
+import { isCustomerMeal, isCustomerMealFoodProperty, formatFoodResponse, findFoodAndAliment} from "../helpers/foodUtils.js"
 
 import * as validateReq from "../helpers/validator/validateReq.js"
 import foodSchema from "../helpers/validator/schemas/foodSchema.js"
 
 import { successResult, errorResult, serverError } from "../helpers/responseUtils.js"
+import Aliment from "../entities/Aliment.js"
 
 export default {
     /**
@@ -24,11 +25,11 @@ export default {
             if(!await isCustomerMeal(idCustomer, idMeal)) 
                 return errorResult("O usuário não tem esses dados.", 404)
 
-            const foodAll = await Food.findAll({where: {idMeal: idMeal}})
+            const foodAll = await Food.findAll({where: {idMeal: idMeal}, include: [{model: Aliment, as: "mainAliment"}]})
             if(foodAll.length < 1) return successResult({message: "Ainda não existem alimentos para essa refeição."}, 202)
 
             const foodPromises = foodAll.map(async (food) => {
-                return await setMainAliment(food)
+                return formatFoodResponse(food)
             })
 
             const foods = await Promise.all(foodPromises)
@@ -56,11 +57,11 @@ export default {
             const {idCustomer, idMeal, idFood} = params
             if(!await isCustomerMeal(idCustomer, idMeal)) 
                 return errorResult("O usuário não tem esses dados.", 404)
-
-            const food = await Food.findOne({where: {idMeal: idMeal, idFood: idFood}})
+            
+            const food = await findFoodAndAliment(Food, {idMeal: idMeal, idFood: idFood})
             if(!food) return errorResult("Alimento não encontrado.", 404)
 
-            return successResult(await setMainAliment(food), 200)
+            return successResult(food, 200)
         } catch (error) {
             return serverError(error)
         }
@@ -94,14 +95,15 @@ export default {
             const errors = validateReq.post(obj, foodSchema)
             if(errors) return errorResult(errors, 400)
 
-            obj["isTaco"] = obj.isTaco? 1 : 0
+            const aliment = await Aliment.findOne({where: {idAliment: obj.idAliment}})
+            if(!aliment) return errorResult("idAliment é inválido.", 400)
 
             const food = await Food.create({
                 idMeal: Number(idMeal),
                 ...obj,
             })
 
-            return successResult(await setMainAliment(food), 201) 
+            return successResult(await findFoodAndAliment(Food, {idFood: food.idFood}), 201) 
             
         } catch (error) {
             return serverError(error)
@@ -168,16 +170,14 @@ export default {
             const food = await Food.findByPk(idFood)
             if(!food) return errorResult("Alimento não encontrado.", 404)
 
-            if("isTaco" in obj) {
-                if(typeof(obj["isTaco"]) == "boolean")
-                    obj["isTaco"] = obj.isTaco? 1 : 0
-                else return errorResult("Não foi possível atualizar. Campo 'isTaco' foi enviado incorretamente: só aceita os valores true ou false.")
-            }
+            const aliment = await Aliment.findOne({where: {idAliment: obj.idAliment}})
+            if(!aliment) return errorResult("idAliment é inválido.", 400)
 
             try {
                 await Food.update(obj, {where: {idFood: idFood, idMeal: idMeal}})
                 await food.reload()
-                return successResult(await setMainAliment(food), 200) 
+
+                return successResult(await findFoodAndAliment(Food, {idFood: food.idFood}), 200) 
 
             } catch (error) {
                 errorResult("Dados enviados para atualizar o usuário são inválidos.", 400, error)

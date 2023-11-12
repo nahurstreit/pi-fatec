@@ -9,11 +9,6 @@ const foodSchema = new Schema ({
         required: true,
         message: "enviar o ID DO ALIMENTO é obrigatório"
     },
-    isTaco: {
-        type: Boolean,
-        required: true,
-        message: "declarar se É DA TABELA TACO é obrigatório (apenas true ou false)"
-    },
     quantity: {
         type: Number,
         required: true,
