@@ -1,12 +1,11 @@
-/* ⇊ Área para import ⇊ */
-
-/* ⇈ Área para import ⇈ */
+import { getPostCustomer } from "./getPostCustomers.js"
+import { getDeletePutCustomer } from "./getDeletePutCustomers.js"
 
 
 /* ⇊ Definir os paths (pegar de ./src/router/customer.routes.js) ⇊ */
 const customersPaths = {
-    'api/customer/': null,
-    'api/customer/{idCustomer}': null,
+    'api/customer/': getPostCustomer,
+    'api/customer/{idCustomer}': getDeletePutCustomer ,
 }
 
 export default customersPaths
