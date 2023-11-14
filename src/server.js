@@ -22,7 +22,7 @@ app.use('/api/doc[s]/v0.1.0', swaggerUi.serve, swaggerUi.setup(swaggerDocument_v
 
 //Rotas de usuários
 const customerRoutes = new CustomerRoutes()
-app.use('api/customer[s]?', customerRoutes.routes())
+app.use('/api/customer[s]?', customerRoutes.routes())
 
 //Rotas de Alimentos (Personalizados ou da Tabela Taco)
 const alimentRoutes = new AlimentRoutes()

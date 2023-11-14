@@ -6,8 +6,8 @@ import { getDeletePutFoods } from "./getDeletePutFoods.js"
 
 /* ⇊ Definir os paths (pegar de ./src/router/customer.routes.js) ⇊ */
 const foodsPaths = {
-    'api/customer/{idCustomer}/meal/{idMeal}/food/': getPostFoods,
-    'api/customer/{idCustomer}/meal/{idMeal}/food/{idFood}': getDeletePutFoods,
+    '/api/customer/{idCustomer}/meal/{idMeal}/food/': getPostFoods,
+    '/api/customer/{idCustomer}/meal/{idMeal}/food/{idFood}': getDeletePutFoods,
 }
 
 export default foodsPaths

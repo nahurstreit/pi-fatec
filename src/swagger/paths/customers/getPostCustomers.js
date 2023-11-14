@@ -8,7 +8,7 @@ export const getPostCustomer = {
             200:{
                 description: "Lista com todos os Clientes",
                 content: {
-                    "aplication/json": {
+                    "application/json": {
                         schema: {
                             type: "array",
                             items: {
@@ -39,7 +39,7 @@ export const getPostCustomer = {
             201: {
                 description: "O cliente foi criado.",
                 content: {
-                    "aplication/json": {
+                    "application/json": {
                         schema: {
                             $ref: "#/schemas/customerGetSchema",
                             example: {
