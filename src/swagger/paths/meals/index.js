@@ -1,12 +1,9 @@
-/* ⇊ Área para import ⇊ */
+import { getPostMeals } from "./getPostMeals.js"
+import { getDeletePutMeals } from "./getDeletePutMeals.js"
 
-/* ⇈ Área para import ⇈ */
-
-
-/* ⇊ Definir os paths (pegar de ./src/router/customer.routes.js) ⇊ */
 const mealsPaths = {
-    '/api/customer/{idCustomer}/meal': null,
-    '/api/customer/{idCustomer}/meal/{idMeal}': null,
+    '/api/customer/{idCustomer}/meal': getPostMeals,
+    '/api/customer/{idCustomer}/meal/{idMeal}': getDeletePutMeals,
 }
 
 export default mealsPaths
