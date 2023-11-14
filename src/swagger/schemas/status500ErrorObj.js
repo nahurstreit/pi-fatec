@@ -16,3 +16,19 @@ export const error_serverError = {
         }
     },
 }
+
+export const error_serverError_All = {
+    500: {
+        description: "Erro interno ao procurar as informações no banco de dados.",
+        content: {
+            "application/json": {
+                schema: {
+                    type: "object",
+                    example: {
+                        erro: "Erro no servidor."
+                    }
+                }
+            }
+        }
+    },
+}

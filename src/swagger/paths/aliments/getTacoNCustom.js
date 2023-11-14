@@ -3,7 +3,7 @@ import {error_serverError} from "../../schemas/status500ErrorObj.js"
 export const getAllTaco = {
     get: {
         description: "Retorna todos os alimentos do banco de dados que são da Tabela TACO.",
-        tags: ["Alimentos Tabela Taco"],
+        tags: ["Alimentos Tabela TACO"],
         responses: {
             200: {
                 description: "Lista com os alimentos da Tabela TACO.",

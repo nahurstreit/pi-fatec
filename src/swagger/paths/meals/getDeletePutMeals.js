@@ -1,32 +1,32 @@
-import { error_serverError } from "../../schemas/status500ErrorObj.js"
+import { error_serverError_All } from "../../schemas/status500ErrorObj.js"
 
 export const getDeletePutMeals = {
     get: {
-        description: "Retorna uma refeição pelo ID.",
+        description: "Retorna uma refeição específica, com 'idMeal', de algum cliente específico, com 'idCustomer'. Não é possível visualizar refeições cujo 'idMeal' pertença a outro 'idCustomer'.",
         tags: ["Refeições"],
         parameters: [
             {
-                name: "idMeal",
+                name: "idCustomer",
                 in: "path",
-                description: "ID da Refeição",
+                description: "ID do Cliente.",
                 required: true,
                 schema: {
-                    type: "integer",
+                    type: "integer"
                 }
             },
             {
-                name: "IdCustomer",
+                name: "idMeal",
                 in: "path",
-                description: "ID do Cliente",
-                require: true,
+                description: "ID da Refeição.",
+                required: true,
                 schema: {
-                    type: "integer"
+                    type: "integer",
                 }
             }
         ],
         responses: {
             200: {
-                description: "Refeição encontrada.",
+                description: "Refeição encontrada com 'idMeal' que pertença a 'idCustomer'.",
                 content: {
                     "application/json": {
                         schema: {
@@ -36,25 +36,34 @@ export const getDeletePutMeals = {
                 }
             },
             404: {
-                description: "Nenhuma refeição foi encontrada com o ID informado.",
+                description: "Nenhuma refeição foi encontrada com 'idMeal' que pertença a 'idCustomer'.",
                 content: {
                     "application/json": {
                         schema: {
                             example: {
-                                erro: "Refeição não encontrada."
+                                erro: "O usuário não tem essa refeição."
                             }
                         }
                     }
                 }
             },
-            ...error_serverError
+            ...error_serverError_All
         },
     },
 
     delete: {
-        description: "Deleta uma refeição pelo ID.",
+        description: "Tenta deletar uma refeição específica, com 'idMeal', de algum cliente específico, com 'idCustomer'. Não é possível deletar refeições cujo 'idMeal' pertença a outro 'idCustomer'.",
         tags: ["Refeições"],
         parameters: [
+            {
+                name: "idCustomer",
+                in: "path",
+                description: "ID do Cliente.",
+                required: true,
+                schema: {
+                    type: "integer"
+                }
+            },
             {
                 name: "idMeal",
                 in: "path",
@@ -80,40 +89,35 @@ export const getDeletePutMeals = {
                 }
             },
 
-            401: {
-                description: "A refeição com ID informado não pode ser excluída.",
-                content: {
-                    "application/json": {
-                        schema: {
-                            type: "object",
-                            example: {
-                                erro: "Não é possível deletar essa refeição."
-                            }
-                        },
-                    }
-                }
-            },
-
             404: {
-                description: "Nenhuma refeição foi encontrada com o ID informado.",
+                description: "Nenhuma refeição com 'idMeal' que pertence a 'idCustomer' foi encontrada.",
                 content: {
                     "application/json": {
                         schema: {
                             example: {
-                                erro: "Refeição não encontrada."
+                                erro: "O usuário não tem essa refeição."
                             }
                         }
                     }
                 }
             },
-            ...error_serverError
+            ...error_serverError_All
         },
     },
 
     put: {
-        description: "Atualiza as informações de uma refeição pelo ID.",
+        description: "Tenta atualizar uma refeição específica, com 'idMeal', de algum cliente específico, com 'idCustomer'. Não é possível deletar refeições cujo 'idMeal' pertença a outro 'idCustomer'.",
         tags: ["Refeições"],
         parameters: [
+            {
+                name: "idCustomer",
+                in: "path",
+                description: "ID do Cliente.",
+                required: true,
+                schema: {
+                    type: "integer"
+                }
+            },
             {
                 name: "idMeal",
                 in: "path",
@@ -137,62 +141,47 @@ export const getDeletePutMeals = {
         },
         responses: {
             200: {
-                description: "Refeição atualizada.",
+                description: "A refeição atualizada.",
                 content: {
                     "application/json": {
                         schema: {
                             $ref: "#/schemas/mealsGetSchema",
-                            example: {
-                                "idCustomer": 19,
-                                "idMeal": 4,"name": "Lanche da manhã",
-                                "hour": "10:30",
-                                "obs": "O lanche deve ser feito após a refeição do café da manhã e antes da refeição do almoço."
-                            }
                         }
                     }
                 }
             },
             400: {
-                description: "O corpo da requisição para atualizar a refeição foi enviado incorretamente.",
+                description: "Esse status é retornado quando uma dessas situações acontece: (1) O corpo da requisição para criar uma nova refeição foi enviado incorretamente. (2) O corpo da requisição está tentando atualizar dados inválidos.",
                 content: {
                     "application/json": {
                         schema: {
                             type: "object",
                             example: {
-                                erro: "Dados enviados para atualizar a refeição são inválidos.",
+                                exemplo_1: {
+                                    "erro": "JSON inválido no corpo da solicitação."
+                                  },
+                                  exemplo_2: {
+                                    erro: "Dados enviados para atualizar o usuário são inválidos."
+                                  }
                             },
                         }
                     }
                 }
             },
 
-            401: {
-                description: "A refeição com ID informado não pode ser alterada.",
-                content: {
-                    "application/json": {
-                        schema: {
-                            type: "object",
-                            example: {
-                                erro: "Não é possível alterar essa refeição."
-                            }
-                        },
-                    }
-                }
-            },
-
             404: {
-                description: "Nenhuma refeição foi encontrada com o ID informado.",
+                description: "Nenhuma refeição com 'idMeal' que pertence a 'idCustomer' foi encontrada.",
                 content: {
                     "application/json": {
                         schema: {
                             example: {
-                                erro: "Refeição não encontrada."
+                                erro: "O usuário não tem essa refeição."
                             }
                         }
                     }
                 }
             },
-            ...error_serverError
+            ...error_serverError_All
         },
     }
 }

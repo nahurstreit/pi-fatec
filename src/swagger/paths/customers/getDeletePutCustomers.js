@@ -1,4 +1,4 @@
-import { error_serverError } from "../../schemas/status500ErrorObj.js"
+import { error_serverError_All } from "../../schemas/status500ErrorObj.js"
 
 export const getDeletePutCustomer = {
     get: {
@@ -6,10 +6,10 @@ export const getDeletePutCustomer = {
         tags: ["Clientes"],
         parameters: [
             {
-                name: "IdCustomer",
+                name: "idCustomer",
                 in: "path",
-                description: "ID do cliente",
-                require: true,
+                description: "ID do cliente.",
+                required: true,
                 schema: {
                     type: "integer",
                 }
@@ -26,30 +26,31 @@ export const getDeletePutCustomer = {
                     }
                 }
             },
+            
             404: {
                 description: "Nenhum cliente foi encontrado com o ID informado.",
                 content: {
                     "application/json": {
                         schema: {
                             example: {
-                                erro: "Cliente não encontrado."
+                                erro: "Usuário não encontrado."
                             }
                         }
                     }
                 }
             },
-            ...error_serverError
+            ...error_serverError_All
         },
     },
 
     delete: {
-        description: "Deleta um cliente pelo ID",
+        description: "Deleta um cliente pelo ID.",
         tags: ["Clientes"],
         parameters: [
             {
                 name: "idCustomer",
                 in: "path",
-                description: "ID do cliente a ser excluido.",
+                description: "ID do cliente a ser excluído.",
                 required: true,
                 schema: {
                     type: "integer",
@@ -58,27 +59,13 @@ export const getDeletePutCustomer = {
         ],
         responses: {
             200: {
-                description: "o cliente foi excluido.",
+                description: "O Cliente foi excluído.",
                 content: {
                     "application/json": {
                         schema: {
                             type: "object",
                             example: {
-                                message: "Registro excluido"
-                            }
-                        },
-                    }
-                }
-            },
-
-            401: {
-                description: "O cliente com o ID informado não pode ser excluido.",
-                content: {
-                    "application/json": {
-                        schema: {
-                            type: "object",
-                            example: {
-                                erro: "Não foi possivel deletar esse cliente"
+                                message: "Registro excluído."
                             }
                         },
                     }
@@ -91,13 +78,13 @@ export const getDeletePutCustomer = {
                     "application/json": {
                         schema: {
                             example: {
-                                erro: "Cliente não encontrado."
+                                erro: "Usuário não encontrado."
                             }
                         }
                     }
                 }
             },
-            ...error_serverError
+            ...error_serverError_All
         },
     },
 
@@ -151,27 +138,18 @@ export const getDeletePutCustomer = {
             },
 
             400: {
-                description: "O corpo da requisição para atualizar o cliente foi enviado incorretamente.",
+                description: "Esse status é retornado quando uma dessas situações acontece: (1) O corpo da requisição para atualizar o Cliente foi enviado incorretamente. (2) O corpo da requisição está tentando atualizar dados inválidos.",
                 content: {
                     "application/json": {
                         schema: {
                             type: "object",
                             example: {
-                                erro: "Dados enviados para atualizar o alimento são inválidos.",
-                            },
-                        }
-                    }
-                }
-            },
-
-            401: {
-                description: "O cliente com o ID informado não pode ser alterado.",
-                content: {
-                    "application/json":{
-                        schema:{
-                            type: "object",
-                            example: {
-                                erro: "Não é possivel alterar esse cliente"
+                                exemplo_1: {
+                                  erro: "JSON inválido no corpo da solicitação."
+                                },
+                                exemplo_2: {
+                                  erro: "Dados enviados para atualizar o usuário são inválidos."
+                                }
                             }
                         },
                     }
@@ -185,13 +163,13 @@ export const getDeletePutCustomer = {
                         schema: {
                             type: "object",
                             example: {
-                                erro: "Cliente não encontrado."
+                                erro: "Usuário não encontrado."
                             }
                         }
                     }
                 }
             },
-            ...error_serverError
+            ...error_serverError_All
         },
     }
 }

@@ -68,7 +68,7 @@ export default {
             if(errors) return errorResult(errors, 400)
             try {
                 const {idCustomer} = params
-                const customer = Customer.findByPk(idCustomer)
+                const customer = await Customer.findByPk(idCustomer)
                 if(!customer) return errorResult("Esse usuário não existe.")
 
                 const meal = await Meal.create({
@@ -137,7 +137,7 @@ export default {
                 await meal.reload()
                 return successResult(meal, 200)
             } catch (error) {
-                return errorResult("Dados enviados para atualizar o usuário são inválidos.", 400)
+                return errorResult("Dados enviados para atualizar a refeição são inválidos.", 400)
             }
 
         } catch (error) {

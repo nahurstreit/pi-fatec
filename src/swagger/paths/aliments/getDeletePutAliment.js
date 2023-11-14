@@ -3,7 +3,7 @@ import { error_serverError } from "../../schemas/status500ErrorObj.js"
 export const getDeletePutAliment = {
     get: {
         description: "Retorna um alimento pelo ID.",
-        tags: ["Alimentos"],
+        tags: ["Alimentos", "Alimentos Customizados"],
         parameters: [
             {
                 name: "idAliment",
@@ -44,7 +44,7 @@ export const getDeletePutAliment = {
 
     delete: {
         description: "Deleta um alimento pelo ID, desde que seja um alimento personalizado. Não é possível excluir alimentos da Tabela TACO.",
-        tags: ["Alimentos"],
+        tags: ["Alimentos", "Alimentos Customizados"],
         parameters: [
             {
                 name: "idAliment",
@@ -72,7 +72,7 @@ export const getDeletePutAliment = {
             },
 
             401: {
-                description: "O alimento com ID informado não pode ser excluído.",
+                description: "O alimento com ID informado não pode ser excluído. (Obs.: Alimentos da Tabela TACO não podem ser deletados.)",
                 content: {
                     "application/json": {
                         schema: {
@@ -103,7 +103,7 @@ export const getDeletePutAliment = {
 
     put: {
         description: "Atualiza as informações de um alimento pelo ID, desde que seja um alimento personalizado. Não é possível alterar alimentos da Tabela TACO.",
-        tags: ["Alimentos"],
+        tags: ["Alimentos", "Alimentos Customizados"],
         parameters: [
             {
                 name: "idAliment",
@@ -146,14 +146,20 @@ export const getDeletePutAliment = {
                     }
                 }
             },
+
             400: {
-                description: "O corpo da requisição para atualizar o alimento foi enviado incorretamente.",
+                description: "Esse status é retornado quando uma dessas situações acontece: (1) O corpo da requisição para atualizar o Alimento Customizado foi enviado incorretamente. (2) O corpo da requisição está tentando atualizar dados inválidos.",
                 content: {
                     "application/json": {
                         schema: {
                             type: "object",
                             example: {
-                                erro: "Dados enviados para atualizar o alimento são inválidos.",
+                                exemplo_1: {
+                                    erro: "JSON inválido no corpo da solicitação."
+                                },
+                                exemplo_2: {
+                                    erro: "Dados enviados para atualizar o alimento são inválidos.",
+                                }
                             },
                         }
                     }
@@ -161,7 +167,7 @@ export const getDeletePutAliment = {
             },
 
             401: {
-                description: "O alimento com ID informado não pode ser alterado.",
+                description: "O alimento com ID informado não pode ser alterado. (Obs.: Alimentos da Tabela TACO não podem ser alterados.)",
                 content: {
                     "application/json": {
                         schema: {

@@ -1,12 +1,32 @@
-import { error_serverError } from "../../schemas/status500ErrorObj.js"
+import { error_serverError_All } from "../../schemas/status500ErrorObj.js"
 
 export const getPostFoods = {
     get: {
-        description: "Retorna todas as Comidas cadastradas no banco de dados.",
-        tags: ["Comidas"],
+        description: "Retorna uma lista com todas as Comidas Principais cadastradas no banco de dados para uma Refeição informada (idFood). A Refeição informada deve pertencer ao Cliente informado (idCustomer).",
+        tags: ["Comidas Principais"],
+        parameters: [
+            {
+                name: "idCustomer",
+                in: "path",
+                description: "ID do Cliente.",
+                required: true,
+                schema: {
+                    type: "integer"
+                }
+            },
+            {
+                name: "idMeal",
+                in: "path",
+                description: "ID da Refeição.",
+                required: true,
+                schema: {
+                    type: "integer",
+                }
+            }
+        ],
         responses: {
             200: {
-                description: "Lista com todas as Comidas.",
+                description: "Lista com todas as comidas para aquela refeição do cliente.",
                 content: {
                     "application/json": {
                         schema: {
@@ -18,13 +38,60 @@ export const getPostFoods = {
                     }
                 }
             },
-            ...error_serverError
+
+            202: {
+                description: "A refeição com 'idMeal' ainda não tem nenhuma comida cadastrada.",
+                content: {
+                    "application/json": {
+                        schema: {
+                            type: "object",
+                            example: {
+                                message: "Ainda não existem comidas para essa refeição."
+                            }
+                        },
+                    }
+                }
+            },
+
+            404: {
+                description: "'idCustomer' e/ou 'idMeal' não existe(m), ou os id's existem mas não têm ligação entre si (a refeição não pertence àquele cliente).",
+                content: {
+                    "application/json": {
+                        schema: {
+                            example: {
+                                erro: "O usuário não tem esses dados."
+                            }
+                        }
+                    }
+                }
+            },
+            ...error_serverError_All
         },
     },
 
     post: {
-        description: "Cria uma nova Comida",
-        tags: ["Comidas"],
+        description: "Cria uma nova Comida Principal na refeição informada com 'idMeal'.  Não é possível criar uma Comida Principal para uma Refeição que não exista. A Refeição informada (idMeal) deve ao Cliente informado (idCustomer).",
+        tags: ["Comidas Principais"],
+        parameters: [
+            {
+                name: "idCustomer",
+                in: "path",
+                description: "ID do Cliente.",
+                required: true,
+                schema: {
+                    type: "integer"
+                }
+            },
+            {
+                name: "idMeal",
+                in: "path",
+                description: "ID da Refeição.",
+                required: true,
+                schema: {
+                    type: "integer",
+                }
+            }
+        ],
         requestBody: {
             required: true,
             content: {
@@ -37,39 +104,52 @@ export const getPostFoods = {
         },
         responses: {
             201: {
-                description: "Comida criada.",
+                description: "A comida criada na refeição informada.",
                 content: {
                     "application/json": {
                         schema: {
                             $ref: "#/schemas/foodsGetSchema",
-                            example: {
-                                "idCustomer": 19,
-                                "idMeal": 4,
-                                "idFood": 5,
-                                "idAliment": 182,
-                                "isTaco": true,
-                                "quantity": 2,
-                                "unityQt": "Unidade(s)",
-                                "obs": "A banana prata é uma das que possuem menos calorias (cerca de 74 kcal por 70 g), ela é rica em potássio e fibras. Além de ter muitos acúcares, como: a sacarose, frutose, e glicose. Também, possui sais minerais, como: cálcio, ferro, sódio, zinco, potássio, magnésio, fósforo e vitaminas A, B1, B2 e C."
-                            }
                         }
                     }
                 }
             },
             400: {
-                description: "O corpo da requisição para criar uma nova comida foi enviado incorretamente.",
+                description: "Esse status é retornado quando uma dessas situações acontece: (1) O corpo da requisição para criar uma nova Comida Principal foi enviado incorretamente. (2) O corpo da requisição não contém os dados obrigatórios para criação de uma Comida Principal. (3) O 'idAliment' passado no corpo da requisição não existe no banco de dados.",
                 content: {
                     "application/json": {
                         schema: {
                             type: "object",
                             example: {
-                                erro: "Enviar a QUANTIDADE é obrigatório, enviar a UNIDADE DE MEDIDA é obrigatório.",
+                                exemplo_1: {
+                                    erro: "JSON inválido no corpo da solicitação."
+                                },
+                                exemplo_2: {
+                                    erro: "Enviar o ID do Alimento é obrigatório, enviar a QUANTIDADE é obrigatório, enviar a UNIDADE DE MEDIDA é obrigatório.",
+                                },
+                                exemplo_3: {
+                                    erro: "idAliment é inválido."
+                                }
                             },
+                            
                         }
                     }
                 }
             },
-            ...error_serverError
+
+            404: {
+                description: "'idCustomer' e/ou 'idMeal' não existe(m), ou os id's existem mas não têm ligação entre si (a refeição não pertence àquele cliente).",
+                content: {
+                    "application/json": {
+                        schema: {
+                            type: "object",
+                            example: {
+                                erro: "Usuário ou Refeição não encontrada."
+                            }
+                        }
+                    }
+                }
+            },
+            ...error_serverError_All
         },
     }
 }

@@ -1,14 +1,14 @@
-import { error_serverError } from "../../schemas/status500ErrorObj.js"
+import { error_serverError_All } from "../../schemas/status500ErrorObj.js"
 
 export const getDeletePutFoods = {
     get: {
-        description: "Retorna uma comida pelo ID.",
-        tags: ["Comidas"],
+        description: "Retorna uma Comida Principal específica do banco de dados com id:'idFood'. Só é possível acessar essa Comida Principal caso pertença à Refeição informada (idMeal). Essa Refeição deve pertencer ao Cliente informado (idCustomer).",
+        tags: ["Comidas Principais"],
         parameters: [
             {
-                name: "idFood",
+                name: "idCustomer",
                 in: "path",
-                description: "ID da Comida",
+                description: "ID do Cliente.",
                 required: true,
                 schema: {
                     type: "integer"
@@ -17,34 +17,25 @@ export const getDeletePutFoods = {
             {
                 name: "idMeal",
                 in: "path",
-                description: "ID da Refeição",
+                description: "ID da Refeição.",
                 required: true,
-                schema: {
-                    type: "interger"
-                }
-            },
-            {
-                name: "IdCustomer",
-                in: "path",
-                description: "ID do Cliente",
-                require: true,
                 schema: {
                     type: "integer"
                 }
             },
             {
-                name: "idAliment",
+                name: "idFood",
                 in: "path",
-                description: "ID do Alimento",
+                description: "ID da Comida Principal.",
                 required: true,
                 schema: {
                     type: "integer"
                 }
-            }
+            },
         ],
         responses: {
             200: {
-                description: "A comida encontrada.",
+                description: "A Comida Principal com 'idFood' encontrada na Refeição informada.",
                 content: {
                     "application/json": {
                         schema: {
@@ -53,59 +44,69 @@ export const getDeletePutFoods = {
                     }
                 }
             },
+
             404: {
-                description: "Nenhuma comida foi encontrada com o ID informado.",
+                description: "Esse status é retornado quando uma dessas situações acontece: (1) 'idCustomer' e/ou 'idMeal' não existe(m), ou os id's existem mas não têm ligação entre si (a refeição não pertence àquele cliente). (2) O Cliente tem aquela Refeição, mas a Comida Principal de id:'idFood' não existe para a Refeição.",
                 content: {
                     "application/json": {
                         schema: {
                             example: {
-                                erro: "Comida não encontrada."
+                                exemplo_1: {
+                                    erro: "O usuário não tem esses dados."
+                                },
+                                exemplo_2: {
+                                    erro: "Comida não encontrada."
+                                },
                             }
                         }
                     }
                 }
             },
-            ...error_serverError
+            ...error_serverError_All
         },
     },
 
     delete: {
-        description: "Deleta uma comida pelo ID, desde que seja uma comida personalizada. Não é possível excluir Comidas da Tabela TACO.",
-        tags: ["Comidas"],
+        description: "Tenta deletar uma Comida Principal pelo 'idFood'. Só é possível deletar essa comida caso pertença à Refeição informada (idMeal) e essa Refeição pertença ao Cliente informado (idCustomer).",
+        tags: ["Comidas Principais"],
         parameters: [
             {
-                name: "idFoods",
+                name: "idCustomer",
                 in: "path",
-                description: "ID da comida a ser excluída.",
+                description: "ID do Cliente.",
                 required: true,
                 schema: {
-                    type: "integer",
+                    type: "integer"
+                }
+            },
+            {
+                name: "idMeal",
+                in: "path",
+                description: "ID da Refeição.",
+                required: true,
+                schema: {
+                    type: "integer"
+                }
+            },
+            {
+                name: "idFood",
+                in: "path",
+                description: "ID da Comida Principal a ser deletada.",
+                required: true,
+                schema: {
+                    type: "integer"
                 }
             },
         ],
         responses: {
             200: {
-                description: "A comida foi excluída.",
+                description: "A Comida Principal foi excluída.",
                 content: {
                     "application/json": {
                         schema: {
                             type: "object",
                             example: {
-                                message: "Comida excluída."
-                            }
-                        },
-                    }
-                }
-            },
-
-            401: {
-                description: "A comida com ID informado não pode ser excluída.",
-                content: {
-                    "application/json": {
-                        schema: {
-                            type: "object",
-                            example: {
-                                erro: "Não é possível deletar essa comida."
+                                message: "Registro excluído."
                             }
                         },
                     }
@@ -113,32 +114,55 @@ export const getDeletePutFoods = {
             },
 
             404: {
-                description: "Nenhuma comida foi encontrada com o ID informado.",
+                description: "Esse status é retornado quando uma dessas situações acontece: (1) 'idCustomer' e/ou 'idMeal' não existe(m), ou os id's existem mas não têm ligação entre si (a refeição não pertence àquele cliente). (2) O cliente tem aquela refeição, mas a comida de id:'idFood' não existe.",
                 content: {
                     "application/json": {
                         schema: {
                             example: {
-                                erro: "Comida não encontrada."
+                                exemplo_1: {
+                                    erro: "Usuário, refeição ou comida principal não encontrado(s)."
+                                },
+                                exemplo_2: {
+                                    erro: "Comida não encontrada."
+                                },
                             }
                         }
                     }
                 }
             },
-            ...error_serverError
+            ...error_serverError_All
         },
     },
 
     put: {
-        description: "Atualiza as informações de uma comida pelo ID, desde que seja uma comida personalizada. Não é possível alterar comidas da Tabela TACO.",
-        tags: ["Comidas"],
+        description: "Tenta atualizar as informações de uma Comida Principal pelo 'idFood'. Só é possível atualizar as informações dessa Comida Principal caso pertença à Refeição informada (idMeal) e essa Refeição deve pertencer ao Cliente informado (idCustomer).",
+        tags: ["Comidas Principais"],
         parameters: [
             {
-                name: "idFoods",
+                name: "idCustomer",
                 in: "path",
-                description: "ID da comida a ser atualizada.",
+                description: "ID do Cliente.",
                 required: true,
                 schema: {
-                    type: "integer",
+                    type: "integer"
+                }
+            },
+            {
+                name: "idMeal",
+                in: "path",
+                description: "ID da Refeição.",
+                required: true,
+                schema: {
+                    type: "integer"
+                }
+            },
+            {
+                name: "idFood",
+                in: "path",
+                description: "ID da Comida Principal a ser atualizada.",
+                required: true,
+                schema: {
+                    type: "integer"
                 }
             },
         ],
@@ -155,66 +179,57 @@ export const getDeletePutFoods = {
         },
         responses: {
             200: {
-                description: "A comida atualizada.",
+                description: "A Comida Principal atualizada.",
                 content: {
                     "application/json": {
                         schema: {
                             $ref: "#/schemas/foodsGetSchema",
-                            example: {
-                                "idCustomer": 19,
-                                "idMeal": 4,
-                                "idFood": 5,
-                                "idAliment": 182,
-                                "isTaco": true,
-                                "quantity": 2,
-                                "unityQt": "Unidade(s)",
-                                "obs": "A banana prata é uma das que possuem menos calorias (cerca de 74 kcal por 70 g), ela é rica em potássio e fibras. Além de ter muitos acúcares, como: a sacarose, frutose, e glicose. Também, possui sais minerais, como: cálcio, ferro, sódio, zinco, potássio, magnésio, fósforo e vitaminas A, B1, B2 e C."
-                            }
                         }
                     }
                 }
             },
+
             400: {
-                description: "O corpo da requisição para atualizar a comida foi enviado incorretamente.",
+                description: "Esse status é retornado quando uma dessas situações acontece: (1) O corpo da requisição para atualizar a Comida Principal foi enviado incorretamente. (2) O corpo da requisição está tentando atualizar dados inválidos. (3) O idAliment passado no corpo da requisição não existe no banco de dados.",
                 content: {
                     "application/json": {
                         schema: {
                             type: "object",
                             example: {
-                                erro: "Dados enviados para atualizar a comida são inválidos.",
+                                exemplo_1: {
+                                    erro: "JSON inválido no corpo da solicitação."
+                                  },
+                                exemplo_2: {
+                                    erro: "Dados enviados para atualizar a comida principal são inválidos."
+                                },
+                                exemplo_3: {
+                                    erro: "idAliment é inválido."
+                                },
                             },
                         }
                     }
                 }
             },
 
-            401: {
-                description: "A comida com ID informado não pode ser alterada.",
-                content: {
-                    "application/json": {
-                        schema: {
-                            type: "object",
-                            example: {
-                                erro: "Não é possível alterar essa comida."
-                            }
-                        },
-                    }
-                }
-            },
-
             404: {
-                description: "Nenhuma comida foi encontrada com o ID informado.",
+                description: "Esse status é retornado quando uma dessas situações acontece: (1) 'idCustomer', 'idMeal' e/ou 'idFood' não existe(m), ou os id's existem mas não têm ligação entre si (a refeição não pertence àquele cliente ou a comida não pertence àquela refeição). (2) O Cliente tem aquela Refeição, mas a Comida Principal de id:'idFood' não existe para a Refeição.",
                 content: {
                     "application/json": {
                         schema: {
                             example: {
-                                erro: "Comida não encontrada."
+                                exemplo_1: {
+                                    erro: "O usuário não tem esses dados."
+                                },
+                                exemplo_2: {
+                                    erro: "Comida não encontrada."
+                                },
                             }
                         }
                     }
                 }
             },
-            ...error_serverError
+
+            ...error_serverError_All
         },
     }
 }

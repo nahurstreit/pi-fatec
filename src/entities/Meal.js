@@ -17,9 +17,9 @@ export default class Meal extends Model {
         super()
         this.idMeal = config.idMeal
         this.idCustomer = config.idCustomer
-        this.obs = config.obs
-        this.hour = config.hour
         this.name = config.name
+        this.hour = config.hour
+        this.obs = config.obs
     }
 }
 

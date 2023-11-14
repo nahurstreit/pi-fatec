@@ -25,10 +25,10 @@ export default {
         try {
             const {idCustomer, idMeal, idFood} = params
             if(!await isCustomerMealFoodProperty(idCustomer, idMeal, idFood))
-                return errorResult("Esse usuário não tem esses dados.", 404)
+                return errorResult("Usuário, refeição ou comida principal não encontrado(s).", 404)
 
             const subFoodsAll = await SubFood.findAll({where: {idFood: idFood}, include: [{model: Aliment, as: "mainAliment"}]})
-            if(subFoodsAll.length < 1) return successResult({message: "Ainda não existem alimentos substitutos."}, 202)
+            if(subFoodsAll.length < 1) return successResult({message: "Ainda não existem comidas substitutas."}, 202)
 
             const subFoodsPromises = subFoodsAll.map(async (subFood) => {
                 return formatFoodResponse(subFood)
@@ -60,10 +60,10 @@ export default {
         try {
             const {idCustomer, idMeal, idFood, idSubFood} = params
             if(!await isCustomerMealFoodProperty(idCustomer, idMeal, idFood)) 
-                return errorResult("Esse usuário não tem esses dados.", 404)
+                return errorResult("Usuário, refeição ou comida principal não encontrado(s).", 404)
 
             const subFood = await findFoodAndAliment(SubFood, {idSubFood: idSubFood, idFood: idFood})
-            if(!subFood) return errorResult("Alimento substituto não encontrado.", 404)
+            if(!subFood) return errorResult("Comida Substituta não encontrada.", 404)
 
             return successResult(subFood, 200)
         } catch (error) {
@@ -96,14 +96,14 @@ export default {
         try {
             const {idCustomer, idMeal, idFood} = params
             if(!await isCustomerMealFoodProperty(idCustomer, idMeal, idFood)) 
-                return errorResult("Usuário, refeição ou alimento principal não encontrado.", 404)
+                return errorResult("Usuário, refeição ou comida principal não encontrado(s).", 404)
 
             const errors = validateReq.post(obj, foodSchema)
             if(errors) return errorResult(errors, 400)
 
             const aliment = await Aliment.findOne({where: {idAliment: obj.idAliment}})
             if(!aliment) return errorResult("idAliment é inválido.", 400)
-
+            
             const subFood = await SubFood.create({
                 idFood: Number(idFood),
                 ...obj,
@@ -136,11 +136,11 @@ export default {
     async delete(params) {
         const {idCustomer, idMeal, idFood, idSubFood} = params 
         if(!await isCustomerMealFoodProperty(idCustomer, idMeal, idFood)) 
-            return errorResult("Esse usuário não tem esses dados.", 404)
+            return errorResult("Usuário, refeição ou comida principal não encontrado(s).", 404)
 
         try {
             const result = await SubFood.destroy({where: {idSubFood: idSubFood, idFood: idFood}})
-            if(result === 0) return errorResult("Alimento substituto não encontrado.", 400)
+            if(result === 0) return errorResult("Comida Substituta não encontrada.", 400)
             return successResult({mensagem: "Registro excluído."}, 200) 
         } catch (error) {
             return serverError(error)
@@ -174,10 +174,10 @@ export default {
         try {
             const {idCustomer, idMeal, idFood, idSubFood} = params
             if(!await isCustomerMealFoodProperty(idCustomer, idMeal, idFood)) 
-                return errorResult("Esse usuário não tem esses dados.", 404)
+                return errorResult("Usuário, refeição ou comida principal não encontrado(s).", 404)
 
             const subFood = await SubFood.findOne({where: {idSubFood: idSubFood, idFood: idFood}})
-            if(!subFood) return errorResult("Alimento substituto não encontrado.", 404)
+            if(!subFood) return errorResult("Comida Substituta não encontrada.", 404)
 
             const aliment = await Aliment.findOne({where: {idAliment: obj.idAliment}})
             if(!aliment) return errorResult("idAliment é inválido.", 400)
@@ -189,7 +189,7 @@ export default {
                 return successResult(await findFoodAndAliment(SubFood, {idSubFood: subFood.idSubFood}), 200) 
 
             } catch (error) {
-                errorResult("Dados enviados para atualizar o usuário são inválidos.", 400, error)
+                errorResult("Dados enviados para atualizar a comida substituta são inválidos.", 400, error)
             }
 
         } catch (error) {

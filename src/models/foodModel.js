@@ -26,7 +26,7 @@ export default {
                 return errorResult("O usuário não tem esses dados.", 404)
 
             const foodAll = await Food.findAll({where: {idMeal: idMeal}, include: [{model: Aliment, as: "mainAliment"}]})
-            if(foodAll.length < 1) return successResult({message: "Ainda não existem alimentos para essa refeição."}, 202)
+            if(foodAll.length < 1) return successResult({message: "Ainda não existem comidas para essa refeição."}, 202)
 
             const foodPromises = foodAll.map(async (food) => {
                 return formatFoodResponse(food)
@@ -59,7 +59,7 @@ export default {
                 return errorResult("O usuário não tem esses dados.", 404)
             
             const food = await findFoodAndAliment(Food, {idMeal: idMeal, idFood: idFood})
-            if(!food) return errorResult("Alimento não encontrado.", 404)
+            if(!food) return errorResult("Comida não encontrada.", 404)
 
             return successResult(food, 200)
         } catch (error) {
@@ -132,7 +132,7 @@ export default {
 
         try {
             const result = await Food.destroy({where: {idFood: idFood, idMeal: idMeal}})
-            if(result === 0) return errorResult("Alimento não encontrado.", 400)
+            if(result === 0) return errorResult("Comida não encontrada.", 404)
             return successResult({mensagem: "Registro excluído."}, 200) 
         } catch (error) {
             return serverError(error)
@@ -168,7 +168,7 @@ export default {
                 return errorResult("O usuário não tem esses dados.", 404)
 
             const food = await Food.findByPk(idFood)
-            if(!food) return errorResult("Alimento não encontrado.", 404)
+            if(!food) return errorResult("Comida não encontrada.", 404)
 
             const aliment = await Aliment.findOne({where: {idAliment: obj.idAliment}})
             if(!aliment) return errorResult("idAliment é inválido.", 400)
@@ -180,7 +180,7 @@ export default {
                 return successResult(await findFoodAndAliment(Food, {idFood: food.idFood}), 200) 
 
             } catch (error) {
-                errorResult("Dados enviados para atualizar o usuário são inválidos.", 400, error)
+                errorResult("Dados enviados para atualizar a comida principal são inválidos.", 400, error)
             }
 
         } catch (error) {

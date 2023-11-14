@@ -1,12 +1,12 @@
 export const mealsGetSchema = {
     properties:{
-        idCustomer: {
-            type: "integer",
-            description: "ID de armazenamento do cliente que tem posse desta refeição."
-        },
         idMeal: {
             type: "integer",
             description: "ID de armazenamento da refeição do cliente."
+        },
+        idCustomer: {
+            type: "integer",
+            description: "ID de armazenamento do cliente que tem posse desta refeição."
         },
         name: {
             type: "string",
@@ -22,8 +22,8 @@ export const mealsGetSchema = {
         }
     },
     example: {
-        "idCustomer": 19,
-        "idMeal": 4,
+        "idMeal": 20,
+        "idCustomer": 4,
         "name": "Lanche da manhã",
         "hour": "10:30",
         "obs": "O lanche deve ser feito após a refeição do café da manhã e antes da refeição do almoço."

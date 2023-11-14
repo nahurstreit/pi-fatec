@@ -23,7 +23,7 @@ export const getPostCustomer = {
     },
 
     post: {
-        description: "Cria um novo cliente",
+        description: "Cria um novo cliente.",
         tags:["Clientes"],
         requestBody: {
             required: true,
@@ -42,30 +42,24 @@ export const getPostCustomer = {
                     "application/json": {
                         schema: {
                             $ref: "#/schemas/customerGetSchema",
-                            example: {
-                                "idCustomer": 19,
-                                "name": "José Antônio de Andrade",
-                                "email": "ze.andrade@gmail.com",
-                                "password": "Jose#162075",
-                                "cpf": "099.142.568-77",
-                                "cellphone": "(19)99428-2713",
-                                "height": "1.81 m",
-                                "weight": "92 kg",
-                                "birth": "07/04/1950",
-                                "gender": "Masculino"
-                            }
                         }
                     }
                 }
             },
+
             400: {
-                description: "O corpo da requisição para criar um novo cliente foi enviado incorretamente.",
+                description: "Esse status é retornado quando uma dessas situações acontece: (1) O corpo da requisição para criar uma novo Cliente foi enviado incorretamente. (2) O corpo da requisição não contém todos os dados necessários para criar um novo Cliente.",
                 content: {
                     "application/json": {
                         schema: {
                             type: "object",
                             example: {
-                                error: "enviar o NOME é obrigatório, enviar o EMAIL é obrigatório, enviar a SENHA é obrigatório, enviar o CPF é obrigatório, enviar o numero do CELULAR é obrigatório, enviar a ALTURA é obrigatório, enviar o PESO é obrigatório, enviar a data do ANIVERSÁRIO é obrigatório, enviar o GÊNERO é obrigatório",
+                                exemplo_1: {
+                                    erro: "JSON inválido no corpo da solicitação."
+                                },
+                                exemplo_2: {
+                                    erro: "enviar o NOME é obrigatório, enviar o EMAIL é obrigatório, enviar a SENHA é obrigatório, enviar o CPF é obrigatório, enviar o numero do CELULAR é obrigatório, enviar a ALTURA é obrigatório, enviar o PESO é obrigatório, enviar a data do ANIVERSÁRIO é obrigatório, enviar o GÊNERO é obrigatório",
+                                },
                             },
                         }
                     }

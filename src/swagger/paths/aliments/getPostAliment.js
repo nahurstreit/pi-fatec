@@ -23,8 +23,8 @@ export const getPostAliment = {
     },
 
     post: {
-        description: "Cria um novo Alimento Customizado",
-        tags: ["Alimentos"],
+        description: "Cria um novo Alimento Customizado.",
+        tags: ["Alimentos", "Alimentos Customizados"],
         requestBody: {
             required: true,
             content: {
@@ -56,13 +56,18 @@ export const getPostAliment = {
                 }
             },
             400: {
-                description: "O corpo da requisição para criar um novo alimento foi enviado incorretamente.",
+                description: "Esse status é retornado quando uma dessas situações acontece: (1) O corpo da requisição para criar um novo Alimento Customizado foi enviado incorretamente. (2) O corpo da requisição não contém os dados obrigatórios para criação de um Alimento Customizado.",
                 content: {
                     "application/json": {
                         schema: {
                             type: "object",
                             example: {
-                                erro: "enviar o NOME é obrigatório, enviar a quantidade de PROTEÍNA é obrigatório",
+                                exemplo_1: {
+                                    erro: "JSON inválido no corpo da solicitação."
+                                },
+                                exemplo_2: {
+                                    erro: "enviar o NOME é obrigatório, enviar a quantidade de PROTEÍNA é obrigatório",
+                                }
                             },
                         }
                     }

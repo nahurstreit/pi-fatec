@@ -1,28 +1,16 @@
 export const subFoodsGetSchema = {
     properties:{
-        idCustomer: {
+        idSubFood: {
             type: "integer",
-            description: "ID de armazenamento do cliente."
-        },
-        idMeal: {
-            type: "integer",
-            description: "ID de armazenamento da refeição que possui esta food."
+            description: "ID de armazenamento da subFood a ser buscada."
         },
         idFood: {
             type: "integer",
             description: "ID de armazenamento da food que detém a posse da subFood."
         },
-        idSubFood: {
-            type: "integer",
-            description: "ID de armazenamento da subFood a ser buscada."
-        },
         idAliment: {
             type: "integer",
-            description: "ID de armazenamento do alimento."
-        },
-        isTaco: {
-            type: "boolean",
-            description: "Saber se idAliment é referente à tabela Taco ou se é referente à tabela AlimentCustom."
+            description: "ID de registro das informações nutricionais do Alimento."
         },
         quantity: {
             type: "number",
@@ -38,12 +26,9 @@ export const subFoodsGetSchema = {
         }
     },
     example: {
-        "idCustomer": 19,
-        "idMeal": 4,
-        "idFood": 5,
         "idSubFood": 27,
+        "idFood": 5,
         "idAliment": 182,
-        "isTaco": true,
         "quantity": 1,
         "unityQt": "Xícara",
         "obs": "1/2 xícara de abacate amassado equivale a 1 banana média."
@@ -51,8 +36,12 @@ export const subFoodsGetSchema = {
 }
 
 export const subFoodsPostSchema = {
-    required: ["quantity", "unityQt", "obs"],
+    required: ["idAliment", "quantity", "unityQt", "obs"],
     properties:{
+        idAliment: {
+            type: "integer",
+            description: "ID de registro das informações nutricionais do Alimento."
+        },
         quantity: {
             type: "number",
             description: "Quantidade do alimento."
@@ -67,6 +56,7 @@ export const subFoodsPostSchema = {
         }
     },
     example: {
+        "idAliment": 182,
         "quantity": 1,
         "unityQt": "Xícara",
         "obs": "1/2 xícara de abacate amassado equivale a 1 banana média."
