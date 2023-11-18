@@ -7,7 +7,7 @@ import swaggerDocument_v0_1_0 from "./swagger/config.js"
 import CustomerRoutes from "./router/customer.routes.js"
 import AlimentRoutes from "./router/aliment.routes.js"
 
-const PORT = 3000 || 3333
+const PORT = process.env.PORT || 3000
 
 sequelize.sync().then(() => console.log(`Banco de dados sincronizado.`))
 
