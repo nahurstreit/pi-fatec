@@ -28,10 +28,18 @@ export const subFoodsGetSchema = {
     example: {
         "idSubFood": 27,
         "idFood": 5,
-        "idAliment": 182,
+        "idAliment": 163,
         "quantity": 1,
         "unityQt": "Xícara",
-        "obs": "1/2 xícara de abacate amassado equivale a 1 banana média."
+        "obs": "1/2 xícara de abacate amassado equivale a 1 banana média.",
+        "mainAliment": {
+            "idAliment": 163,
+            "name": "Abacate, cru",
+            "kcal": "96,1547087",
+            "carb": "6,030869565",
+            "protein": "1,239130435",
+            "fat": "8,396666667"
+          }
     }
 }
 
@@ -56,7 +64,7 @@ export const subFoodsPostSchema = {
         }
     },
     example: {
-        "idAliment": 182,
+        "idAliment": 163,
         "quantity": 1,
         "unityQt": "Xícara",
         "obs": "1/2 xícara de abacate amassado equivale a 1 banana média."

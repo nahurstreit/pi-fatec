@@ -45,11 +45,11 @@ export const alimentGetSchemaCustom = {
     example: {
         "infoTable": "Alimento Customizado",
         "idAliment": 600,
-        "name": "Banana, prata, crua",
-        "kcal": "98,24970217",
-        "carb": "25,95688406",
-        "protein": "1,268115942",
-        "fat": "0,065"
+        "name": "Doritos, salgadinho",
+        "kcal": "480,00",
+        "carb": "56,00",
+        "protein": "5,20",
+        "fat": "25,60",
     }
 }
 
@@ -78,10 +78,10 @@ export const alimentPostSchema = {
         }
     },
     example: {
-        "name": "Banana, prata, crua",
-        "kcal": "98,24970217",
-        "carb": "25,95688406",
-        "protein": "1,268115942",
-        "fat": "0,065"
+        "name": "Doritos, salgadinho",
+        "kcal": "480,00",
+        "carb": "56,00",
+        "protein": "5,20",
+        "fat": "25,6",
     }
 }

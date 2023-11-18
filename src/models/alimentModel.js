@@ -113,7 +113,7 @@ export default {
 
             try {
                 const aliment = await Aliment.create({...obj, custom: 1})
-                return successResult(aliment, 201)
+                return successResult(formatAlimentResponse(aliment, true), 201)
             } catch (error) {
                 return serverError(error, "Alimento não pôde ser criado.")
             }
@@ -172,7 +172,7 @@ export default {
             try {
                 await Aliment.update({...obj, custom: 1}, {where: {idAliment: idAliment}})
                 await aliment.reload()
-                return successResult(aliment, 200)
+                return successResult(formatAlimentResponse(aliment, true), 200)
             } catch (error) {
                 return errorResult("Dados enviados para atualizar o alimento são inválidos.", 400, error)
             }

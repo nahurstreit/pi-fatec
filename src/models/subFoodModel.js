@@ -179,8 +179,10 @@ export default {
             const subFood = await SubFood.findOne({where: {idSubFood: idSubFood, idFood: idFood}})
             if(!subFood) return errorResult("Comida Substituta não encontrada.", 404)
 
-            const aliment = await Aliment.findOne({where: {idAliment: obj.idAliment}})
-            if(!aliment) return errorResult("idAliment é inválido.", 400)
+            if("idAliment" in obj) {
+                const aliment = await Aliment.findOne({where: {idAliment: obj.idAliment}})
+                if(!aliment) return errorResult("idAliment é inválido.", 400)
+            }
 
             try {
                 await SubFood.update(obj, {where: {idSubFood: idSubFood, idFood: idFood}})

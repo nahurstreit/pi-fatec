@@ -41,16 +41,7 @@ export const getPostAliment = {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/schemas/alimentGetSchema",
-                            example: {
-                                "infoTable": "Alimentos Personalizados",
-                                "idAliment": 600,
-                                "name": "Banana, prata, crua",
-                                "kcal": "98,24970217",
-                                "carb": "25,95688406",
-                                "protein": "1,268115942",
-                                "fat": "0,065"
-                            }
+                            $ref: "#/schemas/alimentGetSchemaCustom",
                         }
                     }
                 }

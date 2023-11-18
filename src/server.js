@@ -36,7 +36,7 @@ app.use((req, res) => {
 //Middlware para tratar os erros de solicitção do Usuário no body da requisição.
 app.use((erro, req, res, next) => {
     if (erro instanceof SyntaxError) {
-      res.status(400).json({error: 'JSON inválido no corpo da solicitação.'})
+      res.status(400).json({error: 'JSON inválido no corpo da solicitação. (Atenção para não enviar requisições com vírgulas no final).'})
     } else {
       next(erro)
     }

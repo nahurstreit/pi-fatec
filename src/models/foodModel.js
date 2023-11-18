@@ -170,8 +170,10 @@ export default {
             const food = await Food.findByPk(idFood)
             if(!food) return errorResult("Comida não encontrada.", 404)
 
-            const aliment = await Aliment.findOne({where: {idAliment: obj.idAliment}})
-            if(!aliment) return errorResult("idAliment é inválido.", 400)
+            if("idAliment" in obj) {
+                const aliment = await Aliment.findOne({where: {idAliment: obj.idAliment}})
+                if(!aliment) return errorResult("idAliment é inválido.", 400)
+            }
 
             try {
                 await Food.update(obj, {where: {idFood: idFood, idMeal: idMeal}})

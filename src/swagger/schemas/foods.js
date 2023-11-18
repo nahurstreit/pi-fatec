@@ -31,7 +31,15 @@ export const foodsGetSchema = {
         "idAliment": 182,
         "quantity": 2,
         "unityQt": "Unidade(s)",
-        "obs": "A banana prata é uma das que possuem menos calorias (cerca de 74 kcal por 70 g), ela é rica em potássio e fibras. Além de ter muitos acúcares, como: a sacarose, frutose, e glicose. Também, possui sais minerais, como: cálcio, ferro, sódio, zinco, potássio, magnésio, fósforo e vitaminas A, B1, B2 e C."
+        "obs": "Corte a banana em fatias.",
+        "mainAliment": {
+            "idAliment": 182,
+            "name": "Banana, prata, crua",
+            "kcal": "98,24970217",
+            "carb": "25,95688406",
+            "protein": "1,268115942",
+            "fat": "0,065"
+          }
     }
 }
 
@@ -59,6 +67,6 @@ export const foodsPostSchema = {
         "idAliment": 182,
         "quantity": 2,
         "unityQt": "Unidade(s)",
-        "obs": "A banana prata é uma das que possuem menos calorias (cerca de 74 kcal por 70 g), ela é rica em potássio e fibras. Além de ter muitos acúcares, como: a sacarose, frutose, e glicose. Também, possui sais minerais, como: cálcio, ferro, sódio, zinco, potássio, magnésio, fósforo e vitaminas A, B1, B2 e C."
+        "obs": "Corte a banana em fatias."
     }
 }
