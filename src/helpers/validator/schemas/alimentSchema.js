@@ -3,7 +3,7 @@ import Schema from "validate"
 /**
  * Schema para validar o corpo de uma Requisição ao tentar fazer um POST de um novo AlimentCustom.
  */
-const alimentCustomSchema = new Schema ({
+const alimentSchema = new Schema ({
     name: {
         type: String,
         required: true,
@@ -31,4 +31,4 @@ const alimentCustomSchema = new Schema ({
     }
 })
 
-export default alimentCustomSchema
+export default alimentSchema

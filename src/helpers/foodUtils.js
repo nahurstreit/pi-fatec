@@ -1,6 +1,7 @@
 import Food from "../entities/Foods/Food.js"
 import Meal from "../entities/Meal.js"
 import SubFood from "../entities/Foods/SubFood.js"
+import Aliment from "../entities/Aliment.js"
 
 /**
  * Função para conferir no banco de dados se uma Meal[refeição] é de um dado Customer[usuário/cliente] através
@@ -60,18 +61,31 @@ export async function isCustomerMealFoodProperty(idCustomer, idMeal, idFood) {
 /**
  * @summary Função para adequar o objeto [Food ou SubFood] para ser enviado como resposta de uma requisição da API.
  * 
- * @description A função recebe um objeto do tipo Food ou SubFood e através desse objeto é acessado o método
- * 'searchMainAliment' que busca e cria um atributo chamado 'mainAliment' ao objeto, de acordo com as informações contidas
- * na criação daquele objeto. Após o método criar o novo atributo a função formata o objeto e o retorna.
+ * @description A função recebe um objeto do tipo Food ou SubFood e através das informações desse objeto é feita uma
+ * readaptação do objeto para que inclua o campo "mainAliment" em sua estrutura.
  * 
  * @param {Food | SubFood} food - Instância de Food ou SubFood a ser formatada. 
+ * @returns {JSON} JSON com o objeto formatado contendo as informações principais daquela comida.
+ */
+export function formatFoodResponse(food) {
+    const {custom, ...infoMainAliment} = food.mainAliment
+    const {idAliment, ...infoFood} = food.dataValues
+
+    return {...infoFood, mainAliment: infoMainAliment}
+}
+
+/**
+ * @summary Função para buscar o objeto [Food ou SubFood] que acabou de ser criado/atualizado, e retorna esse objeto formatado.
+ * 
+ * @description A função recebe a classe a ser utilizada Food ou SubFood e realiza uma busca do objeto daquela classe dentro
+ * do banco de dados incluindo no objeto o campo mainAliment e mandando a resposta formatada através da função formatFoodResponse.
+ * 
+ * @param {Food | SubFood} Class - Classe a ser usada para buscar no banco de dados. Ou Food ou SubFood.
+ * @param {JSON} where - Query específica a ser realizada para encontrar.
  * @returns {Promise<JSON>} JSON com o objeto formatado contendo as informações principais daquela comida.
  */
-export async function setMainAliment(food) {
-    const objFood = await food.searchMainAliment()
-    const {idAliment, isTaco, ...infoFood} = objFood.dataValues
-    return {
-        ...infoFood,
-        mainAliment: objFood.mainAliment,
-    }
+export async function findFoodAndAliment(Class, where) {
+    const food = await Class.findOne({where: {...where}, include: [{model: Aliment, as: "mainAliment"}]})
+    if(!food) return null
+    return formatFoodResponse(food)
 }
