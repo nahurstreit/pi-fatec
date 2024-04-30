@@ -5,6 +5,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import view.panels.pages.CustomersPage;
+import view.panels.pages.DietPage;
 import view.panels.pages.HomePage;
 
 public class LoggedPanel extends JPanel {
@@ -18,7 +19,6 @@ public class LoggedPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public LoggedPanel(String nutriName) {
-		super();
 		this.setLayout(new GridBagLayout());
 		
 		GridBagConstraints gbcSideBar = new GridBagConstraints();
@@ -29,12 +29,14 @@ public class LoggedPanel extends JPanel {
 		gbcSideBar.weighty = 1.0; //redimensionamento vertical
 		gbcSideBar.ipadx = 10; //distância horizontal conteúdo até as bordas do grid
 		gbcSideBar.ipady = 10; //distância vertical conteúdo até as bordas do grid
-		gbcSideBar.fill = GridBagConstraints.VERTICAL; //modo de preenchimento do grid
+		gbcSideBar.fill = GridBagConstraints.BOTH; //modo de preenchimento do grid
 		
 		SideBarItem homePage = new SideBarItem("HOME", () -> swapLoggedMainPanel(new HomePage()), true);
-		SideBarItem customersPage = new SideBarItem("CLIENTES", () -> swapLoggedMainPanel(new CustomersPage()));
+		SideBarItem customersPage = new SideBarItem("CLIENTES", () -> swapLoggedMainPanel(new CustomersPage(this)));
+		SideBarItem dietPage = new SideBarItem("DIETA TESTE", () -> swapLoggedMainPanel(new DietPage()));
 		
-		SideBar fullSideBar = new SideBar(nutriName, homePage, customersPage);
+		SideBar fullSideBar = new SideBar(nutriName, homePage, customersPage, dietPage);
+		fullSideBar.setMinimumSize(new Dimension(250, this.getHeight()));
 		fullSideBar.setPreferredSize(new Dimension(250, this.getHeight()));
 		
 		this.add(fullSideBar, gbcSideBar);

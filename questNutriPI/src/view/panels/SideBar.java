@@ -10,6 +10,8 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 import view.QuestNutri;
+import view.components.Make;
+import view.utils.VUtils;
 
 public class SideBar extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -35,11 +37,10 @@ public class SideBar extends JPanel {
 			gbcGreeting.weighty = 0.0;
 			gbcGreeting.ipadx = 10;
 			gbcGreeting.ipady = 10;
-			gbcGreeting.anchor = GridBagConstraints.WEST;
 			gbcGreeting.fill = GridBagConstraints.BOTH;
 		
 			JLabel greetingLbl = new JLabel("Olá, " + nutriName + "!", JLabel.CENTER);
-			greetingLbl.setFont(QuestNutri.loadFont("Montserrat-Bold").deriveFont(30f));
+			greetingLbl.setFont(VUtils.loadFont("Montserrat-Bold").deriveFont(30f));
 			greetingLbl.setPreferredSize(new Dimension(0, 75));
 			
 			//Adicionando o panel de saudação
@@ -59,15 +60,23 @@ public class SideBar extends JPanel {
 			createMenuItems(windows, options);
 			
 			//Criando o Layout da parte dos itens
-		 	GridBagConstraints gbcOptions = new GridBagConstraints();
-	        gbcOptions.gridx = 0;
-	        gbcOptions.gridy = 1;
-	        gbcOptions.weightx = 1.0;
-	        gbcOptions.weighty = 1.0;
-	        gbcOptions.fill = GridBagConstraints.BOTH;
+		 	GridBagConstraints gbc = new GridBagConstraints();
+		 	gbc.gridx = 0;
+		 	gbc.gridy = 1;
+		 	gbc.gridheight = 2;
+	        gbc.weightx = 1.0;
+	        gbc.weighty = 1.0;
+	        gbc.fill = GridBagConstraints.BOTH;
 		    
 	        //Adicionando o panel com os itens e o layout
-			this.add(options, gbcOptions);
+			this.add(options, gbc);
+			
+			gbc.fill = GridBagConstraints.NONE;
+			gbc.gridy = 3;
+			gbc.weightx = 0.0;
+	        gbc.weighty = 0.0;
+			gbc.insets = new Insets(40, 40, 15, 40);
+			this.add(Make.svgIcon("QuestNutri3"), gbc);
 		
 	}
 	
@@ -84,7 +93,7 @@ public class SideBar extends JPanel {
 	        attributes.put(TextAttribute.TRACKING, 0.2); // Valor positivo para aumentar o espaçamento
 	        
 	        // Aplicar os atributos de texto à fonte atual
-	        Font modifiedFont = QuestNutri.loadFont("Montserrat-Light").deriveFont(18f).deriveFont(attributes);
+	        Font modifiedFont = VUtils.loadFont("Montserrat-Light").deriveFont(18f).deriveFont(attributes);
 	        optionLbl.setFont(modifiedFont);
 	        
 			panelDestiny.add(optionLbl);

@@ -6,5 +6,12 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="lib/batik-1.17/lib/batik-all-1.17.jar"/>
+	<classpathentry kind="lib" path="lib/batik-1.17/lib/batik-dom-1.17.jar"/>
+	<classpathentry kind="lib" path="lib/batik-1.17/lib/batik-svg-dom-1.17.jar"/>
+	<classpathentry kind="lib" path="lib/batik-1.17/batik-svgpp-1.17.jar"/>
+	<classpathentry kind="lib" path="lib/vlcj/jna-jpms-5.12.1.jar"/>
+	<classpathentry kind="lib" path="lib/vlcj/jna-platform-jpms-5.12.1.jar"/>
+	<classpathentry kind="lib" path="lib/vlcj/vlcj-4.8.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

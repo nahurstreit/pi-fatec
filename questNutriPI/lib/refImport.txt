@@ -1,0 +1,4 @@
+batik-all-1.17.jar
+batik-dom-1.17.jar
+batik-svg-dom-1.17.jar
+batik-svgpp-1.17.jar
