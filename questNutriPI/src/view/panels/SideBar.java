@@ -9,8 +9,7 @@ import java.util.Map;
 import javax.swing.*;
 import javax.swing.border.*;
 
-import view.QuestNutri;
-import view.components.Make;
+import view.utils.VMakePicture;
 import view.utils.VUtils;
 
 public class SideBar extends JPanel {
@@ -21,8 +20,10 @@ public class SideBar extends JPanel {
 	 */
 	private static JLabel lastSelectedLabel = null;
 	
+	private GridBagConstraints gbc = new GridBagConstraints();
+	
 	/**
-	 * Cria o Panel de SideBar
+	 * Cria o painel de menu lateral (SideBar)
 	 */
 	public SideBar(String nutriName, SideBarItem ...windows) {
 		this.setBackground(new Color(217,217,217));
@@ -30,22 +31,14 @@ public class SideBar extends JPanel {
 		
 		//Definindo o layout da saudação
 			//Criando o Layout da saudação inicial
-			GridBagConstraints gbcGreeting = new GridBagConstraints();
-			gbcGreeting.gridx = 0;
-			gbcGreeting.gridy = 0;
-			gbcGreeting.weightx = 1.0;
-			gbcGreeting.weighty = 0.0;
-			gbcGreeting.ipadx = 10;
-			gbcGreeting.ipady = 10;
-			gbcGreeting.fill = GridBagConstraints.BOTH;
+			gbc.gridx = 0;
+			gbc.gridy = 0;
+			gbc.fill = GridBagConstraints.BOTH;
+			gbc.insets = new Insets(20, 0, 20, 0);
 		
-			JLabel greetingLbl = new JLabel("Olá, " + nutriName + "!", JLabel.CENTER);
-			greetingLbl.setFont(VUtils.loadFont("Montserrat-Bold").deriveFont(30f));
-			greetingLbl.setPreferredSize(new Dimension(0, 75));
-			
-			//Adicionando o panel de saudação
-			this.add(greetingLbl, gbcGreeting);
-		
+			JLabel lblGreetings = new JLabel("Olá, "+nutriName+"!",JLabel.CENTER);
+			lblGreetings.setFont(VUtils.loadFont("Montserrat-Bold", 28f));
+			this.add(lblGreetings, gbc);
 			
 		//Definindo o Layout das opções	
 			JPanel options = new JPanel();
@@ -70,13 +63,14 @@ public class SideBar extends JPanel {
 		    
 	        //Adicionando o panel com os itens e o layout
 			this.add(options, gbc);
+
 			
 			gbc.fill = GridBagConstraints.NONE;
 			gbc.gridy = 3;
 			gbc.weightx = 0.0;
 	        gbc.weighty = 0.0;
 			gbc.insets = new Insets(40, 40, 15, 40);
-			this.add(Make.svgIcon("QuestNutri3"), gbc);
+			this.add(VMakePicture.svgIcon("QuestNutri"), gbc);
 		
 	}
 	
@@ -95,8 +89,7 @@ public class SideBar extends JPanel {
 	        // Aplicar os atributos de texto à fonte atual
 	        Font modifiedFont = VUtils.loadFont("Montserrat-Light").deriveFont(18f).deriveFont(attributes);
 	        optionLbl.setFont(modifiedFont);
-	        
-			panelDestiny.add(optionLbl);
+	        panelDestiny.add(optionLbl);
 			panelDestiny.add(Box.createVerticalStrut(15));
 		}
 	}

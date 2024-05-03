@@ -21,12 +21,19 @@ public class SideBarItem {
 		}
 	}
 	
+	/**
+	 * Método que executa o evento indicado na criação do SideItem
+	 */
 	public void performEvent() {
         if (event != null) {
             event.execute();
         }
 	}
 	
+	/**
+	 * Método que retorna um valor booleano indicando se aquele item de SideBar começa com o estado selecionado na inicialização da instância.
+	 * @return <b>boolean</b> -> Valor booleano que indica se aquela label deve começar selecionada no SideBar
+	 */
 	public boolean isSelected() {
 		return this.selected;
 	}

@@ -1,18 +1,17 @@
 package view.components;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-import view.QuestNutri;
 import view.components.utils.RoundedBorder;
 import view.utils.VUtils;
 
 public class StdButton extends JButton {
+	private static final long serialVersionUID = 1L;
+
 	public interface Action {
 		void execute();
 	}

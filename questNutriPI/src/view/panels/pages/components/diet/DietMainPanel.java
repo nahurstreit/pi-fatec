@@ -18,11 +18,13 @@ public class DietMainPanel extends GenericComponent {
 	private int[] avbDays = {64, 32, 16, 8, 4, 2, 1}; //Variável que controla os dias da semana dos respectivos panels
 	private String[] avbStrDays = {"Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"};
 	public int currentDayFocus = 0;
+	
+	private final Color BG_COLOR = new Color(103, 103, 103);
 
 	public DietMainPanel(Meal[] meals) {
 		super();
 		this.meals = meals;
-		this.setBackground(Color.red);
+		this.setBackground(BG_COLOR);
 		populate(meals);
 	}
 	

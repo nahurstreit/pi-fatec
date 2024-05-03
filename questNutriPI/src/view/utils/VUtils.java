@@ -7,8 +7,21 @@ import java.io.InputStream;
 
 import view.QuestNutri;
 
+/**
+ * Classe de utilidade geral na camada de View para funções de utilidade geral.
+ */
 public class VUtils {
-	public static Font loadFont(String fontName) {
+	/**
+	 * Método que carrega uma instância de Font com o nome indicado. A fonte deve estar salva dentro do caminho:
+	 * <pre>/src/view/assets/fonts</pre>
+	 * O arquivo da fonte deve ter como extensão: 'ttf';
+	 * @param fontName -> (String) com o nome da fonte a ser instânciada.
+	 * @param size -> (float) valor opcional que define o tamanho da fonte
+	 * @return <b>Font</b> -> Instância de Font indicada.
+	 */
+	public static Font loadFont(String fontName, float ...size) {
+		float stdSize = 12f;
+		if(size.length > 0) stdSize = size[0];
 		//Prepara o retorno
 		Font loadedFont;
         try {
@@ -23,6 +36,6 @@ public class VUtils {
             //Define a fonte Arial como padrão em caso de erro no load.
             loadedFont = new Font("Arial", Font.PLAIN, 18);
         }
-        return loadedFont;
+        return loadedFont.deriveFont(stdSize);
     }
 }

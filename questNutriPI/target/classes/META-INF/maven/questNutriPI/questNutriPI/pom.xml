@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>questNutriPI</groupId>
+  <artifactId>questNutriPI</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>QuestNutri Desktop App</name>
+  <description>
+	  Aplicação Desktop em Java para o Projeto Integrador QuestNutri realizado para a  Faculdade de Tecnologia de Indaiatuba (FATEC)
+	  no curso de Análise e Desenvolvimento de Sistema, mais específico na matéria de Programação Orientada a Objetos
+	  ministrada pelo professor doutor Sérgio Furgeri.
+  </description>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>src</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <release>17</release>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+  	<!--Biblioteca para controlar imagens vetoriais SVG -->
+	<dependency>
+		<groupId>org.apache.xmlgraphics</groupId>
+		<artifactId>batik-all</artifactId>
+		<version>1.17</version>
+	</dependency>
+	<!--Biblioteca de ORM -->
+	<dependency>
+	    <groupId>org.hibernate.orm</groupId>
+	    <artifactId>hibernate-core</artifactId>
+	    <version>6.5.0.Final</version>
+	</dependency>
+  </dependencies>
+</project>
