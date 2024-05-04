@@ -10,8 +10,14 @@ import javax.swing.JLabel;
 import view.components.utils.IDoAction;
 
 public class ActionLbl extends JLabel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private IDoAction event;
+	@SuppressWarnings("unused")
 	private String text;
+	@SuppressWarnings("unused")
 	private ImageIcon img;
 	
 	public ActionLbl(String text, IDoAction event) {
@@ -34,6 +40,7 @@ public class ActionLbl extends JLabel {
 		this(img, null);
 	}
 	
+	@SuppressWarnings("unused")
 	private void addAction() {
 		this.addMouseListener(new MouseAdapter() {
 			//Quando clicar aciona a ação enviada

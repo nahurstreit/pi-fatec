@@ -14,10 +14,9 @@ import view.panels.pages.components.GenericComponent;
 import view.utils.VUtils;
 
 public class DietDayPanel extends GenericComponent {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	
+	
 	public DietMainPanel dietMainPanel;
 	public int weekDay;
 	

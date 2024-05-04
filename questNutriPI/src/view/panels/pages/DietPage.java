@@ -1,23 +1,12 @@
 package view.panels.pages;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-
 import models.Meal;
 import view.panels.pages.components.diet.DietMainPanel;
 
 public class DietPage extends GenericPage {
+	private static final long serialVersionUID = 1L;
 	
-	public DietPage() {
-		super();
-		
-		this.setLayout(new GridBagLayout());
-		
-		GridBagConstraints gbc = new GridBagConstraints();
-		initGbc(gbc);
-		
-		Meal[] meals = {
+	private static Meal[] mealsExample = {
 			new Meal("Café da Manhã A", 10000, 84, true),
 			new Meal("Café da Manhã B", 10000, 42, true),
 			new Meal("Café da Manhã c", 10000, 1, true),
@@ -32,25 +21,22 @@ public class DietPage extends GenericPage {
 			new Meal("Café da tarde Y", 20000, 16, true),
 			new Meal("Café da tarde Z", 20000, 2, true),
 		};
-		
-		this.add(new DietMainPanel(meals), gbc);
+	
+	public DietPage() {
+		this(mealsExample);
 	}
 	
 	public DietPage(Meal[] meals) {
 		super();
+		this.ltGridBag();
 		
-		this.setLayout(new GridBagLayout());
-		
-		GridBagConstraints gbc = new GridBagConstraints();
-		initGbc(gbc);
-		
+		this.gbcGridXY(0);
+		this.gbcWgXY(1.0);
+		this.gbcApple(100);
+		this.gbcAnchor("WEST");
+		this.gbcFill("BOTH");
+		this.gbcInsets(25);
 		this.add(new DietMainPanel(meals), gbc);
 	}
-	
-	protected void initGbc(GridBagConstraints gbc) {
-		super.initGbc(gbc);
-		gbc.ipadx = 100;
-		gbc.ipady = 100;
-		gbc.insets = new Insets(25, 25, 25, 25);
-	}
+
 }

@@ -11,7 +11,6 @@ public class HomePage extends GenericPage {
 	 */
 	public HomePage() {
 		super();
-		this.menuBarPageName = "Home";		
 		this.add(new JLabel("Home"));
 	}
 }

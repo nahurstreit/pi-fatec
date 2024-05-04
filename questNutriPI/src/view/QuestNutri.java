@@ -10,7 +10,6 @@ import java.awt.GridBagLayout;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -53,15 +52,7 @@ public class QuestNutri {
 	/**
 	 * Logo SVG do applicativo a ser usado na side bar do painel logado.
 	 */
-	public static JSVGCanvas questNutriSVG;
-	
-	/**
-	 * Plano de fundo do painel de Login.
-	 */
-	public static ImageIcon loginBG = null;
-	
-	public static Color paletteBlue1 = new Color(85, 183, 254);
-	
+	public static final String QUESTNUTRI_SVG_NAME = "QuestNutri";
 	
 	/**
 	 * Inicializa a aplicação.
@@ -71,8 +62,7 @@ public class QuestNutri {
 			public void run() {
 				try {
 					//Carregando arquivos de interesse do aplicativo
-					loadAssets();
-					paletteBlue1 = new Color(85, 183, 254);
+					loadSVG();
 					
 					//Definindo estado da janela do app
 					app.setTitle("QuestNutri (Desktop App)");
@@ -85,7 +75,7 @@ public class QuestNutri {
 					
 					//Incializando
 					showLogoReveal();
-					swapToLogin(false);
+					swapToLogin(true);
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -101,6 +91,7 @@ public class QuestNutri {
 	private static void swapAppPanel(JPanel panel) {
 		app.setContentPane(panel);
 		app.revalidate();
+		app.repaint();
 	}
 	
 	
@@ -118,9 +109,8 @@ public class QuestNutri {
 	/**
 	 * Método que carrega os assets importantes ao sistema.
 	 */
-	private static void loadAssets() {
-		questNutriSVG = VMakePicture.svgIcon("QuestNutri");
-		loginBG = VMakePicture.sizedImg("LoginPageBG", app.getWidth(), app.getHeight());
+	public static JSVGCanvas loadSVG() {
+		return VMakePicture.svgIcon(QUESTNUTRI_SVG_NAME);
 	}
 	
 	/**
@@ -140,7 +130,7 @@ public class QuestNutri {
 				QuestNutri.swapAppPanel(loginPanel);
 			}
 		};
-		
+
 		if(delay) {
 			Timer timer = new Timer();
 			timer.schedule(new TimerTask() {
@@ -156,7 +146,7 @@ public class QuestNutri {
 	/**
 	 * Método que exibe no painel principal do app a  Logo Reveal do aplicativo em formato .gif
 	 */
-	public static void showLogoReveal() {		
+	public static void showLogoReveal() {
 		JLabel logoRevealGif = new JLabel(VMakePicture.gifIcon("LogoRevealQuestNutri"), JLabel.CENTER);
 		
 		

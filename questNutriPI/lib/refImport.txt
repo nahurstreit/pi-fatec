@@ -1,0 +1,8 @@
+Caso o Maven dê problemas de importação, adicionar manualmente ao Build Path do projeto os seguintes arquivos:
+
+
+/lib/batik-1.17:
+	- batik-all-1.17.jar
+	- batik-dom-1.17.jar
+	- batik-svg-dom-1.17.jar
+	- batik-svgpp-1.17.jar

@@ -1,6 +1,6 @@
 package view.components;
 
-import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,6 +11,7 @@ import view.utils.VUtils;
 
 public class StdButton extends JButton {
 	private static final long serialVersionUID = 1L;
+	protected Font STD_TEXT_FONT = VUtils.loadFont("Montserrat-Regular");
 
 	public interface Action {
 		void execute();
@@ -20,15 +21,11 @@ public class StdButton extends JButton {
 	
 	
 	public StdButton() {
-		super();
-		this.setBackground(Color.white);
-		this.setBorder(new RoundedBorder(10));
+		this("", null);
 	}
 	
 	public StdButton(String text) {
-		super(text);
-		this.setBackground(Color.white);
-		this.setBorder(new RoundedBorder(10));
+		super(text, null);
 	}
 	
 	public StdButton(String text, Action action) {
@@ -36,7 +33,7 @@ public class StdButton extends JButton {
 		this.setBorder(new RoundedBorder(10));
 		this.action = action;
 		this.setAction();
-		this.setFont(VUtils.loadFont("Montserrat-Regular").deriveFont(20f));
+		this.setFont(this.STD_TEXT_FONT.deriveFont(20f));
 
 	}
 	
