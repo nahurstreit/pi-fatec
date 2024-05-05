@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hibernate-configuration>
+    <session-factory>
+        <!-- Configurações do banco de dados -->
+        <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+        <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=QuestNutriDB</property>
+        <!-- Use a autenticação do Windows -->
+        <property name="hibernate.connection.integratedSecurity">true</property>
+        <!-- Configuração do dialeto do banco de dados -->
+        <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+        <!-- Mapeamento de classes de entidade -->
+        <!-- Adicione aqui os mapeamentos de suas classes de entidade -->
+    </session-factory>
+</hibernate-configuration>
