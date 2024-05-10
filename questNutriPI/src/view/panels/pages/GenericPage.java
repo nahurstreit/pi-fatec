@@ -2,16 +2,15 @@ package view.panels.pages;
 
 import java.awt.Color;
 
-import view.panels.components.GeneralJPanel;
+import view.panels.components.GenericJPanel;
 
-public class GenericPage extends GeneralJPanel {
+public class GenericPage extends GenericJPanel {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Create the panel.
 	 */
 	public GenericPage() {
-		super();
 		this.setBackground(Color.white);
 	}
 

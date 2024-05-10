@@ -15,15 +15,16 @@ import view.QuestNutri;
 import view.components.HintInputField;
 import view.components.HintPasswordInputField;
 import view.components.StdButton;
-import view.panels.components.GeneralJPanel;
+import view.panels.components.GenericJPanel;
 import view.utils.VMakePicture;
-import view.utils.VUtils;
 
 /**
  * Classe que define o painel de Login do sistema.
  */
-public class LoginPanel extends GeneralJPanel {
+public class LoginPanel extends GenericJPanel {
 	private static final long serialVersionUID = 1L;
+	
+	private JPanel logoPanel = new JPanel();
 	
 	public LoginPanel() {
 		this.ltGridBag();
@@ -35,14 +36,7 @@ public class LoginPanel extends GeneralJPanel {
 		JPanel loginPanelHolder = new JPanel();
 		loginPanelHolder.setLayout(new GridBagLayout());
 		loginPanelHolder.setBackground(this.STD_NULL_COLOR);
-		this.gbcInsets();
-		
-		JPanel logoLoginPanel = new JPanel();
-		logoLoginPanel.setLayout(new GridBagLayout());
-		logoLoginPanel.setBackground(Color.white);
-		logoLoginPanel.setPreferredSize(dSize);
-		logoLoginPanel.setMinimumSize(dSize);
-		logoLoginPanel.add(QuestNutri.loadSVG());
+		gbc.insets();
 		
         JPanel inputLoginPanel = new JPanel();
         inputLoginPanel.setLayout(new GridBagLayout());
@@ -50,15 +44,17 @@ public class LoginPanel extends GeneralJPanel {
         inputLoginPanel.setPreferredSize(dSize);
         inputLoginPanel.setMinimumSize(dSize);
         
+        logoPanel.setLayout(new GridBagLayout());
+        logoPanel.setBackground(Color.white);
+        logoPanel.setPreferredSize(dSize);
+        logoPanel.setMinimumSize(dSize);
+        
         placeInputs(inputLoginPanel);
         placeBtn(inputLoginPanel);
         
-        gbc.gridx = 0;
-        loginPanelHolder.add(logoLoginPanel, gbc);
-        loginPanelHolder.add(inputLoginPanel, gbcXp());
+        loginPanelHolder.add(logoPanel, gbc.gridX(0));
+        loginPanelHolder.add(inputLoginPanel, gbc.gridX(1));
         
-        loginPanelHolder.revalidate();
-        loginPanelHolder.repaint();
         this.add(loginPanelHolder);
 	}
 	
@@ -82,20 +78,18 @@ public class LoginPanel extends GeneralJPanel {
 	 */
 	private void placeInputs(JPanel panel) {
 		//Label de Página de Administrador
-		gbcInsets(0,0,20,0);
-		gbc.gridx = 0;
-		gbc.gridy = 0;
+		gbc.insets(0,0,20,0)
+			.grid(0);
 		JLabel lblAdminPage = new JLabel("Página de Administrador", JLabel.CENTER);
 		lblAdminPage.setFont(this.STD_BOLD_FONT.deriveFont(18f));
 		lblAdminPage.setForeground(Color.white);
 		panel.add(lblAdminPage, gbc);
 		
 		//Label de Username
-		gbcInsets(0,0,2,0);
 		JLabel lblUsername = new JLabel("Username:", JLabel.CENTER);
 		lblUsername.setFont(this.STD_MEDIUM_FONT.deriveFont(15f));
 		lblUsername.setForeground(Color.white);
-		panel.add(lblUsername, gbcYp());
+		panel.add(lblUsername, gbc.insets(0,0,2,0).yP());
 		
 
 		//TextField de Username
@@ -104,25 +98,23 @@ public class LoginPanel extends GeneralJPanel {
 					new Dimension(100, 20),
 					12f
 				);
-		panel.add(tfUser, gbcYp());
+		panel.add(tfUser, gbc.yP());
 		
 		
 		//Label de Senha
-		gbcInsets(5,0,2,0);
 		JLabel lblPassword = new JLabel("Senha:", JLabel.CENTER);
 		lblPassword.setFont(this.STD_MEDIUM_FONT.deriveFont(15f));
 		lblPassword.setForeground(Color.white);
-		panel.add(lblPassword, gbcYp());
+		panel.add(lblPassword, gbc.insets(5,0,2,0).yP());
 		
 		
 		//Input de senha
-		gbcInsets(0,0,30,0);
 		HintPasswordInputField password = new HintPasswordInputField(
 				"Digite aqui...",
 				new Dimension(100, 20),
 				12f);
 		
-		panel.add(password, gbcYp());
+		panel.add(password, gbc.insets(0,0,30,0).yP());
 	}
 	
 	/**
@@ -137,8 +129,13 @@ public class LoginPanel extends GeneralJPanel {
         button.setBackground(Color.white);
         button.setForeground(this.STD_BLUE_COLOR);
         button.setFont(this.STD_BOLD_FONT.deriveFont(12f));
-        
-        gbcInsets(0,0,20,0);
-        panel.add(button, gbcYp());
+
+        panel.add(button, gbc.insets(0,0,20,0).yP());
+	}
+	
+	public void placeLogo() {
+		logoPanel.add(QuestNutri.loadSVG());
+		this.revalidate();
+		this.repaint();
 	}
 }

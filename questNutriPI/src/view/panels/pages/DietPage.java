@@ -30,13 +30,8 @@ public class DietPage extends GenericPage {
 		super();
 		this.ltGridBag();
 		
-		this.gbcGridXY(0);
-		this.gbcWgXY(1.0);
-		this.gbcApple(100);
-		this.gbcAnchor("WEST");
-		this.gbcFill("BOTH");
-		this.gbcInsets(25);
-		this.add(new DietMainPanel(meals), gbc);
+		this.add(new DietMainPanel(meals), 
+				gbc.grid(0).apple(10).anchor("WEST"));
 	}
 
 }

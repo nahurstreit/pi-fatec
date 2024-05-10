@@ -4,9 +4,14 @@ import java.awt.*;
 
 import javax.swing.*;
 
-import view.panels.components.GeneralJPanel;
+import org.apache.batik.swing.JSVGCanvas;
+
+import view.QuestNutri;
+import view.panels.components.GenericJPanel;
 import view.panels.components.SideBar;
+import view.panels.components.SideBarComponent;
 import view.panels.components.SideBarItem;
+import view.panels.components.SideBarMenu;
 import view.panels.pages.CustomersPage;
 import view.panels.pages.DietPage;
 import view.panels.pages.HomePage;
@@ -14,7 +19,7 @@ import view.panels.pages.HomePage;
 /**
  * Classe que define o painel logado do usuário.
  */
-public class LoggedPanel extends GeneralJPanel {
+public class LoggedPanel extends GenericJPanel {
 	private static final long serialVersionUID = 1L;
 	
 	@SuppressWarnings("unused")
@@ -31,12 +36,16 @@ public class LoggedPanel extends GeneralJPanel {
 	public LoggedPanel(String nutriName) {
 		this.ltGridBag();
 		
-		gbcYp();
-		gbcGridY(1);
-		gbcWgXY(0, 1.0);
-		gbcApple(10);
-		gbc.gridwidth = 1; //tamanho máximo de ocupação da célula nos grids
-		gbcFill("BOTH");
+		
+		JLabel greetings = new JLabel("Olá, " + nutriName + "!", JLabel.CENTER);
+		greetings.setFont(STD_BOLD_FONT.deriveFont(25f));
+		
+		SideBarComponent<JLabel> headComponent = new SideBarComponent<JLabel>(greetings);
+		headComponent.gbc
+			.grid(0,0)
+			.fill("BOTH")
+			.insets(20, 40)
+			.wgt(1.0, 0);
 		
 		//Cria as possíveis páginas do sistema e as coloca no menu lateral.
 		//Ao clicar em um desses itens, o mesmo executará o método de troca da tela principal do painel logado.
@@ -44,18 +53,32 @@ public class LoggedPanel extends GeneralJPanel {
 		SideBarItem customersPage = new SideBarItem("CLIENTES", () -> swapLoggedMainPanel(new CustomersPage(this)));
 		SideBarItem dietPage = new SideBarItem("DIETA TESTE", () -> swapLoggedMainPanel(new DietPage()));
 		
-		SideBar fullSideBar = new SideBar(nutriName, homePage, customersPage, dietPage);
+		SideBarMenu menu = new SideBarMenu(homePage, customersPage, dietPage);
+		menu.gbc
+			.wgt(0, 1.0)
+			.fill("NONE")
+			.insets(15, 40)
+			.anchor("NORTHWEST") //Sobe os itens do menu
+			.grid(0,1);
+		
+		
+		SideBarComponent<JSVGCanvas> bottonComponent = new SideBarComponent<JSVGCanvas>(QuestNutri.loadSVG());
+		bottonComponent.gbc
+			.grid(0, 3)
+			.wgt(0.0)
+			.insets(20, 40)
+			.fill("NONE");
+
+		
+		SideBar fullSideBar = new SideBar(headComponent, menu, bottonComponent);
 		fullSideBar.setMinimumSize(new Dimension(250, this.getHeight()));
 		fullSideBar.setPreferredSize(new Dimension(250, this.getHeight()));
-		this.add(fullSideBar, gbc);
+		this.add(fullSideBar, gbc.wgt(0, 1.0).apple(10).width(1).fill("BOTH"));
 		
-		resetGbc();
-		gbcGridXY(1);
-		gbcWgXY(1.0);
-		gbcApple(10);
-		gbc.gridwidth = GridBagConstraints.REMAINDER; //preenche todo o resto disponível
-		gbcFill("BOTH");
-		this.add(mainPanel, gbc);
+
+
+		this.add(mainPanel, 
+				gbc.grid(1, 0).wgt(1.0).apple(10).width("REMAINDER").fill("BOTH"));
 	}
 	
 	/**

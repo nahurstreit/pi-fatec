@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -74,7 +73,6 @@ public class QuestNutri {
 					app.setVisible(true);
 					
 					//Incializando
-					showLogoReveal();
 					swapToLogin(true);
 					
 				} catch (Exception e) {
@@ -128,10 +126,12 @@ public class QuestNutri {
 		Runnable swap = new Runnable() {
 			public void run() {
 				QuestNutri.swapAppPanel(loginPanel);
+				loginPanel.placeLogo();
 			}
 		};
 
 		if(delay) {
+			showLogoReveal();
 			Timer timer = new Timer();
 			timer.schedule(new TimerTask() {
 				public void run() {
@@ -161,4 +161,45 @@ public class QuestNutri {
 		
 		app.add(centeredWhitePanel, BorderLayout.CENTER);
 	}
+	
+	/**
+	 * Método que define a aplicação em um estado de não foco. Usado para quando uma subjanela é aberta.
+	 */
+	public static void followYouIntoTheDark() {
+	    // Cria o painel principal
+	    JPanel darkScene = new JPanel();
+	    darkScene.setLayout(new GridBagLayout());
+	    GridBagConstraints gbc = new GridBagConstraints();
+	    gbc.fill = GridBagConstraints.BOTH;
+	    gbc.gridx = 0;
+	    gbc.gridy = 0;
+	    gbc.weightx = 1.0;
+	    gbc.weighty = 1.0;
+
+	    // Adiciona o painel principal (loggedPanel)
+	    darkScene.add(loggedPanel, gbc);
+
+	    // Cria um JLabel para o painel de "escuridão" com uma cor de fundo semitransparente
+	    JLabel darkness = new JLabel();
+	    darkness.setBackground(new Color(0, 0, 0, 200)); // Cor preta com 100 de transparência
+	    darkness.setOpaque(true); // Define o JLabel como opaco para mostrar a cor de fundo
+	    darkness.setLayout(new GridBagLayout()); // Adiciona um layout para cobrir toda a área do JPanel
+	    darkScene.add(darkness, gbc); // Adiciona o JLabel ao darkScene
+
+	    // Define o painel de "escuridão" para ficar por cima do loggedPanel
+	    darkScene.setComponentZOrder(darkness, 0);
+
+	    // Atualiza a interface
+	    app.setEnabled(false);
+	    swapAppPanel(darkScene);
+	}
+    
+	/**
+	 * Método que retorna o estado da aplicação para foco no painel principal. Usado para quando uma subjanela é fechada.
+	 */
+    public static void heraldOfDarkness() {
+        app.setEnabled(true);
+    	swapAppPanel(loggedPanel);
+    	app.toFront();
+    }
 }
