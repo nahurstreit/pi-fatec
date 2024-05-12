@@ -25,22 +25,22 @@ public class Food {
     public Integer idAliment;
 
     @Column(name = "food_quantity")
-    public Float foodQuantity;
+    public Float quantity;
 
     @Column(name = "food_unityQt")
-    public String foodUnityQt;
+    public String unityQt;
 
     @Column(name = "food_obs")
-    public String foodObs;
+    public String obs;
 
-    public Food(Integer idFood, Integer idMeal, Integer idAliment, Float foodQuantity, String foodUnityQt,
-            String foodObs) {
+    public Food(Integer idFood, Integer idMeal, Integer idAliment, Float quantity, String unityQt,
+            String obs) {
         this.idFood = idFood;
         this.idMeal = idMeal;
         this.idAliment = idAliment;
-        this.foodQuantity = foodQuantity;
-        this.foodUnityQt = foodUnityQt;
-        this.foodObs = foodObs;
+        this.quantity = quantity;
+        this.unityQt = unityQt;
+        this.obs = obs;
     }
     
     public Food() {

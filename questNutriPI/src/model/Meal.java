@@ -70,7 +70,7 @@ public class Meal {
 		return mealCreatedAt;
 	}
 
-	public void setMealCreatedAt(String mealCreatedAt) {
+	private void setMealCreatedAt(String mealCreatedAt) {
 		this.mealCreatedAt = mealCreatedAt;
 	}
 
@@ -78,7 +78,7 @@ public class Meal {
 		return mealDeactivatedAt;
 	}
 
-	public void setMealDeactivatedAt(String mealDeactivatedAt) {
+	private void setMealDeactivatedAt(String mealDeactivatedAt) {
 		this.mealDeactivatedAt = mealDeactivatedAt;
 	}
 }

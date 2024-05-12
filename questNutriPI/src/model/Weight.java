@@ -23,7 +23,7 @@ public class Weight {
 	public Double wgtValue;
 	
 	@Column(name = "wgt_dateRegister")
-	public Double wgtDateRegister;
+	private Double wgtDateRegister;
 
     public Weight(Integer idWeight, Integer idCustomer, Double wgtValue, Double wgtDateRegister) {
         this.idWeight = idWeight;
