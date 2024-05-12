@@ -78,7 +78,7 @@ public class Customers {
 		return custCreatedAt;
 	}
 
-	public void setCustCreatedAt(String custCreatedAt) {
+	private void setCustCreatedAt(String custCreatedAt) {
 		this.custCreatedAt = custCreatedAt;
 	}
 
