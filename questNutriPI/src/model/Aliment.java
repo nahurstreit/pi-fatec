@@ -15,7 +15,7 @@ public class Aliment {
     @Column(name = "idAliment")
     private Integer idAliment;
 
-    @Column(name = "ali_custom")
+    @Column(name = "ali_custom", columnDefinition = "BIT")
     private Integer aliCustom;
 
     @Column(name = "ali_name")

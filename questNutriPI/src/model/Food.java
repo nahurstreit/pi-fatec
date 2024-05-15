@@ -1,42 +1,50 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Foods")
-public class Food {
-    
-	public SubFood[] subFoods = null;
-	
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idFood")
-	public Integer idFood;
+public class Food{	
+	 @Id
+	    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	    @Column(name = "idFood")
+	    public Integer idFood;
 
-	@Column(name = "idMeal")
-	public Integer idMeal;
+	    @ManyToOne
+	    @JoinColumn(name = "idMeal") // Coluna que faz referência à refeição
+	    public Meal meal;
 
-    @Column(name = "idAliment")
-    public Integer idAliment;
+	    @OneToMany
+	    public List<SubFood> subFoods;
 
-    @Column(name = "food_quantity")
-    public Float quantity;
+	    @Column(name = "idAliment")
+	    public Integer idAliment;
 
-    @Column(name = "food_unityQt")
-    public String unityQt;
+	    @Column(name = "food_quantity")
+	    public Float quantity;
 
-    @Column(name = "food_obs")
-    public String obs;
+	    @Column(name = "food_unityQt")
+	    public String unityQt;
 
-    public Food(Integer idFood, Integer idMeal, Integer idAliment, Float quantity, String unityQt,
+	    @Column(name = "food_obs")
+	    public String obs;
+
+
+    public Food(Integer idFood, Meal meal, Integer idAliment, Float quantity, String unityQt,
             String obs) {
         this.idFood = idFood;
-        this.idMeal = idMeal;
+        this.meal = meal;
         this.idAliment = idAliment;
         this.quantity = quantity;
         this.unityQt = unityQt;
@@ -46,4 +54,11 @@ public class Food {
     public Food() {
     	this(null, null, null, null, null, null);
     }
+
+    @Override
+    public String toString() {
+        return "Food [idFood=" + idFood + ", meal=" + meal + ", idAliment=" + idAliment + ", quantity=" + quantity
+                + ", unityQt=" + unityQt + ", obs=" + obs + "]";
+    }
+
 }

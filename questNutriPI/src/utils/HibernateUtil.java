@@ -15,7 +15,7 @@ public class HibernateUtil {
     private static SessionFactory buildSessionFactory() {
         try {
             // Cria uma nova instancia de Configuration que recebe as configurações definidas no arquivo xml.
-            Configuration configuration = new Configuration().configure("hibernate.cfg.xml");
+            Configuration configuration = new Configuration().configure("config/database/hibernate.cfg.xml");
             
             // Após carregar as configurações do Hibernate, retorna a construção da SessionFactory.
             return configuration.buildSessionFactory();

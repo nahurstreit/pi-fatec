@@ -1,15 +1,21 @@
 package model;
 
+import java.io.Serializable;
+import java.util.List;
+
+import org.hibernate.annotations.Type;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Address")
-public class Address {
+@Table(name = "Addresses")
+public class Address implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idAddress")
@@ -19,6 +25,7 @@ public class Address {
 	public String addrStreet;
 
 	@Column(name = "addr_num")
+	
 	public Integer addrNum;
 
 	@Column(name = "addr_comp")
@@ -33,8 +40,12 @@ public class Address {
 	@Column(name = "addr_city")
 	public String addrCity;
 
+	
 	@Column(name = "addr_state")
 	public String addrState;
+	
+	@OneToMany(mappedBy = "address")
+	private List<Customers> customer;
 
 	public Address(Integer idAddress, String addrStreet, Integer addrNum, String addrComp, String addrCep,
 			String addrNeighborhood, String addrCity, String addrState) {

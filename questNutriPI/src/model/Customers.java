@@ -1,10 +1,16 @@
 package model;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -46,16 +52,16 @@ public class Customers {
 	@Column(name = "cust_gender")
 	private String custGender;
 
-	@Column(name = "idAddress")
-	private Integer idAddress;
+	@ManyToOne
+    @JoinColumn(name = "idAddress")
+    private Address address;
 	
-	private Address mainAddress = null;
-	
-	private Meal[] diet = null;
+	@OneToMany(mappedBy = "customer")
+	private List<Meal> diet;
 
 	public Customers(Integer idCustomer, String custCreatedAt, String custName, String custEmail, String cpf,
 			String custCellphone, String custActivityStatus, Float custSetKcal, Float cusHheight, String custBirth,
-			String custGender, Integer idAddress) {
+			String custGender, Address address) {
 	    this.idCustomer = idCustomer;
 	    this.custCreatedAt = custCreatedAt;
 	    this.custName = custName;
@@ -67,7 +73,7 @@ public class Customers {
 	    this.custHeight = cusHheight;
 	    this.custBirth = custBirth;
 	    this.custGender = custGender;
-	    this.idAddress = idAddress;
+	    this.address = address;
 	}
 
 	public Customers() {
@@ -138,27 +144,12 @@ public class Customers {
 		this.custGender = custGender;
 	}
 
-	public Integer getIdAddress() {
-		return idAddress;
-	}
 
-	public void setIdAddress(Integer idAddress) {
-		this.idAddress = idAddress;
-	}
-
-	public Address getMainAddress() {
-		return mainAddress;
-	}
-
-	public void setMainAddress(Address mainAddress) {
-		this.mainAddress = mainAddress;
-	}
-
-	public Meal[] getDiet() {
-		return diet;
-	}
-
-	public void setDiet(Meal[] diet) {
-		this.diet = diet;
-	}	
+	 public List<Meal> getDiet() {
+	        return diet;
+	    }
+	 
+	 public void setDiet(List<Meal> diet) {
+	        this.diet = diet;
+	    } 
 }

@@ -1,11 +1,21 @@
 package model;
 
+import java.sql.Time;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "Meals")
@@ -14,9 +24,10 @@ public class Meal {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idMeal")
 	public Integer idMeal;
-
-	@Column(name = "idCustomer")
-	public Integer idCustomer;
+	
+	@ManyToOne
+	@JoinColumn(name = "idCustomer")
+	private Customers customer;
 
 	@Column(name = "meal_daysOfWeek")
 	public Integer daysOfWeek;
@@ -28,12 +39,14 @@ public class Meal {
 	public Integer mealActive;
 
 	@Column(name = "meal_hour")
-	public Double mealHour;
+    @Temporal(TemporalType.TIME)
+    public Time mealHour;
 
 	@Column(name = "meal_obs")
 	public String mealObs;
 
-	private Food[] mealFood = null;
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private List<Food> mealFood;
 
 	@Column(name = "meal_createdAt")
 	private String mealCreatedAt;
@@ -41,10 +54,10 @@ public class Meal {
 	@Column(name = "meal_deactivatedAt")
 	private String mealDeactivatedAt;
 
-	public Meal(Integer idMeal, Integer idCustomer, String mealName, Integer mealActive, Integer daysOfWeek,
-			Double mealHour, String mealObs, String mealCreatedAt, String mealDeactivatedAt) {
+	public Meal(Integer idMeal, Customers customers, String mealName, Integer mealActive, Integer daysOfWeek,
+			Time mealHour, String mealObs, String mealCreatedAt, String mealDeactivatedAt) {
 		this.idMeal = idMeal;
-		this.idCustomer = idCustomer;
+		this.customer = customers;
 		this.mealName = mealName;
 		this.mealActive = mealActive;
 		this.daysOfWeek = daysOfWeek;
@@ -58,12 +71,12 @@ public class Meal {
 		this(null, null, null, null, null, null, null, null, null);
 	}
 
-	public Food[] getMealFood() {
-		return mealFood;
+	public List<Food> getMealFood() {
+	    return mealFood;
 	}
 
-	public void setMealFood(Food[] mealFood) {
-		this.mealFood = mealFood;
+	public void setMealFood(List<Food> mealFood) {
+	        this.mealFood = mealFood;
 	}
 
 	public String getMealCreatedAt() {
@@ -81,4 +94,14 @@ public class Meal {
 	private void setMealDeactivatedAt(String mealDeactivatedAt) {
 		this.mealDeactivatedAt = mealDeactivatedAt;
 	}
+
+	@Override
+	public String toString() {
+		return "Meal [idMeal=" + idMeal + ", customer=" + customer + ", daysOfWeek=" + daysOfWeek + ", mealName="
+				+ mealName + ", mealActive=" + mealActive + ", mealHour=" + mealHour + ", mealObs=" + mealObs
+				+ ", mealFood=" + mealFood + ", mealCreatedAt=" + mealCreatedAt + ", mealDeactivatedAt="
+				+ mealDeactivatedAt + "]";
+	}
+	
+	
 }
