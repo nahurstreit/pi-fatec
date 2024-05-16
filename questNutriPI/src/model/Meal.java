@@ -27,7 +27,7 @@ public class Meal {
 	
 	@ManyToOne
 	@JoinColumn(name = "idCustomer")
-	private Customers customer;
+	private Customer customer;
 
 	@Column(name = "meal_daysOfWeek")
 	public Integer daysOfWeek;
@@ -54,7 +54,7 @@ public class Meal {
 	@Column(name = "meal_deactivatedAt")
 	private String mealDeactivatedAt;
 
-	public Meal(Integer idMeal, Customers customers, String mealName, Integer mealActive, Integer daysOfWeek,
+	public Meal(Integer idMeal, Customer customers, String mealName, Integer mealActive, Integer daysOfWeek,
 			Time mealHour, String mealObs, String mealCreatedAt, String mealDeactivatedAt) {
 		this.idMeal = idMeal;
 		this.customer = customers;
