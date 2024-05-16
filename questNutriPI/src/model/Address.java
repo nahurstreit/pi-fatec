@@ -45,7 +45,7 @@ public class Address implements Serializable {
 	public String addrState;
 	
 	@OneToMany(mappedBy = "address")
-	private List<Customers> customer;
+	private List<Customer> customer;
 
 	public Address(Integer idAddress, String addrStreet, Integer addrNum, String addrComp, String addrCep,
 			String addrNeighborhood, String addrCity, String addrState) {

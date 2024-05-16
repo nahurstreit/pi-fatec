@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "Customers")
 
-public class Customers {
+public class Customer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idCustomer")
@@ -59,7 +59,7 @@ public class Customers {
 	@OneToMany(mappedBy = "customer")
 	private List<Meal> diet;
 
-	public Customers(Integer idCustomer, String custCreatedAt, String custName, String custEmail, String cpf,
+	public Customer(Integer idCustomer, String custCreatedAt, String custName, String custEmail, String cpf,
 			String custCellphone, String custActivityStatus, Float custSetKcal, Float cusHheight, String custBirth,
 			String custGender, Address address) {
 	    this.idCustomer = idCustomer;
@@ -76,7 +76,7 @@ public class Customers {
 	    this.address = address;
 	}
 
-	public Customers() {
+	public Customer() {
 		this(null, null, null, null, null, null, null, null, null, null, null, null);
 	}
 

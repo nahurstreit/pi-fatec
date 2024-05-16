@@ -6,7 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import utils.HibernateUtil;
 
-		public class DaoGenerico<T> {
+		public class GenericDAO<T> {
 		
 		
 	    private final Class<T> entityType;//Variavel generica que armazena a classe model que o DAO vai lidar.
@@ -23,7 +23,7 @@ import utils.HibernateUtil;
 	     * e a variavel para iniciar a fabrica de sessões para 
 	     * interagir com o banco de dados
 	     */
-	    public DaoGenerico(Class<T> entityType) {
+	    public GenericDAO(Class<T> entityType) {
 	        this.entityType = entityType;
 	        this.sessionFactory = HibernateUtil.getSessionFactory();
 	    }
@@ -35,7 +35,7 @@ import utils.HibernateUtil;
 	     * atomicidade, salva essa entidade no banco e faz um commit dessa transação
 	     * para que os dados possam ser persistidos de forma permanente.
 	     */
-	    public void save(T entity) {
+	    public void insert(T entity) {
 	        try (Session session = sessionFactory.openSession()) {
 	            session.beginTransaction();
 	            session.save(entity);
@@ -51,10 +51,10 @@ import utils.HibernateUtil;
 	     * para que os dados possam ser persistidos de forma permanente.
 	     */
 
-		public void update(T entity) {
+		public void merge(T entity) {
 	        try (Session session = sessionFactory.openSession()) {
 	            session.beginTransaction();
-	            session.update(entity);
+	            session.merge(entity);
 	            session.getTransaction().commit();
 	        }
 	    }
