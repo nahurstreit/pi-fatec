@@ -6,7 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import utils.HibernateUtil;
 
-		public class DaoGenerico<T> {
+		public class GenericDAO<T> {
 		
 		
 	    private final Class<T> entityType;//Variavel generica que armazena a classe model que o DAO vai lidar.
@@ -23,7 +23,7 @@ import utils.HibernateUtil;
 	     * e a variavel para iniciar a fabrica de sessões para 
 	     * interagir com o banco de dados
 	     */
-	    public DaoGenerico(Class<T> entityType) {
+	    public GenericDAO(Class<T> entityType) {
 	        this.entityType = entityType;
 	        this.sessionFactory = HibernateUtil.getSessionFactory();
 	    }
