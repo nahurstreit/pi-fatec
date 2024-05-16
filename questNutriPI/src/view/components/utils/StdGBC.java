@@ -47,6 +47,7 @@ public class StdGBC extends GridBagConstraints {
 		return this;
 	}
 	
+	
 	/**
 	 * Método para rápida inserção dos insets
 	 * @param values -> Valores inteiros para a atribuição dos insets. A atribuição dos insets será condicionada da seguinte maneira:
@@ -84,7 +85,7 @@ public class StdGBC extends GridBagConstraints {
 	 * @return <b>gbc</b> aumentando gridy em uma unidade.
 	 */
 	public StdGBC yP() {
-		this.gridy++;
+		this.gridy += 1;
 		return this;
 	}
 	
@@ -93,7 +94,7 @@ public class StdGBC extends GridBagConstraints {
 	 * @return <b>gbc</b> aumentando gridx em uma unidade.
 	 */
 	public StdGBC xP() {
-		this.gridx++;
+		this.gridx += 1;
 		return this;
 	}
 	

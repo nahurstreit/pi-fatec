@@ -73,7 +73,7 @@ public class QuestNutri {
 					app.setVisible(true);
 					
 					//Incializando
-					swapToLogin(true);
+					swapToLogin(false);
 					
 				} catch (Exception e) {
 					e.printStackTrace();

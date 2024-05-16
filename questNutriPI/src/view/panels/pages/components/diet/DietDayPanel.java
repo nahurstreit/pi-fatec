@@ -1,112 +1,68 @@
 package view.panels.pages.components.diet;
 
 import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.Insets;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
-import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import models.Meal;
-import view.panels.pages.components.GenericComponent;
-import view.utils.VUtils;
+import view.components.ActionLbl;
+import view.panels.components.GenericJPanel;
 
-public class DietDayPanel extends GenericComponent {
+public class DietDayPanel extends GenericJPanel {
 	private static final long serialVersionUID = 1L;
 	
 	
-	public DietMainPanel dietMainPanel;
+	public DietWeekPanel dietMainPanel;
 	public int weekDay;
 	
-	private final Color TEXT_COLOR = Color.white;
+	private GenericJPanel nameBox = new GenericJPanel();
+	public int position;
+	
 	private final Color BG_COLOR = new Color(85, 183, 254);
-	@SuppressWarnings("unused")
-	private final Font NORMAL_FONT = VUtils.loadFont("Montserrat-Regular", 15f);
-	private final Font STRONG_FONT = VUtils.loadFont("Montserrat-Bold", 18f);
 
-	public DietDayPanel(Meal[] meals, int weekDay, DietMainPanel dietMainPanel) {
-		super();
+	public DietDayPanel(Meal[] meals, int weekDay, DietWeekPanel dietMainPanel, int position) {
+		super(dietMainPanel);
+		this.ltGridBag();
 		this.weekDay = weekDay;
 		this.dietMainPanel = dietMainPanel;
-		this.setBackground(this.BG_COLOR);
-		this.populate(meals);
-	}
-	
-	protected void initGbc() {
-		super.initGbc();
-		gbc.gridx = 0;
-		gbc.insets = new Insets(10, 10, 10, 10);
+		this.position = position;
+		this.setBackground(Color.red);
+		populate(meals);
 	}
 	
 	public void populate(Meal[] meals) {
-		this.removeAll();
-		this.initGbc();
-		gbc.weighty = 0;
-		gbc.insets = new Insets(0, 10, 0, 10);
-		if(this.dietMainPanel.currentDayFocus == this.weekDay) {
-			JLabel lblX = new JLabel("x");
-			lblX.addMouseListener(new MouseAdapter() {
-				public void mouseClicked(MouseEvent e) {
-					dropFocus();
-				}
-				
-				//Quando passar o mouse em cima, muda o cursor
-				public void mouseEntered(MouseEvent e) {
-					lblX.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				}
-				
-				//Quando tirar o mouse de cima, volta o cursor ao normal
-				public void mouseExited(MouseEvent e) {
-					lblX.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-	            }
-			});
-			lblX.setForeground(this.TEXT_COLOR);
-			lblX.setFont(STRONG_FONT);
-			this.add(lblX, gbc);
-		}
+		ActionLbl lblDay = new ActionLbl(dietMainPanel.getDayName(this.weekDay), () -> callFocus());
+		lblDay.setForeground(Color.white);
+		lblDay.setFont(STD_REGULAR_FONT.deriveFont(15f));
 		
-		JLabel lblDayName = new JLabel(this.dietMainPanel.getDayName(this.weekDay), JLabel.CENTER);
-		lblDayName.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				callFocus();
-			}
-			
-			//Quando passar o mouse em cima, muda o cursor
-			public void mouseEntered(MouseEvent e) {
-				lblDayName.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-			
-			//Quando tirar o mouse de cima, volta o cursor ao normal
-			public void mouseExited(MouseEvent e) {
-				lblDayName.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            }
-		});
-		lblDayName.setForeground(this.TEXT_COLOR);
-		lblDayName.setFont(STRONG_FONT);
-		this.add(lblDayName, gbc);
+		nameBox.ltGridBag().add(lblDay, nameBox.gbc.wgt(1.0).insets(10).grid(1,0).width("REMAINDER"));
+		nameBox.setBackground(Color.green);
 		
+		this.add(nameBox, gbc.grid(0).wgt(1.0, 0).fill("BOTH"));
 		
-		this.initGbc();
-		for(int i = 0; i < meals.length; i++) {
-			gbc.gridy = i + 1;
-			if(i == 1) gbc.insets = new Insets(0, 10, 10, 10);
-			this.add(new DietMealPanel(meals[i], this), gbc);
-		}
+		JPanel test = new JPanel();
+		test.setBackground(Color.MAGENTA);
+		this.add(test, gbc.wgt(1.0).fill("BOTH").grid(0, 1));
+		
+//		for(int i = 0; i < meals.length; i++) {
+//			this.add(new DietMealPanel(meals[i], this), gbc.insets(10).grid(0, i+1));
+//		}
+		
 		this.refresh();
 	}
 	
-	private void refresh() {
-		this.revalidate();
-		this.repaint();
-	}
-	
 	public void callFocus() {
-		this.dietMainPanel.swapFocus(this.weekDay);
+		ActionLbl lblCloseX = new ActionLbl("X", null);
+		lblCloseX.setNewAction(() -> { dropFocus(); nameBox.remove(lblCloseX);}); 
+		lblCloseX.setForeground(Color.white);
+		lblCloseX.setFont(STD_BOLD_FONT.deriveFont(20f));
+		nameBox.add(lblCloseX, nameBox.gbc.grid(0).width(1).wgt(0).insets(10, 40, 10, 0));
+
+		
+		this.dietMainPanel.swapFocus(this);
 	}
 	
 	public void dropFocus() {
-		this.dietMainPanel.swapFocus(0);
+		this.dietMainPanel.swapFocus(null);
 	}
 }

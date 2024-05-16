@@ -1,23 +1,20 @@
 package view.panels.pages.components.diet;
 
 import java.awt.Color;
-import java.awt.Font;
 
 import javax.swing.JLabel;
 
 import models.Meal;
-import view.panels.pages.components.GenericComponent;
-import view.utils.VUtils;
+import view.panels.components.GenericJPanel;
 
-public class DietMealPanel extends GenericComponent {
+public class DietMealPanel extends GenericJPanel {
 	private static final long serialVersionUID = 1L;
 	
 	@SuppressWarnings("unused")
 	private Meal meal;
 	private DietDayPanel dayPanel;
 	private final Color BG_COLOR = Color.white;
-	private final Color TEXT_COLOR = new Color(85, 183, 254);
-	private final Font NORMAL_FONT = VUtils.loadFont("Montserrat-SemiBold", 13f);
+	private final Color TEXT_COLOR = STD_BLUE_COLOR;
 	
 
 	public DietMealPanel(Meal meal, DietDayPanel dayPanel) {
@@ -26,7 +23,7 @@ public class DietMealPanel extends GenericComponent {
 
 		this.setBackground(BG_COLOR);
 		JLabel lblMealName = new JLabel(meal.name);
-		lblMealName.setFont(NORMAL_FONT);
+		lblMealName.setFont(STD_REGULAR_FONT.deriveFont(15f));
 		lblMealName.setForeground(TEXT_COLOR);
 		
 		this.add(lblMealName);

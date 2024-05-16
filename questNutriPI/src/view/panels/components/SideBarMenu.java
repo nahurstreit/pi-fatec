@@ -11,14 +11,16 @@ import java.util.Map;
 import javax.swing.Box;
 import javax.swing.JLabel;
 
-public class SideBarMenu extends SideBarComponent<GenericComp> {
+public class SideBarMenu extends SideBarComponent<GenericComponent> {
 	/**
 	 * Define a última label clicada para ter underline.
 	 */
 	private static JLabel lastSelectedLabel = null;
+	private SideBarItem[] items;
 	
 	public SideBarMenu(SideBarItem ...items) {
-		this.component = new GenericComp();
+		this.component = new GenericComponent();
+		this.items = items;
 		component.ltGridBag();
 		component.setBackground(component.STD_LIGHT_GRAY);
 		createMenuItems(items);
@@ -103,4 +105,5 @@ public class SideBarMenu extends SideBarComponent<GenericComp> {
         text = text.replaceAll("<html><u>", "").replaceAll("</u></html>", "");
         label.setText(text);
     }
+    
 }

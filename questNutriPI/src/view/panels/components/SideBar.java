@@ -17,7 +17,7 @@ public class SideBar extends GenericJPanel {
 		
 		if(components.length > 0) {
 			for(SideBarComponent<?> component: components) {
-				GenericComp holderPanel = new GenericComp();
+				GenericComponent holderPanel = new GenericComponent();
 				holderPanel.ltGridBag();
 				holderPanel.setBackground(STD_LIGHT_GRAY);
 				holderPanel.add((Component) component.getComponent());

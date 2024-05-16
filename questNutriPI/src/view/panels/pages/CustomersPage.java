@@ -16,10 +16,13 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import models.Customer;
 import view.QuestNutri;
 import view.components.HintInputField;
+import view.frames.CustomerFrame;
 import view.panels.LoggedPanel;
-import view.panels.components.GenericComp;
+import view.panels.components.GenericComponent;
+import view.panels.components.GenericJPanel;
 import view.panels.components.SideBar;
 import view.panels.components.SideBarItem;
 import view.panels.components.SideBarMenu;
@@ -29,21 +32,22 @@ public class CustomersPage extends GenericPage {
 
 	public static JFrame customerFrame = null;
 	
-	public CustomersPage(LoggedPanel mainPanel) {
+	public CustomersPage(GenericJPanel ownerPanel) {
+		super(ownerPanel);
 		this.ltGridBag();
 		
-		GenericComp blueBox = new GenericComp();
+		GenericComponent blueBox = new GenericComponent();
 			blueBox.setBackground(STD_BLUE_COLOR);
 			blueBox.ltGridBag();
 		
 		
 		//Caixa de cima do painel branco
-		GenericComp whiteBox = new GenericComp();
+		GenericComponent whiteBox = new GenericComponent();
 			whiteBox.setBackground(Color.green);
 			whiteBox.ltGridBag();
 		
 			//Caixa do tipo de pesquisa
-			GenericComp typeBox = new GenericComp();
+			GenericComponent typeBox = new GenericComponent();
 			typeBox.setBackground(Color.white);
 			typeBox.ltGridBag();
 		
@@ -57,7 +61,7 @@ public class CustomersPage extends GenericPage {
 					typeBox.add(inputTypeBox, typeBox.gbc.yP().insets("1", 0, 10));
 				
 			//Caixa do termo de pesquisa
-			GenericComp searchBox = new GenericComp();
+			GenericComponent searchBox = new GenericComponent();
 			searchBox.setBackground(Color.white);
 			searchBox.ltGridBag();
 		
@@ -71,7 +75,7 @@ public class CustomersPage extends GenericPage {
 					searchBox.add(inputSearchBox, searchBox.gbc.yP().insets("1", 0, 10));			
 			
 		
-		GenericComp upperBox = new GenericComp();
+		GenericComponent upperBox = new GenericComponent();
 		upperBox.setBackground(Color.red);
 		upperBox.ltGridBag();
 		upperBox.add(typeBox, upperBox.gbc.wgt(0).fill("NONE").insets(10));
@@ -120,7 +124,17 @@ public class CustomersPage extends GenericPage {
 	}
 	
 	private void openCustomerFrame(int id) {
-		CustomersPage.customerFrame = new JFrame();
+		CustomerFrame customerFrame = new CustomerFrame(new Customer(1, "Nahur"));
+		
+		SideBarMenu menu = new SideBarMenu(
+				new SideBarItem("Perfil", null, true),
+				new SideBarItem("Dieta", () -> customerFrame.swapMainPanel(new DietPage(customerFrame.getMainPanel())))
+				);
+		SideBar customerSideBar = new SideBar(menu);
+		customerSideBar.setMinimumSize(new Dimension(250, this.getHeight()));
+		customerSideBar.setPreferredSize(new Dimension(250, this.getHeight()));
+		
+		customerFrame.setSideBar(customerSideBar);
 		
 		int x = QuestNutri.app.getX() + QuestNutri.app.getWidth()/10;
 		int y = QuestNutri.app.getY() + QuestNutri.app.getHeight()/10;
@@ -130,7 +144,7 @@ public class CustomersPage extends GenericPage {
 		
 		customerFrame.setBounds(x, y, w, h);
 //		customerFrame.setUndecorated(true);
-		customerFrame.setTitle("Cliente - "+"{holderCustomerName}");
+		customerFrame.setTitle("Cliente - " + customerFrame.getCustomerName());
 		
 		QuestNutri.followYouIntoTheDark();
 		
@@ -141,39 +155,6 @@ public class CustomersPage extends GenericPage {
             }
         });
 		
-		JPanel lateralPanel = new JPanel();
-		
-		SideBarMenu menu = new SideBarMenu(
-				new SideBarItem("Perfil", null, true),
-				new SideBarItem("Dieta", () -> swapCustomerPanel(lateralPanel)),
-				new SideBarItem("X", () -> closeCustomerPage(customerFrame))
-				);
-		
-		
-		SideBar customerSideBar = new SideBar(menu);
-		customerSideBar.setMinimumSize(new Dimension(250, this.getHeight()));
-		customerSideBar.setPreferredSize(new Dimension(250, this.getHeight()));
-		
-		customerFrame.add(customerSideBar);
-		
-		customerFrame.setLayout(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.weightx = 0.0;
-		gbc.weighty = 1.0;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.gridwidth = 1;
-//		customerFrame.add(new SideBar("Cliente", items), gbc);
-		
-		
-
-		gbc.gridx = 1;
-		gbc.weightx = 1.0;
-		gbc.weighty = 1.0;
-		gbc.gridwidth = GridBagConstraints.REMAINDER; //preenche todo o resto disponível
-
-		customerFrame.add(lateralPanel, gbc);
 		customerFrame.setVisible(true);
 	}
 	
@@ -182,9 +163,9 @@ public class CustomersPage extends GenericPage {
 		frame.dispose();
 	}
 	
-	public static void swapCustomerPanel(JPanel panel) {
+	public static void swapCustomerPanel(GenericJPanel panel) {
 		customerFrame.remove(panel);
-		panel = new DietPage();
+		panel = new DietPage(panel);
 		customerFrame.add(panel);
 		customerFrame.revalidate();
 		customerFrame.repaint();

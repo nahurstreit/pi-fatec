@@ -23,7 +23,7 @@ public class ActionLbl extends JLabel {
 	public ActionLbl(String text, IDoAction event) {
 		super(text);
 		this.text = text;
-		this.event = event;
+		this.setNewAction(event);
 	}
 	
 	public ActionLbl(String text) {
@@ -60,6 +60,11 @@ public class ActionLbl extends JLabel {
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
 		});
+	}
+	
+	public void setNewAction(IDoAction event) {
+		this.event = event;
+		this.addAction();
 	}
 	
 }

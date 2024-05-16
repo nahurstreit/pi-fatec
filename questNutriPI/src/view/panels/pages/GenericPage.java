@@ -6,11 +6,9 @@ import view.panels.components.GenericJPanel;
 
 public class GenericPage extends GenericJPanel {
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Create the panel.
-	 */
-	public GenericPage() {
+	
+	public GenericPage(GenericJPanel ownerPanel) {
+		super(ownerPanel);
 		this.setBackground(Color.white);
 	}
 

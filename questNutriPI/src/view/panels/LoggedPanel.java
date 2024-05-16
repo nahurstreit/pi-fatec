@@ -1,8 +1,8 @@
 package view.panels;
 
-import java.awt.*;
+import java.awt.Dimension;
 
-import javax.swing.*;
+import javax.swing.JLabel;
 
 import org.apache.batik.swing.JSVGCanvas;
 
@@ -14,7 +14,6 @@ import view.panels.components.SideBarItem;
 import view.panels.components.SideBarMenu;
 import view.panels.pages.CustomersPage;
 import view.panels.pages.DietPage;
-import view.panels.pages.HomePage;
 
 /**
  * Classe que define o painel logado do usuário.
@@ -28,14 +27,14 @@ public class LoggedPanel extends GenericJPanel {
 	/**
 	 * Tela principal localizada à direita da aplicação e que será mudada conforme a página selecionada na barra de menu lateral.
 	 */
-	private JPanel mainPanel = new HomePage();
+	private GenericJPanel mainPanel;
 
 	/**
 	 * Método construtor da instância de painel logado.
 	 */
 	public LoggedPanel(String nutriName) {
 		this.ltGridBag();
-		
+		this.mainPanel = new CustomersPage(mainPanel);
 		
 		JLabel greetings = new JLabel("Olá, " + nutriName + "!", JLabel.CENTER);
 		greetings.setFont(STD_BOLD_FONT.deriveFont(25f));
@@ -49,11 +48,10 @@ public class LoggedPanel extends GenericJPanel {
 		
 		//Cria as possíveis páginas do sistema e as coloca no menu lateral.
 		//Ao clicar em um desses itens, o mesmo executará o método de troca da tela principal do painel logado.
-		SideBarItem homePage = new SideBarItem("HOME", () -> swapLoggedMainPanel(new HomePage()), true);
 		SideBarItem customersPage = new SideBarItem("CLIENTES", () -> swapLoggedMainPanel(new CustomersPage(this)));
-		SideBarItem dietPage = new SideBarItem("DIETA TESTE", () -> swapLoggedMainPanel(new DietPage()));
+		SideBarItem dietPage = new SideBarItem("DIETA TESTE", () -> swapLoggedMainPanel(new DietPage(this)));
 		
-		SideBarMenu menu = new SideBarMenu(homePage, customersPage, dietPage);
+		SideBarMenu menu = new SideBarMenu(customersPage, dietPage);
 		menu.gbc
 			.wgt(0, 1.0)
 			.fill("NONE")
@@ -68,14 +66,11 @@ public class LoggedPanel extends GenericJPanel {
 			.wgt(0.0)
 			.insets(20, 40)
 			.fill("NONE");
-
 		
 		SideBar fullSideBar = new SideBar(headComponent, menu, bottonComponent);
 		fullSideBar.setMinimumSize(new Dimension(250, this.getHeight()));
 		fullSideBar.setPreferredSize(new Dimension(250, this.getHeight()));
 		this.add(fullSideBar, gbc.wgt(0, 1.0).apple(10).width(1).fill("BOTH"));
-		
-
 
 		this.add(mainPanel, 
 				gbc.grid(1, 0).wgt(1.0).apple(10).width("REMAINDER").fill("BOTH"));
@@ -92,7 +87,7 @@ public class LoggedPanel extends GenericJPanel {
 	 * Método que troca a tela principal de exibição de um painel Logado.
 	 * @param panel
 	 */
-	public void swapLoggedMainPanel(JPanel panel) {
+	public void swapLoggedMainPanel(GenericJPanel panel) {
 		this.remove(mainPanel);
 		mainPanel = panel;
 		this.add(mainPanel, gbc);
