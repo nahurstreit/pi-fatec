@@ -16,7 +16,7 @@
         <!-- Adicione aqui os mapeamentos de suas classes de entidade -->
         <mapping class="model.Address"></mapping>
         <mapping class="model.Aliment"></mapping>
-        <mapping class="model.Customers"></mapping>
+        <mapping class="model.Customer"></mapping>
         <mapping class="model.Food"></mapping>
         <mapping class="model.Meal"></mapping>
         <mapping class="model.SubFood"></mapping>

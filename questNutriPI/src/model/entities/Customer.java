@@ -1,4 +1,4 @@
-package model;
+package model.entities;
 
 import java.util.List;
 
@@ -10,13 +10,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import model.dao.CustomerDAO;
 
 @Entity
 @Table(name = "Customers")
 
-public class Customer {
+public class Customer extends CustomerDAO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idCustomer")
@@ -62,6 +62,7 @@ public class Customer {
 	public Customer(Integer idCustomer, String custCreatedAt, String custName, String custEmail, String cpf,
 			String custCellphone, String custActivityStatus, Float custSetKcal, Float cusHheight, String custBirth,
 			String custGender, Address address) {
+		super();
 	    this.idCustomer = idCustomer;
 	    this.custCreatedAt = custCreatedAt;
 	    this.custName = custName;
@@ -145,11 +146,20 @@ public class Customer {
 	}
 
 
-	 public List<Meal> getDiet() {
+	public List<Meal> getDiet() {
 	        return diet;
-	    }
+    }
 	 
-	 public void setDiet(List<Meal> diet) {
+	public void setDiet(List<Meal> diet) {
 	        this.diet = diet;
-	    } 
+    }
+	
+	public String toString() {
+		return "Customer: {"
+		+ "\n    idCustomer: "+idCustomer
+		+ "\n    name:" +custName
+		+ "\n}";
+
+	}
+	
 }

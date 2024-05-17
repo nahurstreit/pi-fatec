@@ -1,6 +1,6 @@
-package dao;
+package model.dao;
 
-import model.SubFood;
+import model.entities.SubFood;
 
 public class TesteDaoSubFood {
 

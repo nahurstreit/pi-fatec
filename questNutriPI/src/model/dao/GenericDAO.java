@@ -1,16 +1,18 @@
-package dao;
+package model.dao;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+
 import utils.HibernateUtil;
 
+
+
 public class GenericDAO<T> {
-
-
 	private final Class<T> entityType;//Variavel generica que armazena a classe model que o DAO vai lidar.
 	/*
 	 * Variavel que armazena
@@ -38,16 +40,12 @@ public class GenericDAO<T> {
 	 * atomicidade, salva essa entidade no banco e faz um commit dessa transação
 	 * para que os dados possam ser persistidos de forma permanente.
 	 */
-
-	public void error() {
-
-	}
-	public void save(T entity) {
+	public void create(T entity) {
 		Transaction transaction = null;
 		try (Session session = sessionFactory.openSession()) {
 			transaction = session.getTransaction();
 			session.beginTransaction();
-			session.save(entity);
+			session.persist(entity);
 			session.close();
 
 		}catch (Exception e) {
@@ -70,7 +68,7 @@ public class GenericDAO<T> {
 		Transaction transaction = null;
 		try (Session session = sessionFactory.openSession()) {
 			session.beginTransaction();
-			session.update(entity);
+			session.merge(entity);
 			session.getTransaction().commit();
 			session.close();
 		}catch (Exception e) {
@@ -88,12 +86,11 @@ public class GenericDAO<T> {
 	 * atomicidade, exclui a entidade no banco e faz um commit dessa transação
 	 * para que os dados possam ser persistidos de forma permanente.
 	 */
-
 	public void delete(T entity) {
 		Transaction transaction = null;
 		try (Session session = sessionFactory.openSession()) {
 			session.beginTransaction();
-			session.delete(entity);
+			session.remove(entity);
 			session.getTransaction().commit();
 			session.close();
 		}catch(Exception e) {
@@ -104,33 +101,46 @@ public class GenericDAO<T> {
 		}
 	}
 
-	/*
+
+	/**
 	 * Método que procura todas as entidades do tipo T presentes no banco de dados
 	 * abre uma sessão do Banco de Dados, utiliza uma string de consulta simples 
 	 * do Hibernate.query.Query, onde FROM + T.
 	 * E retorna o resultado dessa Consulta.
+	 * 
+	 * @param <T>
+	 * @param entityType
+	 * @param params > 
+	 * @return
 	 */
-
-	public List<T> findAll() {
-		try (Session session = sessionFactory.openSession()) {
+	protected static <T> List<T> findAll(Class<T> entityType, String ...params) {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			String queryString = "FROM " + entityType.getSimpleName(); 
-			Query<T> query = session.createQuery(queryString, entityType); 
+            if (params.length > 0) {
+                queryString += " WHERE " + params[0];
+            }
+			Query<T> query = session.createQuery(queryString, entityType);
 			return query.getResultList(); 
-		}catch(HibernateException e) {
+		} catch(HibernateException e) {
 			System.err.println("Erro ao retornar os dados: " + e.getMessage());
 			return new ArrayList<>();
 		}
 	}
 
-	/*
+
+	/**
 	 * Método para procurar os dados de um objeto especificado pela chave primaria 
 	 * seria algo como o READ, ele recebe a entidade que sera pesquisada e o ID a ser pesquisado,
 	 * abre uma sessão com o banco de dados,e verifica se aquela entidade com aquele ID existe
 	 * retorna os dados dessa requisição como a entidade, o caso não exista retorna null.
+	 * 
+	 * @param <T> é a classe do objeto final
+	 * @param id 
+	 * @param entityType
+	 * @return
 	 */
-
-	public T findByPK(int id) {
-		try (Session session = sessionFactory.openSession()) {
+	protected static <T> T findByPK(Class<T> entityType, int id) {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			return session.get(entityType, id);
 		}catch(HibernateException e) {
 			System.err.println("Erro ao retornar a entidade com id: " + id +
@@ -138,23 +148,20 @@ public class GenericDAO<T> {
 			return null;
 		}
 	}
-
+	
 	/**
 	 * 
-	 * Receberá o parâmetro sobre o qual se deseja buscar dados na tabela
-	 * por exemplo, um determinado tipo de food.
-	 * Retornará os valores vindos da tabela SQL com os dados buscados
-	 * através dos parâmetros
-	 * 
+	 * @param <T>
+	 * @param entityType
+	 * @param params
+	 * @return
 	 */
-	public T findBy(T param) {
-		try (Session session = sessionFactory.openSession()) {
-			return session.get(entityType, param);
-		}catch(HibernateException e) {
-			System.err.println("Erro ao encontrar os dados em: " + param +
-					"erro: " + e);
-			return null;
-		}
-	}
+    public static <T> T findOne(Class<T> entityType, String... params) {
+        List<T> found = GenericDAO.findAll(entityType, params);
+        if (!found.isEmpty()) {
+            return found.get(0);
+        }
+        return null;
+    }
 }
 

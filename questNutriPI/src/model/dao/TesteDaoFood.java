@@ -1,19 +1,19 @@
-package dao;
+package model.dao;
 
 import java.util.List;
 
-import model.Food;
+import model.entities.Food;
 
 public class TesteDaoFood {
 
 	public static void main(String[] args) {
-		// Criando uma instância do FoodDAO
-		GenericDAO<Food> foodDAO = new GenericDAO<>(Food.class);
-
-		List<Food> foods = foodDAO.findAll();
-		for (Food food : foods) {
-		    System.out.println(food);
-		}
+//		// Criando uma instância do FoodDAO
+//		GenericDAO<Food> foodDAO = new GenericDAO<>(Food.class);
+//
+//		List<Food> foods = foodDAO.findAll();
+//		for (Food food : foods) {
+//		    System.out.println(food);
+//		}
 
 
 //		int foodId = 3;

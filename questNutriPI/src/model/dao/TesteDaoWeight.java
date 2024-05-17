@@ -1,6 +1,6 @@
-package dao;
+package model.dao;
 
-import model.Weight;
+import model.entities.Weight;
 
 public class TesteDaoWeight {
 

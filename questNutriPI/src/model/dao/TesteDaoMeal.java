@@ -1,8 +1,8 @@
-package dao;
+package model.dao;
 
-import model.Aliment;
+import model.entities.Meal;
 
-public class TesteDaoAliment {
+public class TesteDaoMeal {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
