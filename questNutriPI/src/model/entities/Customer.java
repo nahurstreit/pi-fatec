@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import model.dao.CustomerDAO;
 
@@ -26,38 +25,35 @@ public class Customer extends CustomerDAO {
 	private String custCreatedAt;
 
 	@Column(name = "cust_name")
-	public String custName;
+	public String name;
 
 	@Column(name = "cust_email")
-	public String custEmail;
+	public String email;
 
 	@Column(name = "cpf")
 	private String cpf;
 
 	@Column(name = "cust_cellphone")
-	private String custCellphone;
+	private String phoneNumber;
 
 	@Column(name = "cust_activityStatus")
-	private String custActivityStatus;
+	private String activityStatus;
 
 	@Column(name = "cust_setKcal")
-	private Float custSetKcal;
+	private Float settedKcal;
 
 	@Column(name = "cust_height")
-	private Float custHeight;
+	private Float height;
 
 	@Column(name = "cust_birth")
-	private String custBirth;
+	private String birth;
 
 	@Column(name = "cust_gender")
-	private String custGender;
+	private String gender;
 
 	@ManyToOne
     @JoinColumn(name = "idAddress")
     private Address address;
-	
-	@OneToMany(mappedBy = "customer")
-	private List<Meal> diet;
 
 	public Customer(Integer idCustomer, String custCreatedAt, String custName, String custEmail, String cpf,
 			String custCellphone, String custActivityStatus, Float custSetKcal, Float cusHheight, String custBirth,
@@ -65,15 +61,15 @@ public class Customer extends CustomerDAO {
 		super();
 	    this.idCustomer = idCustomer;
 	    this.custCreatedAt = custCreatedAt;
-	    this.custName = custName;
-	    this.custEmail = custEmail;
+	    this.name = custName;
+	    this.email = custEmail;
 	    this.cpf = cpf;
-	    this.custCellphone = custCellphone;
-	    this.custActivityStatus = custActivityStatus;
-	    this.custSetKcal = custSetKcal;
-	    this.custHeight = cusHheight;
-	    this.custBirth = custBirth;
-	    this.custGender = custGender;
+	    this.phoneNumber = custCellphone;
+	    this.activityStatus = custActivityStatus;
+	    this.settedKcal = custSetKcal;
+	    this.height = cusHheight;
+	    this.birth = custBirth;
+	    this.gender = custGender;
 	    this.address = address;
 	}
 
@@ -85,6 +81,8 @@ public class Customer extends CustomerDAO {
 		return custCreatedAt;
 	}
 
+	
+	@SuppressWarnings("unused")
 	private void setCustCreatedAt(String custCreatedAt) {
 		this.custCreatedAt = custCreatedAt;
 	}
@@ -98,67 +96,76 @@ public class Customer extends CustomerDAO {
 	}
 
 	public String getCustCellphone() {
-		return custCellphone;
+		return phoneNumber;
 	}
 
 	public void setCustCellphone(String custCellphone) {
-		this.custCellphone = custCellphone;
+		this.phoneNumber = custCellphone;
 	}
 
 	public String getCustActivityStatus() {
-		return custActivityStatus;
+		return activityStatus;
 	}
 
 	public void setCustActivityStatus(String custActivityStatus) {
-		this.custActivityStatus = custActivityStatus;
+		this.activityStatus = custActivityStatus;
 	}
 
 	public Float getCustSetKcal() {
-		return custSetKcal;
+		return settedKcal;
 	}
 
 	public void setCustSetKcal(Float custSetKcal) {
-		this.custSetKcal = custSetKcal;
+		this.settedKcal = custSetKcal;
 	}
 
 	public Float getCustHeight() {
-		return custHeight;
+		return height;
 	}
 
 	public void setCustHeight(Float custHeight) {
-		this.custHeight = custHeight;
+		this.height = custHeight;
 	}
 
 	public String getCustBirth() {
-		return custBirth;
+		return birth;
 	}
 
 	public void setCustBirth(String custBirth) {
-		this.custBirth = custBirth;
+		this.birth = custBirth;
 	}
 
 	public String getCustGender() {
-		return custGender;
+		return gender;
 	}
 
 	public void setCustGender(String custGender) {
-		this.custGender = custGender;
+		this.gender = custGender;
 	}
 
 
+	/**
+	 * Recupera a informação de todas as Meals que compõe a dieta do cliente.
+	 * @return Uma lista de Meals daquele cliente
+	 */
 	public List<Meal> getDiet() {
-	        return diet;
-    }
-	 
-	public void setDiet(List<Meal> diet) {
-	        this.diet = diet;
-    }
+		return Meal.findAllByCustomerPK(this.idCustomer);
+	}
 	
 	public String toString() {
 		return "Customer: {"
 		+ "\n    idCustomer: "+idCustomer
-		+ "\n    name:" +custName
+		+ "\n    name:" +name
 		+ "\n}";
+
+	}
+	
+	/**
+	 * Método para retornar uma visão pequena do objeto.
+	 * @return String contendo apenas alguns dos atributos mais importantes
+	 */
+	public String smallInfo() {
+		return "{id: "+idCustomer+", name: "+name+"}";
 
 	}
 	

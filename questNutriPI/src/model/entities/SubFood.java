@@ -21,8 +21,9 @@ public class SubFood {
     @JoinColumn(name = "idFood")
     public Food food;
 
-    @Column(name = "idAliment")
-    public Integer idAliment;
+    @ManyToOne
+    @JoinColumn(name = "idAliment")
+    public Aliment aliment;
 
     @Column(name = "subFood_quantity")
     public Float quantity;
@@ -34,9 +35,10 @@ public class SubFood {
     public String obs;
 
 
-    public SubFood(Integer idSubFood, Integer idFood, Integer idAliment, Float quantity, String unityQt, String obs) {
+    public SubFood(Integer idSubFood, Food food, Aliment aliment, Float quantity, String unityQt, String obs) {
         this.idSubFood = idSubFood;
-        this.idAliment = idAliment;
+        this.food = food;
+        this.aliment = aliment;
         this.quantity = quantity;
         this.unityQt = unityQt;
         this.obs = obs;
@@ -44,5 +46,21 @@ public class SubFood {
 
     public SubFood() {
     	this(null, null, null, null, null, null);
+    }
+    
+    @Override
+    public String toString() {
+    	return "SubFood: {"
+    			+ "\n    idSubFood: "+idSubFood + ", "
+    			+ "\n    food_smallInfo: " + food.smallInfo()+","
+				+ "\n    aliment_smallInfo: " + aliment.smallInfo()+","
+				+ "\n    quantity: "+ quantity + ","
+				+ "\n    unityQt: "+unityQt + ","
+				+ "\n    obs: " + (obs != null? "\"" + obs +"\"": obs) 
+				+ "\n}";
+    }
+    
+    public String smallInfo() {
+    	return "{id: "+idSubFood+", food.id: "+food.idFood + ", aliment: "+aliment.smallInfo()+"}";
     }
 }

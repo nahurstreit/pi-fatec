@@ -10,16 +10,15 @@
         <property name="hibernate.connection.username">adminQuestNutri</property>
         <property name="hibernate.connection.password">123</property>
         <!-- Configuração do dialeto do banco de dados -->
-        <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
         <property name="hibernate.type_contributors">org.hibernate.type.descriptor.sql.JavaTypeDescriptorRegistry</property>
         <!-- Mapeamento de classes de entidade -->
         <!-- Adicione aqui os mapeamentos de suas classes de entidade -->
-        <mapping class="model.Address"></mapping>
-        <mapping class="model.Aliment"></mapping>
-        <mapping class="model.Customer"></mapping>
-        <mapping class="model.Food"></mapping>
-        <mapping class="model.Meal"></mapping>
-        <mapping class="model.SubFood"></mapping>
-        <mapping class="model.Weight"></mapping>
+        <mapping class="model.entities.Address"></mapping>
+        <mapping class="model.entities.Aliment"></mapping>
+        <mapping class="model.entities.Customer"></mapping>
+        <mapping class="model.entities.Food"></mapping>
+        <mapping class="model.entities.Meal"></mapping>
+        <mapping class="model.entities.SubFood"></mapping>
+        <mapping class="model.entities.Weight"></mapping>
     </session-factory>
 </hibernate-configuration>

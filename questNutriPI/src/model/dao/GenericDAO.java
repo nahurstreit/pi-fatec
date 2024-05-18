@@ -10,28 +10,11 @@ import org.hibernate.query.Query;
 
 import utils.HibernateUtil;
 
-
-
-public class GenericDAO<T> {
-	private final Class<T> entityType;//Variavel generica que armazena a classe model que o DAO vai lidar.
+public abstract class GenericDAO<T> {
 	/*
-	 * Variavel que armazena
-	 * a fábrica sessões do Hibernate usadas para interagir 
-	 * com o banco de dados
+	 * Variavel que armazena a fábrica sessões do Hibernate usadas para interagir com o banco de dados
 	 */
-	private final SessionFactory sessionFactory;//
-
-	/*
-	 * Construtor da classe que recebe como argumento as variaveis
-	 * Class<T> que é uma classe de entidade do Model
-	 * e a variavel para iniciar a fabrica de sessões para 
-	 * interagir com o banco de dados
-	 */
-
-	public GenericDAO(Class<T> entityType) {
-		this.entityType = entityType;
-		this.sessionFactory = HibernateUtil.getSessionFactory();
-	}
+	protected static final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();//
 
 	/*
 	 * Método para salvar os dados de um objeto no banco de dados
@@ -47,8 +30,7 @@ public class GenericDAO<T> {
 			session.beginTransaction();
 			session.persist(entity);
 			session.close();
-
-		}catch (Exception e) {
+		} catch (Exception e) {
 			if(transaction != null) {
 				transaction.rollback();
 			}
@@ -65,16 +47,12 @@ public class GenericDAO<T> {
 	 */
 
 	public void update(T entity) {
-		Transaction transaction = null;
 		try (Session session = sessionFactory.openSession()) {
 			session.beginTransaction();
 			session.merge(entity);
 			session.getTransaction().commit();
 			session.close();
-		}catch (Exception e) {
-			if(transaction != null) {
-				transaction.rollback();
-			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -87,45 +65,36 @@ public class GenericDAO<T> {
 	 * para que os dados possam ser persistidos de forma permanente.
 	 */
 	public void delete(T entity) {
-		Transaction transaction = null;
 		try (Session session = sessionFactory.openSession()) {
 			session.beginTransaction();
 			session.remove(entity);
 			session.getTransaction().commit();
 			session.close();
-		}catch(Exception e) {
-			if(transaction != null) {
-				transaction.rollback();
-			}
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 
-	/**
-	 * Método que procura todas as entidades do tipo T presentes no banco de dados
-	 * abre uma sessão do Banco de Dados, utiliza uma string de consulta simples 
-	 * do Hibernate.query.Query, onde FROM + T.
-	 * E retorna o resultado dessa Consulta.
-	 * 
-	 * @param <T>
-	 * @param entityType
-	 * @param params > 
-	 * @return
-	 */
-	protected static <T> List<T> findAll(Class<T> entityType, String ...params) {
-		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			String queryString = "FROM " + entityType.getSimpleName(); 
+	protected static <T> List<T> findAll(Class<T> entityType, String... params) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String queryString = "FROM " + entityType.getSimpleName();
             if (params.length > 0) {
-                queryString += " WHERE " + params[0];
+                queryString += " WHERE ";
+                for (int i = 0; i < params.length; i++) {
+                    queryString += params[i];
+                    if (i < params.length - 1) {
+                        queryString += " AND ";
+                    }
+                }
             }
-			Query<T> query = session.createQuery(queryString, entityType);
-			return query.getResultList(); 
-		} catch(HibernateException e) {
-			System.err.println("Erro ao retornar os dados: " + e.getMessage());
-			return new ArrayList<>();
-		}
-	}
+            Query<T> query = session.createQuery(queryString, entityType);
+            return query.getResultList();
+        } catch (HibernateException e) {
+            System.err.println("Erro ao retornar os dados: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
 
 
 	/**
@@ -142,7 +111,7 @@ public class GenericDAO<T> {
 	protected static <T> T findByPK(Class<T> entityType, int id) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			return session.get(entityType, id);
-		}catch(HibernateException e) {
+		} catch(HibernateException e) {
 			System.err.println("Erro ao retornar a entidade com id: " + id +
 					" Erro: " + e);
 			return null;

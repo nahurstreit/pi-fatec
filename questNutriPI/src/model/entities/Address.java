@@ -1,21 +1,16 @@
 package model.entities;
 
-import java.io.Serializable;
-import java.util.List;
-
-import org.hibernate.annotations.Type;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import model.dao.AddressDAO;
 
 @Entity
 @Table(name = "Addresses")
-public class Address implements Serializable {
+public class Address extends AddressDAO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idAddress")
@@ -40,12 +35,8 @@ public class Address implements Serializable {
 	@Column(name = "addr_city")
 	public String addrCity;
 
-	
 	@Column(name = "addr_state")
 	public String addrState;
-	
-	@OneToMany(mappedBy = "address")
-	private List<Customer> customer;
 
 	public Address(Integer idAddress, String addrStreet, Integer addrNum, String addrComp, String addrCep,
 			String addrNeighborhood, String addrCity, String addrState) {

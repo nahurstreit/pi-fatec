@@ -4,11 +4,7 @@ import java.util.List;
 
 import model.entities.Customer;
 
-public class CustomerDAO extends GenericDAO<Customer>{
-	public CustomerDAO() {
-		super(Customer.class);
-	}
-	
+public abstract class CustomerDAO extends GenericDAO<Customer>{
 	/**
 	 * 
 	 * @param params

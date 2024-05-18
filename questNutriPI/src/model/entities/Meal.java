@@ -3,23 +3,21 @@ package model.entities;
 import java.sql.Time;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import model.dao.MealDAO;
 
 @Entity
 @Table(name = "Meals")
-public class Meal {
+public class Meal extends MealDAO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idMeal")
@@ -33,74 +31,72 @@ public class Meal {
 	public Integer daysOfWeek;
 
 	@Column(name = "meal_name")
-	public String mealName;
+	public String name;
 
 	@Column(name = "meal_active")
-	public Integer mealActive;
+	public Integer active;
 
 	@Column(name = "meal_hour")
     @Temporal(TemporalType.TIME)
-    public Time mealHour;
+    public Time hour;
 
 	@Column(name = "meal_obs")
-	public String mealObs;
-
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private List<Food> mealFood;
+	public String obs;
 
 	@Column(name = "meal_createdAt")
-	private String mealCreatedAt;
+	private String createdAt;
 
 	@Column(name = "meal_deactivatedAt")
-	private String mealDeactivatedAt;
+	private String deactivatedAt;
 
-	public Meal(Integer idMeal, Customer customers, String mealName, Integer mealActive, Integer daysOfWeek,
-			Time mealHour, String mealObs, String mealCreatedAt, String mealDeactivatedAt) {
+	public Meal(Integer idMeal, Customer customer, String name, Integer active, Integer daysOfWeek,
+			Time hour, String obs, String createdAt, String deactivatedAt) {
+		super();
 		this.idMeal = idMeal;
-		this.customer = customers;
-		this.mealName = mealName;
-		this.mealActive = mealActive;
+		this.customer = customer;
+		this.name = name;
+		this.active = active;
 		this.daysOfWeek = daysOfWeek;
-		this.mealHour = mealHour;
-		this.mealObs = mealObs;
-		this.mealCreatedAt = mealCreatedAt;
-		this.mealDeactivatedAt = mealDeactivatedAt;
+		this.hour = hour;
+		this.obs = obs;
+		this.createdAt = createdAt;
+		this.deactivatedAt = deactivatedAt;
 	}
 
 	public Meal() {
 		this(null, null, null, null, null, null, null, null, null);
 	}
-
-	public List<Food> getMealFood() {
-	    return mealFood;
+	
+	public List<Food> getFoods() {
+		return Food.findAllByMealPK(this.idMeal);
+	}
+	
+	public Customer getCustomer() {
+		return customer;
 	}
 
-	public void setMealFood(List<Food> mealFood) {
-	        this.mealFood = mealFood;
-	}
-
-	public String getMealCreatedAt() {
-		return mealCreatedAt;
-	}
-
-	private void setMealCreatedAt(String mealCreatedAt) {
-		this.mealCreatedAt = mealCreatedAt;
-	}
-
-	public String getMealDeactivatedAt() {
-		return mealDeactivatedAt;
-	}
-
-	private void setMealDeactivatedAt(String mealDeactivatedAt) {
-		this.mealDeactivatedAt = mealDeactivatedAt;
-	}
 
 	@Override
 	public String toString() {
-		return "Meal [idMeal=" + idMeal + ", customer=" + customer + ", daysOfWeek=" + daysOfWeek + ", mealName="
-				+ mealName + ", mealActive=" + mealActive + ", mealHour=" + mealHour + ", mealObs=" + mealObs
-				+ ", mealFood=" + mealFood + ", mealCreatedAt=" + mealCreatedAt + ", mealDeactivatedAt="
-				+ mealDeactivatedAt + "]";
+		return "Meal: {"
+				+ "\n    idMeal: " + idMeal + ","
+				+ "\n    owner: " + customer.name + " - id: " + customer.idCustomer +", "
+				+ "\n    daysOfWeek: " + daysOfWeek + ", "
+				+ "\n    name: " + name + ", "
+				+ "\n    active: " + (active == 0? false: true) + ","
+				+ "\n    hour: " + hour + ", "
+				+ "\n    obs: " + (obs != null? "\""+obs+"\"":  obs) +  ", "
+				+ "\n    createdAt: " + createdAt + ", "
+				+ "\n    deactivatedAt: "+ deactivatedAt
+				+ "\n}";
+	}
+	
+	/**
+	 * Método para retornar uma visão pequena do objeto.
+	 * @return String contendo apenas alguns dos atributos mais importantes
+	 */
+	public String smallInfo() {
+		return "{id: " + idMeal + ", name: \"" + name+ "\", owner: \"" + customer.name + "\"}";
 	}
 	
 	

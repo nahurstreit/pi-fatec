@@ -389,4 +389,13 @@ public class Aliment {
 		+ "\n    protein: " + this.getAliProtein()
 		+ "\n    fat: " + this.getAliFat();
 	}
+	
+	/**
+	 * Método para retornar uma visão pequena do objeto.
+	 * @return String contendo apenas alguns dos atributos mais importantes
+	 */
+	public String smallInfo() {
+		return "{id: "+ idAliment+ ", name: \"" + aliName + "\"}";
+
+	}
 }

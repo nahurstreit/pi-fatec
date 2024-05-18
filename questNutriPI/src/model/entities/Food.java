@@ -1,8 +1,5 @@
 package model.entities;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,26 +7,24 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import model.dao.FoodDAO;
 
 @Entity
 @Table(name = "Foods")
-public class Food{	
+public class Food extends FoodDAO {	
 	 @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    @Column(name = "idFood")
 	    public Integer idFood;
 
 	    @ManyToOne
-	    @JoinColumn(name = "idMeal") // Coluna que faz referência à refeição
+	    @JoinColumn(name = "idMeal")
 	    public Meal meal;
 
-	    @OneToMany
-	    public List<SubFood> subFoods;
-
-	    @Column(name = "idAliment")
-	    public Integer idAliment;
+	    @ManyToOne
+	    @JoinColumn(name = "idAliment")
+	    public Aliment aliment;
 
 	    @Column(name = "food_quantity")
 	    public Float quantity;
@@ -41,11 +36,12 @@ public class Food{
 	    public String obs;
 
 
-    public Food(Integer idFood, Meal meal, Integer idAliment, Float quantity, String unityQt,
+    public Food(Integer idFood, Meal meal, Aliment aliment, Float quantity, String unityQt,
             String obs) {
+    	super();
         this.idFood = idFood;
         this.meal = meal;
-        this.idAliment = idAliment;
+        this.aliment = aliment;
         this.quantity = quantity;
         this.unityQt = unityQt;
         this.obs = obs;
@@ -57,8 +53,18 @@ public class Food{
 
     @Override
     public String toString() {
-        return "Food [idFood=" + idFood + ", meal=" + meal + ", idAliment=" + idAliment + ", quantity=" + quantity
-                + ", unityQt=" + unityQt + ", obs=" + obs + "]";
+    	return "Food: {"
+    			+ "\n    idFood: "+idFood + ", "
+    			+ "\n    meal_smallInfo: " + meal.smallInfo()+","
+				+ "\n    aliment_smallInfo: " + aliment.smallInfo()+","
+				+ "\n    quantity: "+ quantity + ","
+				+ "\n    unityQt: "+unityQt + ","
+				+ "\n    obs: " + (obs != null? "\"" + obs +"\"": obs) 
+				+ "\n}";
+    }
+    
+    public String smallInfo() {
+    	return "{id: "+idFood+", meal.id: "+meal.idMeal + ", aliment: "+aliment.smallInfo()+"}";
     }
 
 }
