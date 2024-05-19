@@ -8,10 +8,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import model.dao.SubFoodDAO;
 
 @Entity
 @Table(name = "SubFoods")
-public class SubFood {
+public class SubFood extends SubFoodDAO{
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idSubFood")
@@ -36,7 +37,8 @@ public class SubFood {
 
 
     public SubFood(Integer idSubFood, Food food, Aliment aliment, Float quantity, String unityQt, String obs) {
-        this.idSubFood = idSubFood;
+        super();
+    	this.idSubFood = idSubFood;
         this.food = food;
         this.aliment = aliment;
         this.quantity = quantity;

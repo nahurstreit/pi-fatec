@@ -1,4 +1,5 @@
 package model.dao;
+
 import model.entities.Customer;
 import model.entities.Meal;
 
@@ -10,4 +11,5 @@ public class TesteDao {
 			System.out.println(meal.getFoods());
 		}
 	}
+	
 }

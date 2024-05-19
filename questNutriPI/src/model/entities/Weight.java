@@ -6,10 +6,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import model.dao.WeightDAO;
 
 @Entity
 @Table(name = "Weights")
-public class Weight {
+public class Weight extends WeightDAO{
     
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +27,8 @@ public class Weight {
 	private Double wgtDateRegister;
 
     public Weight(Integer idWeight, Integer idCustomer, Double wgtValue, Double wgtDateRegister) {
-        this.idWeight = idWeight;
+        super();
+    	this.idWeight = idWeight;
         this.idCustomer = idCustomer;
         this.wgtValue = wgtValue;
         this.wgtDateRegister = wgtDateRegister;
@@ -35,4 +37,23 @@ public class Weight {
     public Weight() {
     	this(null, null, null, null);
     }
+
+	@Override
+	public String toString() {
+		return "Weight: {"
+	+ "\n    idWeight:" + idWeight 
+	+ "\n    idCustomer:" + idCustomer
+	+ "\n    wgtValue:" + wgtValue
+	+ "\n    wgtDateRegister:" + wgtDateRegister
+	+ "\n}";
+	}
+    
+	/**
+	 * Método para retornar uma visão pequena do objeto.
+	 * @return String contendo apenas alguns dos atributos mais importantes
+	 */
+	public String smallInfo() {
+		return "{id: "+idWeight+", value: "+wgtValue+"}";
+
+	}
 }

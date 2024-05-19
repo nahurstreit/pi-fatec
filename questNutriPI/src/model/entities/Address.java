@@ -53,4 +53,19 @@ public class Address extends AddressDAO {
 	public Address() {
 		this(null, null, null, null, null, null, null, null);
 	}
+
+	@Override
+	public String toString() {
+		return "Address: {"
+	+ "\n    idAddress:" + idAddress
+	+ "\n    addrStreet:" + addrStreet
+	+ "\n    addrNum:" + addrNum
+	+ "\n    addrComp:" + addrComp
+	+ "\n    addrCep:" + addrCep
+	+ "\n    addrNeighborhood:" + addrNeighborhood
+	+ "\n    addrCity:" + addrCity
+	+ "\n    addrState:" + addrState
+	+ "\n}";
+	}
+	
 }

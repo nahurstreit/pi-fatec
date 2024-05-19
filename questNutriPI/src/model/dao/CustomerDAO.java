@@ -5,6 +5,7 @@ import java.util.List;
 import model.entities.Customer;
 
 public abstract class CustomerDAO extends GenericDAO<Customer>{
+	
 	/**
 	 * 
 	 * @param params
@@ -21,4 +22,5 @@ public abstract class CustomerDAO extends GenericDAO<Customer>{
 	public static Customer findOne(String ...params) {
 		return GenericDAO.findOne(Customer.class, params);
 	}
+	
 }

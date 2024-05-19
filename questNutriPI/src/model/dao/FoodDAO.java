@@ -1,10 +1,10 @@
 package model.dao;
 
 import java.util.List;
-
 import model.entities.Food;
 
 public abstract class FoodDAO extends GenericDAO<Food> {
+	
 	public static List<Food> findAll(String ...params) {
 		return GenericDAO.findAll(Food.class, params);
 	}
@@ -16,6 +16,10 @@ public abstract class FoodDAO extends GenericDAO<Food> {
 	 */
 	public static List<Food> findAllByMealPK(int id) {
 		return Food.findAll("meal.id = " + id);
+	}
+	
+	public static List<Food> findAllByAlimentPK(int id) {
+		return Food.findAll("aliment.id = " + id);
 	}
 	
 	public static Food findByPK(int id) {

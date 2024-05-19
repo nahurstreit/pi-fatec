@@ -154,8 +154,8 @@ public class Customer extends CustomerDAO {
 	
 	public String toString() {
 		return "Customer: {"
-		+ "\n    idCustomer: "+idCustomer
-		+ "\n    name:" +name
+		+ "\n    idCustomer: "+ idCustomer
+		+ "\n    name:" + name
 		+ "\n}";
 
 	}

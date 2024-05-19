@@ -6,10 +6,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import model.dao.AlimentDAO;
 
 @Entity
 @Table(name = "Aliments")
-public class Aliment {
+public class Aliment extends AlimentDAO{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idAliment")
@@ -107,6 +108,7 @@ public class Aliment {
 			String cholesterol, String sodium, String calcium, String magnesium, String manganese, String phosphorus,
 			String iron, String potassium, String copper, String zinc, String retinol, String rE, String rAE,
 			String thiamine, String riboflavin, String pyridoxine, String niacin, String vitaminC, String ash) {
+		super();
 		this.idAliment = idAliment;
 		this.aliCustom = aliCustom;
 		this.aliName = aliName;
