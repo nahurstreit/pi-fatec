@@ -18,10 +18,6 @@ public abstract class FoodDAO extends GenericDAO<Food> {
 		return Food.findAll("meal.id = " + id);
 	}
 	
-	public static List<Food> findAllByAlimentPK(int id) {
-		return Food.findAll("aliment.id = " + id);
-	}
-	
 	public static Food findByPK(int id) {
 		return GenericDAO.findByPK(Food.class, id);
 	}

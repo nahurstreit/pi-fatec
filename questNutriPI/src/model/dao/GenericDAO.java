@@ -14,7 +14,7 @@ public abstract class GenericDAO<T> {
 	/*
 	 * Variavel que armazena a fábrica sessões do Hibernate usadas para interagir com o banco de dados
 	 */
-	protected static final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();//
+	protected static final SessionFactory SESSION_FACTORY = HibernateUtil.getSessionFactory();//
 
 	/*
 	 * Método para salvar os dados de um objeto no banco de dados
@@ -25,7 +25,7 @@ public abstract class GenericDAO<T> {
 	 */
 	public void create(T entity) {
 		Transaction transaction = null;
-		try (Session session = sessionFactory.openSession()) {
+		try (Session session = SESSION_FACTORY.openSession()) {
 			transaction = session.getTransaction();
 			session.beginTransaction();
 			session.persist(entity);
@@ -47,7 +47,7 @@ public abstract class GenericDAO<T> {
 	 */
 
 	public void update(T entity) {
-		try (Session session = sessionFactory.openSession()) {
+		try (Session session = SESSION_FACTORY.openSession()) {
 			session.beginTransaction();
 			session.merge(entity);
 			session.getTransaction().commit();
@@ -65,7 +65,7 @@ public abstract class GenericDAO<T> {
 	 * para que os dados possam ser persistidos de forma permanente.
 	 */
 	public void delete(T entity) {
-		try (Session session = sessionFactory.openSession()) {
+		try (Session session = SESSION_FACTORY.openSession()) {
 			session.beginTransaction();
 			session.remove(entity);
 			session.getTransaction().commit();
