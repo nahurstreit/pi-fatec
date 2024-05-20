@@ -8,4 +8,15 @@ public abstract class AddressDAO extends GenericDAO<Address>{
 		return GenericDAO.findByPK(Address.class, id);
 	}
 	
+	public void createAddress(Address address){
+		create(address);
+	}
+
+	public void deleteAddress(Address address){
+		delete(address);
+	}
+
+	public void updateAddress(Address address){
+		update(address);
+	}
 }

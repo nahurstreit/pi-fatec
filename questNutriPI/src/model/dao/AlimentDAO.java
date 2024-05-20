@@ -17,4 +17,15 @@ public abstract class AlimentDAO extends GenericDAO<Aliment> {
 		return GenericDAO.findOne(Aliment.class, params);
 	}
 	
+	public void createAliment(Aliment aliment){
+		create(aliment);
+	}
+
+	public void deleteAliment(Aliment aliment){
+		delete(aliment);
+	}
+
+	public void updateAliment(Aliment aliment){
+		update(aliment);
+	}
 }

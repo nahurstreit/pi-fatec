@@ -17,4 +17,15 @@ public abstract class WeightDAO extends GenericDAO<Weight> {
 		return GenericDAO.findByPK(Weight.class, id);
 	}
 	
+	public void createWeight(Weight weight){
+		create(weight);
+	}
+
+	public void deleteWeight(Weight weight){
+		delete(weight);
+	}
+
+	public void updateWeight(Weight weight){
+		update(weight);
+	}
 }

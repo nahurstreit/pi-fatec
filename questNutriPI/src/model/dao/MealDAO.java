@@ -29,4 +29,15 @@ public abstract class MealDAO extends GenericDAO<Meal>{
 		return GenericDAO.findByPK(Meal.class, id);
 	}
 
+	public void createMeal(Meal meal){
+		create(meal);
+	}
+
+	public void deleteMeal(Meal meal){
+		delete(meal);
+	}
+
+	public void updateMeal(Meal meal){
+		update(meal);
+	}
 }

@@ -22,4 +22,15 @@ public abstract class FoodDAO extends GenericDAO<Food> {
 		return GenericDAO.findByPK(Food.class, id);
 	}
 	
+	public void createFood(Food food){
+		create(food);
+	}
+
+	public void deleteFood(Food food){
+		delete(food);
+	}
+
+	public void updateFood(Food food){
+		update(food);
+	}
 }
