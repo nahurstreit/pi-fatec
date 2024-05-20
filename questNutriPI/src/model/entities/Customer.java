@@ -55,6 +55,21 @@ public class Customer extends CustomerDAO {
     @JoinColumn(name = "idAddress")
     private Address address;
 
+	/**
+	 * 
+	 * @param idCustomer Recebe o Identificador(id) do Cliente
+	 * @param custCreatedAt	Recebe a Data de Cadastro do Cliente
+	 * @param custName Recebe o Nome do Cliente
+	 * @param custEmail Recebe o Email do Cliente
+	 * @param cpf Recebe o CPF do Cliente
+	 * @param custCellphone Recebe o número de telefone do Cliente
+	 * @param custActivityStatus Recebe o status (se está ativo ou não) do Cliente
+	 * @param custSetKcal Recebe as calorias do Cliente
+	 * @param cusHheight Recebe a altura do Cliente
+	 * @param custBirth Recebe a Data de Nascimento do Cliente
+	 * @param custGender Recebe o Gênero do Cliente
+	 * @param address Recebe o Endereço (da classe Adress) do Cliente
+	 */
 	public Customer(Integer idCustomer, String custCreatedAt, String custName, String custEmail, String cpf,
 			String custCellphone, String custActivityStatus, Float custSetKcal, Float cusHheight, String custBirth,
 			String custGender, Address address) {

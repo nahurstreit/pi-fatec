@@ -103,6 +103,40 @@ public class Aliment extends AlimentDAO{
     @Column(name = "ash")
     private String ash;
 
+	/**
+	 * 
+	 * @param idAliment Recebe o Id do Alimento
+	 * @param aliCustom Recebe 0 ou 1 e será usado como um check no banco de dados
+	 * 					para permitir ou não a alteração/exclusão do Alimento (permissão = 1)
+	 * @param aliName Recebe o Nome do Alimento
+	 * @param alimentGroup Recebe o Grupo ao qual pertence o Alimento
+	 * @param aliKcal Recebe as Quilocalorias do Alimento
+	 * @param aliKJ Recebe os Quilojoules do Alimento
+	 * @param aliCarb Recebe os Carboidratos do Alimento
+	 * @param aliProtein Recebe a Proteína do Alimento
+	 * @param aliFat Recebe a Gorduta do Alimento
+	 * @param humidity Recebe a Umidade presente no Alimento
+	 * @param dietaryFiber Recebe a Fibra dietética (fibras alimentares) do Alimento
+	 * @param cholesterol Recebe os níveis de Colesterol presentes no Alimento
+	 * @param sodium Recebe o Sódio do Alimento
+	 * @param calcium Recebe o Cálcio do Alimento
+	 * @param magnesium Recebe o Magnésio do Alimento
+	 * @param manganese Recebe o Manganês (ajuda na formação dos ossos) do Alimento 
+	 * @param phosphorus Recebe o Fósforo do Alimento
+	 * @param iron Recebe o Ferro (sais minerais) do Alimento
+	 * @param potassium  Recebe o Potássio (sais minerais) do Alimento
+	 * @param copper Recebe o Cobre (sais minerais) do Alimento
+	 * @param zinc Recebe o Zinco (oligoelemento importante para o sistema imunológico) do Alimento 
+	 * @param retinol Recebe o Retinol (vitamina A) do Alimento
+	 * @param rE Recebe o Resíduo de extrato etéreo (quantidade de lipídeos) do Alimento
+	 * @param rAE Recebe o Retinol equivalente (padronização de ingestão de vitamina A) do Alimento 
+	 * @param thiamine Recebe a Tiamina (vitamina B1) do Alimento
+	 * @param riboflavin Recebe a Riboflavina (vitamina B2) do Alimento
+	 * @param pyridoxine Recebe a Piridoxina (vitamina B6) do Alimento
+	 * @param niacin Recebe a Niacina (vitamina B3) do Alimento
+	 * @param vitaminC Recebe a Vitamina C (que contribui para o sistema imunológico) do Alimento.
+	 * @param ash Recebe o conjunto mineral total presente no Alimento
+	 */
 	public Aliment(Integer idAliment, Integer aliCustom, String aliName, String alimentGroup, String aliKcal,
 			String aliKJ, String aliCarb, String aliProtein, String aliFat, String humidity, String dietaryFiber,
 			String cholesterol, String sodium, String calcium, String magnesium, String manganese, String phosphorus,

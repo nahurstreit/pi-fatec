@@ -38,6 +38,17 @@ public class Address extends AddressDAO {
 	@Column(name = "addr_state")
 	public String addrState;
 
+	/**
+	 * 
+	 * @param idAddress Identificador(Id) do Endereço
+	 * @param addrStreet Recebe a Rua do Endereço
+	 * @param addrNum Recebe o Número do Endereços
+	 * @param addrComp Recebe o Complemento do Endereço
+	 * @param addrCep Recebe o CEP do Endereço
+	 * @param addrNeighborhood Recebe o Bairro do Endereço
+	 * @param addrCity Recebe a Cidade do Endereeço
+	 * @param addrState Recebe o Estado do Endereço
+	 */
 	public Address(Integer idAddress, String addrStreet, Integer addrNum, String addrComp, String addrCep,
 			String addrNeighborhood, String addrCity, String addrState) {
 		this.idAddress = idAddress;

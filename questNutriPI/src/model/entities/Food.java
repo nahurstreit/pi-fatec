@@ -35,7 +35,15 @@ public class Food extends FoodDAO {
 	    @Column(name = "food_obs")
 	    public String obs;
 
-
+	/**
+	 * 
+	 * @param idFood Recebe o Identificador(Id) da Comida
+	 * @param meal Recebe uma Refeição (da Classe Meal) a qual essa Comida faz parte
+	 * @param aliment Recebe um Alimento (da Classe Aliment) que forma essa Comida
+	 * @param quantity Recebe a quantidade (kg/ml) dessa Comida
+	 * @param unityQt Recebe a unidade dessa Comida
+	 * @param obs Recebe as observações/anotações dessa Comida
+	 */
     public Food(Integer idFood, Meal meal, Aliment aliment, Float quantity, String unityQt,
             String obs) {
     	super();

@@ -35,7 +35,15 @@ public class SubFood extends SubFoodDAO{
     @Column(name = "subFood_obs")
     public String obs;
 
-
+    /**
+     * 
+     * @param idSubFood Recebe o Identificador(Id) do Comida Substituta
+     * @param food Recebe a Comida (da Classe Food) que poderá ser substituída pela Comida Substituta
+     * @param aliment Reccebe o Alimento (da Classe Aliment) que irá compor a Comida Substituta
+     * @param quantity Recebe a Quantidade (kg/ml) da Comida Substituta
+     * @param unityQt Recebe a Unidade da Comida Substituta
+     * @param obs Recebe as Observações da Comida Substituta
+     */
     public SubFood(Integer idSubFood, Food food, Aliment aliment, Float quantity, String unityQt, String obs) {
         super();
     	this.idSubFood = idSubFood;

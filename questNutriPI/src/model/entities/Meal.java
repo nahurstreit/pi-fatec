@@ -49,6 +49,18 @@ public class Meal extends MealDAO {
 	@Column(name = "meal_deactivatedAt")
 	private String deactivatedAt;
 
+	/**
+	 * 
+	 * @param idMeal Recebe o Identificador(id) da Refeição
+	 * @param customer Recebe o Cliente (da Classe Customer) que possui essa Refeição
+	 * @param name Recebe o Nome da Refeição
+	 * @param active Recebe o Status para saber se aquela Refeição está ativa ou não
+	 * @param daysOfWeek Recebe os Dias da Semana em que será receitada aquela Refeição
+	 * @param hour Recebe a Hora que será receitada aquela Refeição
+	 * @param obs Recebe as observações daquela Refeição
+	 * @param createdAt Recebe a Data de Criação daquela Refeição
+	 * @param deactivatedAt Recebe a Data de Desativação daquela Refeição
+	 */
 	public Meal(Integer idMeal, Customer customer, String name, Integer active, Integer daysOfWeek,
 			Time hour, String obs, String createdAt, String deactivatedAt) {
 		super();

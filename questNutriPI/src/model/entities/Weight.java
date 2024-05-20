@@ -26,6 +26,13 @@ public class Weight extends WeightDAO{
 	@Column(name = "wgt_dateRegister")
 	private Double wgtDateRegister;
 
+	/**
+	 * 
+	 * @param idWeight Recebe o Identificador(Id) do Peso
+	 * @param idCustomer Recebe o Cliente (da Classe Customer) que possui esse Peso
+	 * @param wgtValue Recebe o valor em kg do Peso
+	 * @param wgtDateRegister Recebe a Data de Registro do Peso do Cliente
+	 */
     public Weight(Integer idWeight, Integer idCustomer, Double wgtValue, Double wgtDateRegister) {
         super();
     	this.idWeight = idWeight;
