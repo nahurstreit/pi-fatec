@@ -1,6 +1,7 @@
 package model.dao;
 
 import java.util.List;
+
 import model.entities.Meal;
 
 public abstract class MealDAO extends GenericDAO<Meal>{
@@ -12,32 +13,42 @@ public abstract class MealDAO extends GenericDAO<Meal>{
 	/**
 	 * Método simplificado para obter as Meals pelo id do Customer
 	 * 
-	 * @param id do Customer a ser buscado
+	 * @param id - do Customer a ser buscado
+	 * @param getNotActive - valor booleano opcional que faz incluir no retorno as refeições que foram desativadas.
 	 * @return Lista de Meals associadas ao id indicado.
 	 */
-	public static List<Meal> findAllByCustomerPK(int id) {
-		return Meal.findAll("customer.id = " + id);
+	public static List<Meal> findAllByCustomerPK(int id, boolean ...getNotActive) {
+		boolean onlyActive = true;
+		if(getNotActive.length > 0) {
+			if(getNotActive[0]) onlyActive = !onlyActive; //Se for passado true, onlyActive é desativado e a query é apenas customer.id
+		};
+		
+		String query = "customer.id = " + id;
+		if(onlyActive) query += " AND active = 1";
+		
+		return Meal.findAll(query);
 	}
+
 	
 	/**
      * Método que retorna uma Meal pelo seu id
      * 
      * @param id da Meal a ser buscada
+     * @param getNotActive - valor booleano opcional que faz incluir no retorno as refeições que foram desativadas.
      * @return Meal que corresponde ao id fornecido ou null se não encontrado.
      */
-	public static Meal findByPK(int id) {
-		return GenericDAO.findByPK(Meal.class, id);
+	public static Meal findByPK(int id, boolean ...getNotActive) {
+		boolean onlyActive = true;
+		if(getNotActive.length > 0) {
+			if(getNotActive[0]) onlyActive = !onlyActive; //Se for passado true, onlyActive e o objeto retornado pode estar desativado
+		};
+		
+		Meal found = GenericDAO.findByPK(Meal.class, id);
+		if(found != null) {
+			if(found.active == 1 || !onlyActive) return found;
+		}
+		
+		return null;
 	}
 
-	public void createMeal(Meal meal){
-		create(meal);
-	}
-
-	public void deleteMeal(Meal meal){
-		delete(meal);
-	}
-
-	public void updateMeal(Meal meal){
-		update(meal);
-	}
 }

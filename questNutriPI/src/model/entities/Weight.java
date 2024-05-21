@@ -7,6 +7,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import model.dao.WeightDAO;
 
@@ -19,41 +22,46 @@ public class Weight extends WeightDAO{
     @Column(name = "idWeight")
 	public Integer idWeight;
 
-	@Column(name = "idCustomer")
-	public Integer idCustomer;
+	@ManyToOne
+	@JoinColumn(name = "idCustomer")
+	public Customer customer;
 
 	@Column(name = "wgt_value")
-	public Double wgtValue;
+	public Double value;
 	
 	@Column(name = "wgt_dateRegister")
-	private Date wgtDateRegister;
+	private Date dateRegister;
 
 	/**
-	 * 
-	 * @param idWeight Recebe o Identificador(Id) do Peso
-	 * @param idCustomer Recebe o Cliente (da Classe Customer) que possui esse Peso
-	 * @param wgtValue Recebe o valor em kg do Peso
-	 * @param wgtDateRegister Recebe a Data de Registro do Peso do Cliente
+	 * Método construtor da classe Weight
+	 * @param customer Recebe o Cliente (da Classe Customer) que possui esse Peso
+	 * @param value Recebe o valor em kg do Peso
+	 * @param dateRegister Recebe a Data de Registro do Peso do Cliente
 	 */
-    public Weight(Integer idWeight, Integer idCustomer, Double wgtValue, Date wgtDateRegister) {
-        super();
-    	this.idWeight = idWeight;
-        this.idCustomer = idCustomer;
-        this.wgtValue = wgtValue;
-        this.wgtDateRegister = wgtDateRegister;
+    public Weight(Customer customer, Double value) {
+        this.customer = customer;
+        this.value = value;
     }
     
     public Weight() {
-    	this(null, null, null, null);
+    	this(null, null);
+    }
+    
+    /**
+     * Método para adicionar ao objeto, a data e horário atual de registro.
+     */
+    @PrePersist
+    private void prePersist() {
+        if(dateRegister == null) dateRegister = new Date();
     }
 
 	@Override
 	public String toString() {
 		return "Weight: {"
 	+ "\n    idWeight:" + idWeight 
-	+ "\n    idCustomer:" + idCustomer
-	+ "\n    wgtValue:" + wgtValue
-	+ "\n    wgtDateRegister:" + wgtDateRegister
+	+ "\n    customer:" + customer
+	+ "\n    wgtValue:" + value
+	+ "\n    wgtDateRegister:" + dateRegister
 	+ "\n}";
 	}
     
@@ -62,7 +70,7 @@ public class Weight extends WeightDAO{
 	 * @return String contendo apenas alguns dos atributos mais importantes
 	 */
 	public String smallInfo() {
-		return "{id: "+idWeight+", value: "+wgtValue+"}";
+		return "{id: "+idWeight+", value: "+value+"}";
 
 	}
 }

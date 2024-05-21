@@ -1,5 +1,7 @@
 package model.entities;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,7 +29,7 @@ public class Food extends FoodDAO {
 	    public Aliment aliment;
 
 	    @Column(name = "food_quantity")
-	    public Float quantity;
+	    public Double quantity;
 
 	    @Column(name = "food_unityQt")
 	    public String unityQt;
@@ -44,10 +46,8 @@ public class Food extends FoodDAO {
 	 * @param unityQt Recebe a unidade dessa Comida
 	 * @param obs Recebe as observações/anotações dessa Comida
 	 */
-    public Food(Integer idFood, Meal meal, Aliment aliment, Float quantity, String unityQt,
-            String obs) {
+    public Food(Meal meal, Aliment aliment, Double quantity, String unityQt, String obs) {
     	super();
-        this.idFood = idFood;
         this.meal = meal;
         this.aliment = aliment;
         this.quantity = quantity;
@@ -56,14 +56,50 @@ public class Food extends FoodDAO {
     }
     
     public Food() {
-    	this(null, null, null, null, null, null);
+    	this(null, null, null, null, null);
+    }
+    
+    public Food setAliment(Aliment aliment) {
+    	this.aliment = aliment;
+    	return this;
+    }
+    
+    public Food setMeal(Meal meal) {
+    	this.meal = meal;
+    	return this;
+    }
+    
+    public Food setQuantity(Double quantity) {
+    	this.quantity = quantity;
+    	return this;
+    }
+    
+    public Food setQuantity(Integer quantity) {
+    	this.quantity = (double) quantity;
+    	return this;
+    }
+    
+    public Food setUnityQt(String unityQt) {
+    	this.unityQt = unityQt;
+    	return this;
+    }
+    
+    public List<SubFood> getSubFoods() {
+    	return SubFood.findAllByFoodPK(this.idFood);
+    }
+    
+    public void createSubFood(SubFood sub) {
+    	if(this.meal != null) {
+    		sub.setFood(this);
+    		sub.save();
+    	}
     }
 
     @Override
     public String toString() {
     	return "Food: {"
     			+ "\n    idFood: "+idFood + ", "
-    			+ "\n    meal_smallInfo: " + meal.smallInfo()+","
+    			+ "\n    meal_smallInfo: " + (meal != null? meal.smallInfo() : "null")+","
 				+ "\n    aliment_smallInfo: " + aliment.smallInfo()+","
 				+ "\n    quantity: "+ quantity + ","
 				+ "\n    unityQt: "+unityQt + ","
@@ -72,7 +108,7 @@ public class Food extends FoodDAO {
     }
     
     public String smallInfo() {
-    	return "{id: "+idFood+", meal.id: "+meal.idMeal + ", aliment: "+aliment.smallInfo()+"}";
+    	return "{id: "+idFood+", meal.id: "+(meal != null? meal.idMeal : "null")+ ", aliment: "+aliment.smallInfo()+"}";
     }
 
 }

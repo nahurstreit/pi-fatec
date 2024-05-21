@@ -34,15 +34,4 @@ public abstract class CustomerDAO extends GenericDAO<Customer>{
 		return GenericDAO.findOne(Customer.class, params);
 	}
      
-     public void createCustomer(Customer customer){
-          create(customer);
-     }
-
-     public void deleteCustomer(Customer customer){
-          delete(customer);
-     }
-
-     public void updateCustomer(Customer customer){
-          update(customer);
-     }
 }

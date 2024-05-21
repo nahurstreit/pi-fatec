@@ -1,5 +1,6 @@
-package utils;
+package model.utils;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -21,7 +22,7 @@ public class HibernateUtil {
 			 * Cria uma nova instancia de Configuration que recebe as configurações
 			 * definidas no arquivo xml.
 			 */
-			Configuration configuration = new Configuration().configure("config/database/hibernate.cfg.xml");
+			Configuration configuration = new Configuration().configure("model/config/database/hibernate.cfg.xml");
 
 			// Após carregar as configurações do Hibernate, retorna a construção da
 			// SessionFactory.
@@ -40,5 +41,18 @@ public class HibernateUtil {
 
 	public static SessionFactory getSessionFactory() {
 		return sessionFactory;
+	}
+	
+	/**
+	 * Método que faz o refresh de alguma instância com os dados atuais
+	 * @param <T> -> Classe da Instância
+	 * @param instance -> Instância a ser atualizada
+	 */
+	public static <T> void refreshInstance(T instance) {
+		try (Session session = sessionFactory.openSession()) {
+			session.refresh(instance);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

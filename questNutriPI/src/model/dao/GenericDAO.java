@@ -5,10 +5,9 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import utils.HibernateUtil;
+import model.utils.HibernateUtil;
 
 public abstract class GenericDAO<T> {
 	/*
@@ -16,66 +15,55 @@ public abstract class GenericDAO<T> {
 	 */
 	protected static final SessionFactory SESSION_FACTORY = HibernateUtil.getSessionFactory();//
 
-	/*
-	 * Método para salvar os dados de um objeto no banco de dados
-	 * seria algo como o CREATE, ele recebe a entidade que sera salva,
-	 * abre uma sessão com o banco de dados, inicia uma transação para garantir
-	 * atomicidade, salva essa entidade no banco e faz um commit dessa transação
-	 * para que os dados possam ser persistidos de forma permanente.
+	/**
+	 * Método para salvar um registro no banco de dados do objeto enviado.
+	 * <\n>Se o objeto <b><u>NÃO EXISTIR</u></b> no banco de dados, será criado.
+	 * <\n>Se o objeto <b><u>EXISTIR</u></b> existir no banco de dados, será criado.
+	 * @return Retorna o status da operação.
+	 * <li>Se <b>true</b>: o objeto foi salvo.
+	 * <li>Se <b>false</b>: houve um erro durante a execução. Consulte o log.
 	 */
-	public void create(T entity) {
-		Transaction transaction = null;
+	public boolean save() {
+		boolean result = true;
 		try (Session session = SESSION_FACTORY.openSession()) {
-			transaction = session.getTransaction();
 			session.beginTransaction();
-			session.persist(entity);
-			session.close();
+			session.merge(this);
+			session.getTransaction().commit();
 		} catch (Exception e) {
-			if(transaction != null) {
-				transaction.rollback();
-			}
+			result = false;
 			e.printStackTrace();
 		}
+		
+		return result;
 	}
 
-	/*
-	 * Método para alterar os dados de um objeto no banco de dados
-	 * seria algo como o UPTADE, ele recebe a entidade que sera atualizada,
-	 * abre uma sessão com o banco de dados, inicia uma transação para garantir
-	 * atomicidade, atualiza as informações dessa entidade no banco e faz um commit dessa transação
-	 * para que os dados possam ser persistidos de forma permanente.
+	/**
+	 * Deleta o registro no banco de dados associado à entidade que chama esse método.
+	 * @return Retorna o status da operação.
+	 * <li>Se <b>true</b>: se o objeto existir no banco de dados, então foi deletado.
+	 * <li>Se <b>false</b>: houve um erro durante a execução. Consulte o log.
 	 */
-
-	public void update(T entity) {
+	public boolean delete() {
+		boolean result = true;
 		try (Session session = SESSION_FACTORY.openSession()) {
 			session.beginTransaction();
-			session.merge(entity);
+			session.remove(this);
 			session.getTransaction().commit();
-			session.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/*
-	 * Método para Deletar um objeto no banco de dados
-	 * seria algo como o DELETE, ele recebe a entidade que sera excluida,
-	 * abre uma sessão com o banco de dados, inicia uma transação para garantir
-	 * atomicidade, exclui a entidade no banco e faz um commit dessa transação
-	 * para que os dados possam ser persistidos de forma permanente.
-	 */
-	public void delete(T entity) {
-		try (Session session = SESSION_FACTORY.openSession()) {
-			session.beginTransaction();
-			session.remove(entity);
-			session.getTransaction().commit();
-			session.close();
 		} catch(Exception e) {
+			result = false;
 			e.printStackTrace();
 		}
+		return result;
 	}
 
-
+	/**
+	 * Encontra todos os registros no banco de dados de uma dada Classe mapeada pelo ORM.
+	 * @param <T> - Classe de retorno.
+	 * @param entityType - Definição da Classe de retorno e busca.
+	 * @param params - Complemento da query de busca.
+	 * @return Retorna uma lista com todos os registros encontrados no banco de dados instanciados
+	 * com a classe declarada (EntityType).
+	 */
 	protected static <T> List<T> findAll(Class<T> entityType, String... params) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             String queryString = "FROM " + entityType.getSimpleName();
@@ -98,15 +86,11 @@ public abstract class GenericDAO<T> {
 
 
 	/**
-	 * Método para procurar os dados de um objeto especificado pela chave primaria 
-	 * seria algo como o READ, ele recebe a entidade que sera pesquisada e o ID a ser pesquisado,
-	 * abre uma sessão com o banco de dados,e verifica se aquela entidade com aquele ID existe
-	 * retorna os dados dessa requisição como a entidade, o caso não exista retorna null.
-	 * 
-	 * @param <T> é a classe do objeto final
-	 * @param id 
-	 * @param entityType
-	 * @return
+	 * Método que procura um registro específico de uma determinada Classe mapeada pelo ORM, através de um id/PK.
+	 * @param <T> - Classe de retorno
+	 * @param entityType - Definição da Classe de retorno e busca.
+	 * @param id - id/pk procurada.
+	 * @return Retorna uma instância do tipo (EntityType) caso encontrada, senão null.
 	 */
 	protected static <T> T findByPK(Class<T> entityType, int id) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -119,13 +103,14 @@ public abstract class GenericDAO<T> {
 	}
 	
 	/**
-	 * 
-	 * @param <T>
-	 * @param entityType
-	 * @param params
-	 * @return
+	 * Método que procura e retorna apenas o primeiro registro dentro de todos os registros
+	 * de uma Classe mapeada pelo ORM.
+	 * @param <T> - Classe de retorno.
+	 * @param entityType - Definição da Classe de retorno e busca.
+	 * @param params - Complemento da query de busca.
+	 * @return Retorna uma instância do tipo (EntityType) caso encontrada, senão null.
 	 */
-    public static <T> T findOne(Class<T> entityType, String... params) {
+    protected static <T> T findOne(Class<T> entityType, String... params) {
         List<T> found = GenericDAO.findAll(entityType, params);
         if (!found.isEmpty()) {
             return found.get(0);
@@ -133,4 +118,3 @@ public abstract class GenericDAO<T> {
         return null;
     }
 }
-

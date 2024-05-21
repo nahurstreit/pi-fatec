@@ -17,15 +17,4 @@ public abstract class SubFoodDAO extends GenericDAO<SubFood> {
 		return GenericDAO.findByPK(SubFood.class, id);
 	}
 	
-	public void createSubFood(SubFood subFood){
-		create(subFood);
-	}
-
-	public void deleteSubFood(SubFood subFood){
-		delete(subFood);
-	}
-
-	public void updateSubFood(SubFood subFood){
-		update(subFood);
-	}
 }

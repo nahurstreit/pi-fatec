@@ -58,6 +58,11 @@ public class SubFood extends SubFoodDAO{
     	this(null, null, null, null, null, null);
     }
     
+    public SubFood setFood(Food food) {
+    	if(this.food == null) this.food = food;
+    	return this;
+    }
+    
     @Override
     public String toString() {
     	return "SubFood: {"
