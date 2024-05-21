@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>questNutriPI</groupId>
   <artifactId>questNutriPI</artifactId>
@@ -30,17 +32,23 @@
     </plugins>
   </build>
   <dependencies>
-  	<!--Biblioteca para controlar imagens vetoriais SVG -->
-	<dependency>
-		<groupId>org.apache.xmlgraphics</groupId>
-		<artifactId>batik-all</artifactId>
-		<version>1.17</version>
-	</dependency>
-	<!--Biblioteca de ORM -->
-	<dependency>
-	    <groupId>org.hibernate.orm</groupId>
-	    <artifactId>hibernate-core</artifactId>
-	    <version>6.5.0.Final</version>
-	</dependency>
+      <!--Biblioteca para controlar imagens vetoriais SVG -->
+    <dependency>
+        <groupId>org.apache.xmlgraphics</groupId>
+        <artifactId>batik-all</artifactId>
+        <version>1.17</version>
+    </dependency>
+    <!--Biblioteca de ORM -->
+    <dependency>
+        <groupId>org.hibernate.orm</groupId>
+        <artifactId>hibernate-core</artifactId>
+        <version>6.5.0.Final</version>
+    </dependency>
+    <!--Biblioteca do JDBC -->
+    <dependency>
+             <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>9.4.0.jre11</version>
+    </dependency>
   </dependencies>
 </project>

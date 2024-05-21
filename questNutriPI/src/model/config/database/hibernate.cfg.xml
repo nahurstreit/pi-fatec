@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hibernate-configuration>
+    <session-factory>
+        <!-- Configurações do banco de dados -->
+        <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+        <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=QuestNutriDB</property>
+        <!-- Use a autenticação do Windows 
+        <property name="hibernate.connection.integratedSecurity">true</property>
+        -->
+        <property name="hibernate.connection.username">adminQuestNutri</property>
+        <property name="hibernate.connection.password">123</property>
+        <!-- Configuração do dialeto do banco de dados -->
+        <property name="hibernate.type_contributors">org.hibernate.type.descriptor.sql.JavaTypeDescriptorRegistry</property>
+        
+        <!--          
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.use_sql_comments">true</property>
+-->
+        <!-- Mapeamento de classes de entidade -->
+        <!-- Adicione aqui os mapeamentos de suas classes de entidade -->
+        <mapping class="model.entities.Address"></mapping>
+        <mapping class="model.entities.Aliment"></mapping>
+        <mapping class="model.entities.Customer"></mapping>
+        <mapping class="model.entities.Food"></mapping>
+        <mapping class="model.entities.Meal"></mapping>
+        <mapping class="model.entities.SubFood"></mapping>
+        <mapping class="model.entities.Weight"></mapping>
+    </session-factory>
+</hibernate-configuration>
