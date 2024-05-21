@@ -1,5 +1,7 @@
 package model.entities;
 
+import java.util.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,7 +26,7 @@ public class Weight extends WeightDAO{
 	public Double wgtValue;
 	
 	@Column(name = "wgt_dateRegister")
-	private Double wgtDateRegister;
+	private Date wgtDateRegister;
 
 	/**
 	 * 
@@ -33,7 +35,7 @@ public class Weight extends WeightDAO{
 	 * @param wgtValue Recebe o valor em kg do Peso
 	 * @param wgtDateRegister Recebe a Data de Registro do Peso do Cliente
 	 */
-    public Weight(Integer idWeight, Integer idCustomer, Double wgtValue, Double wgtDateRegister) {
+    public Weight(Integer idWeight, Integer idCustomer, Double wgtValue, Date wgtDateRegister) {
         super();
     	this.idWeight = idWeight;
         this.idCustomer = idCustomer;
