@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
   <modelVersion>4.0.0</modelVersion>
   <groupId>questNutriPI</groupId>
   <artifactId>questNutriPI</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>QuestNutri Desktop App</name>
   <description>
-      Aplicação Desktop em Java para o Projeto Integrador QuestNutri realizado para a  Faculdade de Tecnologia de Indaiatuba (FATEC)
-      no curso de Análise e Desenvolvimento de Sistema, mais específico na matéria de Programação Orientada a Objetos
-      ministrada pelo professor doutor Sérgio Furgeri.
+	  Aplicação Desktop em Java para o Projeto Integrador QuestNutri realizado para a  Faculdade de Tecnologia de Indaiatuba (FATEC)
+	  no curso de Análise e Desenvolvimento de Sistema, mais específico na matéria de Programação Orientada a Objetos
+	  ministrada pelo professor doutor Sérgio Furgeri.
   </description>
   <build>
     <sourceDirectory>src</sourceDirectory>
@@ -18,7 +17,7 @@
       <resource>
         <directory>src</directory>
         <excludes>
-          <exclude>*/.java</exclude>
+          <exclude>**/*.java</exclude>
         </excludes>
       </resource>
     </resources>
