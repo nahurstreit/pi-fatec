@@ -2,9 +2,10 @@ package view.panels.pages.components.diet;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
-import models.Meal;
+import model.entities.Meal;
 import view.QuestNutri;
 import view.panels.components.GenericComponent;
 import view.panels.components.GenericJPanel;
@@ -12,19 +13,18 @@ import view.panels.components.GenericJPanel;
 public class DietWeekPanel extends GenericComponent {
 	private static final long serialVersionUID = 1L;
 	
-	private Meal[] meals;
+	private List<Meal> meals;
 	private int[] avbDays = {64, 32, 16, 8, 4, 2, 1}; //Variável que controla os dias da semana dos respectivos panels
 	private String[] avbStrDays = {"Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"};
 	public DietDayPanel currentDayFocus = null;
 	private ArrayList<DietDayPanel> daysPanels = new ArrayList<DietDayPanel>();
 	public GenericJPanel holderDays = new GenericJPanel();
 
-	public DietWeekPanel(Meal[] meals, GenericJPanel ownerPanel) {
+	public DietWeekPanel(GenericJPanel ownerPanel, List<Meal> meals) {
 		super(ownerPanel);
 		this.ltGridBag();
 		this.meals = meals;
 		this.setBackground(STD_STRONG_GRAY);
-		renameMeals();
 		loadDays();
 	}
 	
@@ -75,32 +75,6 @@ public class DietWeekPanel extends GenericComponent {
 	        e.printStackTrace();
 	    }
 	}
-	
-	/**
-	 * Mudar para DietDayPanel
-	 */
-	private void renameMeals() {
-		ArrayList<UsedName> usedNames = new ArrayList<UsedName>();
-		for(Meal meal: meals) {
-			UsedName found = null;
-			for(UsedName name: usedNames) {
-				if(meal.name == name.name) {
-					found = name;
-					break;
-				}
-			}
-			
-			if(found != null) {
-				meal.name += "(" + found.add().get() +")";
-			} else {
-				UsedName used = new UsedName(meal.name);
-				usedNames.add(used);
-				meal.name += "(" + used.get() + ")";
-			}
-		}
-		
-		for(Meal meal: meals) System.out.println(meal.name);
-    }
         
 	
 	private void refreshDays() {

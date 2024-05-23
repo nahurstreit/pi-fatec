@@ -55,6 +55,15 @@ public class Meal extends MealDAO {
 	private Date deactivatedAt;
 	
 
+	/**
+	 * Método construtor de Meal.
+	 * @param customer - Customer owner da refeição.
+	 * @param name - Nome da refeição.
+	 * @param active - inteiro que representa se a Meal está ativa. Se 1: ativo, se 0: não ativo.
+	 * @param daysOfWeek - Inteiro entre 1 e 127 que representa os dias que a refeição acontece
+	 * @param hour - hora de acontecimento da refeição
+	 * @param obs - observação sobre a refeição.
+	 */
 	public Meal(Customer customer, String name, Integer active, Integer daysOfWeek, String hour, String ...obs) {
 		super();
 		this.customer = customer;

@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import javax.swing.JLabel;
 
-import models.Meal;
+import model.entities.Meal;
 import view.panels.components.GenericJPanel;
 
 public class DietMealPanel extends GenericJPanel {

@@ -1,10 +1,11 @@
 package view.panels.pages.components.diet;
 
 import java.awt.Color;
+import java.util.List;
 
 import javax.swing.JPanel;
 
-import models.Meal;
+import model.entities.Meal;
 import view.components.ActionLbl;
 import view.panels.components.GenericJPanel;
 
@@ -20,7 +21,7 @@ public class DietDayPanel extends GenericJPanel {
 	
 	private final Color BG_COLOR = new Color(85, 183, 254);
 
-	public DietDayPanel(Meal[] meals, int weekDay, DietWeekPanel dietMainPanel, int position) {
+	public DietDayPanel(List<Meal> meals, int weekDay, DietWeekPanel dietMainPanel, int position) {
 		super(dietMainPanel);
 		this.ltGridBag();
 		this.weekDay = weekDay;
@@ -30,7 +31,7 @@ public class DietDayPanel extends GenericJPanel {
 		populate(meals);
 	}
 	
-	public void populate(Meal[] meals) {
+	public void populate(List<Meal> meals) {
 		ActionLbl lblDay = new ActionLbl(dietMainPanel.getDayName(this.weekDay), () -> callFocus());
 		lblDay.setForeground(Color.white);
 		lblDay.setFont(STD_REGULAR_FONT.deriveFont(15f));

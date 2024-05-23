@@ -11,7 +11,8 @@ public class StdGBC extends GridBagConstraints {
 	}
 	
 	/**
-	 * Método para rápida inserção dos insets
+	 * Método para rápida inserção dos insets.
+	 * <br>Ordem de referência dos insets: top, left, bottom, right.
 	 * @param values -> Valores inteiros para a atribuição dos insets. A atribuição dos insets será condicionada da seguinte maneira:
 	 * <li><b>inset()</b>-> Será tratado como: new Insets(0, 0, 0, 0);</li>
 	 * <li><b>inset(1)</b>-> Será tratado como: new Insets(1, 1, 1, 1);</li>
@@ -50,6 +51,7 @@ public class StdGBC extends GridBagConstraints {
 	
 	/**
 	 * Método para rápida inserção dos insets
+	 * <br>Ordem de referência dos insets: top, left, bottom, right.
 	 * @param values -> Valores inteiros para a atribuição dos insets. A atribuição dos insets será condicionada da seguinte maneira:
 	 * <li><b>inset()</b>-> Será tratado como: new Insets(0, 0, 0, 0);</li>
 	 * <li><b>inset(1)</b>-> Será tratado como: new Insets(1, 1, 1, 1);</li>
