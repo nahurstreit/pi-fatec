@@ -41,26 +41,26 @@ public class Customer extends CustomerDAO {
 	private String cpf;
 
 	@Column(name = "cust_phoneNumber")
-	private String phoneNumber;
+	public String phoneNumber;
 
 	@Column(name = "cust_activityStatus")
-	private Integer activityStatus;
+	public Integer activityStatus;
 
 	@Column(name = "cust_setKcal")
-	private Double settedKcal;
+	public Double settedKcal;
 
 	@Column(name = "cust_height")
-	private Double height;
+	public Double height;
 
 	@Column(name = "cust_birth")
-	private LocalDate birth;
+	public LocalDate birth;
 
 	@Column(name = "cust_gender")
-	private String gender;
+	public String gender;
 
 	@ManyToOne
     @JoinColumn(name = "idAddress")
-    private Address address;
+	public Address address;
 	
 	@Transient
 	public ArrayList<Meal> mealStack = new ArrayList<Meal>();
@@ -90,6 +90,10 @@ public class Customer extends CustomerDAO {
 
 	public int getId() {
 		return this.idCustomer;
+	}
+	
+	public String getCPF() {
+		return cpf;
 	}
 	
 	/**
@@ -267,7 +271,10 @@ public class Customer extends CustomerDAO {
 	 */
 	public String smallInfo() {
 		return "{id: "+idCustomer+", name: "+name+"}";
-
+	}
+	
+	public String listShow() {
+		return name + "     " + cpf + "     "+birth;
 	}
 	
 }
