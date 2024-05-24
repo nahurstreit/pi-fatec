@@ -30,9 +30,6 @@ public class CustomerController {
 					if(input.isBlank()) JOptionPane.showMessageDialog(null, "Digite apenas números!");
 					searchParam = "phoneNumber";
 					break;
-				case "Data de Nascimento":
-					searchParam = "birth";
-					break;
 			}
 			
 			searchParam += " LIKE '%" + input + "%'";

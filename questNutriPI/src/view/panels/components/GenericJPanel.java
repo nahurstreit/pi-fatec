@@ -80,4 +80,6 @@ public class GenericJPanel extends GeneralJPanelSettings {
 		
 		return response;
 	}
+	
+	
 }

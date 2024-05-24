@@ -15,6 +15,7 @@ import view.panels.components.SideBar;
 import view.panels.components.SideBarItem;
 import view.panels.components.SideBarMenu;
 import view.panels.pages.DietPage;
+import view.panels.pages.subpages.CustomerFormPage;
 
 public class CustomerFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -28,10 +29,14 @@ public class CustomerFrame extends JFrame {
 	public CustomerFrame(Customer customer) {
 		this.customer = customer;
 		this.add(framePanel);
+		
+		//Definindo as subp�ginas do frame.
 		SideBarMenu menu = new SideBarMenu(
-		new SideBarItem("Perfil", null, true),
-		new SideBarItem("Dieta", () -> this.swapMainPanel(new DietPage(this.getMainPanel())))
+				new SideBarItem("Perfil", () -> this.swapMainPanel(new CustomerFormPage(this.getMainPanel(), customer)), true),
+				new SideBarItem("Dieta", () -> this.swapMainPanel(new DietPage(this.getMainPanel())))
 		);
+		menu.setFirstPanel();
+		
 		SideBar customerSideBar = new SideBar(menu);
 		customerSideBar.setMinimumSize(new Dimension(250, this.getHeight()));
 		customerSideBar.setPreferredSize(new Dimension(250, this.getHeight()));

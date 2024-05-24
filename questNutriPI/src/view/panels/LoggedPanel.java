@@ -34,7 +34,6 @@ public class LoggedPanel extends GenericJPanel {
 	 */
 	public LoggedPanel(String nutriName) {
 		this.ltGridBag();
-		this.mainPanel = new CustomersPage(mainPanel);
 		
 		JLabel greetings = new JLabel("Olá, " + nutriName + "!", JLabel.CENTER);
 		greetings.setFont(STD_BOLD_FONT.deriveFont(25f));
@@ -48,8 +47,10 @@ public class LoggedPanel extends GenericJPanel {
 		
 		//Cria as possíveis páginas do sistema e as coloca no menu lateral.
 		//Ao clicar em um desses itens, o mesmo executará o método de troca da tela principal do painel logado.
-		SideBarItem customersPage = new SideBarItem("CLIENTES", () -> swapLoggedMainPanel(new CustomersPage(this)));
+		SideBarItem customersPage = new SideBarItem("CLIENTES", () -> swapLoggedMainPanel(new CustomersPage(this)), true);
 		SideBarItem dietPage = new SideBarItem("DIETA TESTE", () -> swapLoggedMainPanel(new DietPage(this)));
+		
+		System.out.println(customersPage.isSelected());
 		
 		SideBarMenu menu = new SideBarMenu(customersPage, dietPage);
 		menu.gbc
@@ -58,6 +59,7 @@ public class LoggedPanel extends GenericJPanel {
 			.insets(15, 40)
 			.anchor("NORTHWEST") //Sobe os itens do menu
 			.grid(0,1);
+		menu.setFirstPanel();
 		
 		
 		SideBarComponent<JSVGCanvas> bottonComponent = new SideBarComponent<JSVGCanvas>(QuestNutri.loadSVG());
@@ -70,6 +72,7 @@ public class LoggedPanel extends GenericJPanel {
 		SideBar fullSideBar = new SideBar(headComponent, menu, bottonComponent);
 		fullSideBar.setMinimumSize(new Dimension(250, this.getHeight()));
 		fullSideBar.setPreferredSize(new Dimension(250, this.getHeight()));
+		
 		this.add(fullSideBar, gbc.wgt(0, 1.0).apple(10).width(1).fill("BOTH"));
 
 		this.add(mainPanel, 
@@ -88,7 +91,7 @@ public class LoggedPanel extends GenericJPanel {
 	 * @param panel
 	 */
 	public void swapLoggedMainPanel(GenericJPanel panel) {
-		this.remove(mainPanel);
+		if(mainPanel != null) this.remove(mainPanel);
 		mainPanel = panel;
 		this.add(mainPanel, gbc);
 		this.revalidate();

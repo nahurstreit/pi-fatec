@@ -5,14 +5,15 @@ import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-import javax.swing.JTextField;
+import javax.swing.JFormattedTextField;
 
+import view.components.StdButton.Action;
 import view.utils.VUtils;
 
 /**
  * Classe para controlar Inputs do Usuário e fornece um texto de orientação de preenchimento chamado "hint".
  */
-public class HintInputField extends JTextField {
+public class HintInputField extends JFormattedTextField {
 	private static final long serialVersionUID = 1L;
 	@SuppressWarnings("unused")
 	private String hint; //Texto de dica de preenchimento que sempre aparecerá
@@ -22,6 +23,10 @@ public class HintInputField extends JTextField {
 	
 	protected Font STD_HINT_FONT = VUtils.loadFont("Montserrat-ExtraLight");
 	protected Font STD_TEXT_FONT = VUtils.loadFont("Montserrat-Regular");
+
+	
+	private String mask;
+	private boolean clearMaskOnSelect = true;
 	
 	/**
 	 * Método Construtor da classe para controlar inputs do usuário e fornecer uma dica de preenchimento
@@ -48,6 +53,10 @@ public class HintInputField extends JTextField {
 					setText("");
 					setFont(STD_TEXT_FONT.deriveFont(fontSize + 1));
 					showHint = false;
+				} else {
+					if(mask != null && clearMaskOnSelect) {
+						setText(getText().replaceAll("\\W", ""));
+					}
 				}
 			}
 			
@@ -60,9 +69,71 @@ public class HintInputField extends JTextField {
 					setText(hint);
 					setFont(STD_HINT_FONT.deriveFont(fontSize));
 					showHint = true;
+				} else {
+					if(mask != null) {
+				        setText(applyMask(getText()));
+					}
 				}
 			}
 		});
 	}
 	
+	public HintInputField(String hint) {
+		this(hint, new Dimension(100, 100), 12f);
+	}
+	
+	public HintInputField setHint(String text) {
+		this.hint = text;
+		setText(text);
+		return this;
+	}
+	
+	public HintInputField setInitialValue(String text) {
+		setFont(STD_TEXT_FONT.deriveFont(fontSize + 1));
+		showHint = false;
+		if(mask != null) text = applyMask(text);
+		setText(text);
+		return this;
+	}
+	
+	public HintInputField setMask(String mask) {
+		this.mask = mask;
+		return this;
+	}
+	
+	public HintInputField clearMaskOnSelect(boolean clear) {
+		this.clearMaskOnSelect = clear;
+		return this;
+	}
+	
+	private String applyMask(String text) {
+		String currentText = text.replaceAll("\\W", "");
+		StringBuilder rT = new StringBuilder();
+        int i = 0;// Variável de controle da posição da String verdadeira
+        for (int j = 0; j < mask.length(); j++) {
+        	if(j > currentText.length()) {
+        		break;
+        	}
+            if(mask.charAt(j) == '#') {
+                rT.append(currentText.charAt(i));
+                i++;
+            } else {
+            	rT.append(mask.charAt(j));
+            }
+        }
+        
+        System.out.println(rT.toString());
+        
+        if(i < currentText.length()) {
+        	for(int j = i; j < currentText.length(); j++) {
+        		rT.append(currentText.charAt(j));
+        	}
+        }
+        
+        return rT.toString();
+	}
+	
+	private HintInputField setFieldValidation(Action event) {
+		return this;
+	}
 }

@@ -16,7 +16,7 @@ public class SideBarMenu extends SideBarComponent<GenericComponent> {
 	 * Define a última label clicada para ter underline.
 	 */
 	private static JLabel lastSelectedLabel = null;
-	private SideBarItem[] items;
+	public SideBarItem[] items;
 	
 	public SideBarMenu(SideBarItem ...items) {
 		this.component = new GenericComponent();
@@ -104,6 +104,12 @@ public class SideBarMenu extends SideBarComponent<GenericComponent> {
         String text = label.getText();
         text = text.replaceAll("<html><u>", "").replaceAll("</u></html>", "");
         label.setText(text);
+    }
+    
+    public void setFirstPanel() {
+    	for(SideBarItem item: items) {
+    		if(item.isSelected()) item.performEvent();
+    	}
     }
     
 }

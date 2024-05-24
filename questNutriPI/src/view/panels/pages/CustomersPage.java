@@ -55,7 +55,7 @@ public class CustomersPage extends GenericPage {
 					typeBox.add(lblTypeBox, typeBox.gbc.grid(0, 0).wgt(1.0).fill("BOTH").insets("3", 0, 10));
 					
 					// Criação da drop box com os possíveis valores de pesquisa
-					String[] searchOptions = {"CPF", "Nome", "Telefone", "Data de Nascimento"};
+					String[] searchOptions = {"CPF", "Nome", "Telefone"};
 					comboBox = new JComboBox<>(searchOptions);
 
 					// Personalizando a fonte no item selecionado
