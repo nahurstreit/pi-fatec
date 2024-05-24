@@ -40,7 +40,7 @@ public class Customer extends CustomerDAO {
 	@Column(name = "cpf")
 	private String cpf;
 
-	@Column(name = "cust_cellphone")
+	@Column(name = "cust_phoneNumber")
 	private String phoneNumber;
 
 	@Column(name = "cust_activityStatus")

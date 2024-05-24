@@ -26,16 +26,23 @@ import model.entities.Customer;
 
 public class CreatePDF {
 
-	private static final String PDF_NAME = "QuestNutri.pdf";
+	private static final Customer TESTE_CUSTOMER = Customer.findByPK(1);
 	private static final String IMG_PATH = "../img/QuestNutri.png";
 
 	public static void main(String[] args) {
+		generate(TESTE_CUSTOMER);
+	}
+	
+	public static void generate(Customer customer) {
+		String pdfName = customer.name +".pdf";
 		System.out.println("Criar PDF usando iText");
 
 		// Caminho para a pasta "Downloads" do usuário atual
 		String userHome = System.getProperty("user.home");
-		String downloadPath = Paths.get(userHome, "Downloads", PDF_NAME).toString();
+		String downloadPath = Paths.get(userHome, "Downloads", pdfName).toString();
 
+		
+		
 		// 1. Documento
 		Document document = new Document();
 
@@ -142,20 +149,6 @@ public class CreatePDF {
 
 			// Fechar o documento
 			document.close();
-
-			// Perguntar ao usuário se deseja imprimir o PDF
-			int response = JOptionPane.showConfirmDialog(null, "Deseja imprimir o PDF?", "Imprimir PDF",
-					JOptionPane.YES_NO_OPTION);
-			if (response == JOptionPane.YES_OPTION) {
-				// Perguntar ao usuário se a impressão será colorida ou em preto e branco
-				Object[] options = { "Colorido", "Preto e Branco" };
-				int colorResponse = JOptionPane.showOptionDialog(null, "Escolha o modo de impressão:",
-						"Modo de Impressão", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options,
-						options[0]);
-
-				// Imprimir o PDF
-				PrinterPDF.printPDF(downloadPath, colorResponse == 0);
-			}
 
 			System.out.println("PDF criado.");
 
