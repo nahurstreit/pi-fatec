@@ -7,7 +7,7 @@ import model.entities.Meal;
 
 public class TestControllers {
 
-	private static final Customer TESTE_CUSTOMER = Customer.findByPK(2);
+	private static final Customer TESTE_CUSTOMER = Customer.findByPK(1);
 	
 	public static void main(String[] args) {
 		PdfGeneratorController.generate(TESTE_CUSTOMER);
