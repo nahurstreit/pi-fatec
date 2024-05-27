@@ -298,12 +298,13 @@ public class PdfGeneratorController {
 
                 // Criar um parágrafo com a informação do cliente
                 Paragraph info = new Paragraph("Informações do Cliente:\n", fontBlue1);
-                Paragraph customerInfo = new Paragraph("Nome: " + customer.name + "\n" + "Idade: " + age + " anos\n", fontBlue12);
+                Paragraph customerInfo = new Paragraph("\nNome: " + customer.name + "\n" + "Idade: " + age + " anos\n\n", fontBlue12);
                 document.add(info);
                 document.add(customerInfo);
 
                 // Organiza as refeições do cliente por dia da semana
                 List<Meal> meals = MealDAO.findAllByCustomerPK(customer.getId());
+                
                 /**
                  *Cria um mapa para armazenar as refeições organizadas por dia da semana
                  *A chave é um número representando o dia da semana (1 = Domingo, 2 = Segunda, ..., 7 = Sábado)
@@ -339,7 +340,7 @@ public class PdfGeneratorController {
                 }
 
                 // Adiciona as refeições ao documento separadas por dia da semana
-                String[] daysOfWeekNames = {"Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"};
+                String[] daysOfWeekNames = {"\nDomingo", "\nSegunda-Feira", "\nTerça-Feira", "\nQuarta-Feira", "\nQuinta-Feira", "\nSexta-Feira", "\nSábado"};
                 for (int i = 1; i <= 7; i++) {
                     List<Meal> dayMeals = mealsByDayOfWeek.get(i);
                     if (!dayMeals.isEmpty()) {

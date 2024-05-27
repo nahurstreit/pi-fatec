@@ -32,5 +32,17 @@ public abstract class UserDAO extends GenericDAO<User> {
 	public static User findOne(String... params) {
 		return GenericDAO.findOne(User.class, params);
 	}
+	
+    /**
+     * Método para excluir um usuário pelo seu ID.
+     * 
+     * @param userId - ID do usuário a ser excluído.
+     */
+    public void delete(int userId) {
+        User user = findByPK(userId);
+        if (user != null) {
+            super.delete(); // Chama o método delete da classe pai (GenericDAO)
+        }
+    }
 
 }

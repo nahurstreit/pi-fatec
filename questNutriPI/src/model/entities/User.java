@@ -95,6 +95,17 @@ public class User extends UserDAO {
 		return this;
 	}
 
+	/**
+	 * Implementação para encontrar um usuário baseado em um campo específico
+	 * @param fieldName
+	 * @param value
+	 * @return
+	 */
+	public static User findOne(String fieldName, String value) {
+		return null; 
+	}
+
+	
 	@Override
 	public String toString() {
 		return "User: {" 
