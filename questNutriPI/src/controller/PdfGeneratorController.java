@@ -31,6 +31,7 @@ import model.dao.MealDAO;
 import model.entities.Customer;
 import model.entities.Food;
 import model.entities.Meal;
+import model.entities.SubFood;
 import view.QuestNutri;
 
 public class PdfGeneratorController {
@@ -354,8 +355,18 @@ public class PdfGeneratorController {
 							for (Food food : foods) {
 								document.add(new Paragraph("        " + food.aliment.name, font3));
 								document.add(new Paragraph("        " + food.quantity + " " + food.unityQt, font12));
-								if (!(food.obs == null)) {
-									document.add(new Paragraph("        observação:" + food.obs, font12));
+								if (food.obs != null && !food.obs.isEmpty()) {
+									document.add(new Paragraph("        Observação: " + food.obs, font12));
+								}
+								List<SubFood> subFoods = food.getSubFoods();
+								if (subFoods != null && !subFoods.isEmpty()) {
+									for (SubFood subFood : subFoods) {
+										document.add(new Paragraph("                Alimento substituto: " + subFood.aliment.name, font4));
+										document.add(new Paragraph("                " + subFood.quantity + " " + subFood.unityQt, font13));
+										if (subFood.obs != null && !subFood.obs.isEmpty()) {
+											document.add(new Paragraph("        observação:" + subFood.obs, font13));
+										}
+									}
 								}
 							}
 						}

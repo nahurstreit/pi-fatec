@@ -2,7 +2,11 @@ package model.dao;
 
 import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+
 import model.entities.User;
+import model.utils.HibernateUtil;
 
 public abstract class UserDAO extends GenericDAO<User> {
 
@@ -15,9 +19,30 @@ public abstract class UserDAO extends GenericDAO<User> {
 	 * 
 	 * @return Lista de User que correspondem aos parâmetros fornecidos.
 	 */
-	public static List<User> findAll(String... params) {
-		return GenericDAO.findAll(User.class, params);
-	}
+	    public static List<User> findAll(String... params) {
+	        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+	            StringBuilder queryString = new StringBuilder("FROM User");
+
+	            if (params.length > 0 && params.length % 2 == 0) {
+	                queryString.append(" WHERE ");
+	                for (int i = 0; i < params.length; i += 2) {
+	                    queryString.append(params[i]).append(" = :").append(params[i]);
+	                    if (i < params.length - 2) {
+	                        queryString.append(" AND ");
+	                    }
+	                }
+	            }
+
+	            Query<User> query = session.createQuery(queryString.toString(), User.class);
+	            for (int i = 0; i < params.length; i += 2) {
+	                query.setParameter(params[i], params[i + 1]);
+	            }
+	            return query.getResultList();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return null;
+	        }
+	    }
 
 	/**
 	 * Método que retorna um User pelo seu id
@@ -29,9 +54,15 @@ public abstract class UserDAO extends GenericDAO<User> {
 		return GenericDAO.findByPK(User.class, id);
 	}
 
-	public static User findOne(String... params) {
-		return GenericDAO.findOne(User.class, params);
-	}
+
+		 public static User findOne(String... params) {
+		        List<User> found = findAll(params);
+		        if (!found.isEmpty()) {
+		            return found.get(0);
+		        }
+		        return null;
+		    }
+	
 	
     /**
      * Método para excluir um usuário pelo seu ID.
