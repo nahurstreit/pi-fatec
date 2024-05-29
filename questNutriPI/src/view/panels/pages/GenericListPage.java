@@ -91,7 +91,7 @@ public abstract class GenericListPage<T> extends GenericPage {
         // InputBox tipo de pesquisa
         inputSearchBox = new HintInputField("Digite aqui...", new Dimension(100, 25), 15f);
         
-     // Adicionar FocusListener ao inputSearchBox
+        // Adicionar FocusListener ao inputSearchBox
         inputSearchBox.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {

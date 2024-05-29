@@ -70,19 +70,21 @@ public class AuthController {
 	 * @param password - Senha do usuário.
 	 * @return Mensagem de sucesso ou erro.
 	 */
-	public String login(String name, String password) {
+	public static boolean doLogin(String name, String password) {
+		boolean res = false;
 		try {
 			User user = UserDAO.findOne("name", name);
 			if (user == null) {
-				return "Usuário não encontrado.";
+				System.out.println("Usuário não encontrado.");
+			} else if (!user.getPassword().equals(password)) {
+				System.out.println("Senha incorreta.");
+			} else {
+				res = true;
 			}
-			if (!user.getPassword().equals(password)) {
-				return "Senha incorreta.";
-			}
-			return "Login realizado com sucesso!";
 		} catch (Exception e) {
-			return "Erro ao logar: " + e.getMessage();
+			System.out.println("Erro ao logar: " + e.getMessage());
 		}
+		return res;
 	}
 
 	/**

@@ -41,4 +41,26 @@ public class CustomerController {
         CustomerFrame frame = new CustomerFrame(customer);
         frame.setVisible(true);
     }
+    
+    public static void saveCustomerPersonalInfo(Customer customer, String name, String birth, String cpf, Double height, String gender) {
+    	if(customer != null) {
+    		System.out.println("Before update: "+customer);
+    		
+    		customer.setName(name)
+    		.setBirth(birth)
+    		.setCpf(cpf)
+    		.setHeight(height)
+    		.setGender(gender.charAt(0));
+    		
+    		
+    		customer.save();
+    		System.out.println("\n\nSaved!");
+    		System.out.println("\nAfter update: "+customer);
+    		
+    	}
+    	
+//		.addRow(name, birth, cpf)
+//		.addRow(height, gender)
+    	
+    }
 }

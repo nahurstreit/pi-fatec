@@ -3,7 +3,6 @@ package model.entities;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +15,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import model.dao.CustomerDAO;
 
 @Entity
@@ -53,7 +51,7 @@ public class Customer extends CustomerDAO {
 	public Double height;
 
 	@Column(name = "cust_birth")
-	public LocalDate birth;
+	private LocalDate birth;
 
 	@Column(name = "cust_gender")
 	public String gender;
@@ -61,9 +59,6 @@ public class Customer extends CustomerDAO {
 	@ManyToOne
     @JoinColumn(name = "idAddress")
 	public Address address;
-	
-	@Transient
-	public ArrayList<Meal> mealStack = new ArrayList<Meal>();
 	
 //	public Customer(String name2, String email2, String cpf2, String phoneNumber2, int activityStatus2,
 //			double settedKcal2, int i, Date birth2, String gender2) {
@@ -191,12 +186,12 @@ public class Customer extends CustomerDAO {
 	
 	/**
 	 * Método para setar a data de nascimento de um Customer.
-	 * @param date - String que representa o dia de nascimento sob o formato 'dd-MM-yyyy';
+	 * @param date - String que representa o dia de nascimento sob o formato 'dd/MM/yyyy';
 	 * @return Retorna o próprio Customer, para implementação de fluent interface.
 	 */
 	public Customer setBirth(String date) {
         try {
-            this.birth = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+            this.birth = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         } catch (DateTimeParseException e) {
             e.printStackTrace();
         }
@@ -252,6 +247,26 @@ public class Customer extends CustomerDAO {
 		return Weight.findLastRegister(this.idCustomer);
 	}
 	
+	/**
+	 * Método que retorna a data de nascimento no formato 'dd/MM/yyyy'
+	 * @return
+	 */
+    public String getBirth() {
+        if (birth != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            return birth.format(formatter);
+        }
+        return "";
+    }
+    
+    /**
+	 * Método que retorna a data de nascimento no formato 'dd/MM/yyyy'
+	 * @return
+	 */
+    public LocalDate getLocalDateBirth() {
+        return birth;
+    }
+	
 	public void createMeal(Meal meal) {
 		this.save();
 		meal.setCustomer(this);
@@ -261,7 +276,11 @@ public class Customer extends CustomerDAO {
 	public String toString() {
 		return "Customer: {"
 		+ "\n    idCustomer: "+ idCustomer
-		+ "\n    name:" + name
+		+ "\n    name: " + name
+		+ "\n    cpf: "+getCPF()
+		+ "\n    birth: "+getBirth()
+		+ "\n    height: "+height
+		+ "\n    gender: "+gender
 		+ "\n}";
 	}
 	

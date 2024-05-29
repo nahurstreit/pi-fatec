@@ -292,7 +292,7 @@ public class PdfGeneratorController {
 						BaseFont.EMBEDDED, 14, Font.NORMAL, BaseColor.BLUE);
 
 				// Calcular a idade do cliente
-				LocalDate birthDate = customer.birth;
+				LocalDate birthDate = customer.getLocalDateBirth();
 				LocalDate currentDate = LocalDate.now();
 				int age = Period.between(birthDate, currentDate).getYears();
 

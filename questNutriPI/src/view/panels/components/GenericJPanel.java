@@ -1,7 +1,10 @@
 package view.panels.components;
 
+import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
 
 public class GenericJPanel extends GeneralJPanelSettings {	
 	private static final long serialVersionUID = 1L;
@@ -37,6 +40,11 @@ public class GenericJPanel extends GeneralJPanelSettings {
 	 */
 	public GenericJPanel ltGridBag() {
 		this.setLayout(new GridBagLayout());
+		return this;
+	}
+	
+	public GenericJPanel setBorder() {
+		setBorder(BorderFactory.createLineBorder(Color.black));
 		return this;
 	}
 	

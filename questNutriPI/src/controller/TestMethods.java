@@ -13,12 +13,12 @@ public class TestMethods {
 		Meal meal1 = Meal.findByPK(3);
 		double totalKcal = CalculateKcal.calculateKcal(meal1);
 		System.out.println("Total de calorias da refeição: " + totalKcal);
-//		  String cpf = JOptionPane.showInputDialog("Digite um CPF:");
-//		
-//		  System.out.printf("\nResultado: ");
-//	      if(CpfValidate.cpfValidate(cpf) == true)
-//	    	  System.out.println(CpfValidate.imprimeCPF(cpf));
-//	        else System.out.println("\nErro, Cpf invalido");
+		  String cpf = JOptionPane.showInputDialog("Digite um CPF:");
+		
+		  System.out.printf("\nResultado: ");
+	      if(CpfValidate.cpfValidate(cpf) == true)
+	    	  System.out.println(CpfValidate.imprimeCPF(cpf));
+	        else System.out.println("\nErro, Cpf invalido");
 
 	}
 

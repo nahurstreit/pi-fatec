@@ -10,11 +10,13 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
 import org.apache.batik.swing.JSVGCanvas;
 
+import controller.AuthController;
 import model.utils.HibernateUtil;
 import view.panels.LoggedPanel;
 import view.panels.LoginPanel;
@@ -31,6 +33,7 @@ public class QuestNutri {
     
     //CONFIG
     private static final boolean SHOWLOGO = false;
+    private static final boolean  SKIP_LOGIN = true;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -62,9 +65,19 @@ public class QuestNutri {
     /**
      * TROCAR DEPOIS: AuthController
      */
-    public static void doLogin() {
-        loggedPanel = new LoggedPanel("{nutri}");
-        swapAppPanel(loggedPanel);
+    @SuppressWarnings("unused")
+	public static void doLogin(String userName, String password) {
+    	try {
+			if(AuthController.doLogin(userName, password) || SKIP_LOGIN) {
+				loggedPanel = new LoggedPanel("{nutri}");
+		        swapAppPanel(loggedPanel); 
+			} else {
+				JOptionPane.showMessageDialog(null, "Usuário incorreto!");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+    	       
     }
 
     /**

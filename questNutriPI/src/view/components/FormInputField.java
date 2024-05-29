@@ -1,19 +1,16 @@
 package view.components;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.List;
 
-import view.panels.pages.subpages.components.FormBoxInput;
+import validate.ValidationRule;
 
 public class FormInputField extends HintInputField {
 	private static final long serialVersionUID = 1L;
-
-	public interface ValidationRule {
-		boolean isValid(String text);
-	}
 	
-	private ValidationRule rule;
+	private List<ValidationRule> validationRules = new ArrayList<>();
 	private FormBoxInput ownerBox;
-	private String errorMsg = "Error!";
 	
 	public FormInputField(String hint, Dimension size, float fontSize) {
 		super(hint, size, fontSize);
@@ -23,14 +20,8 @@ public class FormInputField extends HintInputField {
 		super(hint);
 	}
 	
-	public FormInputField setValidationRule(ValidationRule rule) {
-		this.rule = rule;
-		return this;
-	}
-	
-	public FormInputField setValidationRule(ValidationRule rule, String errorMsg) {
-		this.rule = rule;
-		this.errorMsg = errorMsg;
+	public FormInputField addValidationRule(ValidationRule ...rules) {
+		for(ValidationRule rule: rules) validationRules.add(rule);
 		return this;
 	}
 	
@@ -39,17 +30,21 @@ public class FormInputField extends HintInputField {
 		return this;
 	}
 	
-	@Override
-	public Object getValue() {
-		Object result = super.getValue();
-		if(rule != null) {
-			if(!rule.isValid(result.toString()) && showHint == false) {
-				ownerBox.setErrorLbl(errorMsg);
-			} else {
-				ownerBox.setErrorLbl("");
-			}
-		}
-		return result;
-	}
+	 @Override
+    public Object getValue() {
+        Object result = super.getValue();
+        if (!showHint) {
+        	if(ownerBox != null && validationRules != null && validationRules.size() > 0) {
+                for(ValidationRule rule: validationRules) {
+                    if (!rule.isValid(result.toString())) {
+                        ownerBox.setErrorLbl(rule.getErrorMessage());
+                        return result;
+                    }
+                }
+                ownerBox.setErrorLbl(""); //Se não tiver erro, limpa a label de erro
+        	}
+        }
+        return result;
+    }
 	
 }

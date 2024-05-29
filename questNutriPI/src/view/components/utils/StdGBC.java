@@ -133,6 +133,10 @@ public class StdGBC extends GridBagConstraints {
 			break;
 		case "NORTHWEST":
 			this.anchor = GridBagConstraints.NORTHWEST;
+			break;
+		case "EAST":
+			this.anchor = GridBagConstraints.EAST;
+			break;
 		}
 		return this;
 	}

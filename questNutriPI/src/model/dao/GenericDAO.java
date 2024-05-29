@@ -10,11 +10,6 @@ import org.hibernate.query.Query;
 import model.utils.HibernateUtil;
 
 public abstract class GenericDAO<T> {
-	/*
-	 * Variavel que armazena a fábrica sessões do Hibernate usadas para interagir com o banco de dados
-	 */
-	protected static final SessionFactory SESSION_FACTORY = HibernateUtil.getSessionFactory();//
-
 	/**
 	 * Método para salvar um registro no banco de dados do objeto enviado.
 	 * <\n>Se o objeto <b><u>NÃO EXISTIR</u></b> no banco de dados, será criado.
@@ -25,7 +20,7 @@ public abstract class GenericDAO<T> {
 	 */
 	public boolean save() {
 		boolean result = true;
-		try (Session session = SESSION_FACTORY.openSession()) {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			session.beginTransaction();
 			session.merge(this);
 			session.getTransaction().commit();
@@ -45,7 +40,7 @@ public abstract class GenericDAO<T> {
 	 */
 	public boolean delete() {
 		boolean result = true;
-		try (Session session = SESSION_FACTORY.openSession()) {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			session.beginTransaction();
 			session.remove(this);
 			session.getTransaction().commit();

@@ -6,6 +6,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 import javax.swing.JFormattedTextField;
+import javax.swing.SwingUtilities;
 
 import view.utils.VUtils;
 
@@ -42,6 +43,7 @@ public class HintInputField extends JFormattedTextField {
 		this.setFont(this.STD_HINT_FONT.deriveFont(fontSize));
 		
 		this.addFocusListener(new FocusListener() { //Adicionando um Listener de Foco
+			private int caretPosition; //Definindo explicitamente a posição do caret
 			
 			/**
 			 * Método que esconde a dica do TextField
@@ -61,6 +63,9 @@ public class HintInputField extends JFormattedTextField {
 						setCaretPosition(text.length());
 					}
 				}
+				
+				if(caretPosition == 0) caretPosition = getText().length(); //Definindo a posição do caret
+                SwingUtilities.invokeLater(() -> setCaretPosition(caretPosition)); //Salvando a posição final do caret
 			}
 			
 			/**
@@ -68,6 +73,7 @@ public class HintInputField extends JFormattedTextField {
 			 * @Override
 			 */
 			public void focusLost(FocusEvent e) {// Se o foco do input for perdido e não tiver texto, volta ao original.
+				caretPosition = getCaretPosition();
 				if(getText().isBlank()) {
 					setText(hint);
 					setFont(STD_HINT_FONT.deriveFont(fontSize));
@@ -79,6 +85,7 @@ public class HintInputField extends JFormattedTextField {
 				}
 			}
 		});
+
 	}
 	
 	public HintInputField(String hint) {
@@ -95,6 +102,7 @@ public class HintInputField extends JFormattedTextField {
 		setFont(STD_TEXT_FONT.deriveFont(fontSize + 1));
 		showHint = false;
 		if(mask != null) text = applyMask(text);
+		setValue(text);
 		setText(text);
 		return this;
 	}

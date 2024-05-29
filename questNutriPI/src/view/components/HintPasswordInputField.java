@@ -120,7 +120,7 @@ public class HintPasswordInputField extends HintInputField {
      * Método que recupera o verdadeiro texto digitado pelo usuário
      * @return <b>String</b> -> Representa o verdadeiro texto que o usuário estava digitando.
      */
-    private String getRealText() {
+    public String getRealText() {
     	String text = "";
     	for(int i = 0; i < realText.size(); i++) text += realText.get(i);
     	return text;
