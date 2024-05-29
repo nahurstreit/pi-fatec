@@ -17,26 +17,26 @@ public class Address extends AddressDAO {
 	public Integer idAddress;
 
 	@Column(name = "addr_street")
-	public String addrStreet;
+	public String street;
 
 	@Column(name = "addr_num")
 	
-	public Integer addrNum;
+	public Integer number;
 
 	@Column(name = "addr_comp")
-	public String addrComp;
+	public String comp;
 
 	@Column(name = "addr_cep")
-	public String addrCep;
+	public String cep;
 
 	@Column(name = "addr_neighborhood")
-	public String addrNeighborhood;
+	public String hood;
 
 	@Column(name = "addr_city")
-	public String addrCity;
+	public String city;
 
 	@Column(name = "addr_state")
-	public String addrState;
+	public String state;
 
 	/**
 	 * 
@@ -49,16 +49,16 @@ public class Address extends AddressDAO {
 	 * @param addrCity Recebe a Cidade do Endereeço
 	 * @param addrState Recebe o Estado do Endereço
 	 */
-	public Address(Integer idAddress, String addrStreet, Integer addrNum, String addrComp, String addrCep,
-			String addrNeighborhood, String addrCity, String addrState) {
+	public Address(Integer idAddress, String street, Integer number, String comp, String cep,
+			String hood, String city, String state) {
 		this.idAddress = idAddress;
-		this.addrStreet = addrStreet;
-		this.addrNum = addrNum;
-		this.addrComp = addrComp;
-		this.addrCep = addrCep;
-		this.addrNeighborhood = addrNeighborhood;
-		this.addrCity = addrCity;
-		this.addrState = addrState;
+		this.street = street;
+		this.number = number;
+		this.comp = comp;
+		this.cep = cep;
+		this.hood = hood;
+		this.city = city;
+		this.state = state;
 	}
 
 	public Address() {
@@ -69,13 +69,13 @@ public class Address extends AddressDAO {
 	public String toString() {
 		return "Address: {"
 	+ "\n    idAddress:" + idAddress
-	+ "\n    addrStreet:" + addrStreet
-	+ "\n    addrNum:" + addrNum
-	+ "\n    addrComp:" + addrComp
-	+ "\n    addrCep:" + addrCep
-	+ "\n    addrNeighborhood:" + addrNeighborhood
-	+ "\n    addrCity:" + addrCity
-	+ "\n    addrState:" + addrState
+	+ "\n    addrStreet:" + street
+	+ "\n    addrNum:" + number
+	+ "\n    addrComp:" + comp
+	+ "\n    addrCep:" + cep
+	+ "\n    addrNeighborhood:" + hood
+	+ "\n    addrCity:" + city
+	+ "\n    addrState:" + state
 	+ "\n}";
 	}
 	

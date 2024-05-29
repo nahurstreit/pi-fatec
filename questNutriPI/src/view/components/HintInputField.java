@@ -7,7 +7,6 @@ import java.awt.event.FocusListener;
 
 import javax.swing.JFormattedTextField;
 
-import view.components.StdButton.Action;
 import view.utils.VUtils;
 
 /**
@@ -19,7 +18,7 @@ public class HintInputField extends JFormattedTextField {
 	private String hint; //Texto de dica de preenchimento que sempre aparecerá
 	@SuppressWarnings("unused")
 	private float fontSize; //Tamanho da fonte
-	private boolean showHint; //Variável de controle da dica.
+	protected boolean showHint; //Variável de controle da dica.
 	
 	protected Font STD_HINT_FONT = VUtils.loadFont("Montserrat-ExtraLight");
 	protected Font STD_TEXT_FONT = VUtils.loadFont("Montserrat-Regular");
@@ -54,8 +53,12 @@ public class HintInputField extends JFormattedTextField {
 					setFont(STD_TEXT_FONT.deriveFont(fontSize + 1));
 					showHint = false;
 				} else {
+					String text = getText();
+					setCaretPosition(text.length());
 					if(mask != null && clearMaskOnSelect) {
-						setText(getText().replaceAll("\\W", ""));
+						text = text.replaceAll("\\W", "");
+						setText(text);
+						setCaretPosition(text.length());
 					}
 				}
 			}
@@ -122,8 +125,6 @@ public class HintInputField extends JFormattedTextField {
             }
         }
         
-        System.out.println(rT.toString());
-        
         if(i < currentText.length()) {
         	for(int j = i; j < currentText.length(); j++) {
         		rT.append(currentText.charAt(j));
@@ -131,9 +132,5 @@ public class HintInputField extends JFormattedTextField {
         }
         
         return rT.toString();
-	}
-	
-	private HintInputField setFieldValidation(Action event) {
-		return this;
 	}
 }

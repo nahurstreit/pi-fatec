@@ -74,13 +74,13 @@ public class CustomerFrame extends JFrame {
 	private void masterPanelSetup() {
 		framePanel.setLayout(new GridBagLayout());
 		framePanel.add(sideBar, gbc.grid(0).wgt(0, 1.0).insets(0).anchor("WEST").width(1));
-		framePanel.add(mainPanel, gbc.wgt(1.0).fill("BOTH").xP().insets("1", 100, 20));
+		framePanel.add(mainPanel, gbc.wgt(1.0).fill("BOTH").xP());
 	}
 	
 	public void swapMainPanel(GenericJPanel panel) {
 		framePanel.remove(mainPanel);
 		mainPanel = panel;
-		framePanel.add(panel, gbc);
+		framePanel.add(panel, gbc.wgt(1.0).fill("BOTH"));
 		framePanel.revalidate();
 		framePanel.repaint();
 	}

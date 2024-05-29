@@ -12,8 +12,8 @@ import view.panels.components.SideBar;
 import view.panels.components.SideBarComponent;
 import view.panels.components.SideBarItem;
 import view.panels.components.SideBarMenu;
+import view.panels.pages.AlimentsPage;
 import view.panels.pages.CustomersPage;
-import view.panels.pages.DietPage;
 
 /**
  * Classe que define o painel logado do usuário.
@@ -48,9 +48,7 @@ public class LoggedPanel extends GenericJPanel {
 		//Cria as possíveis páginas do sistema e as coloca no menu lateral.
 		//Ao clicar em um desses itens, o mesmo executará o método de troca da tela principal do painel logado.
 		SideBarItem customersPage = new SideBarItem("CLIENTES", () -> swapLoggedMainPanel(new CustomersPage(this)), true);
-		SideBarItem dietPage = new SideBarItem("DIETA TESTE", () -> swapLoggedMainPanel(new DietPage(this)));
-		
-		System.out.println(customersPage.isSelected());
+		SideBarItem dietPage = new SideBarItem("ALIMENTOS", () -> swapLoggedMainPanel(new AlimentsPage(this)));
 		
 		SideBarMenu menu = new SideBarMenu(customersPage, dietPage);
 		menu.gbc

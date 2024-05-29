@@ -1,45 +1,41 @@
-	package controller;
+package controller;
 	
-	import java.awt.Color;
+import java.awt.Color;
 import java.awt.Component;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.function.Function;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
+import model.entities.Aliment;
 import model.entities.Customer;
 import view.panels.components.CustomTableModel;
 import view.panels.components.GeneralJPanelSettings;
 	
 	public class InterfaceController {
-		public static JScrollPane getCustomerList(List<Customer> originList) {
-			// Criação da lista de itens
-	        CustomTableModel<Customer> tableModel = new CustomTableModel<>(new Object[]{"Nome", "CPF", "Telefone"}, 0);
-			for(Customer customer: originList) {
-				tableModel.addObject(customer, 
-						new Object[]{
-								customer.name, 
-								formatCPF(customer.getCPF()), 
-								formatPhoneNumber(customer.phoneNumber)
-								});
-			}
-			
-			JTable table = new JTable(tableModel);
-			table.setRowHeight(20);
-			
-			JTableHeader tableHeader = table.getTableHeader();
+		// Método genérico para criar a tabela
+	    private static <T> JScrollPane createTable(List<T> originList, Object[] columnNames, Function<T, Object[]> rowMapper, Function<T, Runnable> doubleClickAction) {
+	        CustomTableModel<T> tableModel = new CustomTableModel<>(columnNames, 0);
+	        for (T item : originList) {
+	            tableModel.addObject(item, rowMapper.apply(item));
+	        }
+
+	        JTable table = new JTable(tableModel);
+	        table.setRowHeight(20);
+
+	        JTableHeader tableHeader = table.getTableHeader();
 	        tableHeader.setFont(GeneralJPanelSettings.STD_BOLD_FONT.deriveFont(15f));
 	        tableHeader.setBackground(GeneralJPanelSettings.STD_BLUE_COLOR);
 	        tableHeader.setForeground(Color.white);
-			
-			// Criação do renderizador de célula diretamente
-	        DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer() {
-				private static final long serialVersionUID = 1L;
 
-				@Override
+	        DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer() {
+	            private static final long serialVersionUID = 1L;
+
+	            @Override
 	            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 	                Component cellComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 	                cellComponent.setFont(GeneralJPanelSettings.STD_REGULAR_FONT.deriveFont(15f));
@@ -47,33 +43,60 @@ import view.panels.components.GeneralJPanelSettings;
 	            }
 	        };
 
-	        // Aplicar o renderizador de célula personalizado a todas as colunas
 	        for (int i = 0; i < table.getColumnCount(); i++) {
 	            table.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
 	        }
 
-	        // Criação do JScrollPane e passagem da tabela
 	        JScrollPane scrollPane = new JScrollPane(table);
 
-	        // Adiciona um listener de clique duplo à tabela
 	        table.addMouseListener(new java.awt.event.MouseAdapter() {
 	            @Override
 	            public void mouseClicked(java.awt.event.MouseEvent evt) {
 	                int row = table.rowAtPoint(evt.getPoint());
 	                if (row >= 0 && evt.getClickCount() == 2) {
-	                    // Obtém o Customer da linha selecionada
-	                    Customer selectedCustomer = tableModel.getObjectAt(row);
-	                    // Abre o CustomerFrame com o Customer selecionado
-	                    CustomerController.openCustomerFrame(selectedCustomer);
+	                    T selectedItem = tableModel.getObjectAt(row);
+	                    doubleClickAction.apply(selectedItem).run();
 	                }
 	            }
 	        });
 
 	        return scrollPane;
-		}
+	    }
+	    
+	    public static JScrollPane getCustomerList(List<Customer> originList) {
+	        return createTable(
+	                originList,
+	                new Object[]{"Nome", "CPF", "Telefone"},
+	                customer -> new Object[]{
+	                        customer.name,
+	                        formatCPF(customer.getCPF()),
+	                        formatPhoneNumber(customer.phoneNumber)
+	                },
+	                customer -> () -> CustomerController.openCustomerFrame(customer)
+	        );
+	    }
 		
 		public static JScrollPane getCustomerList() {
 			return InterfaceController.getCustomerList(Customer.findAll());
+		}
+		
+		public static JScrollPane getAlimentList(List<Aliment> originList) {
+	        return createTable(
+	                originList,
+	                new Object[]{"Alimento", "Grupo", "kcal (100g)"},
+	                aliment -> new Object[]{
+	                        aliment.name,
+	                        aliment.alimentGroup,
+	                        aliment.kcal
+	                },
+	                aliment -> () -> {
+	                    // Implementar ação de clique duplo para Aliment
+	                }
+	        );
+	    }
+		
+		public static JScrollPane getAlimentList() {
+			return InterfaceController.getAlimentList(Aliment.findAll());
 		}
 		
 		private static String formatCPF(String cpf) {
@@ -94,4 +117,5 @@ import view.panels.components.GeneralJPanelSettings;
 	            return phoneNumber;
 	        }
 	    }
+
 	}

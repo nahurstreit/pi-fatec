@@ -16,7 +16,6 @@ public class CustomerFormPage extends GenericPage {
 		
 		//Criando as linhas do form
 		FormBoxInput name = new FormBoxInput(this).setLbl("Nome").setValue(customer.name);
-		FormBoxInput email = new FormBoxInput(this).setLbl("E-mail").setValue(customer.email);
 		FormBoxInput birth = new FormBoxInput(this)
 								.setLbl("Data de Nascimento")
 								.setMask("##/##/####")
@@ -27,28 +26,114 @@ public class CustomerFormPage extends GenericPage {
 								.setLbl("CPF")
 								.setMask("###-###.###-##")
 								.setValue(customer.getCPF())
-								.clearMaskOnSelect(true);
+								.clearMaskOnSelect(true)
+								.setValidation(value -> {
+									try {
+										Integer.parseInt(value);
+										return true;
+									} catch (Exception e) {
+										return false;
+									}
+								});
 		
-		FormBoxInput telefone = new FormBoxInput(this)
-								.setLbl("Telefone")
-								.setMask("(##) # ####-####")
-								.setValue(customer.phoneNumber)
-								.clearMaskOnSelect(false);
 		
+		FormBoxInput height = new FormBoxInput(this)
+									.setLbl("Altura")
+									.setValue(customer.height + "")
+									.setValidation(value -> {
+										try {
+											double pValue = Double.parseDouble(value);
+											return pValue >= 0.0 && pValue <= 300.00;
+										} catch (Exception e) {
+											return false;
+										}
+									}, "Altura inválida!")
+									.setResponseMiddleware(Double::parseDouble);
 		
+		FormBoxInput gender = new FormBoxInput(this)
+									.setLbl("Gênero")
+									.setValue(customer.gender + "")
+									.setValidation(value -> {
+										try {
+											char c = value.toUpperCase().charAt(0);
+											if(c == 'M' || c == 'F') {
+												return true;
+											}
+											return false;
+										} catch (Exception e) {
+											return false;
+										}
+									}, "Gênero inválido!");
 		//Criando o form de informações pessoais
-		FormComponent customerForm = new FormComponent(this)
-			.addRow(name, email)
-			.addRow(cpf, telefone, birth)
+		FormComponent personalInfo = new FormComponent(this)
+			.addRow(name, birth, cpf)
+			.addRow(height, gender)
+			.setUpName("Informações pessoais")
 			.init();
-
-		add(customerForm, gbc.grid(0).fill("HORIZONTAL").wgt(1.0).anchor("NORTHWEST"));
-		add(new StdButton("Testando", () -> showInputs(name, email, cpf, telefone)), gbc.yP());
+		add(personalInfo, gbc.grid(0).fill("HORIZONTAL").wgt(1.0).anchor("NORTHWEST"));
+		
+		
+		
+		FormBoxInput email = new FormBoxInput(this).setLbl("E-mail").setValue(customer.email);
+		FormBoxInput phoneNumber = new FormBoxInput(this)
+				.setLbl("Telefone")
+				.setMask("(##) # ####-####")
+				.setValue(customer.phoneNumber)
+				.clearMaskOnSelect(false);
+		
+		//Criando o form de informações de contato
+		FormComponent contactInfo = new FormComponent(this)
+			.addRow(email, phoneNumber)
+			.setUpName("Informações de contato")
+			.init();
+		add(contactInfo, gbc.yP());
+		
+		
+		FormBoxInput addrCep = new FormBoxInput(this)
+										.setLbl("CEP")
+										.setMask("#####-###")
+										.clearMaskOnSelect(true)
+										.setValue(customer.address.cep);
+		
+		FormBoxInput addrNumber = new FormBoxInput(this)
+				.setLbl("Número")
+				.setValue(customer.address.number +"");
+		
+		FormBoxInput addrComp = new FormBoxInput(this)
+				.setLbl("Complemento")
+				.setValue(customer.address.comp +"");
+		
+		FormBoxInput addrStreet = new FormBoxInput(this)
+				.setLbl("Rua")
+				.setValue(customer.address.street);
+		
+		FormBoxInput addrHood = new FormBoxInput(this)
+				.setLbl("Bairro")
+				.setValue(customer.address.hood);
+		
+		FormBoxInput addrCity = new FormBoxInput(this)
+				.setLbl("Cidade")
+				.setValue(customer.address.city);
+		
+		FormBoxInput addrState = new FormBoxInput(this)
+				.setLbl("Estado")
+				.setValue(customer.address.state);
+		
+		//Criando o form de informações de endereço
+		FormComponent addrInfo = new FormComponent(this)
+			.addRow(addrCep, addrNumber, addrComp)
+			.addRow(addrStreet)
+			.addRow(addrHood, addrCity, addrState)
+			.setUpName("Endereço")
+			.init();
+		add(addrInfo, gbc.yP());
+		
+		add(new StdButton("Testando", () -> showInputs(height)), gbc.yP());
 	}
 	
 	private void showInputs(FormBoxInput ...inputs) {
 		for(FormBoxInput input: inputs) {
-			System.out.println(input.getValue());
+			System.out.println(input.getValue() instanceof Double);
 		}
 	}
 
