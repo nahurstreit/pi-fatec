@@ -25,6 +25,7 @@
         <mapping class="model.entities.Food"></mapping>
         <mapping class="model.entities.Meal"></mapping>
         <mapping class="model.entities.SubFood"></mapping>
+        <mapping class="model.entities.User"></mapping>
         <mapping class="model.entities.Weight"></mapping>
     </session-factory>
 </hibernate-configuration>

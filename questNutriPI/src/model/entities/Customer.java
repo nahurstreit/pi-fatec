@@ -26,7 +26,7 @@ public class Customer extends CustomerDAO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idCustomer")
-	private Integer idCustomer;
+	public Integer idCustomer;
 
 	@Column(name = "cust_createdAt")
 	private Date createdAt;
@@ -38,7 +38,7 @@ public class Customer extends CustomerDAO {
 	public String email;
 
 	@Column(name = "cpf")
-	private String cpf;
+	public String cpf;
 
 	@Column(name = "cust_phoneNumber")
 	public String phoneNumber;
