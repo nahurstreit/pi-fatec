@@ -36,7 +36,7 @@ public class Customer extends CustomerDAO {
 	public String email;
 
 	@Column(name = "cpf")
-	public String cpf;
+	private String cpf;
 
 	@Column(name = "cust_phoneNumber")
 	public String phoneNumber;
@@ -117,7 +117,7 @@ public class Customer extends CustomerDAO {
 	 * @return Retorna o próprio Customer, para implementação de fluent interface.
 	 */
 	public Customer setCpf(String cpf) {
-		this.cpf = cpf;
+		this.cpf = cpf.replaceAll("\\D", "");
 		return this;
 	}
 	
@@ -127,7 +127,7 @@ public class Customer extends CustomerDAO {
 	 * @return Retorna o próprio Customer, para implementação de fluent interface.
 	 */
 	public Customer setPhone(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+		this.phoneNumber = phoneNumber.replaceAll("\\D", "");
 		return this;
 	}
 	

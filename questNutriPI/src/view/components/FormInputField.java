@@ -30,10 +30,10 @@ public class FormInputField extends HintInputField {
 		return this;
 	}
 	
-	 @Override
+	@Override
     public Object getValue() {
         Object result = super.getValue();
-        if (!showHint) {
+        if(!showHint) {
         	if(ownerBox != null && validationRules != null && validationRules.size() > 0) {
                 for(ValidationRule rule: validationRules) {
                     if (!rule.isValid(result.toString())) {

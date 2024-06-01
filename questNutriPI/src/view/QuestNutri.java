@@ -67,10 +67,11 @@ public class QuestNutri {
      */
     @SuppressWarnings("unused")
 	public static void doLogin(String userName, String password) {
+    	loggedPanel = new LoggedPanel("{nutri}");
+        swapAppPanel(loggedPanel);
     	try {
 			if(AuthController.doLogin(userName, password) || SKIP_LOGIN) {
-				loggedPanel = new LoggedPanel("{nutri}");
-		        swapAppPanel(loggedPanel); 
+				
 			} else {
 				JOptionPane.showMessageDialog(null, "Usuário incorreto!");
 			}

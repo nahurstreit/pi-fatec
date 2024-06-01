@@ -19,6 +19,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import view.components.HintInputField;
+import view.components.StdButton;
+import view.components.StdButton.Action;
 import view.panels.components.GenericComponent;
 import view.panels.components.GenericJPanel;
 
@@ -29,6 +31,11 @@ public abstract class GenericListPage<T> extends GenericPage {
     protected JScrollPane itemList = null;
     protected JComboBox<String> comboBox;
     protected HintInputField inputSearchBox;
+    
+    /**
+     * Variável para controlar a distância lateral e inferior do central box;
+     */
+    private int centralBoxLateralDownPadding = 40;
 
     public GenericListPage(GenericJPanel ownerPanel, String[] searchOptions, String pageTitle, Function<List<T>, JScrollPane> listFetcher) {
         super(ownerPanel);
@@ -89,7 +96,7 @@ public abstract class GenericListPage<T> extends GenericPage {
         searchBox.add(lblSearchBox, searchBox.gbc.grid(0, 0).wgt(1.0).fill("BOTH").insets("3", 0, 10));
 
         // InputBox tipo de pesquisa
-        inputSearchBox = new HintInputField("Digite aqui...", new Dimension(100, 25), 15f);
+        inputSearchBox = new HintInputField("", new Dimension(100, 25), 15f);
         
         // Adicionar FocusListener ao inputSearchBox
         inputSearchBox.addFocusListener(new FocusListener() {
@@ -153,7 +160,19 @@ public abstract class GenericListPage<T> extends GenericPage {
         pageLbl.setFont(STD_BOLD_FONT.deriveFont(40f));
         this.add(pageLbl, gbc.grid(0));
 
-        this.add(blueBox, gbc.yP().wgt(1.0).insets("1", 20, 40).fill("BOTH"));
+        this.add(blueBox, gbc.yP().wgt(1.0).insets("1", 20, centralBoxLateralDownPadding).fill("BOTH"));
+    }
+    
+    protected void setCentralBoxLateralPadding(int value) {
+    	this.centralBoxLateralDownPadding = value;
+    }
+    
+    protected void setCreateBtn(Action createFunction) {
+        StdButton createOne = new StdButton("Criar novo", createFunction)
+        						.setColors(Color.white, STD_BLUE_COLOR)
+    							.setUpFont(STD_BOLD_FONT.deriveFont(15f))
+    							.setUpSize(new Dimension(150, 35));
+        this.add(createOne, gbc.grid(0).anchor("EAST").insets("4", centralBoxLateralDownPadding, 0).wgt(0).fill("NONE"));
     }
 
     protected abstract void performSearch();

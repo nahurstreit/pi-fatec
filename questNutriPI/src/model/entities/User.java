@@ -21,7 +21,7 @@ public class User extends UserDAO {
 	@Column(name = "userName")
 	private String name;
 
-	@Column(name = "usePassword")
+	@Column(name = "userPassword")
 	private String password;
 
 	@Column(name = "systemLevel")

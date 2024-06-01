@@ -8,4 +8,8 @@ public abstract class AddressDAO extends GenericDAO<Address>{
 		return GenericDAO.findByPK(Address.class, id);
 	}
 	
+	public static Address findLast() {
+		return GenericDAO.findLast(Address.class);
+	}
+	
 }

@@ -33,5 +33,9 @@ public abstract class CustomerDAO extends GenericDAO<Customer>{
 	public static Customer findOne(String ...params) {
 		return GenericDAO.findOne(Customer.class, params);
 	}
+	
+	public static Customer findLast() {
+		return GenericDAO.findLast(Customer.class);
+	}
      
 }

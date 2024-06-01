@@ -1,8 +1,6 @@
 package view.panels.pages.subpages;
 
-import java.awt.Color;
-
-import javax.swing.JScrollPane;
+import javax.swing.JOptionPane;
 
 import controller.CustomerController;
 import model.entities.Customer;
@@ -12,172 +10,266 @@ import validate.ValidationRule;
 import view.components.FormBoxInput;
 import view.components.FormSection;
 import view.components.StdButton;
-import view.panels.components.GeneralJPanelSettings;
 import view.panels.components.GenericJPanel;
-import view.panels.pages.GenericPage;
+import view.panels.pages.GenericFormPage;
 
-public class CustomerFormPage extends GenericPage {
+public class CustomerFormPage extends GenericFormPage {
 	private static final long serialVersionUID = 1L;
+	protected Customer customer;
+	
 
+	//Campos do formulário para poder acessar os resultados rapidamente
+		//personalInfo
+			protected FormBoxInput name;
+			protected FormBoxInput birth;
+			protected FormBoxInput cpf;
+			protected FormBoxInput height;
+			protected FormBoxInput gender;
+
+		//contactInfo
+			protected FormBoxInput email;
+			protected FormBoxInput phoneNumber;
+			
+		//addrInfo!
+			protected FormBoxInput addrCep;
+			protected FormBoxInput addrNumber;
+			protected FormBoxInput addrComp;
+			protected FormBoxInput addrStreet;
+			protected FormBoxInput addrHood;
+			protected FormBoxInput addrCity;
+			protected FormBoxInput addrState;
+			
+		//Valores padrões de validação
+			private final int MIN_SIZE_NAME = 5;
+			private final int MAX_SIZE_NAME = 50;
+			
+			private final double MIN_HEIGHT = 0.0;
+			private final double MAX_HEIGHT = 300.0;
+			
+			private final String STD_DATE_PATTERN = "dd/mm/aaaa";
+			
+	
 	public CustomerFormPage(GenericJPanel ownerPanel, Customer customer) {
 		super(ownerPanel);
-		ltGridBag();
-		setBackground(Color.white);
+		this.customer = customer;
+		buildForm();
+	}
+
+	@Override
+	protected GenericFormPage buildForm() {
+		build(personalInfo().init(), contactInfo().init(), addrInfo().init());
+		return this;
+	}
+	
+	private StdButton btnSavePersonalInfo() {
+		StdButton saveBtn = stdBtnConfig("Salvar");
 		
-		// Criação de um JPanel para conter os formulários
-        GenericJPanel contentPanel = new GenericJPanel().ltGridBag();
-        
-     // Configuração do JScrollPane
-        JScrollPane scrollPane = new JScrollPane(contentPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		saveBtn.setAction(() -> {
+			if(validateFields(name, birth, cpf, height, gender)) {
+			   	if(CustomerController.saveCustPersonalInfo(customer, 
+			   			name.getValue(), birth.getValue(), cpf.getValue(), 
+			   			height.getValue(), gender.getValue())
+			   		) {
+				   		JOptionPane.showMessageDialog(null, "Dados salvos!");
+				   	} else {
+				   		JOptionPane.showMessageDialog(null, "Não foi possível salvar.");
+				   	}
+			}
+
+	   });
 		
+		return saveBtn;
+	}
+	
+	protected FormSection personalInfo() {
 		//Criando as linhas do form
-		FormBoxInput name = new FormBoxInput(this)
-								.setLbl("Nome")
-								.setValue(customer.name)
-								.addValidation(
-										new ValidationRule(
-												value -> {
-													return !Validate.hasNumber(value);
-												},
-												"Não é permitido ter números!"
-										),
-										new ValidationRule(
-												value -> {
-													return Validate.sizeBetween(value, 5, 50);
-												},
-												"Tamanho precisa ser entre 5 e 50.")
-								);//#end addValidation
+		name = new FormBoxInput(this).setLbl("Nome")
+									 .setValue(customer.name)
+									 .addValidation(
+										  new ValidationRule(
+												  value -> {
+													  return !Validate.hasNumber(value);
+												  }, "Não é permitido ter números!"),
+										  new ValidationRule(
+												  value -> {
+													  return Validate.sizeBetween(value, MIN_SIZE_NAME, MAX_SIZE_NAME);
+												  }, "Tamanho precisa ser entre "+MIN_SIZE_NAME+" e "+MAX_SIZE_NAME+"."));
 		
-		FormBoxInput birth = new FormBoxInput(this)
-								.setLbl("Data de Nascimento")
-								.setMask("##/##/####")
-								.setValue(customer.getBirth())
-								.clearMaskOnSelect(false);
+		birth = new FormBoxInput(this).setLbl("Data de Nascimento")
+									  .setMask("##/##/####")
+									  .setValue(customer.getBirth())
+									  .clearMaskOnSelect(false)
+									  .addValidation(
+											  new ValidationRule(
+													  value -> {
+														  return !Validate.hasChar(value, '/');
+													  }, "Não é permitido ter letras!"),
+											  new ValidationRule(
+													  value -> {
+														  return Validate.isDate(value);
+													  }, "Data inválida! Preencha: "+STD_DATE_PATTERN));
 		
-		FormBoxInput cpf = new FormBoxInput(this)
-								.setLbl("CPF")
-								.setMask("###.###.###-##")
-								.setValue(customer.getCPF())
-								.clearMaskOnSelect(true)
-								.addValidation(
-										new ValidationRule(
-												value -> {	
-													return CpfValidate.cpfValidate(value);
-												},
-												"CPF inválido!")
-								);//#end addValidation
-		
-		FormBoxInput height = new FormBoxInput(this)
-									.setLbl("Altura (cm)")
-									.setValue(customer.height + "")
+		cpf = new FormBoxInput(this).setLbl("CPF")
+									.setMask("###.###.###-##")
+									.setValue(customer.getCPF())
+									.clearMaskOnSelect(true)
 									.addValidation(
 											new ValidationRule(
-													value -> {
-														try {
-															double pValue = Double.parseDouble(value);
-															return pValue >= 0.0 && pValue <= 300.00;
-														} catch (Exception e) {
-															return false;
-														}
-													},
-													"Altura inválida!")
-									)//#end addValidation
-;
+													  value -> {
+														  return !Validate.hasChar(value, '.', '-');
+													  }, "Não é permitido ter letras!"),
+											new ValidationRule(
+													  value -> {
+														  String v = value.replaceAll("\\D", "");
+														  if(!v.isBlank()) {
+															  return (v.length() == 11);
+														  }
+														  return false;
+													  }, "Digite um CPF válido."),
+											new ValidationRule(
+													value -> {	
+														return CpfValidate.cpfValidate(value);
+													}, "CPF inválido!"));
 		
-		FormBoxInput gender = new FormBoxInput(this).setComboBoxInput(customer.gender, "M", "F")
-									.setLbl("Gênero");
+		height = new FormBoxInput(this).setLbl("Altura (cm)")
+									   .setValue(customer.height + "")
+									   .addValidation(
+											   new ValidationRule(
+														  value -> {
+															  return !Validate.hasChar(value, '.', ',');
+														  }, "Não é permitido ter letras!"),
+											   new ValidationRule(
+														  value -> {
+															  return !Validate.haveSpecifChar(value, ',');
+														  }, "Use ponto no lugar de vírgula."),
+											   new ValidationRule(
+													   value -> {
+														   try {
+															   double pValue = Double.parseDouble(value);
+															   return pValue >= MIN_HEIGHT && pValue <= MAX_HEIGHT;
+														   } catch (Exception e) {
+															   return false;
+														   }
+													   },"Digite uma altura entre "+ MIN_HEIGHT +" e "+MAX_HEIGHT+"!"));
+		
+		
+		gender = new FormBoxInput(this).setLbl("Gênero")
+									   .setComboBoxInput(customer.gender, "M", "F");
 		
 		//Criando o form de informações pessoais
-		FormSection personalInfo = new FormSection(this)
-			.addRow(name, birth, cpf)
-			.addRow(height, gender)
-			.setUpName("Informações pessoais")
-			.setInteractBtn(
-					new StdButton("Salvar", 
-							() -> CustomerController.saveCustomerPersonalInfo(
-										customer,
-										(String) name.getValue(),
-										(String) birth.getValue(),
-										(String) cpf.getValue(),
-										Double.parseDouble((String) height.getValue()),
-										(String) gender.getValue()
-									))
-					.setUpFont(GeneralJPanelSettings.STD_BOLD_FONT.deriveFont(12f))
-					.setColors(Color.white, STD_BLUE_COLOR))
-			.init();
-		contentPanel.add(personalInfo, contentPanel.gbc.grid(0).fill("BOTH").wgt(1.0).anchor("NORTHWEST"));
+		FormSection personalInfo = new FormSection(this).setUpName("Informações pessoais")
+														.addRow(name, birth, cpf)
+														.addRow(height, gender)
+														.setInteractBtn(btnSavePersonalInfo());
 		
+		return personalInfo;
+	}
+	
+	private StdButton btnSaveContactInfo() {
+		StdButton saveBtn = stdBtnConfig("Salvar");
 		
+		saveBtn.setAction(() -> {
+		   	if(CustomerController.saveCustomerContactInfo(
+		   			customer,
+		   			email.getValue(),
+		   			phoneNumber.getValue())
+		   	  ) { //end if
+			   		JOptionPane.showMessageDialog(null, "Dados salvos!");
+			   	} else {
+			   		JOptionPane.showMessageDialog(null, "Não foi possível salvar.");
+			   	}
+	   });
 		
-		FormBoxInput email = new FormBoxInput(this).setLbl("E-mail").setValue(customer.email);
-		FormBoxInput phoneNumber = new FormBoxInput(this)
-				.setLbl("Telefone")
-				.setMask("(##) # ####-####")
-				.setValue(customer.phoneNumber)
-				.clearMaskOnSelect(false);
+		return saveBtn;
+	}
+	
+	protected FormSection contactInfo() {
+		
+		email = new FormBoxInput(this).setLbl("E-mail")
+								      .setValue(customer.email);
+		
+		phoneNumber = new FormBoxInput(this).setLbl("Telefone")
+										 	.setMask("(##) # ####-####")
+										 	.setValue(customer.phoneNumber)
+										 	.clearMaskOnSelect(false)
+										 	.addValidation(
+										 			new ValidationRule(
+															  value -> {
+																  return !Validate.hasChar(value, '(', ')', '-');
+															  }, "Não é permitido ter letras!"));
 		
 		//Criando o form de informações de contato
-		FormSection contactInfo = new FormSection(this)
-			.addRow(email, phoneNumber)
-			.setUpName("Informações de contato")
-			.init();
-		contentPanel.add(contactInfo, contentPanel.gbc.yP());
+		FormSection contactInfo = new FormSection(this).setUpName("Informações de contato")
+													   .addRow(email, phoneNumber)
+													   .setInteractBtn(btnSaveContactInfo());
 		
+		return contactInfo;
+	}
+	
+	private StdButton btnSaveAddrInfo() {
+		StdButton saveBtn = stdBtnConfig("Salvar");
 		
-		FormBoxInput addrCep = new FormBoxInput(this)
-										.setLbl("CEP")
-										.setMask("#####-###")
-										.clearMaskOnSelect(true)
-										.setValue(customer.address.cep);
+		saveBtn.setAction(() -> {
+		   	if(CustomerController.saveCustomerAddrInfo(
+		   			customer,
+		   			addrCep.getValue(),
+		   			addrNumber.getValue(),
+		   			addrComp.getValue(),
+		   			addrStreet.getValue(),
+		   			addrHood.getValue(),
+		   			addrCity.getValue(),
+		   			addrState.getValue())
+		   	  ) { //end if
+			   		JOptionPane.showMessageDialog(null, "Dados salvos!");
+			   	} else {
+			   		JOptionPane.showMessageDialog(null, "Não foi possível salvar.");
+			   	}
+	   });
 		
-		FormBoxInput addrNumber = new FormBoxInput(this)
-				.setLbl("Número")
-				.setValue(customer.address.number +"");
+		return saveBtn;
+	}
+	
+	protected FormSection addrInfo() {
+		addrCep = new FormBoxInput(this).setLbl("CEP")
+ 									    .setMask("#####-###")
+ 									    .clearMaskOnSelect(true);
 		
-		FormBoxInput addrComp = new FormBoxInput(this)
-				.setLbl("Complemento")
-				.setValue(customer.address.comp +"");
+		addrNumber = new FormBoxInput(this).setLbl("Número");
+	
+		addrComp = new FormBoxInput(this).setLbl("Complemento");
 		
-		FormBoxInput addrStreet = new FormBoxInput(this)
-				.setLbl("Rua")
-				.setValue(customer.address.street);
+		addrStreet = new FormBoxInput(this).setLbl("Rua");
 		
-		FormBoxInput addrHood = new FormBoxInput(this)
-				.setLbl("Bairro")
-				.setValue(customer.address.hood);
+		addrHood = new FormBoxInput(this).setLbl("Bairro");
 		
-		FormBoxInput addrCity = new FormBoxInput(this)
-				.setLbl("Cidade")
-				.setValue(customer.address.city);
-		
+		addrCity = new FormBoxInput(this).setLbl("Cidade");
+	
 		String[] brazilStates = {
 			    "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", 
 			    "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", 
 			    "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"
 			};
-		
-		FormBoxInput addrState = new FormBoxInput(this).setComboBoxInput(customer.address.state, brazilStates)
-				.setLbl("Estado");
-		
-		//Criando o form de informações de endereço
-		FormSection addrInfo = new FormSection(this)
-			.addRow(addrCep, addrNumber, addrComp)
-			.addRow(addrStreet)
-			.addRow(addrHood, addrCity, addrState)
-			.setUpName("Endereço")
-			.init();
-		contentPanel.add(addrInfo, contentPanel.gbc.yP());
-		
-		
-		add(scrollPane, gbc.fill("BOTH").wgt(1.0).grid(0));
-	}
 	
-	private void showInputs(FormBoxInput ...inputs) {
-		for(FormBoxInput input: inputs) {
-			System.out.println(input.getValue() instanceof Double);
+		addrState = new FormBoxInput(this).setLbl("Estado");
+		
+		if(customer.address != null) {
+			addrCep.setValue(customer.address.cep + "");
+			addrNumber.setValue(customer.address.number + ""); 
+			addrComp.setValue(customer.address.comp);
+			addrStreet.setValue(customer.address.street);
+			addrHood.setValue(customer.address.hood);
+			addrCity.setValue(customer.address.city);
+			addrState.setComboBoxInput(customer.address.state, brazilStates);
+		} else {
+			addrState.setComboBoxInput(null, brazilStates);
 		}
+	
+		//Criando o form de informações de endereço
+		FormSection addrInfo = new FormSection(this).setUpName("Endereço")
+													.addRow(addrCep, addrNumber, addrComp)
+													.addRow(addrStreet)
+													.addRow(addrHood, addrCity, addrState)
+													.setInteractBtn(btnSaveAddrInfo());
+		return addrInfo;
 	}
-
 }

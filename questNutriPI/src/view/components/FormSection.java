@@ -23,8 +23,6 @@ public class FormSection extends GenericComponent {
 	private int nameUpperDistance = 20;
 	private int nameDownDistance = 5;
 	
-
-	
 	public FormSection(GenericJPanel ownerPanel) {
 		super(ownerPanel);
 		ltGridBag();
@@ -48,8 +46,10 @@ public class FormSection extends GenericComponent {
 	
 	public FormSection setInteractBtn(StdButton btn) {
 		this.interactionBtn = btn;
-		interactionBtn.setPreferredSize(interactionBtnSize);
-		interactionBtn.setMaximumSize(interactionBtnSize);
+		if(interactionBtn != null) {
+			interactionBtn.setPreferredSize(interactionBtnSize);
+			interactionBtn.setMaximumSize(interactionBtnSize);
+		}
 		return this;
 	}
 	
@@ -68,6 +68,18 @@ public class FormSection extends GenericComponent {
 		return this;
 	}
 	
+	/**
+	 * Método de inicialização visual do FormSection. Este deve ser o <b>último</b> método chamado
+	 * pela fluent interface. Deixar de chamar este método não resultará em erros, mas não será exibido
+	 * a parte gráfica do objeto.
+	 * @details
+	 * O objeto não é inicializado graficamente quando é instanciado pois, com a implementação
+	 * do fluent interface, é esperado a chamada sucessiva de métodos para definir suas configurações
+	 * gráficas. Se as partes gráficas do objeto fossem criadas no momento da instanciação, não seria
+	 * possível aplicar fluent interface sem aplicar sucessivas atualizações do objeto, em cada um dos métodos,
+	 * o que poderia reduzir drasticamente a performance da aplicação.
+	 * @return Retorna o próprio objeto FormSection para implementação de fluent interface.
+	 */
 	public FormSection init() {
 		GenericJPanel panel = new GenericJPanel().ltGridBag();
 		panel.setBackground(Color.white);

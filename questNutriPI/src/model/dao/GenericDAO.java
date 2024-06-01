@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
 import model.utils.HibernateUtil;
@@ -111,5 +110,16 @@ public abstract class GenericDAO<T> {
             return found.get(0);
         }
         return null;
+    }
+    
+	/**
+	 * Método que procura e retorna o último registro feito na tabela de uma Classe mapeada pelo ORM.
+	 * @param <T> - Classe de retorno.
+	 * @param entityType - Definição da Classe de retorno e busca.
+	 * @param params - Complemento da query de busca.
+	 * @return Retorna uma instância do tipo (EntityType) caso encontrada, senão null.
+	 */
+    protected static <T> T findLast(Class<T> entityType) {
+    	return GenericDAO.findOne(entityType, " ORDER BY id DESC");
     }
 }

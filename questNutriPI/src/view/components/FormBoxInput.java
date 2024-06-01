@@ -3,6 +3,8 @@ package view.components;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 import javax.swing.DefaultListCellRenderer;
@@ -108,11 +110,17 @@ public class FormBoxInput extends GenericComponent {
 	}
 	
 	public FormBoxInput setValue(String text) {
-		if(text.equalsIgnoreCase("null")) return this;
-		try {
-			tfInput.setInitialValue(text);
-		} catch (Exception e) {
-			cbInput.setSelectedItem(text);
+		if(text != null) {
+			if(text.equalsIgnoreCase("null")) return this;
+			try {
+				tfInput.setInitialValue(text);
+			} catch (Exception e) {
+				try {
+					cbInput.setSelectedItem(text);
+				} catch(Exception e2) {
+				}
+				
+			}
 		}
 		return this;
 	}
@@ -136,11 +144,6 @@ public class FormBoxInput extends GenericComponent {
         return this;
     }
 	
-	public FormBoxInput setResponseMiddleware(Function<String, Object> middleware) {
-		resMiddleware = middleware;
-		return this;
-	}
-	
 	public void setErrorLbl(String text) {
 		try {
 			errorLabel.setText(text);
@@ -157,24 +160,30 @@ public class FormBoxInput extends GenericComponent {
 		return false;
 	}
 	
-	public Object getValue() {
-		Object response;
+	public String getErrorText() {
+		return label.getText() +": "+errorLabel.getText();
+	}
+	
+	public String getValue() {
+		String response;
 		if(tfInput != null) {
-			response = tfInput.getValue();
+			response = tfInput.getValue().toString();
 		} else if(cbInput != null ) {
-			response = (String) cbInput.getSelectedItem();
+			response = (String) cbInput.getSelectedItem().toString();
 		} else {
 			response = null;
 		}
-
-		if(resMiddleware != null) {
-			try {
-				response = resMiddleware.apply(response.toString());
-			} catch (Exception e) {
-				response = null;
-			}
-		}
+		
 		return response;
+	}
+	
+	public static ArrayList<FormBoxInput> validateFields(FormBoxInput ...fields) {
+		ArrayList<FormBoxInput> wrongFields = new ArrayList<FormBoxInput>();
+		for(FormBoxInput field: fields) {
+			if(field.isWrong()) wrongFields.add(field);
+		}
+		
+		return wrongFields;
 	}
 		
 }

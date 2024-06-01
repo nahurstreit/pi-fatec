@@ -50,29 +50,32 @@ public class HintInputField extends JFormattedTextField {
 			 * @Override
 			 */
 			public void focusGained(FocusEvent e) {
-				if(showHint) { //Se o foco for ganho e precisar mostrar a hint, reseta o texto e coloca uma fonte maior.
-					setText("");
-					setFont(STD_TEXT_FONT.deriveFont(fontSize + 1));
-					showHint = false;
-				} else {
-					String text = getText();
-					setCaretPosition(text.length());
-					if(mask != null && clearMaskOnSelect) {
-						text = text.replaceAll("\\W", "");
-						setText(text);
-						setCaretPosition(text.length());
-					}
-				}
-				
-				if(caretPosition == 0) caretPosition = getText().length(); //Definindo a posição do caret
-                SwingUtilities.invokeLater(() -> setCaretPosition(caretPosition)); //Salvando a posição final do caret
+		        if (showHint) { //Se o foco for ganho e precisar mostrar a hint, reseta o texto e coloca uma fonte maior.
+		            setText("");
+		            setFont(STD_TEXT_FONT.deriveFont(fontSize + 1));
+		            showHint = false;
+		        } else {
+		            String text = getText();
+		            setCaretPosition(text.length());
+		            if (mask != null && clearMaskOnSelect) {
+		                text = text.replaceAll("\\W", "");
+		                setText(text);
+		                setCaretPosition(text.length());
+		            }
+		        }
+                
+				if (caretPosition == 0) caretPosition = getText().length(); //Definindo a posição do caret
+		        SwingUtilities.invokeLater(() -> {
+		            int position = Math.min(caretPosition, getText().length());
+		            setCaretPosition(position);
+		        }); //Salvando a posição final do caret
 			}
 			
 			/**
 			 * Método que revela a dica novamente caso nada seja preenchido.
 			 * @Override
 			 */
-			public void focusLost(FocusEvent e) {// Se o foco do input for perdido e não tiver texto, volta ao original.
+			public void focusLost(FocusEvent e) {//Se o foco do input for perdido e não tiver texto, volta ao original.
 				caretPosition = getCaretPosition();
 				if(getText().isBlank()) {
 					setText(hint);

@@ -49,9 +49,8 @@ public class Address extends AddressDAO {
 	 * @param addrCity Recebe a Cidade do Endereeço
 	 * @param addrState Recebe o Estado do Endereço
 	 */
-	public Address(Integer idAddress, String street, Integer number, String comp, String cep,
+	public Address(String street, Integer number, String comp, String cep,
 			String hood, String city, String state) {
-		this.idAddress = idAddress;
 		this.street = street;
 		this.number = number;
 		this.comp = comp;
@@ -62,7 +61,74 @@ public class Address extends AddressDAO {
 	}
 
 	public Address() {
-		this(null, null, null, null, null, null, null, null);
+		this(null, null, null, null, null, null, null);
+	}
+
+	public Integer getIdAddress() {
+		return idAddress;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public Integer getNumber() {
+		return number;
+	}
+
+	public String getComp() {
+		return comp;
+	}
+
+	public String getCep() {
+		return cep;
+	}
+
+	public String getHood() {
+		return hood;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public Address setStreet(String street) {
+		this.street = street;
+		return this;
+	}
+
+	public Address setNumber(Integer number) {
+		this.number = number;
+		return this;
+	}
+
+	public Address setComp(String comp) {
+		this.comp = comp;
+		return this;
+	}
+
+	public Address setCep(String cep) {
+		this.cep = cep;
+		return this;
+	}
+
+	public Address setHood(String hood) {
+		this.hood = hood;
+		return this;
+	}
+
+	public Address setCity(String city) {
+		this.city = city;
+		return this;
+	}
+
+	public Address setState(String state) {
+		this.state = state;
+		return this;
 	}
 
 	@Override

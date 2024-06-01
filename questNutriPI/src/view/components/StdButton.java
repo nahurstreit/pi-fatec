@@ -1,6 +1,7 @@
 package view.components;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,10 +15,7 @@ public class StdButton extends JButton {
 
 	public interface Action {
 		void execute();
-	}
-	
-	private Action action;
-	
+	}	
 	
 	public StdButton() {
 		this("", null);
@@ -29,8 +27,7 @@ public class StdButton extends JButton {
 	
 	public StdButton(String text, Action action) {
 		super(text);
-		this.action = action;
-		this.setAction();
+		this.setAction(action);
 	}
 	
 	public StdButton setRounded() {
@@ -59,17 +56,26 @@ public class StdButton extends JButton {
 		return this;
 	}
 	
+	public StdButton setUpSize(Dimension d) {
+		setPreferredSize(d);
+		setMinimumSize(d);
+		setMaximumSize(d);
+		setSize(d);
+		return this;
+	}
+	
 	/**
 	 * Atribui a ação ao Botão.
 	 */
-	private void setAction() {
-		if(this.action != null) {
+	public StdButton setAction(Action action) {
+		if(action != null) {
 			this.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					action.execute();
 				}
 			});
 		}
-	}	
+		return this;
+	}
 	
 }
