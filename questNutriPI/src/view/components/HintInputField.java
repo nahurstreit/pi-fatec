@@ -17,14 +17,13 @@ public class HintInputField extends JFormattedTextField {
 	private static final long serialVersionUID = 1L;
 	@SuppressWarnings("unused")
 	private String hint; //Texto de dica de preenchimento que sempre aparecerá
-	@SuppressWarnings("unused")
+	
 	private float fontSize; //Tamanho da fonte
 	protected boolean showHint; //Variável de controle da dica.
 	
 	protected Font STD_HINT_FONT = VUtils.loadFont("Montserrat-ExtraLight");
 	protected Font STD_TEXT_FONT = VUtils.loadFont("Montserrat-Regular");
 
-	
 	private String mask;
 	private boolean clearMaskOnSelect = true;
 	
@@ -50,7 +49,7 @@ public class HintInputField extends JFormattedTextField {
 			 * @Override
 			 */
 			public void focusGained(FocusEvent e) {
-		        if (showHint) { //Se o foco for ganho e precisar mostrar a hint, reseta o texto e coloca uma fonte maior.
+		        if(showHint && isEditable()) { //Se o foco for ganho e precisar mostrar a hint, reseta o texto e coloca uma fonte maior.
 		            setText("");
 		            setFont(STD_TEXT_FONT.deriveFont(fontSize + 1));
 		            showHint = false;
@@ -82,6 +81,7 @@ public class HintInputField extends JFormattedTextField {
 					setFont(STD_HINT_FONT.deriveFont(fontSize));
 					showHint = true;
 				} else {
+		            showHint = false;
 					if(mask != null) {
 				        setText(applyMask(getText()));
 					}
@@ -126,10 +126,15 @@ public class HintInputField extends JFormattedTextField {
         int i = 0;// Variável de controle da posição da String verdadeira
         for (int j = 0; j < mask.length(); j++) {
         	if(j > currentText.length()) {
-        		break;
+        	    break;
         	}
             if(mask.charAt(j) == '#') {
-                rT.append(currentText.charAt(i));
+            	try {
+            		 rT.append(currentText.charAt(i));
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+               
                 i++;
             } else {
             	rT.append(mask.charAt(j));
@@ -144,4 +149,5 @@ public class HintInputField extends JFormattedTextField {
         
         return rT.toString();
 	}
+	
 }

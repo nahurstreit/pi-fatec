@@ -14,6 +14,9 @@ import view.panels.components.SideBarItem;
 import view.panels.components.SideBarMenu;
 import view.panels.pages.AlimentsPage;
 import view.panels.pages.CustomersPage;
+import view.panels.pages.HomePage;
+import view.panels.pages.SettingsPage;
+import view.utils.LanguageUtil;
 
 /**
  * Classe que define o painel logado do usuário.
@@ -28,6 +31,11 @@ public class LoggedPanel extends GenericJPanel {
 	 * Tela principal localizada à direita da aplicação e que será mudada conforme a página selecionada na barra de menu lateral.
 	 */
 	private GenericJPanel mainPanel;
+	
+	public SideBarMenu menu;
+	public SideBarItem customersPage;
+	public SideBarItem alimentsPage;
+	public SideBarItem settingsPage;
 
 	/**
 	 * Método construtor da instância de painel logado.
@@ -35,7 +43,7 @@ public class LoggedPanel extends GenericJPanel {
 	public LoggedPanel(String nutriName) {
 		this.ltGridBag();
 		
-		JLabel greetings = new JLabel("Olá, " + nutriName + "!", JLabel.CENTER);
+		JLabel greetings = new JLabel(new LanguageUtil("Olá, ", "Hello, ").get() + nutriName + "!", JLabel.CENTER);
 		greetings.setFont(STD_BOLD_FONT.deriveFont(25f));
 		
 		SideBarComponent<JLabel> headComponent = new SideBarComponent<JLabel>(greetings);
@@ -47,14 +55,16 @@ public class LoggedPanel extends GenericJPanel {
 		
 		//Cria as possíveis páginas do sistema e as coloca no menu lateral.
 		//Ao clicar em um desses itens, o mesmo executará o método de troca da tela principal do painel logado.
-		SideBarItem customersPage = new SideBarItem("CLIENTES", () -> swapLoggedMainPanel(new CustomersPage(this)), true);
-		SideBarItem dietPage = new SideBarItem("ALIMENTOS", () -> swapLoggedMainPanel(new AlimentsPage(this)));
-		
-		SideBarMenu menu = new SideBarMenu(customersPage, dietPage);
+		customersPage = new SideBarItem(new LanguageUtil("CLIENTES", "CUSTOMERS").get(), () -> swapLoggedMainPanel(new CustomersPage(this)), true);
+		alimentsPage = new SideBarItem(new LanguageUtil("ALIMENTOS", "ALIMENTS").get(), () -> swapLoggedMainPanel(new AlimentsPage(this)));
+		settingsPage = new SideBarItem(new LanguageUtil("CONFIGURAÇÕES", "SETTINGS").get(), () -> swapLoggedMainPanel(new SettingsPage(this)));
+		SideBarItem home = new SideBarItem(new LanguageUtil("Home", "Home").get(), () -> swapLoggedMainPanel(new HomePage(this)));
+
+		menu = new SideBarMenu(customersPage, alimentsPage, settingsPage, home);
 		menu.gbc
 			.wgt(0, 1.0)
 			.fill("NONE")
-			.insets(15, 40)
+			.insets(15, 35)
 			.anchor("NORTHWEST") //Sobe os itens do menu
 			.grid(0,1);
 		menu.setFirstPanel();

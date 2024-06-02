@@ -2,13 +2,19 @@ package model.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
+
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import model.utils.HibernateUtil;
 
 public abstract class GenericDAO<T> {
+	
 	/**
 	 * Método para salvar um registro no banco de dados do objeto enviado.
 	 * <\n>Se o objeto <b><u>NÃO EXISTIR</u></b> no banco de dados, será criado.
@@ -23,9 +29,15 @@ public abstract class GenericDAO<T> {
 			session.beginTransaction();
 			session.merge(this);
 			session.getTransaction().commit();
-		} catch (Exception e) {
-			result = false;
-			e.printStackTrace();
+		} catch (ConstraintViolationException e) {
+		    Throwable cause = e.getCause();
+		    if (cause instanceof SQLServerException) {
+		        SQLServerException sqlException = (SQLServerException) cause;
+		        JOptionPane.showMessageDialog(null, "Erro no banco de dados: " + sqlException.getMessage());
+		    } else {
+		        JOptionPane.showMessageDialog(null, "Violação de restrição: " + e.getMessage());
+		    }
+		    result = false;
 		}
 		
 		return result;
@@ -59,24 +71,24 @@ public abstract class GenericDAO<T> {
 	 * com a classe declarada (EntityType).
 	 */
 	protected static <T> List<T> findAll(Class<T> entityType, String... params) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String queryString = "FROM " + entityType.getSimpleName();
-            if (params.length > 0) {
-                queryString += " WHERE ";
-                for (int i = 0; i < params.length; i++) {
-                    queryString += params[i];
-                    if (i < params.length - 1) {
-                        queryString += " AND ";
-                    }
-                }
-            }
-            Query<T> query = session.createQuery(queryString, entityType);
-            return query.getResultList();
-        } catch (HibernateException e) {
-            System.err.println("Erro ao retornar os dados: " + e.getMessage());
-            return new ArrayList<>();
-        }
-    }
+	    try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+	        StringBuilder queryStringBuilder = new StringBuilder("FROM ").append(entityType.getSimpleName());
+	        if (params.length > 0) {
+	            queryStringBuilder.append(" WHERE ");
+	            for (int i = 0; i < params.length; i++) {
+	                queryStringBuilder.append(params[i]);
+	                if (i < params.length - 1) {
+	                    queryStringBuilder.append(" AND ");
+	                }
+	            }
+	        }
+	        Query<T> query = session.createQuery(queryStringBuilder.toString(), entityType);
+	        return query.getResultList();
+	    } catch (HibernateException e) {
+	        System.err.println("Erro ao retornar os dados: " + e.getMessage());
+	        return new ArrayList<>();
+	    }
+	}
 
 
 	/**

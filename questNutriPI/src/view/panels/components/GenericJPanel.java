@@ -6,10 +6,13 @@ import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 
+import view.frames.GenericJFrame;
+
 public class GenericJPanel extends GeneralJPanelSettings {	
 	private static final long serialVersionUID = 1L;
 	
 	public GenericJPanel ownerPanel;
+	private GenericJFrame callerFrame;
 	
 	public GenericJPanel(GenericJPanel ownerPanel) {
 		this.ownerPanel = ownerPanel;
@@ -19,8 +22,29 @@ public class GenericJPanel extends GeneralJPanelSettings {
 		this(null);
 	}
 	
+	public GenericJPanel setCallerFrame(GenericJFrame frame) {
+		if(ownerPanel == null) {
+			this.callerFrame = frame;
+		}
+		return this;
+	}
+	
+	public GenericJPanel setOwner(GenericJPanel ownerPanel) {
+		this.ownerPanel = ownerPanel;
+		return this;
+	}
+	
 	public GenericJPanel getOwner() {
 		return this.ownerPanel;
+	}
+	
+	public GenericJFrame getCallerFrame() {
+		return this.callerFrame;
+	}
+	
+	public GenericJPanel setBGColor(Color color) {
+		setBackground(color);
+		return this;
 	}
 	
 	public ArrayList<GenericJPanel> getFamilyOwners() {
@@ -48,12 +72,18 @@ public class GenericJPanel extends GeneralJPanelSettings {
 		return this;
 	}
 	
+	public GenericJPanel setBorder(Color color) {
+		setBorder(BorderFactory.createLineBorder(color));
+		return this;
+	}
+	
 	public void refresh() {
 		this.revalidate();
 		this.repaint();
 	}
 	
 	public String toString() {
+		String res = "";
 		String nameClass = this.getClass().toString().replaceAll(".*\\.", "");
 		ArrayList<GenericJPanel> family = this.getFamilyOwners();
 		String familyStr = "";
@@ -68,9 +98,15 @@ public class GenericJPanel extends GeneralJPanelSettings {
 			familyStr += "("+ (family.size() - i) +") "+family.get(i).getClass().toString().replaceAll(".*\\.", "");
 		}
 		
-		return "\nClass name: " + nameClass
-				+"\nFamily Owners Tree: " + familyStr
-				+"\n";
+		try {
+			res = family.get(family.size() - 1).getCallerFrame()
+					+ "\nClass name: " + nameClass
+					+ "\nFamily Owners Tree: " + familyStr
+					+ "\n";
+		} catch (Exception e) {
+		}
+		
+		return res;
 	}
 	
 	private String giveTabSpace(int quantity, int ...spaces) {

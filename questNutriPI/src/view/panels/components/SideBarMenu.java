@@ -22,7 +22,7 @@ public class SideBarMenu extends SideBarComponent<GenericComponent> {
 		this.component = new GenericComponent();
 		this.items = items;
 		component.ltGridBag();
-		component.setBackground(component.STD_LIGHT_GRAY);
+		component.setBackground(GeneralJPanelSettings.STD_LIGHT_GRAY);
 		createMenuItems(items);
 	}
 	
@@ -39,7 +39,7 @@ public class SideBarMenu extends SideBarComponent<GenericComponent> {
 	        attributes.put(TextAttribute.TRACKING, 0.2); // Valor positivo para aumentar o espaçamento
 	        
 	        // Aplicar os atributos de texto à fonte atual
-	        Font modifiedFont = component.STD_LIGHT_FONT.deriveFont(18f).deriveFont(attributes);
+	        Font modifiedFont = GeneralJPanelSettings.STD_LIGHT_FONT.deriveFont(16f).deriveFont(attributes);
 	        optionLbl.setFont(modifiedFont);
 	        component.add(optionLbl, component.gbc.wgt(0).anchor("WEST").yP().fill("NONE").insets(10, 0));
 	        component.add(Box.createVerticalStrut(15));

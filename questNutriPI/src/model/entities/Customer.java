@@ -1,9 +1,8 @@
 package model.entities;
 
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -27,7 +26,10 @@ public class Customer extends CustomerDAO {
 	public Integer idCustomer;
 
 	@Column(name = "cust_createdAt")
-	private Date createdAt;
+	private LocalDate createdAt;
+	
+	@Column(name = "cust_deletedAt")
+	private LocalDate deletedAt;
 
 	@Column(name = "cust_name")
 	public String name;
@@ -87,9 +89,39 @@ public class Customer extends CustomerDAO {
 		return this.idCustomer;
 	}
 	
+	public String getName() {
+		return this.name;
+	}
+	
+	public String getCpf() {
+		return cpf;
+	}
+	
 	public String getCPF() {
 		return cpf;
 	}
+	
+	public String getFormattedCpf() {
+		return MessageFormat.format("{0}.{1}.{2}-{3}", cpf.substring(0, 3), cpf.substring(3, 6), cpf.substring(6, 9), cpf.substring(9));
+	}
+	
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+	
+	public String getFormattedPhoneNumber() {
+        // Formatar o número de telefone
+        if (phoneNumber.length() == 10) {
+            // (00) 0000-0000
+            return MessageFormat.format("({0}) {1}-{2}", phoneNumber.substring(0, 2), phoneNumber.substring(2, 6), phoneNumber.substring(6));
+        } else if (phoneNumber.length() == 11) {
+            // (00) 0 0000-0000
+            return MessageFormat.format("({0}) {1} {2}-{3}", phoneNumber.substring(0, 2), phoneNumber.substring(2, 3), phoneNumber.substring(3, 7), phoneNumber.substring(7));
+        } else {
+            // Retornar o número de telefone sem formatação se não se encaixar nos padrões
+            return phoneNumber;
+        }
+    }
 	
 	/**
 	 * Método para setar o nome de um Customer.
@@ -192,8 +224,7 @@ public class Customer extends CustomerDAO {
 	public Customer setBirth(String date) {
         try {
             this.birth = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        } catch (DateTimeParseException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
         }
         return this;
 	}
@@ -228,7 +259,7 @@ public class Customer extends CustomerDAO {
      */
     @PrePersist
     private void prePersist() {
-        if(createdAt == null) createdAt = new Date();
+        if(createdAt == null) createdAt = LocalDate.now();
     }
 
 	/**
@@ -265,6 +296,15 @@ public class Customer extends CustomerDAO {
 	 */
     public LocalDate getLocalDateBirth() {
         return birth;
+    }
+    
+    public boolean softDelete() {
+    	try {
+			deletedAt = LocalDate.now();
+			return this.save();
+		} catch (Exception e) {
+			return false;
+		}
     }
 	
 	public void createMeal(Meal meal) {

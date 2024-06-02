@@ -24,7 +24,8 @@ public abstract class MealDAO extends GenericDAO<Meal>{
 		};
 		
 		String query = "customer.id = " + id;
-		if(onlyActive) query += " AND active = 1";
+		if(onlyActive) query += " AND deactivatedAt IS NULL ";
+		query += " ORDER BY hour ASC";
 		
 		return Meal.findAll(query);
 	}
@@ -45,7 +46,7 @@ public abstract class MealDAO extends GenericDAO<Meal>{
 		
 		Meal found = GenericDAO.findByPK(Meal.class, id);
 		if(found != null) {
-			if(found.active == 1 || !onlyActive) return found;
+			if(found.isActive() || !onlyActive) return found;
 		}
 		
 		return null;

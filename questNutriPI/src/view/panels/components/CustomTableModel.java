@@ -6,7 +6,9 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 public class CustomTableModel<T> extends DefaultTableModel {
-    private List<T> objects = new ArrayList<>();
+	private static final long serialVersionUID = 1L;
+	
+	private List<T> objects = new ArrayList<>();
 
     // Construtor que define as colunas
     public CustomTableModel(Object[] columnNames, int rowCount) {

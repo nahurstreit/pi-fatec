@@ -1,7 +1,9 @@
 package controller;
 
-import model.entities.User;
 import model.dao.UserDAO;
+import model.entities.User;
+import view.QuestNutri;
+import view.components.QuestNutriJOP;
 
 public class AuthController {
 
@@ -26,8 +28,7 @@ public class AuthController {
 				return "Erro: Nível do sistema deve ser entre 1 e 3.";
 			}
 
-			User user = new User();
-			user.setName(name).setPassword(password).setSystemLevel(systemLevel);
+			User user = new User(name, password, name, systemLevel);
 			user.save();
 			return "Usuário adicionado com sucesso!";
 		} catch (Exception e) {
@@ -70,20 +71,25 @@ public class AuthController {
 	 * @param password - Senha do usuário.
 	 * @return Mensagem de sucesso ou erro.
 	 */
-	public static boolean doLogin(String name, String password) {
+	public static boolean doLogin(String login, String password) {
 		boolean res = false;
+		String errMsg = "";
 		try {
-			User user = UserDAO.findOne("name", name);
-			if (user == null) {
-				System.out.println("Usuário não encontrado.");
+			User user = User.findOne("login = '"+ login+"'");
+			if(user == null) {
+				errMsg = "Usuário não encontrado";
 			} else if (!user.getPassword().equals(password)) {
-				System.out.println("Senha incorreta.");
+				errMsg = "Senha incorreta";
 			} else {
+				QuestNutri.setConnectedUser(user);
 				res = true;
 			}
 		} catch (Exception e) {
-			System.out.println("Erro ao logar: " + e.getMessage());
+			errMsg = "Houve um erro na aplicação ao tentar fazer login.\nConsulte o log para mais informações.";
+			e.printStackTrace();
 		}
+		
+		if(!res) QuestNutriJOP.showMessageDialog(null, errMsg, "Impossível fazer login", 1, null);
 		return res;
 	}
 
@@ -99,7 +105,7 @@ public class AuthController {
 			if (user == null) {
 				return "Usuário não encontrado.";
 			}
-			user.delete(userId);
+			user.delete();
 			return "Usuário excluído com sucesso!";
 		} catch (Exception e) {
 			return "Erro ao excluir usuário: " + e.getMessage();

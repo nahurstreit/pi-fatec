@@ -3,13 +3,14 @@ package view.frames;
 import view.QuestNutri;
 import view.panels.components.GenericJPanel;
 import view.panels.pages.subpages.NewCustomerForm;
+import view.utils.LanguageUtil;
 
 public class NewCustomerFrame extends SubFrame {
 	private static final long serialVersionUID = 1L;
 
 	private GenericJPanel mainPanel;
 	
-	public NewCustomerFrame() {
+	public NewCustomerFrame(Runnable onCreate) {
 		super();
 		int x = QuestNutri.app.getX() + QuestNutri.app.getWidth()/5;
 		int y = QuestNutri.app.getY() + QuestNutri.app.getHeight()/5;
@@ -19,9 +20,9 @@ public class NewCustomerFrame extends SubFrame {
 		
 		this.setBounds(x, y, w, h);
 		
-		mainPanel = new NewCustomerForm(mainPanel, this);
+		mainPanel = new NewCustomerForm(mainPanel, this, onCreate);
 		this.setContentPane(mainPanel);
-		setTitle("Cadastro de Novo Cliente");
+		setTitle(new LanguageUtil("Cadastro de Novo Cliente", "New Customer Register").get());
 		
 		this.setVisible(true);
 	}

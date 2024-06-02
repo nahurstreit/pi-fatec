@@ -1,10 +1,10 @@
 package model.entities;
 
 import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -38,9 +38,6 @@ public class Meal extends MealDAO {
 	@Column(name = "meal_name")
 	public String name;
 
-	@Column(name = "meal_active")
-	public Integer active;
-
 	@Column(name = "meal_hour")
     @Temporal(TemporalType.TIME)
     public Time hour;
@@ -49,10 +46,10 @@ public class Meal extends MealDAO {
 	public String obs;
 
 	@Column(name = "meal_createdAt")
-	private Date createdAt;
+	private LocalDate createdAt;
 
 	@Column(name = "meal_deactivatedAt")
-	private Date deactivatedAt;
+	private LocalDate deactivatedAt;
 	
 
 	/**
@@ -64,11 +61,10 @@ public class Meal extends MealDAO {
 	 * @param hour - hora de acontecimento da refeição
 	 * @param obs - observação sobre a refeição.
 	 */
-	public Meal(Customer customer, String name, Integer active, Integer daysOfWeek, String hour, String ...obs) {
+	public Meal(Customer customer, String name, Integer daysOfWeek, String hour, String ...obs) {
 		super();
 		this.customer = customer;
 		this.name = name;
-		this.active = active;
 		this.daysOfWeek = daysOfWeek;
 		this.hour = (hour != null) ? formatHour(hour) : null;
 		this.obs = obs.length > 0 ? obs[0] : null;
@@ -82,12 +78,12 @@ public class Meal extends MealDAO {
 	 * @param hour - hora de acontecimento da refeição
 	 * @param obs - observação sobre a refeição.
 	 */
-	public Meal(String name, Integer active, Integer daysOfWeek, String hour, String ...obs) {
-		this(null, name, active, daysOfWeek, hour, obs);
+	public Meal(String name, Integer daysOfWeek, String hour, String ...obs) {
+		this(null, name, daysOfWeek, hour, obs);
 	}
 
 	public Meal() {
-		this(null, null, null, null);
+		this(null, null, null);
 	}
 	
 	public List<Food> getFoods() {
@@ -96,6 +92,10 @@ public class Meal extends MealDAO {
 	
 	public Customer getCustomer() {
 		return customer;
+	}
+	
+	public String getName() {
+		return this.name;
 	}
 	
 	public Meal setCustomer(Customer customer) {
@@ -122,6 +122,30 @@ public class Meal extends MealDAO {
 	}
 	
 	/**
+     * Método para obter a hora de um objeto Time
+     * @return A hora como um inteiro ou null se hour for null
+     */
+    public String getHourPart() {
+        if (this.hour == null) {
+            return null;
+        }
+        LocalTime localTime = this.hour.toLocalTime();
+        return String.format("%02d", localTime.getHour());
+    }
+    
+    /**
+     * Método para obter o minuto de um objeto Time
+     * @return O minuto como um inteiro ou null se hour for null
+     */
+    public String getMinutePart() {
+        if (this.hour == null) {
+            return null;
+        }
+        LocalTime localTime = this.hour.toLocalTime();
+        return String.format("%02d", localTime.getMinute());
+    }
+	
+	/**
 	 * Método para criação rápida de Foods em uma Meal já salva.
 	 * É preciso já estar vinculada à um cliente.
 	 * @param foods
@@ -132,13 +156,17 @@ public class Meal extends MealDAO {
 			food.save();
 		}
 	}
+	
+	public boolean isActive() {
+		return this.deactivatedAt != null;
+	}
 
     /**
      * Método para adicionar ao objeto, a data e horário atual de registro.
      */
     @PrePersist
     private void prePersist() {
-        if(createdAt == null) createdAt = new Date();
+        if(createdAt == null) createdAt = LocalDate.now();
     }
 
 	@Override
@@ -148,7 +176,7 @@ public class Meal extends MealDAO {
 				+ "\n    owner: " + (customer != null ? customer.name + " - id: " + customer.getId() : "null") +", "
 				+ "\n    daysOfWeek: " + daysOfWeek + ", "
 				+ "\n    name: " + name + ", "
-				+ "\n    active: " + (active == 0? false: true) + ","
+				+ "\n    active: " + (deactivatedAt == null? false: true) + ","
 				+ "\n    hour: " + hour + ", "
 				+ "\n    obs: " + (obs != null? "\""+obs+"\"":  obs) +  ", "
 				+ "\n    createdAt: " + createdAt + ", "
@@ -162,8 +190,7 @@ public class Meal extends MealDAO {
 	 */
 	@Override
 	public boolean delete() {
-		this.deactivatedAt = new Date();
-		this.active = 0;
+		this.deactivatedAt = LocalDate.now();
 		return this.save();
 	}
 	

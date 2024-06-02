@@ -12,7 +12,7 @@ public class SideBar extends GenericJPanel {
 	 * @param <T>
 	 */
 	public SideBar(SideBarComponent<?> ...components) {
-		this.setBackground(this.STD_LIGHT_GRAY);
+		this.setBackground(GeneralJPanelSettings.STD_LIGHT_GRAY);
 		this.ltGridBag();
 		
 		if(components.length > 0) {

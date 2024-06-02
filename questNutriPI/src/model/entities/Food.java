@@ -1,5 +1,6 @@
 package model.entities;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -9,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import model.dao.FoodDAO;
 
@@ -36,6 +38,12 @@ public class Food extends FoodDAO {
 
 	    @Column(name = "food_obs")
 	    public String obs;
+	    
+		@Column(name = "food_createdAt")
+		private LocalDate createdAt;
+
+		@Column(name = "food_deactivatedAt")
+		private LocalDate deactivatedAt;
 
 	/**
 	 * 
@@ -94,6 +102,23 @@ public class Food extends FoodDAO {
     		sub.save();
     	}
     }
+    
+    /**
+     * Método para adicionar ao objeto, a data e horário atual de registro.
+     */
+    @PrePersist
+    private void prePersist() {
+        if(createdAt == null) createdAt = LocalDate.now();
+    }
+    
+	/**
+	 * Reimplementação de Delete para não excluir o registro e sim desativá-lo
+	 */
+	@Override
+	public boolean delete() {
+		this.deactivatedAt = LocalDate.now();
+		return this.save();
+	}
 
     @Override
     public String toString() {

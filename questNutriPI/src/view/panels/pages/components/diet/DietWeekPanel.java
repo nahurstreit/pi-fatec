@@ -1,5 +1,6 @@
 package view.panels.pages.components.diet;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +10,14 @@ import model.entities.Meal;
 import view.QuestNutri;
 import view.panels.components.GenericComponent;
 import view.panels.components.GenericJPanel;
+import view.utils.LanguageUtil;
 
 public class DietWeekPanel extends GenericComponent {
 	private static final long serialVersionUID = 1L;
 	
 	private List<Meal> meals;
 	private int[] avbDays = {64, 32, 16, 8, 4, 2, 1}; //Variável que controla os dias da semana dos respectivos panels
-	private String[] avbStrDays = {"Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"};
+	private String[] avbStrDays;
 	public DietDayPanel currentDayFocus = null;
 	private ArrayList<DietDayPanel> daysPanels = new ArrayList<DietDayPanel>();
 	public GenericJPanel holderDays = new GenericJPanel();
@@ -24,7 +26,19 @@ public class DietWeekPanel extends GenericComponent {
 		super(ownerPanel);
 		this.ltGridBag();
 		this.meals = meals;
-		this.setBackground(STD_STRONG_GRAY);
+		this.setBackground(Color.white);
+		
+		//Inicialização do array de dias da semana.
+        avbStrDays = new String[] {
+                new LanguageUtil("Domingo", "Sunday").get(),
+                new LanguageUtil("Segunda", "Monday").get(),
+                new LanguageUtil("Terça", "Tuesday").get(),
+                new LanguageUtil("Quarta", "Wednesday").get(),
+                new LanguageUtil("Quinta", "Thursday").get(),
+                new LanguageUtil("Sexta", "Friday").get(),
+                new LanguageUtil("Sábado", "Saturday").get()
+            };
+		
 		loadDays();
 	}
 	

@@ -35,6 +35,10 @@ import model.entities.SubFood;
 import view.QuestNutri;
 
 public class PdfGeneratorController {
+	
+	public static void main(String[] args) {
+		generate(Customer.findByPK(1));
+	}
 
 	public static final String IMG_PATH = "../img/QuestNutri.png";
 

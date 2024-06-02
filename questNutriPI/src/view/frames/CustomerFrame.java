@@ -1,10 +1,6 @@
 package view.frames;
 
 import java.awt.Dimension;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
-import javax.swing.JFrame;
 
 import model.entities.Customer;
 import view.QuestNutri;
@@ -15,20 +11,21 @@ import view.panels.components.SideBarItem;
 import view.panels.components.SideBarMenu;
 import view.panels.pages.DietPage;
 import view.panels.pages.subpages.CustomerFormPage;
+import view.utils.LanguageUtil;
 
 public class CustomerFrame extends SubFrame {
 	private static final long serialVersionUID = 1L;
 	
 	private Customer customer;
 	public GenericJPanel framePanel;
-	private GenericJPanel mainPanel = new GenericJPanel();
+	private GenericJPanel mainPanel = new GenericJPanel(framePanel);
 
 	private StdGBC gbc = new StdGBC();
 	
 	private SideBar sideBar;
 	private SideBarMenu menu;
 	
-	private String stdFrameName = "Janela de Cliente";
+	private String stdFrameName = new LanguageUtil("Janela de Cliente", "Customer's Window").get();
 	
 	/**
 	 * Páginas padrão do frame.
@@ -39,9 +36,10 @@ public class CustomerFrame extends SubFrame {
 	
 	public CustomerFrame(Customer customer) {
 		super();
+		this.frameName = "Customer Frame";
 		this.customer = customer;
 		
-		framePanel = new GenericJPanel().ltGridBag();
+		framePanel = new GenericJPanel().ltGridBag().setCallerFrame(this);
 		this.add(framePanel);
 		
 		int x = QuestNutri.app.getX() + QuestNutri.app.getWidth()/10;
@@ -52,13 +50,13 @@ public class CustomerFrame extends SubFrame {
 		
 		this.setBounds(x, y, w, h);
 
-		setFrameTitle(customer.name != null? "Cliente - " + customer.name: stdFrameName);
+		setFrameTitle(customer.name != null? new LanguageUtil("Cliente", "Customer").get() + " - " + customer.name: stdFrameName);
 	}
 	
 	public void swapMainPanel(GenericJPanel panel) {
 		try {
 			framePanel.remove(mainPanel);
-			mainPanel = panel;
+			mainPanel = panel.setOwner(framePanel);
 			framePanel.add(panel, gbc.wgt(1.0).fill("BOTH"));
 			framePanel.revalidate();
 			framePanel.repaint();
@@ -122,6 +120,12 @@ public class CustomerFrame extends SubFrame {
 			menu.setFirstPanel();
 		}
 		framePanel.add(mainPanel, framePanel.gbc.wgt(1.0));
+		try {
+			QuestNutri.heraldOfDarkness();
+			QuestNutri.followYouIntoTheDark();
+		} catch (Exception e) {
+		}
+
 		this.setVisible(true);
 		return this;
 	}
@@ -132,7 +136,7 @@ public class CustomerFrame extends SubFrame {
 	}
 	
 	public SideBarItem sbDietPage() {
-		dietPage = new DietPage(this.getMainPanel());
+		dietPage = new DietPage(this.getMainPanel(), customer);
 		return new SideBarItem("Dieta", () -> this.swapMainPanel(dietPage));
 	}
 

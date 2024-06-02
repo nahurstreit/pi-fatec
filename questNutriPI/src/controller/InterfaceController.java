@@ -2,9 +2,13 @@ package controller;
 	
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.function.Function;
 
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -58,8 +62,49 @@ public class InterfaceController {
         }
 
         JScrollPane scrollPane = new JScrollPane(table);
+        
+        // Criação do JPopupMenu
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem deleteItem = new JMenuItem("Excluir");
+        popupMenu.add(deleteItem);
+
+        // Ação para o item de exclusão
+        deleteItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = table.getSelectedRow();
+                if (row >= 0) {
+                    T selectedItem = tableModel.getObjectAt(row);
+                    //Ação de exclusão do registro
+                    originList.remove(selectedItem);
+                    tableModel.removeRow(row);
+                }
+            }
+        });
 
         table.addMouseListener(new java.awt.event.MouseAdapter() {
+        	 @Override
+             public void mousePressed(java.awt.event.MouseEvent evt) {
+                 if (evt.isPopupTrigger()) {
+                     showPopup(evt);
+                 }
+             }
+
+             @Override
+             public void mouseReleased(java.awt.event.MouseEvent evt) {
+                 if (evt.isPopupTrigger()) {
+                     showPopup(evt);
+                 }
+             }
+
+             private void showPopup(java.awt.event.MouseEvent evt) {
+                 int row = table.rowAtPoint(evt.getPoint());
+                 if (row >= 0) {
+                     table.setRowSelectionInterval(row, row);
+                     popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
+                 }
+             }
+        	
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int row = table.rowAtPoint(evt.getPoint());

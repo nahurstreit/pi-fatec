@@ -1,5 +1,8 @@
 package model.entities;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -53,6 +56,12 @@ public class Weight extends WeightDAO{
     @PrePersist
     private void prePersist() {
         if(dateRegister == null) dateRegister = new Date();
+    }
+    
+    public String getRegisterDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDateTime localDateTime = dateRegister.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        return localDateTime.format(formatter);
     }
 
 	@Override

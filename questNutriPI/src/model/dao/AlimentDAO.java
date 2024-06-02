@@ -1,6 +1,7 @@
 package model.dao;
 
 import java.util.List;
+
 import model.entities.Aliment;
 
 public abstract class AlimentDAO extends GenericDAO<Aliment> {
@@ -15,6 +16,10 @@ public abstract class AlimentDAO extends GenericDAO<Aliment> {
 	
 	public static Aliment findOne(String ...params) {
 		return GenericDAO.findOne(Aliment.class, params);
+	}
+	
+	public static Aliment findLast() {
+		return GenericDAO.findLast(Aliment.class);
 	}
 	
 }

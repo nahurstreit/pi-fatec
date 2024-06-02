@@ -10,14 +10,24 @@ import view.panels.pages.components.diet.DietWeekPanel;
 public class DietPage extends GenericPage {
 	private static final long serialVersionUID = 1L;
 	
-	public DietPage(GenericJPanel ownerPanel) {
-		this(ownerPanel, Customer.findByPK(1).getDiet());
-	}
+	private List<Meal> meals;
 	
-	public DietPage(GenericJPanel ownerPanel, List<Meal> meals) {
+	private GenericJPanel weekPanel = new GenericJPanel().ltGridBag();
+	
+	private int pagePadding = 10;
+	
+	public DietPage(GenericJPanel ownerPanel, Customer customer) {
 		super(ownerPanel);
 		this.ltGridBag();
-		this.add(new DietWeekPanel(this, meals), gbc.fill("BOTH").wgt(1.0));
+		try {
+			meals = customer.getDiet();
+		} catch (Exception e) {
+			meals = null;
+		}
+	
+		weekPanel.add(new DietWeekPanel(this, meals), weekPanel.gbc.fill("BOTH").wgt(1.0));
+		
+		this.add(weekPanel, gbc.fill("BOTH").wgt(1.0).insets(pagePadding));
 	}
 
 }

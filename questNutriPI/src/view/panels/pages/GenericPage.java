@@ -11,5 +11,4 @@ public class GenericPage extends GenericJPanel {
 		super(ownerPanel);
 		this.setBackground(Color.white);
 	}
-
 }

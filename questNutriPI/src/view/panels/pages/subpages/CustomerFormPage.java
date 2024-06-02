@@ -1,22 +1,22 @@
 package view.panels.pages.subpages;
 
-import javax.swing.JOptionPane;
-
 import controller.CustomerController;
+import controller.WeightController;
 import model.entities.Customer;
-import utils.CpfValidate;
 import validate.Validate;
 import validate.ValidationRule;
+import view.QuestNutri;
 import view.components.FormBoxInput;
 import view.components.FormSection;
+import view.components.QuestNutriJOP;
 import view.components.StdButton;
 import view.panels.components.GenericJPanel;
 import view.panels.pages.GenericFormPage;
+import view.utils.LanguageUtil;
 
 public class CustomerFormPage extends GenericFormPage {
 	private static final long serialVersionUID = 1L;
 	protected Customer customer;
-	
 
 	//Campos do formulário para poder acessar os resultados rapidamente
 		//personalInfo
@@ -25,6 +25,7 @@ public class CustomerFormPage extends GenericFormPage {
 			protected FormBoxInput cpf;
 			protected FormBoxInput height;
 			protected FormBoxInput gender;
+			protected FormBoxInput lastWeight;
 
 		//contactInfo
 			protected FormBoxInput email;
@@ -48,12 +49,15 @@ public class CustomerFormPage extends GenericFormPage {
 			
 			private final String STD_DATE_PATTERN = "dd/mm/aaaa";
 			
+		private String txtHolder_btnSave = new LanguageUtil("Salvar", "Save").get();
+			
 	
 	public CustomerFormPage(GenericJPanel ownerPanel, Customer customer) {
 		super(ownerPanel);
 		this.customer = customer;
 		buildForm();
 	}
+	
 
 	@Override
 	protected GenericFormPage buildForm() {
@@ -62,40 +66,37 @@ public class CustomerFormPage extends GenericFormPage {
 	}
 	
 	private StdButton btnSavePersonalInfo() {
-		StdButton saveBtn = stdBtnConfig("Salvar");
+		StdButton saveBtn = StdButton.stdBtnConfig(txtHolder_btnSave);
 		
 		saveBtn.setAction(() -> {
-			if(validateFields(name, birth, cpf, height, gender)) {
-			   	if(CustomerController.saveCustPersonalInfo(customer, 
+			if(Validate.formFields(name, birth, cpf, height, gender)) {
+				CustomerController.saveCustPersonalInfo(customer, 
 			   			name.getValue(), birth.getValue(), cpf.getValue(), 
-			   			height.getValue(), gender.getValue())
-			   		) {
-				   		JOptionPane.showMessageDialog(null, "Dados salvos!");
-				   	} else {
-				   		JOptionPane.showMessageDialog(null, "Não foi possível salvar.");
-				   	}
+			   			height.getValue(), gender.getValue());
 			}
 
-	   });
+		});
 		
 		return saveBtn;
 	}
 	
 	protected FormSection personalInfo() {
 		//Criando as linhas do form
-		name = new FormBoxInput(this).setLbl("Nome")
+		name = new FormBoxInput(this).setLbl(new LanguageUtil("Nome", "Name").get())
 									 .setValue(customer.name)
 									 .addValidation(
 										  new ValidationRule(
 												  value -> {
 													  return !Validate.hasNumber(value);
-												  }, "Não é permitido ter números!"),
+	                                              }, new LanguageUtil("Não é permitido ter números!", "Numbers are not allowed!").get()),
 										  new ValidationRule(
 												  value -> {
 													  return Validate.sizeBetween(value, MIN_SIZE_NAME, MAX_SIZE_NAME);
-												  }, "Tamanho precisa ser entre "+MIN_SIZE_NAME+" e "+MAX_SIZE_NAME+"."));
+	                                              }, new LanguageUtil("Tamanho precisa ser entre "+MIN_SIZE_NAME+" e "+MAX_SIZE_NAME+".", "Size must be between "+MIN_SIZE_NAME+" and "+MAX_SIZE_NAME+".").get())
+									  )
+									 .setRequired();
 		
-		birth = new FormBoxInput(this).setLbl("Data de Nascimento")
+		birth = new FormBoxInput(this).setLbl(new LanguageUtil("Data de Nascimento", "Date of Birth").get())
 									  .setMask("##/##/####")
 									  .setValue(customer.getBirth())
 									  .clearMaskOnSelect(false)
@@ -103,11 +104,12 @@ public class CustomerFormPage extends GenericFormPage {
 											  new ValidationRule(
 													  value -> {
 														  return !Validate.hasChar(value, '/');
-													  }, "Não é permitido ter letras!"),
+	                                                  }, new LanguageUtil("Digite apenas números.", "Enter only numbers.").get()),
 											  new ValidationRule(
 													  value -> {
 														  return Validate.isDate(value);
-													  }, "Data inválida! Preencha: "+STD_DATE_PATTERN));
+	                                                  }, new LanguageUtil("Data inválida! Preencha: "+STD_DATE_PATTERN, "Invalid date! Format: "+STD_DATE_PATTERN).get()))
+									  .setRequired();
 		
 		cpf = new FormBoxInput(this).setLbl("CPF")
 									.setMask("###.###.###-##")
@@ -117,7 +119,7 @@ public class CustomerFormPage extends GenericFormPage {
 											new ValidationRule(
 													  value -> {
 														  return !Validate.hasChar(value, '.', '-');
-													  }, "Não é permitido ter letras!"),
+		                                              }, new LanguageUtil("Não é permitido ter letras!", "Letters are not allowed!").get()),
 											new ValidationRule(
 													  value -> {
 														  String v = value.replaceAll("\\D", "");
@@ -125,23 +127,24 @@ public class CustomerFormPage extends GenericFormPage {
 															  return (v.length() == 11);
 														  }
 														  return false;
-													  }, "Digite um CPF válido."),
+		                                              }, new LanguageUtil("Digite um CPF válido.", "Enter a valid CPF.").get()),
 											new ValidationRule(
-													value -> {	
-														return CpfValidate.cpfValidate(value);
-													}, "CPF inválido!"));
+													  value -> {
+														  return Validate.checkCpf(value);
+		                                              }, new LanguageUtil("CPF inválido!", "Invalid CPF!").get()))
+									.setRequired();
 		
-		height = new FormBoxInput(this).setLbl("Altura (cm)")
+		height = new FormBoxInput(this).setLbl(new LanguageUtil("Altura (cm)", "Height (cm)").get())
 									   .setValue(customer.height + "")
 									   .addValidation(
 											   new ValidationRule(
 														  value -> {
 															  return !Validate.hasChar(value, '.', ',');
-														  }, "Não é permitido ter letras!"),
+			                                              }, new LanguageUtil("Não é permitido ter letras!", "Letters are not allowed!").get()),
 											   new ValidationRule(
 														  value -> {
 															  return !Validate.haveSpecifChar(value, ',');
-														  }, "Use ponto no lugar de vírgula."),
+			                                              }, new LanguageUtil("Use ponto no lugar de vírgula.", "Use dot instead of comma.").get()),
 											   new ValidationRule(
 													   value -> {
 														   try {
@@ -150,45 +153,83 @@ public class CustomerFormPage extends GenericFormPage {
 														   } catch (Exception e) {
 															   return false;
 														   }
-													   },"Digite uma altura entre "+ MIN_HEIGHT +" e "+MAX_HEIGHT+"!"));
+		                                               }, new LanguageUtil("Digite uma altura entre "+ MIN_HEIGHT +" e "+MAX_HEIGHT+"!", "Enter a height between "+ MIN_HEIGHT +" and "+MAX_HEIGHT+"!").get()))
+									   .setRequired();
 		
 		
-		gender = new FormBoxInput(this).setLbl("Gênero")
-									   .setComboBoxInput(customer.gender, "M", "F");
+		gender = new FormBoxInput(this).setLbl(new LanguageUtil("Gênero", "Gender").get())
+									   .setComboBoxInput(customer.gender, "M", "F")
+									   .setRequired();
+		
+        lastWeight = new FormBoxInput(this).setLbl(new LanguageUtil("Último peso registrado (kg)", "Last Registered Weight (kg)").get())
+										   .lockInput()
+                                           .setHint(new LanguageUtil("Nenhum registro.", "No registers yet.").get());
 		
 		//Criando o form de informações pessoais
-		FormSection personalInfo = new FormSection(this).setUpName("Informações pessoais")
-														.addRow(name, birth, cpf)
-														.addRow(height, gender)
-														.setInteractBtn(btnSavePersonalInfo());
+		FormSection personalInfo = new FormSection(this).setUpName(new LanguageUtil("Informações pessoais", "Personal Information").get())
+														.addRow(name, birth, cpf);
+		
+		if(!QuestNutri.isEditAuth()) {
+			name.lockInput();
+			birth.lockInput();
+			cpf.lockInput();
+			height.lockInput();
+			gender.lockInput();
+			
+		} else {
+			personalInfo.setInteractBtn(btnSavePersonalInfo());
+			lastWeight.setButtonBox(btnAccessWeights() , true);
+		}
+														
+		
+		if(customer.idCustomer != null) {
+			if(customer.getLastWeight() != null) {
+				lastWeight.setValue(customer.getLastWeight().value + "kg");
+			}
+			personalInfo.addRow(height, gender, lastWeight);
+		} else {
+			personalInfo.addRow(height, gender);
+		}
 		
 		return personalInfo;
 	}
 	
+	private StdButton btnAccessWeights() {
+		StdButton btn = StdButton.stdBtnConfig(new LanguageUtil("Registrar", "Register").get());
+		btn.setAction(() -> {
+			WeightController.openWeightFrame(customer, lastWeight);
+		});
+		
+		return btn;
+	}
+	
 	private StdButton btnSaveContactInfo() {
-		StdButton saveBtn = stdBtnConfig("Salvar");
+		StdButton saveBtn = StdButton.stdBtnConfig(txtHolder_btnSave);
 		
 		saveBtn.setAction(() -> {
-		   	if(CustomerController.saveCustomerContactInfo(
-		   			customer,
-		   			email.getValue(),
-		   			phoneNumber.getValue())
-		   	  ) { //end if
-			   		JOptionPane.showMessageDialog(null, "Dados salvos!");
-			   	} else {
-			   		JOptionPane.showMessageDialog(null, "Não foi possível salvar.");
-			   	}
+			if(Validate.formFields(email, phoneNumber)) {
+			   	if(CustomerController.saveCustomerContactInfo(
+			   			customer,
+			   			email.getValue(),
+			   			phoneNumber.getValue())
+			   	  ) { //end if
+			   			QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Dados salvos!", "Data saved!").get());
+				   	} else {
+				   		QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Não foi possível salvar.", "Unable to save.").get());
+				   	}
+			}
+
 	   });
 		
 		return saveBtn;
 	}
 	
 	protected FormSection contactInfo() {
-		
 		email = new FormBoxInput(this).setLbl("E-mail")
-								      .setValue(customer.email);
+								      .setValue(customer.email)
+								      .setRequired();
 		
-		phoneNumber = new FormBoxInput(this).setLbl("Telefone")
+		phoneNumber = new FormBoxInput(this).setLbl(new LanguageUtil("Telefone", "Phone Number").get())
 										 	.setMask("(##) # ####-####")
 										 	.setValue(customer.phoneNumber)
 										 	.clearMaskOnSelect(false)
@@ -196,10 +237,11 @@ public class CustomerFormPage extends GenericFormPage {
 										 			new ValidationRule(
 															  value -> {
 																  return !Validate.hasChar(value, '(', ')', '-');
-															  }, "Não é permitido ter letras!"));
+		                                                      }, new LanguageUtil("Não é permitido ter letras!", "Letters are not allowed!").get()))
+										 	.setRequired();
 		
 		//Criando o form de informações de contato
-		FormSection contactInfo = new FormSection(this).setUpName("Informações de contato")
+		FormSection contactInfo = new FormSection(this).setUpName(new LanguageUtil("Informações de contato", "Contact Information").get())
 													   .addRow(email, phoneNumber)
 													   .setInteractBtn(btnSaveContactInfo());
 		
@@ -207,42 +249,62 @@ public class CustomerFormPage extends GenericFormPage {
 	}
 	
 	private StdButton btnSaveAddrInfo() {
-		StdButton saveBtn = stdBtnConfig("Salvar");
+		StdButton saveBtn = StdButton.stdBtnConfig(txtHolder_btnSave);
 		
 		saveBtn.setAction(() -> {
-		   	if(CustomerController.saveCustomerAddrInfo(
-		   			customer,
-		   			addrCep.getValue(),
-		   			addrNumber.getValue(),
-		   			addrComp.getValue(),
-		   			addrStreet.getValue(),
-		   			addrHood.getValue(),
-		   			addrCity.getValue(),
-		   			addrState.getValue())
-		   	  ) { //end if
-			   		JOptionPane.showMessageDialog(null, "Dados salvos!");
-			   	} else {
-			   		JOptionPane.showMessageDialog(null, "Não foi possível salvar.");
-			   	}
+			if(Validate.formFields(addrCep, addrNumber, addrComp, addrStreet, addrHood, addrCity, addrState)) {
+			   	if(CustomerController.saveCustomerAddrInfo(
+			   			customer,
+			   			addrCep.getValue(),
+			   			addrNumber.getValue(),
+			   			addrComp.isHintOn()? null : addrComp.getValue(),
+			   			addrStreet.getValue(),
+			   			addrHood.getValue(),
+			   			addrCity.getValue(),
+			   			addrState.getValue())
+			   	  ) { //end if
+			   			QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Dados salvos!", "Data saved!").get());
+				   	} else {
+				   		QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Não foi possível salvar.", "Unable to save.").get());
+				   	}
+			}
+
 	   });
 		
 		return saveBtn;
 	}
 	
 	protected FormSection addrInfo() {
+		
 		addrCep = new FormBoxInput(this).setLbl("CEP")
  									    .setMask("#####-###")
- 									    .clearMaskOnSelect(true);
+ 									    .clearMaskOnSelect(true)
+ 									    .addValidation(
+ 												new ValidationRule(
+ 														value -> {
+ 															return !Validate.hasChar(value, '-');
+ 		                                                }, new LanguageUtil("Não é permitido ter letras!", "Letters are not allowed!").get()),
+ 												new ValidationRule(
+ 														value -> {
+ 															return Validate.isBiggerThan(value, 8);
+ 		                                                }, new LanguageUtil("CEP Inválido! Deve ter 8 digitos.", "Invalid CEP! Must have 8 digits.").get()))
+ 									    .setRequired();
 		
-		addrNumber = new FormBoxInput(this).setLbl("Número");
+		addrNumber = new FormBoxInput(this).setLbl(new LanguageUtil("Número", "Number").get())
+										   .addValidation(
+												new ValidationRule(
+														  value -> {
+															  return !Validate.hasChar(value);
+	                                                      }, new LanguageUtil("Não é permitido ter letras!", "Letters are not allowed!").get()))
+										   .setRequired();
 	
-		addrComp = new FormBoxInput(this).setLbl("Complemento");
+		addrComp = new FormBoxInput(this).setLbl(new LanguageUtil("Complemento", "Address 2").get());
 		
-		addrStreet = new FormBoxInput(this).setLbl("Rua");
+		addrStreet = new FormBoxInput(this).setLbl(new LanguageUtil("Rua", "Street").get()).setRequired();
 		
-		addrHood = new FormBoxInput(this).setLbl("Bairro");
+		addrHood = new FormBoxInput(this).setLbl(new LanguageUtil("Bairro", "Neighborhood").get()).setRequired();
 		
-		addrCity = new FormBoxInput(this).setLbl("Cidade");
+		addrCity = new FormBoxInput(this).setLbl(new LanguageUtil("Cidade", "City").get()).setRequired();
 	
 		String[] brazilStates = {
 			    "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", 
@@ -250,7 +312,7 @@ public class CustomerFormPage extends GenericFormPage {
 			    "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"
 			};
 	
-		addrState = new FormBoxInput(this).setLbl("Estado");
+		addrState = new FormBoxInput(this).setLbl(new LanguageUtil("Estado", "State").get()).setRequired();
 		
 		if(customer.address != null) {
 			addrCep.setValue(customer.address.cep + "");
@@ -265,7 +327,7 @@ public class CustomerFormPage extends GenericFormPage {
 		}
 	
 		//Criando o form de informações de endereço
-		FormSection addrInfo = new FormSection(this).setUpName("Endereço")
+		FormSection addrInfo = new FormSection(this).setUpName(new LanguageUtil("Endereço", "Address").get())
 													.addRow(addrCep, addrNumber, addrComp)
 													.addRow(addrStreet)
 													.addRow(addrHood, addrCity, addrState)

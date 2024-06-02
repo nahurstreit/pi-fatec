@@ -2,26 +2,30 @@ package controller;
 
 import java.util.List;
 
-import javax.swing.JOptionPane;
+import javax.swing.JFrame;
 
 import model.entities.Aliment;
-import model.entities.Customer;
-import view.frames.CustomerFrame;
+import model.entities.Food;
+import view.components.QuestNutriJOP;
+import view.frames.AlimentFrame;
+import view.utils.LanguageUtil;
 
 public class AlimentController {
-    public static void openAlimentFrame(int id) {
-        JOptionPane.showMessageDialog(null, "Você abriu o JFrame do Customer: " + Customer.findByPK(id));
-    }
-    
+	/**
+	 * Procura os alimentos que satisfaçam as condições em: 'searchField LIKE searchTerm' no banco de dados.;
+	 * @param searchField - Coluna de busca
+	 * @param searchTerm - String procurada
+	 * @return Lista de alimentos do banco de dados que satisfazem a busca.
+	 */
     public static List<Aliment> searchAliments(String searchField, String searchTerm) {
         String searchParam = "";
         searchTerm = searchTerm.replaceAll("\\W", "");
         if (!searchTerm.isBlank()) {
             switch (searchField) {
-                case "Nome":
+                case "Nome": case "Name":
                     searchParam = "name";
                     break;
-                case "Grupo":
+                case "Grupo": case "Group":
                     searchParam = "alimentGroup";
                     break;
             }
@@ -32,8 +36,53 @@ public class AlimentController {
         return Aliment.findAll(searchParam);
     }
 
-    public static void openCustomerFrame(Customer customer) {
-        CustomerFrame frame = new CustomerFrame(customer);
+    /**
+     * Abre um novo AlimentFrame do alimento indicado
+     * @param aliment - Alimento desejável a exibir as informações no frame.
+     */
+    public static void openAlimentFrame(Aliment aliment) {
+        AlimentFrame frame = new AlimentFrame(aliment);
         frame.setVisible(true);
     }
+    
+    public static void createAliment(Aliment aliment, String name, String group, String kcal) {
+    	aliment.setName(name)
+    		   .setAlimentGroup("Customizado")
+    		   .setKcal(kcal);
+    	
+    	try {
+        	if(aliment.save()) {
+        		QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Alimento salvo!", "Aliment saved!").get());
+        	}
+		} catch (Exception e) {
+			QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Alimento salvo!", "Aliment saved!").get());
+		}
+
+    }
+    
+    public static boolean saveAliment(Aliment aliment, String name, String kcal) {
+    	aliment.save();
+    	return true;
+    }
+    
+    public static boolean deleteAliment(Aliment aliment) {
+    	boolean res = false;
+    	if(aliment.isCustom()) {
+	    		try {
+					res = aliment.delete();
+				} catch (Exception e) {
+				}
+    	} else {
+    		QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Não é permitido excluir esse registro.", "!").get());
+    		return false;
+    	}
+    	
+    	if(!res) {
+    		QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Não foi possível excluir!", "!").get());
+    	} else {
+    		QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Alimento excluído.", "!").get());
+    	}
+    	return res;
+    }
+    
 }

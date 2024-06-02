@@ -11,7 +11,7 @@ public abstract class WeightDAO extends GenericDAO<Weight> {
 	}
 
 	public static List<Weight> findAllByCustomerPK(int id) {
-		return Weight.findAll("customer.id = " + id);
+		return Weight.findAll("customer.id = " + id + "ORDER BY dateRegister DESC, id DESC");
 	}
 	
 	public static Weight findByPK(int id) {
@@ -21,6 +21,6 @@ public abstract class WeightDAO extends GenericDAO<Weight> {
 	public static Weight findLastRegister(int idCustomer) {
 		List<Weight> results = findAllByCustomerPK(idCustomer);
 		if(results.size() <= 0) return null;
-		return results.get(results.size() - 1);
+		return results.get(0);
 	}
 }

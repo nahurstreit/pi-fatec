@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.Dimension;
 import java.text.MessageFormat;
 import java.util.List;
 
@@ -8,8 +9,11 @@ import javax.swing.JScrollPane;
 
 import model.entities.Address;
 import model.entities.Customer;
+import view.QuestNutri;
+import view.components.QuestNutriJOP;
 import view.frames.CustomerFrame;
 import view.frames.NewCustomerFrame;
+import view.utils.LanguageUtil;
 
 public class CustomerController {
     public static JScrollPane getCustomerList(List<Customer> originList) {
@@ -32,23 +36,26 @@ public class CustomerController {
     public static List<Customer> searchCustomers(String searchField, String searchTerm) {
         String searchParam = "";
         searchTerm = searchTerm.replaceAll("\\W", "");
+        
         if (!searchTerm.isBlank()) {
             switch (searchField) {
                 case "CPF":
                     searchTerm = searchTerm.replaceAll("[^\\d]", "");
                     searchParam = "cpf";
                     break;
-                case "Nome":
+                case "Nome": case "Name":
                     searchParam = "name";
                     break;
-                case "Telefone":
+                case "Telefone": case "PhoneNumber":
                     searchTerm = searchTerm.replaceAll("[^\\d]", "");
                     searchParam = "phoneNumber";
                     break;
             }
             
-            searchParam += " LIKE '%" + searchTerm + "%'";
+            searchParam += " LIKE '%" + searchTerm + "%' AND";
         }
+        
+        searchParam += " deletedAt IS NULL";
         
         return Customer.findAll(searchParam);
     }
@@ -59,11 +66,12 @@ public class CustomerController {
         		frame.sbProfilePage(), 
         		frame.sbDietPage())
         	 .init();
+        frame.setMinimumSize(new Dimension(1000, 500));;
         return frame;
     }
     
-    public static NewCustomerFrame openNewCustomerFrame() {
-    	NewCustomerFrame frame = new NewCustomerFrame();
+    public static NewCustomerFrame openNewCustomerFrame(Runnable onCreate) {
+    	NewCustomerFrame frame = new NewCustomerFrame(onCreate);
     	return frame;
     }
     
@@ -82,34 +90,55 @@ public class CustomerController {
     public static void createNewCustomer(NewCustomerFrame frame, 
     		Customer customer, String name, String birth, String cpf, String height, String gender,
     		String email, String phoneNumber) {
-    	try {
-    		customer.setName(name)
-    				.setBirth(birth)
-    				.setCpf(cpf)
-    				.setHeight(Double.parseDouble(height))
-    				.setGender(gender.charAt(0))
-    				.setEmail(email)
-    				.setPhone(phoneNumber);
+    	if(QuestNutri.isEditAuth()) {
+        	Double convertedHeight = null;
+        	try {
+        		convertedHeight= Double.parseDouble(height);
+    		} catch (Exception e) {
+    		}
     		
-    		if(customer.save()) {
+        	try {
+        		customer.setName(name)
+        				.setBirth(birth)
+        				.setCpf(cpf)
+        				.setHeight(convertedHeight)
+        				.setGender(gender.charAt(0))
+        				.setEmail(email)
+        				.setPhone(phoneNumber);
+        		
+        		if(customer.save()) {
+        			frame.dispose();
+        			openCustomerFrame(Customer.findLast());
+        		};
+    		} catch (Exception e) {
     			frame.dispose();
-    			openCustomerFrame(Customer.findLast());
-    		};
-		} catch (Exception e) {
-			frame.dispose();
-			JOptionPane.showMessageDialog(null, "Ocorreu um erro!");
-		}
-    	
+    			JOptionPane.showMessageDialog(null, "Ocorreu um erro!");
+    		}
+    	} else {
+    		QuestNutriJOP.showMessageDialog(null, 
+    				new LanguageUtil(
+    						"Usuário não tem autorização para criar um Novo Cliente", 
+							"User is not authorized to create a New Customer"
+    						).get(),
+    				new LanguageUtil("Não Autorizado", "Unauthorized").get(), 1, null);
+    	}
     }
     
-    public static boolean saveCustPersonalInfo(Customer customer, String name, String birth, String cpf, String height, String gender) {
-    	customer.setName(name)
-    			.setBirth(birth)
-    			.setCpf(cpf)
-    			.setHeight(Double.parseDouble(height))
-    			.setGender(gender.charAt(0));
+    public static void saveCustPersonalInfo(Customer customer, String name, String birth, String cpf, String height, String gender) {
+    	Double convertedHeight = null;
+    	try {
+    		convertedHeight= Double.parseDouble(height);
+		} catch (Exception e) {
+		}
     	
-    	return customer.save();
+        customer.setName(name)
+		        .setBirth(birth)
+		        .setCpf(cpf)
+		        .setHeight(convertedHeight)
+		        .setGender(gender.charAt(0));
+		if(customer.save()) {
+			QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Dados salvos com sucesso!", "Data saved successfully!").get());
+		};
     }
     
     public static boolean saveCustomerContactInfo(Customer customer, String email, String phoneNumber) {
@@ -169,5 +198,33 @@ public class CustomerController {
             return phoneNumber;
         }
     }
+	
+	public static boolean deleteCustomer(Customer customer) {
+		String[] options = {new LanguageUtil("Sim", "Yes").get(), new LanguageUtil("Não", "No").get()};
+		boolean status = false;
+		
+		int choice = QuestNutriJOP.showOptionDialog(
+	            null, // Componente pai (null para centralizar na tela)
+	            new LanguageUtil("Você está tentando excluir o cliente: ", "You are trying to delete the customer: ").get() + customer.getName() + "."
+                + "\n" + new LanguageUtil("O cadastro será desativado por enquanto. Você poderá forçar sua exclusão nas configurações da página de clientes.", "The record will be deactivated for now. You can force its deletion in the customer page settings.").get(),
+                new LanguageUtil("Confirmação", "Confirmation").get(), // Título
+	            JOptionPane.YES_NO_CANCEL_OPTION, // Tipo de opções
+	            JOptionPane.QUESTION_MESSAGE, // �?cone
+	            null,
+	            options,
+	            options[1]
+	        );
+		
+		if(choice == 0) {
+			if(customer.softDelete()) {
+				QuestNutriJOP.showMessageDialog(null, new LanguageUtil("O Cliente foi desativado!", "The customer has been deactivated!").get());
+			    status = true;
+			} else {
+				QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Erro ao desativar o cliente.", "Error deactivating the customer.").get());
+			}
+		}
+		
+		return status;
+	}
 
 }

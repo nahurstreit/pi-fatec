@@ -103,85 +103,16 @@ public class Aliment extends AlimentDAO {
 
 	@Column(name = "ash")
 	public String ash;
-
-	/**
-	 * 
-	 * @param idAliment    Recebe o Id do Alimento
-	 * @param aliCustom    Recebe 0 ou 1 e será usado como um check no banco de
-	 *                     dados para permitir ou não a alteração/exclusão do
-	 *                     Alimento (permissão = 1)
-	 * @param aliName      Recebe o Nome do Alimento
-	 * @param alimentGroup Recebe o Grupo ao qual pertence o Alimento
-	 * @param aliKcal      Recebe as Quilocalorias do Alimento
-	 * @param aliKJ        Recebe os Quilojoules do Alimento
-	 * @param aliCarb      Recebe os Carboidratos do Alimento
-	 * @param aliProtein   Recebe a Proteína do Alimento
-	 * @param aliFat       Recebe a Gorduta do Alimento
-	 * @param humidity     Recebe a Umidade presente no Alimento
-	 * @param dietaryFiber Recebe a Fibra dietética (fibras alimentares) do Alimento
-	 * @param cholesterol  Recebe os níveis de Colesterol presentes no Alimento
-	 * @param sodium       Recebe o Sódio do Alimento
-	 * @param calcium      Recebe o Cálcio do Alimento
-	 * @param magnesium    Recebe o Magnésio do Alimento
-	 * @param manganese    Recebe o Manganês (ajuda na formação dos ossos) do
-	 *                     Alimento
-	 * @param phosphorus   Recebe o Fósforo do Alimento
-	 * @param iron         Recebe o Ferro (sais minerais) do Alimento
-	 * @param potassium    Recebe o Potássio (sais minerais) do Alimento
-	 * @param copper       Recebe o Cobre (sais minerais) do Alimento
-	 * @param zinc         Recebe o Zinco (oligoelemento importante para o sistema
-	 *                     imunológico) do Alimento
-	 * @param retinol      Recebe o Retinol (vitamina A) do Alimento
-	 * @param rE           Recebe o Resíduo de extrato etéreo (quantidade de
-	 *                     lipídeos) do Alimento
-	 * @param rAE          Recebe o Retinol equivalente (padronização de ingestão de
-	 *                     vitamina A) do Alimento
-	 * @param thiamine     Recebe a Tiamina (vitamina B1) do Alimento
-	 * @param riboflavin   Recebe a Riboflavina (vitamina B2) do Alimento
-	 * @param pyridoxine   Recebe a Piridoxina (vitamina B6) do Alimento
-	 * @param niacin       Recebe a Niacina (vitamina B3) do Alimento
-	 * @param vitaminC     Recebe a Vitamina C (que contribui para o sistema
-	 *                     imunológico) do Alimento.
-	 * @param ash          Recebe o conjunto mineral total presente no Alimento
-	 */
-//	public Aliment(String name, String alimentGroup, String kcal,
-//			String kJ, String carb, String protein, String fat, String humidity, String dietaryFiber,
-//			String cholesterol, String sodium, String calcium, String magnesium, String manganese, String phosphorus,
-//			String iron, String potassium, String copper, String zinc, String retinol, String rE, String rAE,
-//			String thiamine, String riboflavin, String pyridoxine, String niacin, String vitaminC, String ash) {
-//		super();
-//		this.name = name;
-//		this.alimentGroup = alimentGroup;
-//		this.kcal = kcal;
-//		this.kJ = kJ;
-//		this.carb = carb;
-//		this.protein = protein;
-//		this.fat = fat;
-//		this.humidity = humidity;
-//		this.dietaryFiber = dietaryFiber;
-//		this.cholesterol = cholesterol;
-//		this.sodium = sodium;
-//		this.calcium = calcium;
-//		this.magnesium = magnesium;
-//		this.manganese = manganese;
-//		this.phosphorus = phosphorus;
-//		this.iron = iron;
-//		this.potassium = potassium;
-//		this.copper = copper;
-//		this.zinc = zinc;
-//		this.retinol = retinol;
-//		this.rE = rE;
-//		this.rAE = rAE;
-//		this.thiamine = thiamine;
-//		this.riboflavin = riboflavin;
-//		this.pyridoxine = pyridoxine;
-//		this.niacin = niacin;
-//		this.vitaminC = vitaminC;
-//		this.ash = ash;
-//	}
+	
 	
 	public Aliment() {};
 	
+	
+	/**
+	 * Retorna se o objeto Aliment é customizável. Alimentos da tabela TACO, NÃO PODEM SER CUSTOMIZADOS e alimentos que foram criados manualmente
+	 * NÃO podem deixar de ser customizáveis.
+	 * @return - Booleano indicando se o alimento é customizável.
+	 */
 	public boolean isCustom() {
 		return this.custom == 1;
 	}
@@ -231,6 +162,11 @@ public class Aliment extends AlimentDAO {
 		return result;
 	}
 
+	/**
+	 * Método para definir o nome do alimento.
+	 * @param name - String que representa o nome do alimento.
+	 * @return o próprio objeto Aliment para implementar fluent interface.
+	 */
 	public Aliment setName(String name) {
 		this.name = name;
 		return this;

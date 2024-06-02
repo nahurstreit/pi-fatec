@@ -20,6 +20,7 @@ public abstract class CustomerDAO extends GenericDAO<Customer>{
 		return GenericDAO.findAll(Customer.class, params);
 	}
 	
+	
 	/**
      * Método que retorna um Customer pelo seu id
      * 

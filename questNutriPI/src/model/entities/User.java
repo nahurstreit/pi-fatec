@@ -1,10 +1,13 @@
 package model.entities;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import model.dao.UserDAO;
 
@@ -18,33 +21,41 @@ public class User extends UserDAO {
 	@Column(name = "idUser")
 	public Integer idUser;
 
-	@Column(name = "userName")
-	private String name;
+	@Column(name = "user_login")
+	private String login;
 
-	@Column(name = "userPassword")
+	@Column(name = "user_password")
 	private String password;
+	
+	@Column(name = "user_personalName")
+	private String firstName;
+	
+	@Column(name = "user_prefLanguage")
+	private Integer prefLanguage;
 
 	@Column(name = "systemLevel")
 	private Integer systemLevel;
 
-	public User(Integer idUser, String name, String password, Integer systemLevel) {
+	public User(String login, String password, String firstName, Integer systemLevel) {
 		super();
-		this.idUser = idUser;
-		this.name = name;
+		this.login = login;
 		this.password = password;
+		this.firstName = firstName;
 		this.systemLevel = systemLevel;
 	}
-
-	public User() {
-		this(null, null, null, null);
-	}
-
+	
+	public User() {}
+ 
 	public Integer getId() {
 		return idUser;
 	}
 
-	public String getName() {
-		return name;
+	public String getLogin() {
+		return login;
+	}
+	
+	public String getFirstName() {
+		return firstName;
 	}
 
 	/**
@@ -53,8 +64,8 @@ public class User extends UserDAO {
 	 * @param name - String do nome de um User.
 	 * @return Retorna o próprio User.
 	 */
-	public User setName(String name) {
-		this.name = name;
+	public User setLogin(String login) {
+		this.login = login;
 		return this;
 	}
 
@@ -83,7 +94,7 @@ public class User extends UserDAO {
 	 * @param systemLevel - Nível do Usuário de 1 a 3.
 	 * @return Retorna o nível de um Usuário no sistema.
 	 */
-	public User setSystemLevel(Integer systemLevel) {
+	private User setSystemLevel(Integer systemLevel) {
 		switch (systemLevel) {
 		case 1:
 		case 2:
@@ -94,15 +105,13 @@ public class User extends UserDAO {
 		}
 		return this;
 	}
-
-	/**
-	 * Implementação para encontrar um usuário baseado em um campo específico
-	 * @param fieldName
-	 * @param value
-	 * @return
-	 */
-	public static User findOne(String fieldName, String value) {
-		return null; 
+	
+	public int userPrefLanguage() {
+		return this.prefLanguage;
+	}
+	
+	public String getSysLevel() {
+		return this.systemLevel + "";
 	}
 
 	
@@ -110,7 +119,7 @@ public class User extends UserDAO {
 	public String toString() {
 		return "User: {" 
 	+ "\n    idUser" + idUser
-	+ "\n    name:" + name
+	+ "\n    login:" + login
 	+ "\n    systemLevel:"	+ systemLevel 
 	+ "\n}";
 	}

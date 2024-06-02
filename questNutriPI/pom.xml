@@ -32,23 +32,44 @@
     </plugins>
   </build>
   <dependencies>
-      <!--Biblioteca para controlar imagens vetoriais SVG -->
+    <!--Biblioteca para controlar imagens vetoriais SVG -->
+    <!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-all -->
     <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-all</artifactId>
         <version>1.17</version>
     </dependency>
+    
     <!--Biblioteca de ORM -->
+    <!-- https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core -->
     <dependency>
         <groupId>org.hibernate.orm</groupId>
         <artifactId>hibernate-core</artifactId>
         <version>6.5.0.Final</version>
     </dependency>
+    
     <!--Biblioteca do JDBC -->
+    <!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
     <dependency>
              <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
             <version>9.4.0.jre11</version>
     </dependency>
+    
+    <!-- Biblioteca de PDF -->
+    <!-- https://mvnrepository.com/artifact/com.itextpdf/itextpdf -->
+	<dependency>
+	    <groupId>com.itextpdf</groupId>
+	    <artifactId>itextpdf</artifactId>
+	    <version>5.5.13.3</version>
+	</dependency>
+	
+	<!--  -->
+	<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on -->
+	<dependency>
+	    <groupId>org.bouncycastle</groupId>
+	    <artifactId>bcprov-jdk18on</artifactId>
+	    <version>1.78.1</version>
+	</dependency>
   </dependencies>
 </project>

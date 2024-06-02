@@ -15,7 +15,9 @@ import view.QuestNutri;
 import view.components.HintInputField;
 import view.components.HintPasswordInputField;
 import view.components.StdButton;
+import view.panels.components.GeneralJPanelSettings;
 import view.panels.components.GenericJPanel;
+import view.utils.LanguageUtil;
 import view.utils.VMakePicture;
 
 /**
@@ -38,12 +40,12 @@ public class LoginPanel extends GenericJPanel {
 		
 		JPanel loginPanelHolder = new JPanel();
 		loginPanelHolder.setLayout(new GridBagLayout());
-		loginPanelHolder.setBackground(this.STD_NULL_COLOR);
+		loginPanelHolder.setBackground(GeneralJPanelSettings.STD_NULL_COLOR);
 		gbc.insets();
 		
         JPanel inputLoginPanel = new JPanel();
         inputLoginPanel.setLayout(new GridBagLayout());
-        inputLoginPanel.setBackground(this.STD_BLUE_COLOR);
+        inputLoginPanel.setBackground(GeneralJPanelSettings.STD_BLUE_COLOR);
         inputLoginPanel.setPreferredSize(dSize);
         inputLoginPanel.setMinimumSize(dSize);
         
@@ -83,21 +85,21 @@ public class LoginPanel extends GenericJPanel {
 		//Label de Página de Administrador
 		gbc.insets(0,0,20,0)
 			.grid(0);
-		JLabel lblAdminPage = new JLabel("Página de Administrador", JLabel.CENTER);
-		lblAdminPage.setFont(this.STD_BOLD_FONT.deriveFont(18f));
+		JLabel lblAdminPage = new JLabel(new LanguageUtil("Página de Administrador", "Admin's Page").get(), JLabel.CENTER);
+		lblAdminPage.setFont(GeneralJPanelSettings.STD_BOLD_FONT.deriveFont(18f));
 		lblAdminPage.setForeground(Color.white);
 		panel.add(lblAdminPage, gbc);
 		
 		//Label de Username
 		JLabel lblUsername = new JLabel("Username:", JLabel.CENTER);
-		lblUsername.setFont(this.STD_MEDIUM_FONT.deriveFont(15f));
+		lblUsername.setFont(GeneralJPanelSettings.STD_MEDIUM_FONT.deriveFont(15f));
 		lblUsername.setForeground(Color.white);
 		panel.add(lblUsername, gbc.insets(0,0,2,0).yP());
 		
 
 		//TextField de Username
 		tfUser = new HintInputField(
-					"Digite aqui...",
+					new LanguageUtil("Digite aqui...", "Type here...").get(),
 					new Dimension(100, 20),
 					12f
 				);
@@ -105,15 +107,15 @@ public class LoginPanel extends GenericJPanel {
 		
 		
 		//Label de Senha
-		JLabel lblPassword = new JLabel("Senha:", JLabel.CENTER);
-		lblPassword.setFont(this.STD_MEDIUM_FONT.deriveFont(15f));
+		JLabel lblPassword = new JLabel(new LanguageUtil("Senha:", "Password:").get(), JLabel.CENTER);
+		lblPassword.setFont(GeneralJPanelSettings.STD_MEDIUM_FONT.deriveFont(15f));
 		lblPassword.setForeground(Color.white);
 		panel.add(lblPassword, gbc.insets(5,0,2,0).yP());
 		
 		
 		//Input de senha
 		password = new HintPasswordInputField(
-				"Digite aqui...",
+				new LanguageUtil("Digite aqui...", "Type here...").get(),
 				new Dimension(100, 20),
 				12f);
 		
@@ -127,11 +129,11 @@ public class LoginPanel extends GenericJPanel {
 	 * @see QuestNutri#doLogin()
 	 */
 	private void placeBtn(JPanel panel) {
-		StdButton button = new StdButton("Entrar", () -> QuestNutri.doLogin(tfUser.getText(), password.getRealText()));
+		StdButton button = new StdButton(new LanguageUtil("Entrar", "Login").get(), () -> QuestNutri.doLogin(tfUser.getText(), password.getRealText()));
         button.setPreferredSize(new Dimension(75, 25));
         button.setBackground(Color.white);
-        button.setForeground(this.STD_BLUE_COLOR);
-        button.setFont(this.STD_BOLD_FONT.deriveFont(12f));
+        button.setForeground(GeneralJPanelSettings.STD_BLUE_COLOR);
+        button.setFont(GeneralJPanelSettings.STD_BOLD_FONT.deriveFont(12f));
 
         panel.add(button, gbc.insets(0,0,20,0).yP());
 	}

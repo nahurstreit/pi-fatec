@@ -1,6 +1,7 @@
 package model.dao;
 
 import java.util.List;
+
 import model.entities.Food;
 
 public abstract class FoodDAO extends GenericDAO<Food> {

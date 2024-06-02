@@ -112,7 +112,7 @@ public class Address extends AddressDAO {
 	}
 
 	public Address setCep(String cep) {
-		this.cep = cep;
+		this.cep = cep.replaceAll("\\D", "");
 		return this;
 	}
 
