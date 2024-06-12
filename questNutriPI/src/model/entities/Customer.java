@@ -87,26 +87,47 @@ public class Customer extends CustomerDAO {
 		this(null, null, null, null, null, null, null, null, null);
 	}
 
+	/**
+     * Método para recuperar o ID do Cliente.
+     *
+     * @return Retorna o ID do Cliente.
+     */
 	public Integer getId() {
 		return this.idCustomer;
 	}
 	
+	 /**
+     * Método para recuperar o nome do Cliente.
+     *
+     * @return Retorna o nome do Cliente.
+     */
 	public String getName() {
 		return this.name;
 	}
 	
-	public String getCpf() {
-		return cpf;
-	}
-	
+	/**
+     * Método para recuperar o CPF do Cliente.
+     *
+     * @return Retorna o CPF do Cliente.
+     */
 	public String getCPF() {
 		return cpf;
 	}
 	
+	/**
+     * Método para recuperar o CPF formatado do Cliente.
+     *
+     * @return Retorna o CPF formatado do Cliente.
+     */
 	public String getFormattedCpf() {
 		return MessageFormat.format("{0}.{1}.{2}-{3}", cpf.substring(0, 3), cpf.substring(3, 6), cpf.substring(6, 9), cpf.substring(9));
 	}
 	
+	 /**
+     * Método para recuperar o número de telefone do Cliente.
+     *
+     * @return Retorna o número de telefone do Cliente.
+     */
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
@@ -133,6 +154,7 @@ public class Customer extends CustomerDAO {
 	
 	/**
 	 * Método para setar o nome de um Customer.
+	 * 
 	 * @param name - String do nome
 	 * @return Retorna o próprio Customer, para implementação de fluent interface.
 	 */
@@ -143,6 +165,7 @@ public class Customer extends CustomerDAO {
 	
 	/**
 	 * Método para setar o email de um Customer.
+	 * 
 	 * @param email - String do email
 	 * @return Retorna o próprio Customer, para implementação de fluent interface.
 	 */
@@ -153,6 +176,7 @@ public class Customer extends CustomerDAO {
 	
 	/**
 	 * Método para setar o CPF de um Customer.
+	 * 
 	 * @param cpf - String do CPF
 	 * @return Retorna o próprio Customer, para implementação de fluent interface.
 	 */
@@ -163,6 +187,7 @@ public class Customer extends CustomerDAO {
 	
 	/**
 	 * Método para setar o número de telefone de um Customer.
+	 * 
 	 * @param phoneNumber - String do telefone
 	 * @return Retorna o próprio Customer, para implementação de fluent interface.
 	 */
@@ -173,6 +198,7 @@ public class Customer extends CustomerDAO {
 	
 	/**
 	 * Método para setar o nível de atividade de um Customer.
+	 * 
 	 * @param activityStatus - inteiro que representa o nível de atividade
 	 * @return Retorna o próprio Customer, para implementação de fluent interface.
 	 */
@@ -184,6 +210,7 @@ public class Customer extends CustomerDAO {
 	
 	/**
 	 * Método para setar a altura de um Customer.
+	 * 
 	 * @param height - Double que representa a altura do cliente
 	 * @return Retorna o próprio Customer, para implementação de fluent interface.
 	 */
@@ -194,6 +221,7 @@ public class Customer extends CustomerDAO {
 	
 	/**
 	 * Método para setar a quantidade de kcal diárias pesonalizadas de um Customer.
+	 * 
 	 * @param settedKcal - Double que representa a quantidade de kcal
 	 * @return Retorna o próprio Customer, para implementação de fluent interface.
 	 */
@@ -204,6 +232,7 @@ public class Customer extends CustomerDAO {
 	
 	/**
 	 * Método para setar a data de nascimento de um Customer.
+	 * 
 	 * @param day - dia do nascimento
 	 * @param month - mês do nascimento
 	 * @param year - ano do nascimento
@@ -216,6 +245,7 @@ public class Customer extends CustomerDAO {
 	
 	/**
 	 * Método para setar a data de nascimento de um Customer.
+	 * 
 	 * @param date - data como return de LocalDate.of(year, month, day);
 	 * @return Retorna o próprio Customer, para implementação de fluent interface.
 	 */
@@ -226,6 +256,7 @@ public class Customer extends CustomerDAO {
 	
 	/**
 	 * Método para setar a data de nascimento de um Customer.
+	 * 
 	 * @param date - String que representa o dia de nascimento sob o formato 'dd/MM/yyyy';
 	 * @return Retorna o próprio Customer, para implementação de fluent interface.
 	 */
@@ -239,6 +270,7 @@ public class Customer extends CustomerDAO {
 	
 	/**
 	 * Método para setar o gênero de um Customer.
+	 * 
 	 * @param gender - Caractere que representa o Gênero: 'F' - Feminino, 'M' - Masculino
 	 * @return Retorna o próprio Customer, para implementação de fluent interface.
 	 */
@@ -254,6 +286,7 @@ public class Customer extends CustomerDAO {
 	
 	/**
 	 * Método para setar o endereço de um Customer.
+	 * 
 	 * @param address objeto address
 	 * @return Retorna o próprio Customer, para implementação de fluent interface.
 	 */
@@ -354,7 +387,7 @@ public class Customer extends CustomerDAO {
 		return "Customer: {"
 		+ "\n    idCustomer: "+ idCustomer
 		+ "\n    name: " + name
-		+ "\n    cpf: "+getCPF()
+		+ "\n    cpf: "+ getCPF()
 		+ "\n    birth: "+getBirth()
 		+ "\n    height: "+height
 		+ "\n    gender: "+gender
@@ -363,6 +396,7 @@ public class Customer extends CustomerDAO {
 	
 	/**
 	 * Método para retornar uma visão pequena do objeto.
+	 * 
 	 * @return String contendo apenas alguns dos atributos mais importantes
 	 */
 	public String smallInfo() {
