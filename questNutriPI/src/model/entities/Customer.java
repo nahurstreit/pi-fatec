@@ -109,6 +109,11 @@ public class Customer extends CustomerDAO {
 		return phoneNumber;
 	}
 	
+	public void showDates() {
+		System.out.println(this.createdAt);
+		System.out.println(this.deletedAt);
+	}
+	
 	public String getFormattedPhoneNumber() {
         // Formatar o número de telefone
         if (phoneNumber.length() == 10) {
@@ -305,6 +310,21 @@ public class Customer extends CustomerDAO {
 		} catch (Exception e) {
 			return false;
 		}
+    }
+    
+    public boolean copyDietToAnotherCustomer(Customer destinyCustomer) {
+    	boolean res = true;
+    	try {
+			for(Meal meal: this.getDiet()) {
+				Meal copy = Meal.createCopyFrom(meal);
+				copy.setCustomer(destinyCustomer);
+				copy.save();
+			}
+		} catch (Exception e) {
+			res = false;
+		}
+    	
+    	return res;
     }
 	
 	public void createMeal(Meal meal) {

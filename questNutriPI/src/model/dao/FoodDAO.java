@@ -23,4 +23,8 @@ public abstract class FoodDAO extends GenericDAO<Food> {
 		return GenericDAO.findByPK(Food.class, id);
 	}
 	
+	public static Food findLast() {
+		return GenericDAO.findLast(Food.class, " deactivatedAt IS NULL ");
+	}
+	
 }

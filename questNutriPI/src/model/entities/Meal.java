@@ -19,10 +19,11 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import model.dao.MealDAO;
+import utils.ICopy;
 
 @Entity
 @Table(name = "Meals")
-public class Meal extends MealDAO {
+public class Meal extends MealDAO implements ICopy<Meal> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idMeal")
@@ -158,7 +159,7 @@ public class Meal extends MealDAO {
 	}
 	
 	public boolean isActive() {
-		return this.deactivatedAt != null;
+		return this.deactivatedAt == null;
 	}
 
     /**
@@ -168,6 +169,102 @@ public class Meal extends MealDAO {
     private void prePersist() {
         if(createdAt == null) createdAt = LocalDate.now();
     }
+    
+	/**
+	 * Reimplementação de Delete para não excluir o registro de Meal e sim desativá-lo
+	 */
+	@Override
+	public boolean delete() {
+		this.deactivatedAt = LocalDate.now();
+		//Desabilitado para testes.
+//		if(createdAt == deactivatedAt) { //Se o delete acontecer no mesmo dia de criação, o registro é deletado ao invés de ser desativado, pois não há histórico.
+//			return super.delete();
+//		}
+		return this.save();
+	}
+	
+    public static Meal createCopyFrom(Meal mold) {
+    	Meal copy = new Meal();
+    	copy.copyFrom(mold);
+    	return copy;
+    }
+	
+	@Override
+	public Meal copyFrom(Meal originObject) {
+		try {
+			this.customer = originObject.customer;
+			this.name = originObject.name;
+			this.daysOfWeek = originObject.daysOfWeek;
+			this.hour = originObject.hour;
+			this.obs = originObject.obs;
+			
+			this.save();
+			
+			copyFoods(originObject, this);
+			
+		} catch (Exception e) {
+			System.err.println("Não foi possível copiar o objeto.");
+		}
+		
+		return this;
+	}
+	
+	
+	@Override
+	public boolean copyMeTo(Meal destinyObject) {
+    	boolean res = true;
+    	try {
+        	destinyObject.customer= this.customer;
+        	destinyObject.name = this.name;
+        	destinyObject.daysOfWeek = this.daysOfWeek;
+        	destinyObject.hour = this.hour;
+        	destinyObject.obs = this.obs;
+        	
+        	if(destinyObject.idMeal == null) destinyObject.save();
+        	
+        	copyFoods(this, destinyObject);
+        	
+		} catch (Exception e) {
+			System.err.println("Não foi possível copiar o objeto.");
+			e.printStackTrace();
+			res = false;
+		}
+
+    	return res;
+	}
+	
+	/**
+	 * Método que copia todas as foods de uma meal (origin) para outra (destiny).
+	 * @param origin - Objeto Meal cujos objetos de Food associados devem ser copiados para destiny.
+	 * @param destiny - Objeto Meal que receberá copias de objetos de Food associados ao origin.
+	 * @return <b>boolean</b> - O resultado da operação.
+	 * <li>Se <b>true</b> - Todas as foods foram copiadas.
+	 * <li>Se <b>false</b> - Houve algum erro e a cópia não foi bem sucedida.
+	 */
+	private boolean copyFoods(Meal origin, Meal destiny) {
+		boolean res = true;
+		int toCopy = origin.getFoods().size();
+		int totalCopied = 0;
+		try {
+			for(Food food: origin.getFoods()) { //Itera sobre as foods da origin
+				try {
+					Food copiedFood = Food.createCopyFrom(food); //Copia a food da iteração
+					copiedFood.meal = destiny; //Salva a meal copiada na destiny
+					copiedFood.save();
+					
+					totalCopied++;
+				} catch (Exception e) {
+				}
+
+			}
+		} catch (Exception e) {
+			res = false;
+		}
+		
+		if(toCopy != totalCopied) res = false; //Verificação adicional para saber se todas as foods foram copiadas.
+		
+		return res;
+	}
 
 	@Override
 	public String toString() {
@@ -182,16 +279,6 @@ public class Meal extends MealDAO {
 				+ "\n    createdAt: " + createdAt + ", "
 				+ "\n    deactivatedAt: "+ deactivatedAt
 				+ "\n}";
-	}
-	
-	
-	/**
-	 * Reimplementação de Delete para não excluir o registro de Meal e sim desativá-lo
-	 */
-	@Override
-	public boolean delete() {
-		this.deactivatedAt = LocalDate.now();
-		return this.save();
 	}
 	
 	/**

@@ -51,5 +51,9 @@ public abstract class MealDAO extends GenericDAO<Meal>{
 		
 		return null;
 	}
+	
+	public static Meal findLast() {
+		return GenericDAO.findLast(Meal.class);
+	}
 
 }

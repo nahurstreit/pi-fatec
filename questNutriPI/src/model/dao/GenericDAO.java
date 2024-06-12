@@ -12,6 +12,7 @@ import org.hibernate.query.Query;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import model.utils.HibernateUtil;
+import utils.CopyFactory;
 
 public abstract class GenericDAO<T> {
 	
@@ -29,6 +30,7 @@ public abstract class GenericDAO<T> {
 			session.beginTransaction();
 			session.merge(this);
 			session.getTransaction().commit();
+			CopyFactory.clone(findLast(this.getClass()), this);
 		} catch (ConstraintViolationException e) {
 		    Throwable cause = e.getCause();
 		    if (cause instanceof SQLServerException) {
@@ -131,7 +133,13 @@ public abstract class GenericDAO<T> {
 	 * @param params - Complemento da query de busca.
 	 * @return Retorna uma instância do tipo (EntityType) caso encontrada, senão null.
 	 */
-    protected static <T> T findLast(Class<T> entityType) {
-    	return GenericDAO.findOne(entityType, " ORDER BY id DESC");
+    protected static <T> T findLast(Class<T> entityType, String... params) {
+    	String query = " ORDER BY id DESC ";
+    	if(params.length > 0) {
+    		for(String param: params) {
+    			query += " AND "+ param +" ";
+    		}
+    	}
+    	return GenericDAO.findOne(entityType, query);
     }
 }

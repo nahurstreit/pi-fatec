@@ -12,10 +12,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import model.dao.SubFoodDAO;
+import utils.ICopy;
 
 @Entity
 @Table(name = "SubFoods")
-public class SubFood extends SubFoodDAO{
+public class SubFood extends SubFoodDAO implements ICopy<SubFood>{
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idSubFood")
@@ -88,6 +89,44 @@ public class SubFood extends SubFoodDAO{
 	public boolean delete() {
 		this.deactivatedAt = LocalDate.now();
 		return this.save();
+	}
+	
+    public static SubFood createCopyFrom(SubFood mold) {
+    	SubFood copy = new SubFood();
+    	copy.copyFrom(mold);
+    	return copy;
+    }
+	
+	@Override
+	public SubFood copyFrom(SubFood originObject) {
+    	try {
+        	this.food = originObject.food;
+        	this.aliment = originObject.aliment;
+        	this.quantity = originObject.quantity;
+        	this.unityQt = originObject.unityQt;
+        	this.obs = originObject.obs;
+		} catch (Exception e) {
+			System.err.println("Não foi possível copiar o objeto.");
+		}
+    	
+    	return this;
+	}
+	
+	@Override
+	public boolean copyMeTo(SubFood destinyObject) {
+    	boolean res = true;
+    	try {
+        	destinyObject.food= this.food;
+        	destinyObject.aliment = this.aliment;
+        	destinyObject.quantity = this.quantity;
+        	destinyObject.unityQt = this.unityQt;
+        	destinyObject.obs = this.obs;
+		} catch (Exception e) {
+			System.err.println("Não foi possível copiar o objeto.");
+			res = false;
+		}
+
+    	return res;
 	}
     
     @Override
