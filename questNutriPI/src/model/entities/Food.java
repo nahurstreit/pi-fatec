@@ -67,31 +67,66 @@ public class Food extends FoodDAO {
     	this(null, null, null, null, null);
     }
     
+    /**
+     * Método para definir o alimento associado a food.
+     *
+     * @param aliment O alimento a ser associado.
+     * @return Retorna a própria Food, para implementação de fluent interface.
+     */
     public Food setAliment(Aliment aliment) {
     	this.aliment = aliment;
     	return this;
     }
     
+    /**
+     * Método para definir a Meal associada a food.
+     *
+     * @param meal A refeição a ser associada.
+     * @return Retorna a própria Food, para implementação de fluent interface.
+     */
     public Food setMeal(Meal meal) {
     	this.meal = meal;
     	return this;
     }
     
+    /**
+     * Método para definir a quantidade de food.
+     *
+     * @param quantity A quantidade.
+     * @return Retorna a própria Food, para implementação de fluent interface.
+     */
     public Food setQuantity(Double quantity) {
     	this.quantity = quantity;
     	return this;
     }
     
+    /**
+     * Método para definir a quantidade de food.
+     *
+     * @param quantity A quantidade, como inteiro.
+     * @return Retorna a própria Food, para implementação de fluent interface.
+     */
     public Food setQuantity(Integer quantity) {
     	this.quantity = (double) quantity;
     	return this;
     }
     
+    /**
+     * Método para definir a unidade de medida de food.
+     *
+     * @param unityQt A unidade de medida de food.
+     * @return Retorna a própria Food, para implementação de fluent interface.
+     */
     public Food setUnityQt(String unityQt) {
     	this.unityQt = unityQt;
     	return this;
     }
     
+    /**
+     * Método para recuperar as subfoods associados a food.
+     *
+     * @return Lista de subfoods.
+     */
     public List<SubFood> getSubFoods() {
     	return SubFood.findAllByFoodPK(this.idFood);
     }
@@ -132,6 +167,11 @@ public class Food extends FoodDAO {
 				+ "\n}";
     }
     
+    /**
+	 * Método para retornar uma visão pequena do objeto.
+	 * 
+	 * @return String contendo apenas alguns dos atributos mais importantes
+	 */
     public String smallInfo() {
     	return "{id: "+idFood+", meal.id: "+(meal != null? meal.idMeal : "null")+ ", aliment: "+aliment.smallInfo()+"}";
     }

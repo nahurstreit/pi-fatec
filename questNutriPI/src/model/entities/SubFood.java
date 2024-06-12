@@ -68,6 +68,11 @@ public class SubFood extends SubFoodDAO{
     	this(null, null, null, null, null, null);
     }
     
+    /**
+     * Método para definir a Food associada a esta SubFood.
+     * @param food a ser associada.
+     * @return Retorna a própria SubFood, para implementação de fluent interface.
+     */
     public SubFood setFood(Food food) {
     	if(this.food == null) this.food = food;
     	return this;
