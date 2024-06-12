@@ -1,6 +1,6 @@
 package view;
 
-import controller.AlimentController;
+import controller.entities.AlimentController;
 import model.entities.Aliment;
 
 public class TestAliment {

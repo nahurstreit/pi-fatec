@@ -1,9 +1,9 @@
 package view.frames;
 
+import utils.view.LanguageUtil;
 import view.QuestNutri;
-import view.panels.components.GenericJPanel;
-import view.panels.pages.subpages.NewCustomerForm;
-import view.utils.LanguageUtil;
+import view.components.generics.GenericJPanel;
+import view.pages.customer.profile.NewCustomerForm;
 
 public class NewCustomerFrame extends SubFrame {
 	private static final long serialVersionUID = 1L;

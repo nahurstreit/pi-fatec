@@ -4,8 +4,8 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
-import view.components.BreakActionLbl;
-import view.panels.components.GenericJPanel;
+import view.components.generics.GenericJPanel;
+import view.components.labels.BreakActionLbl;
 
 public class TestFrame {
 	public static void main(String[] args) {

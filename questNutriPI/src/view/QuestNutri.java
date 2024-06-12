@@ -17,24 +17,22 @@ import javax.swing.SwingWorker;
 
 import org.apache.batik.swing.JSVGCanvas;
 
-import controller.AuthController;
+import controller.app.AuthController;
 import model.entities.User;
 import model.utils.HibernateUtil;
+import utils.interfaces.GeneralAppSettings;
+import utils.interfaces.GeneralVisualSettings;
+import utils.view.ImagesUtil;
+import utils.view.LanguageUtil;
 import view.components.QuestNutriJOP;
-import view.panels.LoggedPanel;
-import view.panels.LoginPanel;
-import view.utils.LanguageUtil;
-import view.utils.VMakePicture;
+import view.states.LoggedPanel;
+import view.states.LoginPanel;
 
 /**
  * Classe principal da Aplica��o.
  */
-public class QuestNutri {
-    //CONFIG
-    private static final boolean SHOWLOGO = false;
-    private static final boolean  SKIP_LOGIN = true;
-	private static int language = 0;
-	
+public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{	
+	private static int language = STD_LANGUAGE;
 	
     public static JFrame app = new JFrame();
     public static LoginPanel loginPanel;
@@ -45,7 +43,7 @@ public class QuestNutri {
     
 
 
-    public static void main(String[] args) {    	
+    public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
@@ -116,7 +114,7 @@ public class QuestNutri {
      * @return JSVGCanvas com a logotipo vetorizada
      */
     public static JSVGCanvas loadSVG() {
-        return VMakePicture.svgIcon(QUESTNUTRI_SVG_NAME);
+        return ImagesUtil.svgIcon(QUESTNUTRI_SVG);
     }
 
     /**
@@ -153,7 +151,7 @@ public class QuestNutri {
      * M�todo que exibe a anima��o da logotipo no start da aplica��o.
      */
     public static void showLogoReveal() {
-        JLabel logoRevealGif = new JLabel(VMakePicture.gifIcon("LogoRevealQuestNutri"), JLabel.CENTER);
+        JLabel logoRevealGif = new JLabel(ImagesUtil.gifIcon(LOGO_REVEAL_GIF), JLabel.CENTER);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
@@ -236,7 +234,7 @@ public class QuestNutri {
 
                 // Inicializa o JFrame principal
                 app.setTitle("QuestNutri (Desktop App)");
-                app.setIconImage(VMakePicture.sizedImg("QuestNutriAlphaChannel", 8680, 4540).getImage());
+                app.setIconImage(ImagesUtil.sizedImg(QUESTNUTRI_FRAME_ICON_PNG, 8680, 4540).getImage());
                 app.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 app.setMinimumSize(new Dimension(1000, 500));
                 app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

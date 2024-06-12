@@ -1,7 +1,7 @@
 package view.frames;
 
 import model.entities.Aliment;
-import view.panels.pages.subpages.AlimentFormPage;
+import view.pages.aliment.AlimentFormPage;
 
 public class AlimentFrame extends SubFrame {
 	private static final long serialVersionUID = 1L;

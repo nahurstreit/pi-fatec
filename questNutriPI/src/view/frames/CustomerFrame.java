@@ -3,15 +3,15 @@ package view.frames;
 import java.awt.Dimension;
 
 import model.entities.Customer;
+import utils.view.LanguageUtil;
 import view.QuestNutri;
+import view.components.generics.GenericJPanel;
+import view.components.sidebar.SideBar;
+import view.components.sidebar.SideBarItem;
+import view.components.sidebar.SideBarMenu;
 import view.components.utils.StdGBC;
-import view.panels.components.GenericJPanel;
-import view.panels.components.SideBar;
-import view.panels.components.SideBarItem;
-import view.panels.components.SideBarMenu;
-import view.panels.pages.DietPage;
-import view.panels.pages.subpages.CustomerFormPage;
-import view.utils.LanguageUtil;
+import view.pages.customer.diet.DietPage;
+import view.pages.customer.profile.CustomerFormPage;
 
 public class CustomerFrame extends SubFrame {
 	private static final long serialVersionUID = 1L;
@@ -132,12 +132,12 @@ public class CustomerFrame extends SubFrame {
 	
 	public SideBarItem sbProfilePage() {
 		profilePage = new CustomerFormPage(this.getMainPanel(), customer);
-		return new SideBarItem("Perfil", () -> this.swapMainPanel(profilePage), true);
+		return new SideBarItem(new LanguageUtil("PERFIL", "PROFILE").get(), () -> this.swapMainPanel(profilePage), true);
 	}
 	
 	public SideBarItem sbDietPage() {
 		dietPage = new DietPage(this.getMainPanel(), customer);
-		return new SideBarItem("Dieta", () -> this.swapMainPanel(dietPage));
+		return new SideBarItem(new LanguageUtil("DIETA", "DIET").get(), () -> this.swapMainPanel(dietPage));
 	}
 
 }

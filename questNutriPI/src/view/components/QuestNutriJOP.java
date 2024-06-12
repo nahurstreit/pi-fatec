@@ -2,21 +2,16 @@ package view.components;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
-import view.panels.components.GeneralJPanelSettings;
+import utils.interfaces.GeneralVisualSettings;
 
-public class QuestNutriJOP extends JOptionPane {
+public class QuestNutriJOP extends JOptionPane implements GeneralVisualSettings {
 	private static final long serialVersionUID = 1L;
-	
-	private static final Font STD_BOLD_FONT = GeneralJPanelSettings.STD_BOLD_FONT;
-    private static final Font STD_REGULAR_FONT = GeneralJPanelSettings.STD_REGULAR_FONT;
-    private static final Color STD_BLUE_COLOR = GeneralJPanelSettings.STD_BLUE_COLOR;
     
     public static int showConfirmDialog(Component parentComponent, Object message) {
         applyQuestNutriSettings();

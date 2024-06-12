@@ -277,9 +277,27 @@ public class StdGBC extends GridBagConstraints {
 		return this;
 	}
 	
+	public StdGBC height(String value) {
+		switch(value) {
+		case "REMAINDER":
+			this.height(GridBagConstraints.REMAINDER);
+			break;
+		}
+		return this;
+	}
+	
+	@Override
+	public String toString() {
+		return "StdGBC [gridx=" + gridx + ", gridy=" + gridy + ", gridwidth=" + gridwidth + ", gridheight=" + gridheight
+				+ ", weightx=" + weightx + ", weighty=" + weighty + ", anchor=" + anchor + ", fill=" + fill
+				+ ", insets=" + insets + ", ipadx=" + ipadx + ", ipady=" + ipady
+				+ ", toString()=" + super.toString() + "]";
+	}
+
 	public StdGBC size(int width, int height) {
 		this.width(width);
 		this.height(height);
 		return this;
 	}
+
 }

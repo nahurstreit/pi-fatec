@@ -2,19 +2,20 @@ package view.frames;
 
 import java.awt.Color;
 
-import controller.WeightController;
+import controller.entities.WeightController;
 import model.entities.Customer;
 import model.entities.Weight;
-import validate.Validate;
-import validate.ValidationRule;
+import utils.validations.Validate;
+import utils.validations.ValidationRule;
+import utils.view.LanguageUtil;
 import view.QuestNutri;
-import view.components.FormBoxInput;
-import view.components.FormSection;
 import view.components.QuestNutriJOP;
-import view.components.StdButton;
-import view.panels.components.GenericJPanel;
-import view.panels.components.GenericJScrollPaneList;
-import view.utils.LanguageUtil;
+import view.components.buttons.StdButton;
+import view.components.forms.FormBoxInput;
+import view.components.forms.FormSection;
+import view.components.generics.GenericJFrame;
+import view.components.generics.GenericJPanel;
+import view.components.generics.GenericJScrollPaneList;
 
 public class WeightFrame extends GenericJFrame {
 	private static final long serialVersionUID = 1L;

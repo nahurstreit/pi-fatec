@@ -13,7 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import model.dao.FoodDAO;
-import utils.ICopy;
+import utils.interfaces.ICopy;
 
 @Entity
 @Table(name = "Foods")

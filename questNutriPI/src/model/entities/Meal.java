@@ -19,7 +19,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import model.dao.MealDAO;
-import utils.ICopy;
+import utils.interfaces.ICopy;
 
 @Entity
 @Table(name = "Meals")

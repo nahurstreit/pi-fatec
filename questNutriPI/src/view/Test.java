@@ -4,7 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
-import controller.CustomerController;
+import controller.entities.CustomerController;
 import model.entities.Customer;
 
 public class Test extends JFrame {
@@ -14,7 +14,7 @@ public class Test extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CustomerController.openCustomerFrame(Customer.findByPK(1));
+					CustomerController.openCustomerFrame(Customer.findByPK(5));
 					
 				} catch (Exception e) {
 					e.printStackTrace();
