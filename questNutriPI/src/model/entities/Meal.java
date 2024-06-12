@@ -1,7 +1,7 @@
 package model.entities;
 
 import java.sql.Time;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -47,10 +47,10 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 	public String obs;
 
 	@Column(name = "meal_createdAt")
-	private LocalDate createdAt;
+	private LocalDateTime createdAt;
 
 	@Column(name = "meal_deactivatedAt")
-	private LocalDate deactivatedAt;
+	private LocalDateTime deactivatedAt;
 	
 
 	/**
@@ -167,7 +167,7 @@ public class Meal extends MealDAO implements ICopy<Meal> {
      */
     @PrePersist
     private void prePersist() {
-        if(createdAt == null) createdAt = LocalDate.now();
+        if(createdAt == null) createdAt = LocalDateTime.now();
     }
     
 	/**
@@ -175,7 +175,7 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 	 */
 	@Override
 	public boolean delete() {
-		this.deactivatedAt = LocalDate.now();
+		this.deactivatedAt = LocalDateTime.now();
 		//Desabilitado para testes.
 //		if(createdAt == deactivatedAt) { //Se o delete acontecer no mesmo dia de criação, o registro é deletado ao invés de ser desativado, pois não há histórico.
 //			return super.delete();

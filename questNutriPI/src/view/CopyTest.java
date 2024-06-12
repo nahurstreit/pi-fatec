@@ -1,7 +1,6 @@
 package view;
 
 import model.entities.Food;
-import model.entities.Meal;
 import model.entities.SubFood;
 
 //food_smallInfo: {id: 8, meal.id: 3, aliment: {id: 1, name: "Arroz, integral, cozido"}},

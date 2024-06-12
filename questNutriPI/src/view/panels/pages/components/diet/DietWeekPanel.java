@@ -11,6 +11,7 @@ import view.QuestNutri;
 import view.panels.components.GenericComponent;
 import view.panels.components.GenericJPanel;
 import view.utils.LanguageUtil;
+import view.utils.VUtils;
 
 public class DietWeekPanel extends GenericComponent {
 	private static final long serialVersionUID = 1L;
@@ -21,6 +22,9 @@ public class DietWeekPanel extends GenericComponent {
 	public DietDayPanel currentDayFocus = null;
 	private ArrayList<DietDayPanel> daysPanels = new ArrayList<DietDayPanel>();
 	public GenericJPanel holderDays = new GenericJPanel();
+	private CountDownLatch latch = new CountDownLatch(avbDays.length); //Contagem de quantas threads precisam ser abertas
+	
+	public GenericJPanel holderLoading = new GenericJPanel().setBGColor(STD_WHITE_COLOR);
 
 	public DietWeekPanel(GenericJPanel ownerPanel, List<Meal> meals) {
 		super(ownerPanel);
@@ -39,8 +43,11 @@ public class DietWeekPanel extends GenericComponent {
                 new LanguageUtil("Sábado", "Saturday").get()
             };
 		
+        VUtils.applyLoadingGif(holderLoading, 30, 30, true, STD_BOLD_FONT.deriveFont(15f), 0, 5);
 		loadDays();
 	}
+	
+
 	
 	public void swapFocus(DietDayPanel dayToFocus) {
 		if(currentDayFocus != null) {
@@ -62,34 +69,47 @@ public class DietWeekPanel extends GenericComponent {
 	}
 	
 	private void loadDays() {
-	    CountDownLatch latch = new CountDownLatch(avbDays.length); //Contagem de quantas threads precisam ser abertas
 	    holderDays.ltGridBag();
 	    holderDays.setBackground(STD_NULL_COLOR);
 	    
 	    Dimension panelsSize = new Dimension(150, QuestNutri.app.getHeight());
+	    this.add(holderLoading, gbc.anchor("CENTER"));
 	    
 	    for (int i = 0; i < avbDays.length; i++) {
-	        int dayNum = i;
-	        new Thread(() -> {
-	        	DietDayPanel day = new DietDayPanel(meals, avbDays[dayNum], this, dayNum);
+	        	DietDayPanel day = new DietDayPanel(avbDays[i], this, i);
 	        	day.setPreferredSize(panelsSize);
 	        	day.setMinimumSize(panelsSize);
 	        	day.setMaximumSize(panelsSize);
 	            daysPanels.add(day);
-	            holderDays.add(day, holderDays.gbc.grid(dayNum, 0).fill("VERTICAL").wgt(1.0).insets(0, 5));
+	            holderDays.add(day, holderDays.gbc.grid(i, 0).fill("VERTICAL").wgt(1.0).insets(0, 5));
 	            latch.countDown();
-	        }).start();
+	            
+	            new Thread(() -> {
+	            	for(int j = 0; j < meals.size(); j++) {
+	            		if((meals.get(j).daysOfWeek & day.weekDay) == day.weekDay) {
+	            			day.setMeals(meals.get(j));
+	            		}
+	            	}
+	            }).start();
 	    }
 
-	    try {
-	        latch.await();//Executa todas as threads antes de continuar
-	        this.add(holderDays, gbc.fill("BOTH").wgt(1.0).insets(10, 5));
-	        this.refresh();
-	    } catch (InterruptedException e) {
-	        e.printStackTrace();
-	    }
+	    new Thread(() -> {
+            try {
+                latch.await(); //Espera todas as threads terminarem
+                for(DietDayPanel day: daysPanels) day.init();
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                	this.remove(holderLoading);
+                	this.add(holderDays, gbc.fill("BOTH").wgt(1.0).insets(10, 5));
+                    this.refresh();
+                });
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            refreshDays();
+        }).start();
 	}
-        
+	
 	
 	private void refreshDays() {
 		for(DietDayPanel day: daysPanels) {

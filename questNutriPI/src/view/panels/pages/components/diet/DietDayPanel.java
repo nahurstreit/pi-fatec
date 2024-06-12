@@ -38,21 +38,18 @@ public class DietDayPanel extends GenericJPanel {
 	private ActionLbl exitLbl;
 	private StdButton creatMealBtn;
 	
-	private List<Meal> meals;
+	private List<Meal> meals = new ArrayList<Meal>();
 	
 	private GenericJPanel kcalBox = new GenericJPanel().ltGridBag().setBGColor(STD_BLUE_COLOR);
 	private JLabel kcalLbl;
 
-	public DietDayPanel(List<Meal> meals, int weekDay, DietWeekPanel dietMainPanel, int position) {
+	public DietDayPanel(int weekDay, DietWeekPanel dietMainPanel, int position) {
 		super(dietMainPanel);
 		this.ltGridBag();
-		this.meals = meals;
 		this.weekDay = weekDay;
 		this.dietMainPanel = dietMainPanel;
 		this.position = position;
 		this.setBackground(STD_LIGHT_GRAY);
-		calculateDayKcal();
-		populate(meals);
 		
 		exitLbl = new ActionLbl("X").setUpFont(STD_BOLD_FONT.deriveFont(15f))
 									.setUpColor(Color.white)
@@ -64,6 +61,19 @@ public class DietDayPanel extends GenericJPanel {
 									.setAction(() -> {
 										QuestNutriJOP.showMessageDialog(null, "Criar refeição");
 									});
+	}
+	
+	public DietDayPanel init() {
+		calculateDayKcal();
+		populate(meals);
+		return this;
+	}
+	
+	public DietDayPanel setMeals(Meal ...meals) {
+		for(Meal meal: meals) {
+			this.meals.add(meal);
+		}
+		return this;
 	}
 	
 	private void calculateDayKcal() {

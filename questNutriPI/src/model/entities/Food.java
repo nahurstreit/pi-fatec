@@ -1,6 +1,6 @@
 package model.entities;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -41,10 +41,10 @@ public class Food extends FoodDAO implements ICopy<Food> {
 	    public String obs;
 	    
 		@Column(name = "food_createdAt")
-		private LocalDate createdAt;
+		private LocalDateTime createdAt;
 
 		@Column(name = "food_deactivatedAt")
-		private LocalDate deactivatedAt;
+		private LocalDateTime deactivatedAt;
 
 	/**
 	 * 
@@ -109,7 +109,7 @@ public class Food extends FoodDAO implements ICopy<Food> {
      */
     @PrePersist
     private void prePersist() {
-        if(createdAt == null) createdAt = LocalDate.now();
+        if(createdAt == null) createdAt = LocalDateTime.now();
     }
     
 	/**
@@ -117,7 +117,7 @@ public class Food extends FoodDAO implements ICopy<Food> {
 	 */
 	@Override
 	public boolean delete() {
-		this.deactivatedAt = LocalDate.now();
+		this.deactivatedAt = LocalDateTime.now();
 		return this.save();
 	}
 	

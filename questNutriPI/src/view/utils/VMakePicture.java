@@ -39,6 +39,13 @@ public class VMakePicture {
         return resizedIcon;
 	}
 	
+	public static ImageIcon gifIcon(String assetName, int width, int height) {
+	    ImageIcon icon = new ImageIcon(QuestNutri.class.getResource("/view/assets/"+assetName+".gif"));
+	    Image gifImage = icon.getImage();
+	    Image resizedImage = gifImage.getScaledInstance(width, height, Image.SCALE_DEFAULT);
+	    return new ImageIcon(resizedImage);
+	}
+	
 	/**
 	 * Cria um ícone a partir de um arquivo png.
 	 * @param assetName -> (String) nome do arquivo dentro da pasta "/view/assets/" com extensão .png

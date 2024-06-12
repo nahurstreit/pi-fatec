@@ -1,6 +1,5 @@
 package utils;
 
-import model.entities.Aliment;
 import model.entities.Food;
 import model.entities.Meal;
 
@@ -20,9 +19,7 @@ public class FoodUtil {
 
 		//Iterar sobre todas as comidas presentes na refeição
 		for (Food food: meal.getFoods()) {
-			try {
-				Aliment aliment1 = food.aliment;
-				
+			try {				
 				String kcalPer100gString = food.aliment.kcal;
 
 				String kcalPer100gFormatted = kcalPer100gString.replace(',', '.');

@@ -2,10 +2,7 @@ package controller;
 
 import java.util.List;
 
-import javax.swing.JFrame;
-
 import model.entities.Aliment;
-import model.entities.Food;
 import view.components.QuestNutriJOP;
 import view.frames.AlimentFrame;
 import view.utils.LanguageUtil;

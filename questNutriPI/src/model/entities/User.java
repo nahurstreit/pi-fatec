@@ -1,13 +1,10 @@
 package model.entities;
 
-import java.time.LocalDate;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import model.dao.UserDAO;
 
@@ -94,6 +91,7 @@ public class User extends UserDAO {
 	 * @param systemLevel - Nível do Usuário de 1 a 3.
 	 * @return Retorna o nível de um Usuário no sistema.
 	 */
+	@SuppressWarnings("unused")
 	private User setSystemLevel(Integer systemLevel) {
 		switch (systemLevel) {
 		case 1:

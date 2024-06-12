@@ -2,6 +2,7 @@ package model.entities;
 
 import java.text.MessageFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -26,10 +27,10 @@ public class Customer extends CustomerDAO {
 	public Integer idCustomer;
 
 	@Column(name = "cust_createdAt")
-	private LocalDate createdAt;
+	private LocalDateTime createdAt;
 	
 	@Column(name = "cust_deletedAt")
-	private LocalDate deletedAt;
+	private LocalDateTime deletedAt;
 
 	@Column(name = "cust_name")
 	public String name;
@@ -264,7 +265,7 @@ public class Customer extends CustomerDAO {
      */
     @PrePersist
     private void prePersist() {
-        if(createdAt == null) createdAt = LocalDate.now();
+        if(createdAt == null) createdAt = LocalDateTime.now();
     }
 
 	/**
@@ -305,7 +306,7 @@ public class Customer extends CustomerDAO {
     
     public boolean softDelete() {
     	try {
-			deletedAt = LocalDate.now();
+			deletedAt = LocalDateTime.now();
 			return this.save();
 		} catch (Exception e) {
 			return false;
