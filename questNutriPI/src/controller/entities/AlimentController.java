@@ -4,8 +4,13 @@ import java.util.List;
 
 import model.entities.Aliment;
 import utils.view.LanguageUtil;
+import javax.swing.JFrame;
+import model.entities.Customer;
+import model.entities.Food;
 import view.components.QuestNutriJOP;
 import view.frames.AlimentFrame;
+import view.panels.components.GeneralJPanelSettings;
+import view.utils.LanguageUtil;
 
 public class AlimentController {
 	/**
@@ -58,26 +63,47 @@ public class AlimentController {
     }
     
     public static boolean saveAliment(Aliment aliment, String name, String kcal) {
+	
+	if(AddressController.createNewAddress(cep, number, comp, street, hood, city, addrState)) {
+		try {
+    		aliment.setAddr(Address.findLast());
+    		return aliment.save();
+		} catch (Exception e) {
+			return false;
+		}
+	
+	return false;
+	}
     	aliment.save();
+    	
     	return true;
     }
     
     public static boolean deleteAliment(Aliment aliment) {
     	boolean res = false;
+    	
+    	String choice = QuestNutriJOP.showInputDialog(null, 
+    			new LanguageUtil("Você está tentando excluir um alimento customizado: \nAlimento:" + aliment.name 
+    					+ "\nEssa ação é IRREVERSÍVEL. Digite '" + GeneralJPanelSettings.STD_DELETE_STRING 
+    					+ "' para deletar o registro.", 
+    					"You are trying to delete a custom aliment: \nAliment:" + aliment.name 
+    					+ "\nThis action is IRREVERSIBLE. Type '" + GeneralJPanelSettings.STD_DELETE_STRING 
+    					+ "' to delete the registry.").get());
+    	
     	if(aliment.isCustom()) {
 	    		try {
 					res = aliment.delete();
 				} catch (Exception e) {
 				}
     	} else {
-    		QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Não é permitido excluir esse registro.", "!").get());
+    		QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Não é permitido excluir esse registro!", "Deleting this record is not allowed!").get());
     		return false;
     	}
     	
     	if(!res) {
-    		QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Não foi possível excluir!", "!").get());
+    		QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Não foi possível excluir!", "Unable to delete!").get());
     	} else {
-    		QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Alimento excluído.", "!").get());
+    		QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Alimento excluído!", "Excluded aliment!").get());
     	}
     	return res;
     }
