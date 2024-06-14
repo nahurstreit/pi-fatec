@@ -71,11 +71,12 @@ public class AlimentController {
 			String potassium, String copper, String zinc, String retinol, String rE, String rAE, String thiamine,
 			String riboflavin, String pyridoxine, String niacin, String vitaminC, String ash) {
 
-		if (aliment.isCustom()) {
+		
+		System.out.println(aliment.isCustom());
+		if(aliment.isCustom()) {
 			try {
 				aliment.setName(name)
 				.setAlimentGroup("Customizado")
-				.setKcal(kcal)
 				.setKcal(kcal)
 				.setkJ(kJ)
 				.setCarb(carb)
@@ -105,7 +106,7 @@ public class AlimentController {
 				QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Alimento salvo!", "Aliment saved!").get());
 			
 			} catch (Exception e) {
-				QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Alimento salvo!", "Aliment saved!").get());
+				QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Não foi possível salvar o alimento!", "Unable to save aliment!").get());
 			}
 		}
 		aliment.save();
