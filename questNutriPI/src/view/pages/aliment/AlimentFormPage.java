@@ -1,6 +1,6 @@
 package view.pages.aliment;
 
-import jakarta.persistence.Column;
+import controller.entities.AlimentController;
 import model.entities.Aliment;
 import utils.FoodUtil;
 import utils.validations.Validate;
@@ -28,6 +28,7 @@ public class AlimentFormPage extends GenericFormPage {
 
 	//Secundários
 		private FormBoxInput humidity;
+		private FormBoxInput kJ;
 		private FormBoxInput dietaryFiber;
 		private FormBoxInput cholesterol;
 		private FormBoxInput sodium;
@@ -62,6 +63,9 @@ public class AlimentFormPage extends GenericFormPage {
 	public ValidationRule isDouble() {
 		return new ValidationRule(
 					value -> {
+						if(value.equals("Digite aqui...") || value.equals("Type here...")) {
+							return true;
+						}
 						try {
 						Double.parseDouble(value.replace(',', '.'));
 						return true;
@@ -82,10 +86,39 @@ public class AlimentFormPage extends GenericFormPage {
 		StdButton saveBtn = StdButton.stdBtnConfig(new LanguageUtil("Salvar", "Save").get());
 		
 		saveBtn.setAction(() -> {
-			if(Validate.formFields(name, kcalBox, carb)) {
-				
-				
-				QuestNutriJOP.showMessageDialog(null, "Você tentou salvar");
+			if(Validate.formFields(name, kcalBox, carb, protein, fat)) {
+				AlimentController.saveAliment(
+						aliment,
+						name.getValue(), 
+						group.getValue(), 
+						kcalBox.getValue(), 
+						kJ.getValue(),
+						carb.getValue(),
+						protein.getValue(),  
+						fat.getValue(),  
+						humidity.getValue(),  
+						dietaryFiber.getValue(),  
+						cholesterol.getValue(),
+						sodium.getValue(),  
+						calcium.getValue(),  
+						magnesium.getValue(),  
+						manganese.getValue(),  
+						phosphorus.getValue(),  
+						iron.getValue(),
+						potassium.getValue(),  
+						copper.getValue(),  
+						zinc.getValue(),  
+						retinol.getValue(),
+						rE.getValue(),
+						rAE.getValue(),
+						thiamine.getValue(),
+						riboflavin.getValue(),
+						pyridoxine.getValue(),
+						niacin.getValue(),
+						vitaminC.getValue(),
+						ash.getValue()
+						);
+
 			}
 			
 		});
@@ -166,6 +199,10 @@ public class AlimentFormPage extends GenericFormPage {
 		humidity = new FormBoxInput(this).setLbl(new LanguageUtil("Umidade (%)", "Humidity (%)").get())
 										 .setValue(aliment.humidity)
 										 .addValidation(isDouble());
+		
+		kJ = new FormBoxInput(this).setLbl(new LanguageUtil("Umidade (%)", "Humidity (%)").get())
+				 .setValue(aliment.kJ)
+				 .addValidation(isDouble());
 		
 		dietaryFiber = new FormBoxInput(this).setLbl(new LanguageUtil("Fibra dietética", "Dietary fiber").get())	
 											 .setValue(aliment.dietaryFiber)

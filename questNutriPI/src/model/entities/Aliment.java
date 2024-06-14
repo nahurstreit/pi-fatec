@@ -146,7 +146,7 @@ public class Aliment extends AlimentDAO {
 	@Override
 	public boolean save() {
 		boolean result = false;
-		if (this.isCustom()) {
+		if(this.isCustom()) {
 			super.save();
 			result = true;
 		} else {
