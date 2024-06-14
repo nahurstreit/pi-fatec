@@ -78,6 +78,15 @@ public class AlimentFormPage extends GenericFormPage {
 	
 	@Override
 	protected AlimentFormPage buildForm() {
+		GenericJPanel upperPanel = new GenericJPanel();
+		
+		 if (aliment.isCustom()) {
+		        upperPanel.add(saveBtn(), contentPanel.gbc);
+		        contentPanel.gbc.yP();
+		    }
+		
+		this.contentPanel.add(upperPanel);
+		
 		build(essentialInfo().init(),basicInfo().init());
 		return this;
 	}
@@ -176,7 +185,7 @@ public class AlimentFormPage extends GenericFormPage {
 			
 			group.setValue("Customizado");
 			
-			essentialInfo.setInteractBtn(saveBtn()); //Adicionando botão de save
+			
 		} else {
 			//Essenciais
 				name.lockInput();
@@ -200,7 +209,7 @@ public class AlimentFormPage extends GenericFormPage {
 										 .setValue(aliment.humidity)
 										 .addValidation(isDouble());
 		
-		kJ = new FormBoxInput(this).setLbl(new LanguageUtil("Umidade (%)", "Humidity (%)").get())
+		kJ = new FormBoxInput(this).setLbl(new LanguageUtil("quilojoule (kj)", "kilojoule (kj)").get())
 				 .setValue(aliment.kJ)
 				 .addValidation(isDouble());
 		
