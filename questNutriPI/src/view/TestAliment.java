@@ -5,6 +5,7 @@ import model.entities.Aliment;
 
 public class TestAliment {
 	public static void main(String[] args) {
+		AlimentController.openAlimentFrame(Aliment.findLast());
 		AlimentController.openAlimentFrame(new Aliment());
 	}
 }
