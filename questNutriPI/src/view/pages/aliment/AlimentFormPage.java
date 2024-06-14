@@ -1,5 +1,6 @@
 package view.pages.aliment;
 
+import jakarta.persistence.Column;
 import model.entities.Aliment;
 import utils.FoodUtil;
 import utils.validations.Validate;
@@ -27,8 +28,30 @@ public class AlimentFormPage extends GenericFormPage {
 
 	//Secundários
 		private FormBoxInput humidity;
+		private FormBoxInput dietaryFiber;
+		private FormBoxInput cholesterol;
+		private FormBoxInput sodium;
+		private FormBoxInput calcium;
+		private FormBoxInput magnesium;
+		private FormBoxInput manganese;
+		private FormBoxInput phosphorus;
+		private FormBoxInput iron;
+		private FormBoxInput potassium;
+		private FormBoxInput copper;
+		private FormBoxInput zinc;
+		private FormBoxInput retinol;
+		private FormBoxInput rE;
+		private FormBoxInput rAE;
+		private FormBoxInput thiamine;
+		private FormBoxInput riboflavin;
+		private FormBoxInput pyridoxine;
+		private FormBoxInput niacin;
+		private FormBoxInput vitaminC;
 		private FormBoxInput ash;
 	
+	// Valores padrões de validação
+		private final int MIN_SIZE_NAME = 5;
+		private final int MAX_SIZE_NAME = 50;
 
 	public AlimentFormPage(GenericJPanel ownerPanel, Aliment aliment) {
 		super(ownerPanel);
@@ -45,13 +68,13 @@ public class AlimentFormPage extends GenericFormPage {
 					} catch (Exception e) {
 						return false;
 					}
-					}, new LanguageUtil("Inválido", "Invalid").get());
+					}, new LanguageUtil("Não é permitido ter letras!", "Letters are not allowed!").get());
 		
 	}
 	
 	@Override
 	protected AlimentFormPage buildForm() {
-		build(basicInfo().init());
+		build(essentialInfo().init(),basicInfo().init());
 		return this;
 	}
 	
@@ -70,37 +93,45 @@ public class AlimentFormPage extends GenericFormPage {
 		return saveBtn;
 	}
 	
-	protected FormSection basicInfo() {
+	protected FormSection essentialInfo() {
 		//Essenciais
 			name = new FormBoxInput(this).setLbl(new LanguageUtil("Nome", "Name").get())
-										 .setValue(aliment.name);
+										 .setValue(aliment.name)
+										 .addValidation(
+												 new ValidationRule(
+														 value -> {
+															 return !Validate.hasNumber(value);
+														 }, new LanguageUtil("Não é permitido ter números!", "Numbers are not allowed!").get()),
+												 new ValidationRule(
+														 value -> {
+															 return Validate.sizeBetween(value, MIN_SIZE_NAME, MAX_SIZE_NAME);
+														 }, new LanguageUtil("Tamanho precisa ser entre "+MIN_SIZE_NAME+" e "+MAX_SIZE_NAME+".", "Size must be between "+MIN_SIZE_NAME+" and "+MAX_SIZE_NAME+".").get())
+												 );
 			
 			group = new FormBoxInput(this).setLbl(new LanguageUtil("Grupo Alimentar", "Group").get())
 										  .setValue(aliment.alimentGroup)
 										  .lockInput();
 			
-			kcalBox = new FormBoxInput(this).setLbl(new LanguageUtil("Kcal", "Calories").get())
+			kcalBox = new FormBoxInput(this).setLbl(new LanguageUtil("Calorias (kcal)", "Calories (kcal)").get())
 					 					 	.setValue(FoodUtil.formatNumber(aliment.kcal))
 					 					 	.addValidation(isDouble());
 			
-			carb = new FormBoxInput(this).setLbl(new LanguageUtil("Carboidratos", "Carb").get())
+			carb = new FormBoxInput(this).setLbl(new LanguageUtil("Carboidratos (g)", "Carb (g)").get())
 					 					 .setValue(aliment.carb)
 					 					 .addValidation(isDouble());
 			
-			protein = new FormBoxInput(this).setLbl(new LanguageUtil("Proteína", "Protein").get())
-					 						.setValue(aliment.protein);
+			protein = new FormBoxInput(this).setLbl(new LanguageUtil("Proteína (g)", "Protein (g)").get())
+					 						.setValue(aliment.protein)
+					 						.addValidation(isDouble());
 			
 			fat = new FormBoxInput(this).setLbl(new LanguageUtil("Gordura", "Fat").get())
-					 					.setValue(aliment.fat);
+					 					.setValue(aliment.fat)
+					 					.addValidation(isDouble());
 			
-		//Secundários
-			humidity = new FormBoxInput(this).setLbl(new LanguageUtil("Umidade (%)", "Humidity (%)").get())
-											 .setValue(aliment.humidity);
-			
-			ash = new FormBoxInput(this).setLbl(new LanguageUtil("Cinzas", "Ash").get())
-										.setValue(aliment.ash);
 		
-		FormSection basicInfo = new FormSection(this).setUpName(new LanguageUtil("Informações Básicas", "Basic Information").get());
+			
+		
+		FormSection essentialInfo = new FormSection(this).setUpName(new LanguageUtil("Informações essenciais", "Essential information").get());
 		
 		if(aliment.isCustom()) {
 			//Essenciais
@@ -112,7 +143,7 @@ public class AlimentFormPage extends GenericFormPage {
 			
 			group.setValue("Customizado");
 			
-			basicInfo.setInteractBtn(saveBtn()); //Adicionando botão de save
+			essentialInfo.setInteractBtn(saveBtn()); //Adicionando botão de save
 		} else {
 			//Essenciais
 				name.lockInput();
@@ -121,19 +152,138 @@ public class AlimentFormPage extends GenericFormPage {
 				protein.lockInput();
 				fat.lockInput();
 			
-			//Secundários
-				humidity.lockInput();
-				ash.lockInput();
-			
-			basicInfo.hideRequiredLbl(); //Tirando o requiredLbL
+				essentialInfo.hideRequiredLbl();
 		}
 		
-		basicInfo.addRow(name, group, kcalBox)
-				 .addRow(carb, protein, fat)
-				 .addRow(ash);
+		essentialInfo.addRow(name, group, kcalBox)
+				 .addRow(carb, protein, fat);
 		
+		return essentialInfo;
+	}
+
+	protected FormSection basicInfo() {
+		//Secundários
+		humidity = new FormBoxInput(this).setLbl(new LanguageUtil("Umidade (%)", "Humidity (%)").get())
+										 .setValue(aliment.humidity)
+										 .addValidation(isDouble());
+		
+		dietaryFiber = new FormBoxInput(this).setLbl(new LanguageUtil("Fibra dietética", "Dietary fiber").get())	
+											 .setValue(aliment.dietaryFiber)
+											 .addValidation(isDouble());
+		
+		cholesterol = new FormBoxInput(this).setLbl(new LanguageUtil("Colesterol (mg)", "Cholesterol (mg)").get())	
+				 							.setValue(aliment.cholesterol)
+				 							.addValidation(isDouble());
+		
+		sodium = new FormBoxInput(this).setLbl(new LanguageUtil("Sódio (mg)", "Sodium (mg)").get())	
+									   .setValue(aliment.sodium)
+									   .addValidation(isDouble());
+		
+		calcium = new FormBoxInput(this).setLbl(new LanguageUtil("Cálcio (mg)", "Calcium (mg)").get())	
+										.setValue(aliment.calcium)
+										.addValidation(isDouble());
+		
+		magnesium = new FormBoxInput(this).setLbl(new LanguageUtil("Magnésio (mg)", "Magnesium (mg)").get())	
+				                          .setValue(aliment.magnesium)
+				                          .addValidation(isDouble());
+
+		manganese = new FormBoxInput(this).setLbl(new LanguageUtil("Manganês (mg)", "Manganese (mg)").get())	
+                						  .setValue(aliment.manganese)
+                						  .addValidation(isDouble());
+		
+		phosphorus = new FormBoxInput(this).setLbl(new LanguageUtil("Fósforo (mg)", "Phosphorus (mg)").get())	
+				  						   .setValue(aliment.phosphorus)
+				  						   .addValidation(isDouble());
+
+		iron = new FormBoxInput(this).setLbl(new LanguageUtil("Ferro (mg)", "Iron (mg)").get())	
+				   				     .setValue(aliment.iron)
+				   				     .addValidation(isDouble());
+
+		potassium = new FormBoxInput(this).setLbl(new LanguageUtil("Potássio (mg)", "Potassium (mg)").get())	
+				     						  .setValue(aliment.potassium)
+				     						  .addValidation(isDouble());
+
+		copper = new FormBoxInput(this).setLbl(new LanguageUtil("Cobre (mg)", "Copper (mg)").get())	
+									   .setValue(aliment.copper)
+									   .addValidation(isDouble());
+
+		zinc = new FormBoxInput(this).setLbl(new LanguageUtil("Zinco (mg)", "Zinc (mg)").get())	
+									 .setValue(aliment.zinc)
+									 .addValidation(isDouble());
+
+		retinol = new FormBoxInput(this).setLbl(new LanguageUtil("Retinol (mcg)", "Retinol (mcg)").get())	
+				 						.setValue(aliment.retinol)
+				 						.addValidation(isDouble());
+
+		rE = new FormBoxInput(this).setLbl(new LanguageUtil("RE (mcg)", "RE (mcg)").get())	
+								   .setValue(aliment.rE)
+								   .addValidation(isDouble());
+		
+		rAE = new FormBoxInput(this).setLbl(new LanguageUtil("RAE (mcg)", "RAE (mcg)").get())	
+									.setValue(aliment.rAE)
+									.addValidation(isDouble());
+
+		thiamine = new FormBoxInput(this).setLbl(new LanguageUtil("Tiamina (mg)", "Thiamine (mg)").get())	
+										 .setValue(aliment.thiamine)
+										 .addValidation(isDouble());
+		
+		riboflavin = new FormBoxInput(this).setLbl(new LanguageUtil("Riboflavina (mg)", "Riboflavin (mg)").get())	
+										   .setValue(aliment.riboflavin)
+										   .addValidation(isDouble());
+
+		pyridoxine = new FormBoxInput(this).setLbl(new LanguageUtil("Piridoxina (mg)", "Pyridoxine (mg)").get())	
+				   						   .setValue(aliment.pyridoxine)
+				   						   .addValidation(isDouble());
+
+		niacin = new FormBoxInput(this).setLbl(new LanguageUtil("Niacina (mg)", "Niacin (mg)").get())	
+				   					   .setValue(aliment.niacin)
+				   					   .addValidation(isDouble());
+		
+		vitaminC = new FormBoxInput(this).setLbl(new LanguageUtil("Vitamina C (mg)", "VitaminC (mg)").get())	
+				   						.setValue(aliment.vitaminC)
+				   						.addValidation(isDouble());
+		
+		ash = new FormBoxInput(this).setLbl(new LanguageUtil("Cinzas", "Ash").get())
+									.setValue(aliment.ash)
+									.addValidation(isDouble());
+		
+		FormSection basicInfo = new FormSection(this).setUpName(new LanguageUtil("Informações basicas", "Basic information").get());
+		
+		if(aliment.isCustom()) {
+			basicInfo.hideRequiredLbl();
+		} else {
+			humidity.lockInput();
+			dietaryFiber.lockInput();
+			cholesterol.lockInput();
+			sodium.lockInput();
+			calcium.lockInput();
+			magnesium.lockInput();
+			manganese.lockInput();
+			phosphorus.lockInput();
+			iron.lockInput();
+			potassium.lockInput();
+			copper.lockInput();
+			zinc.lockInput();
+			retinol.lockInput();
+			rE.lockInput();
+			rAE.lockInput();
+			thiamine.lockInput();
+			riboflavin.lockInput();
+			pyridoxine.lockInput();
+			niacin.lockInput();
+			vitaminC.lockInput();
+			ash.lockInput();
+		
+			basicInfo.hideRequiredLbl();
+		}
+		
+		basicInfo.addRow(humidity, dietaryFiber, cholesterol,sodium)
+		 .addRow(calcium, magnesium,manganese,phosphorus)
+		 .addRow(iron,potassium, copper, zinc)
+		 .addRow(retinol, rE, rAE)
+		 .addRow(thiamine, riboflavin, pyridoxine)
+		 .addRow(niacin, vitaminC, ash);
 		
 		return basicInfo;
 	}
-
 }

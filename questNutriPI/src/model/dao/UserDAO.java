@@ -11,13 +11,13 @@ public abstract class UserDAO extends GenericDAO<User> {
 	 * parâmetros fornecidos
 	 *
 	 * @param params - Parâmetros de filtro opcionais para a consulta devem ser
-	 *               escritos de acordo com a declaração das classes de entidade
+	 * escritos de acordo com a declaração das classes de entidade
 	 * 
 	 * @return Lista de User que correspondem aos parâmetros fornecidos.
 	 */
 	public static List<User> findAll(String... params) {
-    	return GenericDAO.findAll(User.class, params);
-    }
+		return GenericDAO.findAll(User.class, params);
+	}
 
 	/**
 	 * Método que retorna um User pelo seu id
@@ -29,8 +29,18 @@ public abstract class UserDAO extends GenericDAO<User> {
 		return GenericDAO.findByPK(User.class, id);
 	}
 
-	 public static User findOne(String... params) {
-		 return GenericDAO.findOne(User.class, params);
-    }
+	/**
+	 * Método que procura e retorna apenas o primeiro registro dentro de todos os
+	 * registros de User, que corresponde aos parâmetros fornecidos
+	 *
+	 * @param Parâmetros de filtro opcionais para a consulta devem ser escritos de
+	 * acordo com a declaração das classes de entidade.
+	 * 
+	 * @return Primeiro registro de User que corresponde aos parâmetros
+	 * fornecidos.
+	 */
+	public static User findOne(String... params) {
+		return GenericDAO.findOne(User.class, params);
+	}
 
 }

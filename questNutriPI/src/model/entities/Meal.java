@@ -87,23 +87,50 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 		this(null, null, null);
 	}
 	
+	/**
+     * Método para recuperar uma lista de foods associadas a esta refeição.
+     * 
+     * @return Uma lista de foods.
+     */
 	public List<Food> getFoods() {
 		return Food.findAllByMealPK(this.idMeal);
 	}
 	
+	/**
+     * Método para recuperar o cliente proprietário desta refeição.
+     * 
+     * @return O cliente proprietário.
+     */
 	public Customer getCustomer() {
 		return customer;
 	}
 	
+	/**
+	 * Método para recuperar o nome da Meal.
+	 * 
+	 * @return O nome da Meal.
+	 */
 	public String getName() {
 		return this.name;
 	}
 	
+	/**
+     * Método para definir o cliente proprietário desta refeição.
+     * 
+     * @param customer O cliente a ser definido como proprietário.
+     * @return Retorna a própria Meal, para implementação de fluent interface.
+     */
 	public Meal setCustomer(Customer customer) {
 		if(this.customer == null) this.customer = customer;
 		return this;
 	}
 	
+	/**
+     * Método para definir a hora de acontecimento desta refeição.
+     * 
+     * @param hour A hora no formato "HH:mm".
+     * @return Retorna a própria Meal, para implementação de fluent interface.
+     */
 	public Meal setHour(String hour) {
 	    try {
 	        this.hour = formatHour(hour);
@@ -115,6 +142,7 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 	
 	/**
 	 * Método para formatar uma string como Objeto Time
+	 * 
 	 * @param hour - String da hora no formato "HH:mm"
 	 * @return Um objeto do tipo Time
 	 */
@@ -124,6 +152,7 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 	
 	/**
      * Método para obter a hora de um objeto Time
+     * 
      * @return A hora como um inteiro ou null se hour for null
      */
     public String getHourPart() {
@@ -136,6 +165,7 @@ public class Meal extends MealDAO implements ICopy<Meal> {
     
     /**
      * Método para obter o minuto de um objeto Time
+     * 
      * @return O minuto como um inteiro ou null se hour for null
      */
     public String getMinutePart() {
@@ -148,6 +178,7 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 	
 	/**
 	 * Método para criação rápida de Foods em uma Meal já salva.
+	 * 
 	 * É preciso já estar vinculada à um cliente.
 	 * @param foods
 	 */
@@ -283,6 +314,7 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 	
 	/**
 	 * Método para retornar uma visão pequena do objeto.
+	 * 
 	 * @return String contendo apenas alguns dos atributos mais importantes
 	 */
 	public String smallInfo() {

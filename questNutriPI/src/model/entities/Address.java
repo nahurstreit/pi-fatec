@@ -64,68 +64,151 @@ public class Address extends AddressDAO {
 		this(null, null, null, null, null, null, null);
 	}
 
+
+	  /**
+	   * Método para recuperar o ID do Endereço.
+	   *
+	   * @return Retorna o ID do Endereço.
+	   */
 	public Integer getIdAddress() {
 		return idAddress;
 	}
 
+	 /**
+	   * Método para recuperar a rua do Endereço.
+	   *
+	   * @return Retorna a rua do Endereço.
+	   */
 	public String getStreet() {
 		return street;
 	}
 
+	 /**
+	   * Método para recuperar o número do Endereço.
+	   *
+	   * @return Retorna o número do Endereço.
+	   */
 	public Integer getNumber() {
 		return number;
 	}
 
+	 /**
+	   * Método para recuperar o complemento do Endereço.
+	   *
+	   * @return Retorna o complemento do Endereço.
+	   */
 	public String getComp() {
 		return comp;
 	}
 
+	/**
+	   * Método para recuperar o CEP do Endereço.
+	   *
+	   * @return Retorna o CEP do Endereço.
+	   */
 	public String getCep() {
 		return cep;
 	}
 
+	/**
+	   * Método para recuperar o bairro do Endereço.
+	   *
+	   * @return Retorna o bairro do Endereço.
+	   */
 	public String getHood() {
 		return hood;
 	}
 
+	 /**
+	   * Método para recuperar a cidade do Endereço.
+	   *
+	   * @return Retorna a cidade do Endereço.
+	   */
 	public String getCity() {
 		return city;
 	}
 
+	/**
+	   * Método para recuperar o estado do Endereço.
+	   *
+	   * @return Retorna o estado do Endereço.
+	   */
 	public String getState() {
 		return state;
 	}
 
+	/**
+	   * Método para setar a rua do Endereço.
+	   *
+	   * @param street - String da rua.
+	   * @return Retorna o próprio Address, para implementação de fluent interface.
+	   */
 	public Address setStreet(String street) {
 		this.street = street;
 		return this;
 	}
 
+	/**
+	   * Método para setar o número do Endereço.
+	   *
+	   * @param number - Integer do número.
+	   * @return Retorna o próprio Address, para implementação de fluent interface.
+	   */
 	public Address setNumber(Integer number) {
 		this.number = number;
 		return this;
 	}
 
+	 /**
+	   * Método para setar o complemento do Endereço.
+	   *
+	   * @param comp - String do complemento.
+	   * @return Retorna o próprio Address, para implementação de fluent interface.
+	   */
 	public Address setComp(String comp) {
 		this.comp = comp;
 		return this;
 	}
 
+	 /**
+	   * Método para setar o CEP do Endereço.
+	   *
+	   * @param cep - String do CEP.
+	   * @return Retorna o próprio Address, para implementação de fluent interface.
+	   */
 	public Address setCep(String cep) {
 		this.cep = cep.replaceAll("\\D", "");
 		return this;
 	}
 
+	/**
+	   * Método para setar o bairro do Endereço.
+	   *
+	   * @param hood - String do bairro.
+	   * @return Retorna o próprio Address, para implementação de fluent interface.
+	   */
 	public Address setHood(String hood) {
 		this.hood = hood;
 		return this;
 	}
 
+	 /**
+	   * Método para setar a cidade do Endereço.
+	   *
+	   * @param city - String da cidade.
+	   * @return Retorna o próprio Address, para implementação de fluent interface.
+	   */
 	public Address setCity(String city) {
 		this.city = city;
 		return this;
 	}
 
+	/**
+	   * Método para setar o estado do Endereço.
+	   *
+	   * @param state - String do estado.
+	   * @return Retorna o próprio Address, para implementação de fluent interface.
+	   */
 	public Address setState(String state) {
 		this.state = state;
 		return this;
