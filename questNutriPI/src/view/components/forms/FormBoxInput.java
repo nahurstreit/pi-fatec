@@ -12,6 +12,7 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
+import utils.interfaces.Condition;
 import utils.validations.ValidationRule;
 import utils.view.LanguageUtil;
 import view.components.buttons.StdButton;
@@ -41,6 +42,7 @@ public class FormBoxInput extends GenericComponent {
 		
 		tfInput = new FormInputField(new LanguageUtil("Digite aqui...", "Type here...").get(), new Dimension(10, 30), 12f).setFormBoxInput(this);
 		tfInput.setMinimumSize(new Dimension(100, 20));
+		
 		tfInput.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -249,6 +251,16 @@ public class FormBoxInput extends GenericComponent {
 		return this;
 	}
 	
+	public FormBoxInput setMask(String mask, Condition condition) {
+		try {
+			tfInput.setMask(mask, condition);
+		} catch (Exception e) {
+			System.out.println("Esse FormBoxInput não utiliza TextField para input");
+		}
+
+		return this;
+	}
+	
 	/**
 	 * Método que define o valor inicial do input.
 	 * @param text - Texto inicial.
@@ -327,7 +339,7 @@ public class FormBoxInput extends GenericComponent {
 	 */
 	public boolean isHintOn() {
 		if(tfInput != null) {
-			return tfInput.isShowHint();
+			return tfInput.isShowingHint();
 		} else {
 			return true;
 		}

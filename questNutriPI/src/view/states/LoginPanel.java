@@ -29,6 +29,7 @@ public class LoginPanel extends GenericJPanel {
 	
 	private HintInputField tfUser;
 	private HintPasswordInputField password;
+	private StdButton button;
 	
 	public LoginPanel() {
 		this.ltGridBag();
@@ -116,7 +117,11 @@ public class LoginPanel extends GenericJPanel {
 		password = new HintPasswordInputField(
 				new LanguageUtil("Digite aqui...", "Type here...").get(),
 				new Dimension(100, 20),
-				12f);
+				12f).setEnterAction(
+						() -> {
+							button.getInteactionAction().execute();
+						}
+				).init();
 		
 		panel.add(password, gbc.insets(0,0,30,0).yP());
 	}
@@ -128,7 +133,7 @@ public class LoginPanel extends GenericJPanel {
 	 * @see QuestNutri#doLogin()
 	 */
 	private void placeBtn(JPanel panel) {
-		StdButton button = new StdButton(new LanguageUtil("Entrar", "Login").get(), () -> QuestNutri.doLogin(tfUser.getText(), password.getRealText()));
+		button = new StdButton(new LanguageUtil("Entrar", "Login").get(), () -> QuestNutri.doLogin(tfUser.getText(), password.getRealText()));
         button.setPreferredSize(new Dimension(75, 25));
         button.setBackground(Color.white);
         button.setForeground(STD_BLUE_COLOR);

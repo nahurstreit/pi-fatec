@@ -116,8 +116,9 @@ public class Customer extends CustomerDAO {
 	}
 	
 	public String getFormattedPhoneNumber() {
+		if(phoneNumber == null) return null;
         // Formatar o número de telefone
-        if (phoneNumber.length() == 10) {
+        if(phoneNumber.length() == 10) {
             // (00) 0000-0000
             return MessageFormat.format("({0}) {1}-{2}", phoneNumber.substring(0, 2), phoneNumber.substring(2, 6), phoneNumber.substring(6));
         } else if (phoneNumber.length() == 11) {
@@ -293,7 +294,7 @@ public class Customer extends CustomerDAO {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             return birth.format(formatter);
         }
-        return "";
+        return null;
     }
     
     /**

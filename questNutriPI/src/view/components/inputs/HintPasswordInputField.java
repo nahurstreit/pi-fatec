@@ -5,6 +5,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
+import view.components.utils.IDoAction;
+
 /**
  * Classe que estende HintInputField para controlar Inputs do Usuário que devem ser escondidos ao mesmo tempo que
  * fornece um texto de orientação de preenchimento chamado "hint".
@@ -12,6 +14,8 @@ import java.util.ArrayList;
  */
 public class HintPasswordInputField extends HintInputField {
 	private static final long serialVersionUID = 1L;
+	
+	private IDoAction enterAction;
 	
     private ArrayList<Character> realText = new ArrayList<Character>(); //Variável que armazena o verdadeiro texto digitado pelo usuário
     private int currentCaret = 0; //Variável que controla o caret(barra de localização) durante a digitação.
@@ -25,6 +29,14 @@ public class HintPasswordInputField extends HintInputField {
     public HintPasswordInputField(String hint, Dimension size, float fontSize) {
     	super(hint, size, fontSize);
     	this.setText(hint);
+    }
+    
+    public HintPasswordInputField init() {
+    	setListeners();
+    	return this;
+    }
+    
+    private void setListeners() {
     	this.addKeyListener(new KeyListener() { //Adiciona um Listener para teclas digitadas
 			
 			
@@ -35,9 +47,13 @@ public class HintPasswordInputField extends HintInputField {
 			public void keyTyped(KeyEvent e) {
 				boolean allowed = true; //Variável de controle de adição das teclas
 				char[] blockedKeys = { //Array com as teclas bloqueadas no input
-						 '', //BackSpace
-						 '', //Esc
-						 '', //
+						KeyEvent.VK_BACK_SPACE, 
+	                    KeyEvent.VK_DELETE, 
+	                    KeyEvent.VK_ESCAPE, 
+	                    KeyEvent.VK_ENTER,
+	                    KeyEvent.VK_TAB,
+	                    KeyEvent.VK_CAPS_LOCK,
+	                    KeyEvent.VK_WINDOWS,
 				};
 				
 				for(char key: blockedKeys) { //Verifica se a tecla digitada é bloqueada
@@ -93,6 +109,9 @@ public class HintPasswordInputField extends HintInputField {
 					break;
 				case KeyEvent.VK_CAPS_LOCK:
 					break;
+				case KeyEvent.VK_ENTER:
+					enterAction.execute();
+					break;
 				case KeyEvent.VK_DELETE:
 					if(realText.size() != 0) {
 						if(currentCaret != realText.size()) {
@@ -105,6 +124,11 @@ public class HintPasswordInputField extends HintInputField {
 
 			}
 		});
+    }
+    
+    public HintPasswordInputField setEnterAction(IDoAction action) {
+    	enterAction = action;
+    	return this;
     }
     
     /**

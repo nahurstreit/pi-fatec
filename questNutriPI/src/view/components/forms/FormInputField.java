@@ -32,10 +32,10 @@ public class FormInputField extends HintInputField {
 	}
 	
 	@Override
-    public Object getValue() {
-        Object result = super.getValue();
-        if(!isShowHint()) {
-        	if(ownerBox != null && validationRules != null && validationRules.size() > 0) {
+    public String getValue() {
+		String result = super.getValue();
+        if(!isShowingHint()) {
+        	if(!result.isBlank() && ownerBox != null && validationRules != null && validationRules.size() > 0) {
                 for(ValidationRule rule: validationRules) {
                     if (!rule.isValid(result.toString())) {
                         ownerBox.setErrorLbl(rule.getErrorMessage());
@@ -45,6 +45,7 @@ public class FormInputField extends HintInputField {
                 ownerBox.setErrorLbl(""); //Se não tiver erro, limpa a label de erro
         	}
         }
+        
         return result;
     }
 	

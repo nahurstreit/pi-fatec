@@ -1,26 +1,15 @@
 package view.frames;
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.GridBagLayout;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 
 import model.entities.Aliment;
 import model.entities.Food;
 import utils.interfaces.GeneralVisualSettings;
-import utils.view.LanguageUtil;
-import view.components.generics.GenericJScrollPaneList;
-import view.components.inputs.HintInputField;
-import view.components.utils.StdGBC;
+import view.components.buttons.StdButton;
+import view.pages.customer.diet.food.SelectNewAlimentPanel;
 
 public class FoodFrame2 implements GeneralVisualSettings {
 
@@ -69,129 +58,43 @@ public class FoodFrame2 implements GeneralVisualSettings {
 		selectionPanel.setBounds(0, 0, 935, 427);
 		selectionPanel.setLayout(null);
 		selectionPanel.setBackground(STD_BLUE_COLOR);
+		frame.setContentPane(new SelectNewAlimentPanel(new StdButton()));
 		
-		JPanel infoPanel = new JPanel();
-		infoPanel.setBounds(0, 0, 984, 474);
-		frame.getContentPane().add(infoPanel);
-		infoPanel.setLayout(null);
-		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setFont(STD_BOLD_FONT.deriveFont(12f));
-		tabbedPane.setBounds(10, 11, 909, 452);
-		infoPanel.add(selectionPanel);
-		
-		JPanel rTable_NutriInfo = new JPanel();
-		rTable_NutriInfo.setBounds(10, 10, 317, 402);
-		selectionPanel.add(rTable_NutriInfo);
-		rTable_NutriInfo.setLayout(null);
-		
-		JScrollPane l_lowerScrollPanel = new JScrollPane();
-		l_lowerScrollPanel.setBounds(10, 93, 297, 298);
-		rTable_NutriInfo.add(l_lowerScrollPanel);
-				
-		JPanel l_upperPanel = new JPanel();
-		l_upperPanel.setBounds(10, 45, 297, 37);
-		rTable_NutriInfo.add(l_upperPanel);
-		l_upperPanel.setLayout(null);
-		
-		JLabel lblCurrentSelected = new JLabel(new LanguageUtil("Selecionado atualmente", "Current selected").get());
-		lblCurrentSelected.setBounds(0, 0, 297, 14);
-		lblCurrentSelected.setFont(STD_MEDIUM_FONT.deriveFont(10f));
-		l_upperPanel.add(lblCurrentSelected);
-		
-		JLabel lblCurrentAlimentSelected = new JLabel(foodAliment.name);
-		lblCurrentAlimentSelected.setFont(STD_BOLD_FONT.deriveFont(12f));
-		lblCurrentAlimentSelected.setBounds(0, 15, 297, 14);
-		l_upperPanel.add(lblCurrentAlimentSelected);
-		
-		JLabel lblComparisonWindow = new JLabel("Janela de Comparação");
-		lblComparisonWindow.setFont(STD_BOLD_FONT.deriveFont(18f));
-		lblComparisonWindow.setBounds(10, 11, 297, 23);
-		rTable_NutriInfo.add(lblComparisonWindow);
-		
-		JPanel r_panel = new JPanel();
-		r_panel.setBounds(337, 10, 575, 402);
-		selectionPanel.add(r_panel);
-		r_panel.setLayout(null);
-		
-		JPanel searchBoxPanel = new JPanel();
-		searchBoxPanel.setBounds(296, 44, 269, 38);
-		r_panel.add(searchBoxPanel);
-		searchBoxPanel.setLayout(null);
-		
-		HintInputField formattedTextField = new HintInputField("Digite aqui...");
-		formattedTextField.setHint("Digite aqui...");
-		formattedTextField.setValue(food.aliment.name);
-		formattedTextField.setBounds(0, 15, 269, 20);
-		searchBoxPanel.add(formattedTextField);
-		
-		JLabel lblNameAliment = new JLabel("New label");
-		lblNameAliment.setBounds(0, 0, 269, 14);
-		lblNameAliment.setText(new LanguageUtil("Nome do Alimento", "Aliment's Name").get());
-		lblNameAliment.setFont(STD_BOLD_FONT.deriveFont(10f));
-		searchBoxPanel.add(lblNameAliment);
-		formattedTextField.setHint("");
-		
-		JPanel searchPanel = new JPanel();
-		searchPanel.setBounds(296, 93, 269, 297);
-		searchPanel.setLayout(new GridBagLayout());
-		StdGBC searchPanel_gbc = new StdGBC();
-		r_panel.add(searchPanel);
-		
-		JScrollPane l_lowerNutriInfo_search = new JScrollPane();
-		l_lowerNutriInfo_search.setBounds(10, 93, 257, 297);
-		r_panel.add(l_lowerNutriInfo_search);
-		
-		JPanel l_upperPanel_1 = new JPanel();
-		l_upperPanel_1.setLayout(null);
-		l_upperPanel_1.setBounds(10, 44, 257, 38);
-		r_panel.add(l_upperPanel_1);
-		
-		JLabel lblCurrentSelected_1 = new JLabel(new LanguageUtil("Visualizando atualmente", "Currently viewing").get());
-		lblCurrentSelected_1.setBounds(0, 0, 257, 14);
-		lblCurrentSelected_1.setFont(STD_MEDIUM_FONT.deriveFont(10f));
-		l_upperPanel_1.add(lblCurrentSelected_1);
-		
-		//JLabel lblCurrentAlimentView = new JLabel(new LanguageUtil("Biscoito, doce, recheado com chocolate", "None.").get());
-		JLabel lblCurrentAlimentView = new JLabel(new LanguageUtil("Nenhum.", "None.").get());
-		lblCurrentAlimentView.setFont(STD_BOLD_FONT.deriveFont(12f));
-		lblCurrentAlimentView.setBounds(0, 15, 257, 14);
-		l_upperPanel_1.add(lblCurrentAlimentView);
-		
-		GenericJScrollPaneList<Aliment> alimentList = new GenericJScrollPaneList<Aliment>()
-				.setOriginList(Aliment.findAll())
-				.setColumnNames(new Object[] {"Nome", "Grupo"})
-				.setRowMapper(aliment -> new Object[] {aliment.name, aliment.alimentGroup})
-				.setDoubleClickAction(aliment -> () -> {
-//					JTable table = new JTable(new AlimentNutritionalTable(aliment));
-//					l_lowerNutriInfo_search.setViewportView(table);
-//					lblCurrentAlimentView.setText(aliment.name);
-				})
-				.init();
-		searchPanel.add(alimentList, searchPanel_gbc.fill("BOTH").anchor("NORTHWEST").wgt(1.0));
-		
-		//StdButton btnNewButton = StdButton.stdBtnConfig(new LanguageUtil("Trocar alimento atual por este", "Set this as current aliment").get()).setUpFont(GeneralJPanelSettings.STD_BOLD_FONT.deriveFont(11f));
-		JButton btnNewButton = new JButton("Trocar alimento atual por este");
-		btnNewButton.setBounds(10, 11, 257, 24);
-		r_panel.add(btnNewButton);
-		btnNewButton.setHorizontalAlignment(SwingConstants.LEFT);
-		
-		JLabel lblSearch = new JLabel("Pesquisa de alimentos");
-		lblSearch.setBounds(296, 11, 269, 23);
-		lblSearch.setFont(STD_BOLD_FONT.deriveFont(18f));
-		r_panel.add(lblSearch);
-		
-	    JSeparator separator = new JSeparator(SwingConstants.VERTICAL);  // Separador vertical
-	    separator.setBounds(280, 11, 1, 379);
-
-        // Criação de uma borda personalizada
-        Border border = BorderFactory.createLineBorder(STD_BLUE_COLOR, 1);
-        separator.setBorder(border);
-        
-        r_panel.add(separator);
+//		JPanel leftPanel_current = new JPanel();
+//		leftPanel_current.setBounds(10, 10, 317, 402);
+//		selectionPanel.add(leftPanel_current);
+//		leftPanel_current.setLayout(null);
+//		
+//		JScrollPane lfP_lowerPanel = new JScrollPane();
+//		lfP_lowerPanel.setBounds(10, 93, 297, 298);
+//		leftPanel_current.add(lfP_lowerPanel);
+//				
+//		JPanel lfP_upperPanel = new JPanel();
+//		lfP_upperPanel.setBounds(10, 45, 297, 37);
+//		leftPanel_current.add(lfP_upperPanel);
+//		lfP_upperPanel.setLayout(null);
+//		
+//		JLabel lfP_upperPanelCurrentLabel = new JLabel(new LanguageUtil("Selecionado atualmente", "Current selected").get());
+//		lfP_upperPanelCurrentLabel.setBounds(0, 0, 297, 14);
+//		lfP_upperPanelCurrentLabel.setFont(STD_MEDIUM_FONT.deriveFont(10f));
+//		lfP_upperPanel.add(lfP_upperPanelCurrentLabel);
+//		
+//		JLabel lfP_upperPanelAlimentLabel = new JLabel(foodAliment.name);
+//		lfP_upperPanelAlimentLabel.setFont(STD_BOLD_FONT.deriveFont(12f));
+//		lfP_upperPanelAlimentLabel.setBounds(0, 15, 297, 14);
+//		lfP_upperPanel.add(lfP_upperPanelAlimentLabel);
+//		
+//		JLabel lfP_comparisonTextLabel = new JLabel("Janela de Comparação");
+//		lfP_comparisonTextLabel.setFont(STD_BOLD_FONT.deriveFont(18f));
+//		lfP_comparisonTextLabel.setBounds(10, 11, 297, 23);
+//		leftPanel_current.add(lfP_comparisonTextLabel);
 				
 //		JTable table = new JTable(new AlimentNutritionalTable(foodAliment, food.quantity));
 //		l_lowerScrollPanel.setViewportView(table);
+		
+	}
+	
+	private void initDisableDesign() {
 		
 	}
 }

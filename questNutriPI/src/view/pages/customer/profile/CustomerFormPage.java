@@ -195,7 +195,7 @@ public class CustomerFormPage extends GenericFormPage {
 	}
 	
 	private StdButton btnAccessWeights() {
-		StdButton btn = StdButton.stdBtnConfig(new LanguageUtil("Registrar", "Register").get());
+		StdButton btn = StdButton.stdBtnConfig(new LanguageUtil("Registrar", "Add new").get());
 		btn.setAction(() -> {
 			WeightController.openWeightFrame(customer, lastWeight);
 		});
@@ -230,8 +230,21 @@ public class CustomerFormPage extends GenericFormPage {
 								      .setRequired();
 		
 		phoneNumber = new FormBoxInput(this).setLbl(new LanguageUtil("Telefone", "Phone Number").get())
-										 	.setMask("(##) # ####-####")
-										 	.setValue(customer.phoneNumber)
+										 	.setMask("(##) # ####-####", text -> {
+										 		if(text.length() == 11) {
+										 			return true;
+										 		} else {
+										 			return false;
+										 		}
+										 	})
+										 	.setMask("(##) ####-####", text -> {
+										 		if(text.length() == 10) {
+										 			return true;
+										 		} else {
+										 			return false;
+										 		}
+										 	})
+										 	.setValue(customer.getFormattedPhoneNumber())
 										 	.clearMaskOnSelect(false)
 										 	.addValidation(
 										 			new ValidationRule(

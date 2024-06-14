@@ -21,6 +21,8 @@ public class StdButton extends JButton implements GeneralVisualSettings {
 		void execute();
 	}
 	
+	private Action action;
+	
 	public StdButton() {
 		this("", null);
 	}
@@ -92,8 +94,9 @@ public class StdButton extends JButton implements GeneralVisualSettings {
 	/**
 	 * Atribui a ação ao Botão.
 	 */
-	public StdButton setAction(Action action) {	
+	public StdButton setAction(Action action) {
 		removeAllActions();
+		this.action = action;
 		this.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(action != null) {
@@ -113,6 +116,10 @@ public class StdButton extends JButton implements GeneralVisualSettings {
 		return this;
 	}
 	
+	public Action getInteactionAction() {
+		return action;
+	}
+	
 	public static StdButton stdBtnConfig(String text) {
     	return new StdButton(text).setUpFont(STD_BOLD_FONT.deriveFont(12f))
 				   .setColors(STD_WHITE_COLOR, STD_BLUE_COLOR);
@@ -122,5 +129,6 @@ public class StdButton extends JButton implements GeneralVisualSettings {
     	return new StdButton(text).setUpFont(STD_BOLD_FONT.deriveFont(12f))
 				   .setColors(STD_BLUE_COLOR, Color.white);
 	}
+	
 	
 }

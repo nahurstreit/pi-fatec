@@ -29,7 +29,7 @@ import view.states.LoggedPanel;
 import view.states.LoginPanel;
 
 /**
- * Classe principal da Aplica��o.
+ * Classe principal da Aplicação.
  */
 public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{	
 	private static int language = STD_LANGUAGE;
@@ -51,7 +51,7 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
                     LoadingFrame loadingFrame = new LoadingFrame();
                     loadingFrame.setVisible(true);
 
-                    // Inicia o SwingWorker para carregar a aplica��o
+                    // Inicia o SwingWorker para carregar a aplicação
                     new LoadAppWorker(loadingFrame).execute();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -61,7 +61,7 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
     }
 
     /**
-     * M�todo que faz a troca do mainPanel do app.
+     * Método que faz a troca do mainPanel do app.
      * @param panel -> Novo painel a ser exibido.
      */
     private static void swapAppPanel(JPanel panel) {
@@ -96,11 +96,11 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
 		} catch (Exception e) {
 			QuestNutriJOP.showMessageDialog(null, 
 					new LanguageUtil(
-							"Erro interno do sistema. Consulte o log para mais informa��es", 
+							"Erro interno do sistema. Consulte o log para mais informações", 
 							"System Internal error. Check log for more details"
 							).get(),
 					new LanguageUtil(
-							"N�o foi poss�vel fazer login", 
+							"Não foi possível fazer login", 
 							"Login Failed"
 							).get(),
 					1,
@@ -118,10 +118,10 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
     }
 
     /**
-     * M�todo que inicializa a tela de login
-     * @param doDelay -> valor booleano que define se ser� feito um delay para a exibi��o da logotipo
-     * <li> Se <b>true</b> exibir� a tela de login
-     * <li> Se <b>false</b> pular� a anima��o. -> Valor padr�o.
+     * Método que inicializa a tela de login
+     * @param doDelay -> valor booleano que define se será feito um delay para a exibição da logotipo
+     * <li> Se <b>true</b> exibirá a tela de login
+     * <li> Se <b>false</b> pulará a animação. -> Valor padrão.
      */
     public static void swapToLogin(boolean... doDelay) {
         boolean delay = false;
@@ -148,7 +148,7 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
     }
 
     /**
-     * M�todo que exibe a anima��o da logotipo no start da aplica��o.
+     * Método que exibe a animação da logotipo no start da aplicação.
      */
     public static void showLogoReveal() {
         JLabel logoRevealGif = new JLabel(ImagesUtil.gifIcon(LOGO_REVEAL_GIF), JLabel.CENTER);
@@ -165,7 +165,7 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
     }
 
     /**
-     * M�todo que escurece a tela da aplica��o.
+     * Método que escurece a tela da aplicação.
      */
     public static void followYouIntoTheDark() {
         JPanel darkScene = new JPanel();
@@ -217,7 +217,7 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
 
             loadingFrame.setProgress(60);
             loadingFrame.setAction(new LanguageUtil("Conectando ao banco de dados...", "Connecting to database...").get());
-            connectDB(); // Estabelece a conex�o com o banco de dados
+            connectDB(); // Estabelece a conexão com o banco de dados
             Thread.sleep(500); // Simula o tempo de carregamento
 
             loadingFrame.setProgress(100);
@@ -249,7 +249,7 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
     }
 
     /**
-     * M�todo para inicializar a conex�o com o banco de dados.
+     * Método para inicializar a conexão com o banco de dados.
      */
     public static void connectDB() {
         HibernateUtil.getSessionFactory();
