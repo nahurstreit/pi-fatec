@@ -220,7 +220,7 @@ public class CustomerController {
 	            null,
 	            options,
 	            options[1]
-	        );
+	    );
 		
 		if(choice == 0) {
 			if(customer.softDelete()) {

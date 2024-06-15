@@ -1,17 +1,20 @@
 package view.pages.customer.diet.food;
 
+import java.awt.Dimension;
 import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
+import controller.entities.AlimentController;
 import model.entities.Aliment;
 import utils.view.LanguageUtil;
 import view.components.buttons.StdButton;
@@ -20,120 +23,126 @@ import view.components.generics.GenericJScrollPaneList;
 import view.components.inputs.HintInputField;
 import view.components.labels.BreakActionLbl;
 import view.components.tables.AlimentNutritionalTable;
-import view.components.utils.StdGBC;
 
 public class SelectNewAlimentPanel extends GenericJPanel {
-	private static final long serialVersionUID = 1L;
-	
-	/**
-	 * Lista para armazenar todos os alimentos do banco de dados
-	 */
-	private GenericJScrollPaneList<Aliment> alimentSearchList;
-	
-	/**
-	 * Label para mostrar o nome do alimento selecionado na lista de alimentList
-	 */
-	private BreakActionLbl selectedAliment; 
-	
-	/**
-	 * JScrolPane para exibir as informações nutricionais do alimento selecionado em alimentList
-	 */
-	private JScrollPane scrollPaneSelectedAlimentInfo;
-	
-	private Aliment currentSelected = null;
+    private static final long serialVersionUID = 1L;
 
-	public SelectNewAlimentPanel(StdButton upperButton) {
-		this.setLayout(null);
-		
-		JLabel searchAlimentSectionLbl = new JLabel(new LanguageUtil("Pesquisa de alimentos", "Search aliments").get());
-		searchAlimentSectionLbl.setBounds(296, 11, 269, 23);
-		searchAlimentSectionLbl.setFont(STD_BOLD_FONT.deriveFont(18f));
-		this.add(searchAlimentSectionLbl);
-		
-		JPanel searchAlimentPanel = new JPanel();
-		searchAlimentPanel.setBounds(296, 44, 269, 38);
-		this.add(searchAlimentPanel);
-		searchAlimentPanel.setLayout(null);
-		
-		HintInputField searchAlimentInputName = new HintInputField("Digite aqui...");
-		searchAlimentInputName.setHint("Digite aqui...");
-		searchAlimentInputName.setBounds(0, 15, 269, 20);
-		searchAlimentPanel.add(searchAlimentInputName);
-		
-		JLabel searchAlimentUpperLbl = new JLabel("New label");
-		searchAlimentUpperLbl.setBounds(0, 0, 269, 14);
-		searchAlimentUpperLbl.setText(new LanguageUtil("Nome do Alimento", "Aliment's Name").get());
-		searchAlimentUpperLbl.setFont(STD_BOLD_FONT.deriveFont(10f));
-		searchAlimentPanel.add(searchAlimentUpperLbl);
-		searchAlimentInputName.setHint("");
-		
-		JPanel searchAlimentListPanel = new JPanel();
-		searchAlimentListPanel.setBounds(296, 93, 269, 297);
-		searchAlimentListPanel.setLayout(new GridBagLayout());
-		StdGBC searchPanel_gbc = new StdGBC();
-		this.add(searchAlimentListPanel);
-		
-		scrollPaneSelectedAlimentInfo = new JScrollPane();
-		scrollPaneSelectedAlimentInfo.setBounds(10, 93, 257, 297);
-		this.add(scrollPaneSelectedAlimentInfo);
-		
-		JPanel selectedAlimentPanel = new JPanel();
-		selectedAlimentPanel.setLayout(null);
-		selectedAlimentPanel.setBounds(10, 44, 257, 49);
-		this.add(selectedAlimentPanel);
-		
-		JLabel selectedAlimentUpperLbl = new JLabel(new LanguageUtil("Visualizando atualmente", "Currently viewing").get());
-		selectedAlimentUpperLbl.setBounds(0, 0, 257, 14);
-		selectedAlimentUpperLbl.setFont(STD_MEDIUM_FONT.deriveFont(10f));
-		selectedAlimentPanel.add(selectedAlimentUpperLbl);
-		
-		//Label superior do lado direito que diz qual é o aliemnto selecionado atualmente.
-		selectedAliment = new BreakActionLbl()
-				.setUpText(new LanguageUtil("Nenhum.", "None.").get())
-				.setUpFont(STD_BOLD_FONT.deriveFont(12f))
-				.turnHoverOff()
-				.setBGColor(this.getBackground());
-		selectedAliment.setBounds(0, 15, 257, 34);
-		selectedAlimentPanel.add(selectedAliment);
-		
-		alimentSearchList = new GenericJScrollPaneList<Aliment>()
-				.setOriginList(Aliment.findAll())
-				.setColumnNames(new Object[] {"Nome"})
-				.setRowMapper(aliment -> new Object[] {aliment.name})
-				.setCellFont(STD_REGULAR_FONT.deriveFont(12f));
-		
-		searchAlimentListPanel.add(alimentSearchList, searchPanel_gbc.fill("BOTH").anchor("NORTHWEST").wgt(1.0));
-		
-		//StdButton interactionButton = StdButton.stdBtnConfig(new LanguageUtil("Trocar alimento atual por este", "Set this as current aliment").get()).setUpFont(STD_BOLD_FONT.deriveFont(11f));
-		//JButton interactionButton = new JButton("Trocar alimento atual por este");
-		upperButton.setBounds(10, 11, 257, 24);
-		this.add(upperButton);
-		upperButton.setHorizontalAlignment(SwingConstants.LEFT);
-		
-	    JSeparator separator = new JSeparator(SwingConstants.VERTICAL);  // Separador vertical
-	    separator.setBounds(280, 11, 1, 379);
+    private GenericJScrollPaneList<Aliment> alimentSearchList;
+    private BreakActionLbl selectedAliment;
+    private JScrollPane scrollPaneSelectedAlimentInfo;
+    private Aliment currentSelected = null;
 
-        // Criação de uma borda personalizada
-        Border border = BorderFactory.createLineBorder(STD_BLUE_COLOR, 1);
-        separator.setBorder(border);
+    public SelectNewAlimentPanel(StdButton upperButton) {
+        this.setLayout(new GridBagLayout());
         
-        this.add(separator);
+        //Panel da esquerda
+        GenericJPanel leftPanel = new GenericJPanel().ltGridBag();
+        this.add(leftPanel, gbc.grid(0).fill("BOTH").wgt(0.75, 1.0).insets(10, 10, 10, 0).anchor("NORTHWEST"));
+        
+        upperButton.setHorizontalAlignment(SwingConstants.LEFT);
+        upperButton.setPreferredSize(new Dimension(200, 20));
+        leftPanel.add(upperButton, leftPanel.gbc.grid(0).fill("HORIZONTAL").wgt(1.0, 0).anchor("NORTHWEST").insets(10));
+        
+        JLabel selectedAlimentUpperLbl = new JLabel(new LanguageUtil("Visualizando atualmente", "Currently viewing").get());
+        selectedAlimentUpperLbl.setFont(STD_MEDIUM_FONT.deriveFont(10f));
+        leftPanel.add(selectedAlimentUpperLbl, leftPanel.gbc.grid(0, 1).fill("HORIZONTAL").anchor("NORTHWEST").wgt(1.0, 0).insets(0, 10));
+        
+        selectedAliment = new BreakActionLbl()
+            .setUpText(new LanguageUtil("Nenhum.", "None.").get())
+            .setUpFont(STD_BOLD_FONT.deriveFont(12f))
+            .turnHoverOff()
+            .setBGColor(this.getBackground());
+        leftPanel.add(selectedAliment, leftPanel.gbc.grid(0, 2).wgt(1.0, 0).insets(0, 10, 10, 10));
+        
+        scrollPaneSelectedAlimentInfo = new JScrollPane();
+        leftPanel.add(scrollPaneSelectedAlimentInfo, leftPanel.gbc.grid(0, 3).fill("BOTH").wgt(1.0).insets(0, 10, 10, 10).height("REMAINDER"));
+        
+        
+//        //Separador do meio
+//        JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
+//        Border border = BorderFactory.createLineBorder(STD_BLUE_COLOR, 1);
+//        separator.setBorder(border);
+//        this.add(separator, gbc.grid(1, 0).fill("VERTICAL").anchor("CENTER").wgt(0.0, 1.0).insets(10));
+
+        
+        
+        //Panel da direita
+        GenericJPanel rightPanel = new GenericJPanel().ltGridBag();
+        this.add(rightPanel, gbc.xP().fill("BOTH").wgt(0.25, 1.0).insets(10, 0, 10, 10).anchor("NORTHWEST"));
+
+        JLabel searchAlimentSectionLbl = new JLabel(new LanguageUtil("Pesquisa de alimentos", "Search aliments").get());
+        searchAlimentSectionLbl.setFont(STD_BOLD_FONT.deriveFont(18f));
+        rightPanel.add(searchAlimentSectionLbl, rightPanel.gbc.grid(0, 0).fill("HORIZONTAL").anchor("NORTHWEST").wgt(1.0, 0.0).insets(10, 10, 5, 10));
+
+        GenericJPanel searchAlimentPanel = new GenericJPanel().ltGridBag();
+        rightPanel.add(searchAlimentPanel, rightPanel.gbc.grid(0, 1).fill("HORIZONTAL").wgt(1.0, 0.0).insets(0, 10, 10, 5));
+
+        JLabel searchAlimentUpperLbl = new JLabel(new LanguageUtil("Nome do Alimento", "Aliment's Name").get());
+        searchAlimentUpperLbl.setFont(STD_BOLD_FONT.deriveFont(10f));
+        searchAlimentPanel.add(searchAlimentUpperLbl, searchAlimentPanel.gbc.grid(0, 0).fill("HORIZONTAL").anchor("NORTHWEST").insets(0));
+
+        HintInputField searchAlimentInputName = new HintInputField("Digite aqui...");
+        searchAlimentInputName.setHint("Digite aqui...");
+        searchAlimentPanel.add(searchAlimentInputName, searchAlimentPanel.gbc.grid(0, 1).fill("HORIZONTAL").wgt(1.0, 0.0).insets(5, 0, 0, 0));
+
+     // Adicionando DocumentListener para monitorar mudanças no texto do campo de busca
+        searchAlimentInputName.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                searchAliments();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                searchAliments();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                searchAliments();
+            }
+
+            private void searchAliments() {
+            	alimentSearchList.setOriginList(AlimentController.searchAliments(new LanguageUtil("Nome", "Name").get(), searchAlimentInputName.getValue()))
+				 				 .buildTableModel()
+				 				 .init(); //init chama configureTable
+
+				alimentSearchList.repaint();
+				alimentSearchList.revalidate();
+            }
+        });
+        
+        alimentSearchList = new GenericJScrollPaneList<Aliment>()
+            .setOriginList(Aliment.findAll())
+            .setColumnNames(new Object[] {"Nome"})
+            .setRowMapper(aliment -> new Object[] {aliment.name})
+            .setCellFont(STD_REGULAR_FONT.deriveFont(12f));
+        rightPanel.add(alimentSearchList, rightPanel.gbc.grid(0, 2).fill("BOTH").wgt(1.0));
+
         init();
-	}
-	
-	private void init() {
-		selectedAliment.init();
-		alimentSearchList
-		.setDoubleClickAction(aliment -> () -> {
-			currentSelected = aliment;
-			JTable table = new JTable(new AlimentNutritionalTable(aliment));
-			scrollPaneSelectedAlimentInfo.setViewportView(table);
-			selectedAliment.setText(aliment.name);
-		})
-		.init();
-	}
-	
-	public Aliment getSelectedAliment() {
-		return currentSelected;
+    }
+
+    private void init() {
+        selectedAliment.init();
+        alimentSearchList
+            .setDoubleClickAction(aliment -> () -> {
+                currentSelected = aliment;
+                JTable table = new JTable(new AlimentNutritionalTable(aliment));
+                scrollPaneSelectedAlimentInfo.setViewportView(table);
+                selectedAliment.setText(aliment.name);
+            })
+            .init();
+    }
+
+    public Aliment getSelectedAliment() {
+        return currentSelected;
+    }
+    
+    public static void main(String[] args) {
+        JFrame f = new JFrame();
+        f.setBounds(100, 100, 883, 462);
+        f.setContentPane(new SelectNewAlimentPanel(new StdButton()));
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setVisible(true);
 	}
 }

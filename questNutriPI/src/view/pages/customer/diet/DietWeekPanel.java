@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+import model.entities.Customer;
 import model.entities.Meal;
 import utils.view.LanguageUtil;
 import utils.view.PanelsUtil;
@@ -16,6 +17,7 @@ import view.components.generics.GenericJPanel;
 public class DietWeekPanel extends GenericComponent {
 	private static final long serialVersionUID = 1L;
 	
+	private Customer customer;
 	private List<Meal> meals;
 	private int[] avbDays = {64, 32, 16, 8, 4, 2, 1}; //Variável que controla os dias da semana dos respectivos panels
 	private String[] avbStrDays;
@@ -26,10 +28,11 @@ public class DietWeekPanel extends GenericComponent {
 	
 	public GenericJPanel holderLoading = new GenericJPanel().setBGColor(STD_WHITE_COLOR);
 
-	public DietWeekPanel(GenericJPanel ownerPanel, List<Meal> meals) {
+	public DietWeekPanel(GenericJPanel ownerPanel, Customer customer) {
 		super(ownerPanel);
+		this.customer = customer;
+		this.meals = customer.getDiet();
 		this.ltGridBag();
-		this.meals = meals;
 		this.setBackground(Color.white);
 		
 		//Inicialização do array de dias da semana.
@@ -46,8 +49,6 @@ public class DietWeekPanel extends GenericComponent {
         PanelsUtil.applyLoadingGif(holderLoading, 30, 30, true, STD_BOLD_FONT.deriveFont(15f), 0, 5);
 		loadDays();
 	}
-	
-
 	
 	public void swapFocus(DietDayPanel dayToFocus) {
 		if(currentDayFocus != null) {
@@ -76,7 +77,7 @@ public class DietWeekPanel extends GenericComponent {
 	    this.add(holderLoading, gbc.anchor("CENTER"));
 	    
 	    for (int i = 0; i < avbDays.length; i++) {
-	        	DietDayPanel day = new DietDayPanel(avbDays[i], this, i);
+	        	DietDayPanel day = new DietDayPanel(this, avbDays[i], i);
 	        	day.setPreferredSize(panelsSize);
 	        	day.setMinimumSize(panelsSize);
 	        	day.setMaximumSize(panelsSize);
@@ -110,6 +111,11 @@ public class DietWeekPanel extends GenericComponent {
         }).start();
 	}
 	
+	
+	public List<Meal> updateMeals() {
+		this.meals = customer.getDiet();
+		return this.meals;
+	}
 	
 	private void refreshDays() {
 		for(DietDayPanel day: daysPanels) {

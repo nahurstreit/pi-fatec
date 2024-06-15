@@ -51,7 +51,7 @@ public class DietDayPanel extends GenericJPanel {
 	
 	private DietMealPanel caller = null;
 
-	public DietDayPanel(int weekDay, DietWeekPanel dietMainPanel, int position) {
+	public DietDayPanel(DietWeekPanel dietMainPanel, int weekDay,  int position) {
 		super(dietMainPanel);
 		this.ltGridBag();
 		this.weekDay = weekDay;
@@ -75,6 +75,13 @@ public class DietDayPanel extends GenericJPanel {
 		calculateDayKcal();
 		populate(meals);
 		return this;
+	}
+	
+	public void callUpdate() {
+		meals = new ArrayList<Meal>();
+		for(Meal meal : dietMainPanel.updateMeals()) {
+			setMeals(meal);
+		}
 	}
 	
 	public DietDayPanel setMeals(Meal ...meals) {
@@ -114,7 +121,7 @@ public class DietDayPanel extends GenericJPanel {
 		
 		mealsCards = new ArrayList<DietMealPanel>();
 		for(int i = 0; i < meals.size(); i++) {
-			DietMealPanel mealCard = new DietMealPanel(meals.get(i), this);
+			DietMealPanel mealCard = new DietMealPanel(this, meals.get(i));
 			mealsCards.add(mealCard);
 			mealsGeneralPanel.add(mealCard, mealsGeneralPanel.gbc.insets(BETWEEN_DISTANCE, LATERAL_DISTANCE).grid(0, i+1).anchor("NORTHWEST").fill("BOTH").wgt(1.0));
 		}
@@ -169,9 +176,7 @@ public class DietDayPanel extends GenericJPanel {
 		lblDay.setNewAction(() -> callFocus());
 		nameBoxOffFocus();
 		
-		
 		this.add(kcalBox, kcalBox.gbc.fill("HORIZONTAL").wgt(1.0, 0).grid(0, 1));
-		
 		
 		for(DietMealPanel mealCard: mealsCards) mealCard.retractMeal();
 		this.remove(mealsScrollPane);

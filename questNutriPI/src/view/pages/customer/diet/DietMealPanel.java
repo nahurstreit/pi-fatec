@@ -56,7 +56,8 @@ public class DietMealPanel extends GenericJPanel {
     private StdButton addFoodBtn;
     private StdButton copyMealBtn;
 
-    public DietMealPanel(Meal meal, DietDayPanel dayPanel) {
+    public DietMealPanel(DietDayPanel dayPanel, Meal meal) {
+    	super(dayPanel);
         this.meal = meal;
         this.dayPanel = dayPanel;
         ltGridBag();
@@ -99,7 +100,13 @@ public class DietMealPanel extends GenericJPanel {
             this.setVisible(false);
         }
         
-        
+    }
+    
+    public void foodWasUpdated() {
+    	dayPanel.callUpdate();
+    	insertFoods();
+    	dayPanel.refresh();
+    	this.refresh();
     }
 
     /**
@@ -235,6 +242,11 @@ public class DietMealPanel extends GenericJPanel {
     }
     
     private void insertFoods() {
+    	try {
+			foodsPanel.removeAll();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
     	foodsPanel.gbc.fill("BOTH").wgt(1.0).anchor("NORTHWEST").grid(0).insets(10);
     	for(Food food: meal.getFoods()) {
     		foodsPanel.add(new DietFoodPanel(this, food), foodsPanel.gbc);

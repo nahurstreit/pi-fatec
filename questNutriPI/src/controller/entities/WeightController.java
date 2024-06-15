@@ -7,6 +7,7 @@ import model.entities.Weight;
 import utils.interfaces.GeneralVisualSettings;
 import view.components.QuestNutriJOP;
 import view.components.forms.FormBoxInput;
+import view.components.generics.GenericJFrame;
 import view.frames.WeightFrame;
 
 public class WeightController implements GeneralVisualSettings {
@@ -16,8 +17,8 @@ public class WeightController implements GeneralVisualSettings {
 		
 	}
 	
-	public static void openWeightFrame(Customer customer, FormBoxInput updateInput) {
-		WeightFrame wgtFrame = new WeightFrame(customer, updateInput);
+	public static void openWeightFrame(GenericJFrame callerFrame, Customer customer, FormBoxInput updateInput) {
+		WeightFrame wgtFrame = new WeightFrame(callerFrame, customer, updateInput);
 		wgtFrame.init();
 	}
 	

@@ -197,7 +197,7 @@ public class CustomerFormPage extends GenericFormPage {
 	private StdButton btnAccessWeights() {
 		StdButton btn = StdButton.stdBtnConfig(new LanguageUtil("Registrar", "Add new").get());
 		btn.setAction(() -> {
-			WeightController.openWeightFrame(customer, lastWeight);
+			WeightController.openWeightFrame(this.getCallerFrame(), customer, lastWeight);
 		});
 		
 		return btn;

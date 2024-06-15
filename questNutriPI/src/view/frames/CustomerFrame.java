@@ -13,12 +13,12 @@ import view.components.utils.StdGBC;
 import view.pages.customer.diet.DietPage;
 import view.pages.customer.profile.CustomerFormPage;
 
-public class CustomerFrame extends SubFrame {
+public class CustomerFrame extends SubFrameFromMain {
 	private static final long serialVersionUID = 1L;
 	
 	private Customer customer;
 	public GenericJPanel framePanel;
-	private GenericJPanel mainPanel = new GenericJPanel(framePanel);
+	private GenericJPanel mainPanel;
 
 	private StdGBC gbc = new StdGBC();
 	
@@ -41,6 +41,7 @@ public class CustomerFrame extends SubFrame {
 		
 		framePanel = new GenericJPanel().ltGridBag().setCallerFrame(this);
 		this.add(framePanel);
+		mainPanel = new GenericJPanel(framePanel);
 		
 		int x = QuestNutri.app.getX() + QuestNutri.app.getWidth()/10;
 		int y = QuestNutri.app.getY() + QuestNutri.app.getHeight()/10;

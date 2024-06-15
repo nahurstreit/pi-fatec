@@ -275,7 +275,11 @@ public class Customer extends CustomerDAO {
 	 * @return Uma lista de Meals daquele cliente
 	 */
 	public List<Meal> getDiet() {
-		return Meal.findAllByCustomerPK(this.idCustomer);
+		List<Meal> list = Meal.findAllByCustomerPK(this.idCustomer);
+		if(list.size() == 0) {
+			list = null;
+		}
+		return list;
 	}
 	
 	/**

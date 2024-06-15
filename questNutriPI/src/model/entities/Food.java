@@ -73,6 +73,10 @@ public class Food extends FoodDAO implements ICopy<Food> {
     	return this.idFood;
     }
     
+    public LocalDateTime getCreationDateTime() {
+    	return this.createdAt;
+    }
+    
     public Food setAliment(Aliment aliment) {
     	this.aliment = aliment;
     	return this;

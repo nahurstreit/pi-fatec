@@ -3,6 +3,7 @@ package view.components.generics;
 import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -20,6 +21,9 @@ public class GenericJPanel extends JPanel implements GeneralVisualSettings {
 	
 	public GenericJPanel(GenericJPanel ownerPanel) {
 		this.ownerPanel = ownerPanel;
+		if(ownerPanel != null) {
+			this.callerFrame = ownerPanel.callerFrame;
+		}
 	}
 	
 	public GenericJPanel() {
@@ -42,8 +46,12 @@ public class GenericJPanel extends JPanel implements GeneralVisualSettings {
 		return this.ownerPanel;
 	}
 	
+	/**
+	 * Encontra o frame que contém o objeto JPanel
+	 * @return <b>GenericJFrame</b> -> Frame pai.
+	 */
 	public GenericJFrame getCallerFrame() {
-		return this.callerFrame;
+		return callerFrame;
 	}
 	
 	public GenericJPanel setBGColor(Color color) {
@@ -51,8 +59,8 @@ public class GenericJPanel extends JPanel implements GeneralVisualSettings {
 		return this;
 	}
 	
-	public ArrayList<GenericJPanel> getFamilyOwners() {
-		ArrayList<GenericJPanel> family = new ArrayList<GenericJPanel>();
+	public List<GenericJPanel> getFamilyOwners() {
+		List<GenericJPanel> family = new ArrayList<GenericJPanel>();
 		GenericJPanel current = this;
 		
 		while(current.getOwner() != null) {
@@ -89,7 +97,7 @@ public class GenericJPanel extends JPanel implements GeneralVisualSettings {
 	public String toString() {
 		String res = "";
 		String nameClass = this.getClass().toString().replaceAll(".*\\.", "");
-		ArrayList<GenericJPanel> family = this.getFamilyOwners();
+		List<GenericJPanel> family = this.getFamilyOwners();
 		String familyStr = "";
 		for(int i = family.size() - 1; i >= 0; i--) {
 			familyStr += "\n";
@@ -103,11 +111,12 @@ public class GenericJPanel extends JPanel implements GeneralVisualSettings {
 		}
 		
 		try {
-			res = family.get(family.size() - 1).getCallerFrame()
+			res = "Father Frame: "+getCallerFrame()
 					+ "\nClass name: " + nameClass
 					+ "\nFamily Owners Tree: " + familyStr
 					+ "\n";
 		} catch (Exception e) {
+			res = "Untrackable!";
 		}
 		
 		return res;

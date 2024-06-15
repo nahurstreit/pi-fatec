@@ -25,6 +25,7 @@ import utils.interfaces.GeneralVisualSettings;
 import utils.view.ImagesUtil;
 import utils.view.LanguageUtil;
 import view.components.QuestNutriJOP;
+import view.components.generics.GenericJFrame;
 import view.states.LoggedPanel;
 import view.states.LoginPanel;
 
@@ -34,7 +35,7 @@ import view.states.LoginPanel;
 public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{	
 	private static int language = STD_LANGUAGE;
 	
-    public static JFrame app = new JFrame();
+    public static GenericJFrame app;
     public static LoginPanel loginPanel;
     public static LoggedPanel loggedPanel;
     public static final String QUESTNUTRI_SVG_NAME = "QuestNutri";
@@ -231,13 +232,12 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
                 get();
                 
                 loadingFrame.dispose(); // Fecha a janela de carregamento
-
+                
                 // Inicializa o JFrame principal
+                app = new GenericJFrame(new Dimension(1000, 500));
+                app.setDefaultCloseApp();
                 app.setTitle("QuestNutri (Desktop App)");
-                app.setIconImage(ImagesUtil.sizedImg(QUESTNUTRI_FRAME_ICON_PNG, 8680, 4540).getImage());
                 app.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                app.setMinimumSize(new Dimension(1000, 500));
-                app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 app.setVisible(true);
 
                 // Inicia o painel de login

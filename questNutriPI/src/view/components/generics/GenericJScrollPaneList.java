@@ -157,6 +157,7 @@ public class GenericJScrollPaneList<T> extends JScrollPane implements GeneralVis
         configureTable(); //Configura novamente a tabela
     }
     
+    
     public GenericJScrollPaneList<T> setCellFont(Font font) {
     	if(font != null) {
     		this.cellFont = font;
@@ -245,4 +246,5 @@ public class GenericJScrollPaneList<T> extends JScrollPane implements GeneralVis
         table.addMouseListener(mouseAdapter);
         return this;
     }
+    
 }

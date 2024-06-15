@@ -17,7 +17,7 @@ import view.components.generics.GenericJFrame;
 import view.components.generics.GenericJPanel;
 import view.components.generics.GenericJScrollPaneList;
 
-public class WeightFrame extends GenericJFrame {
+public class WeightFrame extends SubFrame {
 	private static final long serialVersionUID = 1L;
 
 	private Customer customer;
@@ -28,8 +28,8 @@ public class WeightFrame extends GenericJFrame {
 	
 	private FormBoxInput wgtValue;
 	
-	public WeightFrame(Customer customer, FormBoxInput updateInput) {
-		super();
+	public WeightFrame(GenericJFrame callerFrame, Customer customer, FormBoxInput updateInput) {
+		super(callerFrame, null);
 		this.customer = customer;
 		this.updateInput = updateInput;
 		

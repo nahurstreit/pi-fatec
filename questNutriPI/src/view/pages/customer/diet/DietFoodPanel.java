@@ -4,6 +4,7 @@ import java.awt.Dimension;
 
 import javax.swing.JLabel;
 
+import controller.entities.FoodController;
 import model.entities.Food;
 import utils.FoodUtil;
 import utils.view.LanguageUtil;
@@ -19,14 +20,20 @@ public class DietFoodPanel extends GenericJPanel {
 	private ActionLbl lblAliName;
 	private FormBoxInput quantityInput;
 	private FormBoxInput unityQtInput;
+	
+	private Food food;
 
-	public DietFoodPanel(GenericJPanel ownerPanel, Food food) {
+	public DietFoodPanel(DietMealPanel ownerPanel, Food food) {
 		super(ownerPanel);
 		ltGridBag();
 		setBGColor(STD_BLUE_COLOR);
+		this.food = food;
 		
 		lblAliName = new ActionLbl(food.aliment.name).setUpFont(STD_BOLD_FONT.deriveFont(12f))
-													 .setUpColor(STD_WHITE_COLOR);
+													 .setUpColor(STD_WHITE_COLOR)
+													 .setNewAction(() -> {
+														 FoodController.openFoodUpdate(getCallerFrame(), this.food, ownerPanel);
+													 });
 		lblAliName.setPreferredSize(new Dimension(100, 75));
 		
 		quantityInput = new FormBoxInput(this).setLbl(new LanguageUtil("Quantidade", "Quantity").get(), 8f)

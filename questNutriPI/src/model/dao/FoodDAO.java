@@ -16,7 +16,7 @@ public abstract class FoodDAO extends GenericDAO<Food> {
 	 * @return Lista de Foods associadas ao id indicado.
 	 */
 	public static List<Food> findAllByMealPK(int id) {
-		return Food.findAll("meal.id = " + id);
+		return Food.findAll("meal.id = " + id + " AND deactivatedAt IS NULL ORDER BY id DESC");
 	}
 	
 	public static Food findByPK(int id) {

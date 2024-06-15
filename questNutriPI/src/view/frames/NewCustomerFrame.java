@@ -5,7 +5,7 @@ import view.QuestNutri;
 import view.components.generics.GenericJPanel;
 import view.pages.customer.profile.NewCustomerForm;
 
-public class NewCustomerFrame extends SubFrame {
+public class NewCustomerFrame extends SubFrameFromMain {
 	private static final long serialVersionUID = 1L;
 
 	private GenericJPanel mainPanel;
