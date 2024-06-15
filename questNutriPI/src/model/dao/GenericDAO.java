@@ -30,7 +30,9 @@ public abstract class GenericDAO<T> {
 			session.beginTransaction();
 			session.merge(this);
 			session.getTransaction().commit();
-			CopyFactory.clone(findLast(this.getClass()), this);
+			if(this.getId() == null) {
+				CopyFactory.clone(findLast(this.getClass()), this);
+			}
 		} catch (ConstraintViolationException e) {
 		    Throwable cause = e.getCause();
 		    if (cause instanceof SQLServerException) {
@@ -44,6 +46,8 @@ public abstract class GenericDAO<T> {
 		
 		return result;
 	}
+	
+	public abstract Integer getId();
 
 	/**
 	 * Deleta o registro no banco de dados associado à entidade que chama esse método.

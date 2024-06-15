@@ -68,6 +68,11 @@ public class Food extends FoodDAO implements ICopy<Food> {
     	this(null, null, null, null, null);
     }
     
+    @Override
+    public Integer getId() {
+    	return this.idFood;
+    }
+    
     public Food setAliment(Aliment aliment) {
     	this.aliment = aliment;
     	return this;

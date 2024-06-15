@@ -64,7 +64,7 @@ public class Address extends AddressDAO {
 		this(null, null, null, null, null, null, null);
 	}
 
-	public Integer getIdAddress() {
+	public Integer getId() {
 		return idAddress;
 	}
 

@@ -50,6 +50,11 @@ public class Weight extends WeightDAO{
     	this(null, null);
     }
     
+    @Override
+    public Integer getId() {
+    	return this.idWeight;
+    }
+    
     /**
      * Método para adicionar ao objeto, a data e horário atual de registro.
      */

@@ -1,6 +1,7 @@
 package view.components.generics;
 
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -36,16 +37,10 @@ public class GenericJScrollPaneList<T> extends JScrollPane implements GeneralVis
     
     private List<JMenuItem> popUpMenuItems = new ArrayList<>(); // Opções de interação ao clicar com o botão direito.
 
-    DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer() {
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            Component cellComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            cellComponent.setFont(STD_REGULAR_FONT.deriveFont(15f));
-            return cellComponent;
-        }
-    };
+    private Font cellFont = STD_REGULAR_FONT.deriveFont(15f);
+    private Font headerFont = STD_BOLD_FONT.deriveFont(15f);
+    
+    private DefaultTableCellRenderer cellRenderer;
 
     public GenericJScrollPaneList(List<T> originList, 
 								  Object[] columnNames,
@@ -65,10 +60,12 @@ public class GenericJScrollPaneList<T> extends JScrollPane implements GeneralVis
         table.setRowHeight(20);
 
         JTableHeader tableHeader = table.getTableHeader();
-        tableHeader.setFont(STD_BOLD_FONT.deriveFont(15f));
+        tableHeader.setFont(headerFont);
         tableHeader.setBackground(STD_BLUE_COLOR);
         tableHeader.setForeground(STD_WHITE_COLOR);
 
+        setCellRenderer();
+        
         for (int i = 0; i < table.getColumnCount(); i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
         }
@@ -136,7 +133,8 @@ public class GenericJScrollPaneList<T> extends JScrollPane implements GeneralVis
                     T selectedItem = tableModel.getObjectAt(row);
                     Supplier<Boolean> action = additionalAction.apply(selectedItem);
                     if (action.get()) {
-                        tableModel.removeRow(row);
+                        originList.remove(selectedItem);
+                        rebuildTableModel();
                     }
                 }
             }
@@ -144,6 +142,48 @@ public class GenericJScrollPaneList<T> extends JScrollPane implements GeneralVis
         popUpMenuItems.add(deleteItem);
         
         return this;
+    }
+    
+    /**
+     * Método para recriar a tabela quando um registro for excluído.
+     */
+    private void rebuildTableModel() {
+        //Recria o modelo da tabela completamente
+        tableModel = new CustomTableModel<>(columnNames, 0);
+        for (T item : originList) {
+            tableModel.addObject(item, rowMapper.apply(item));
+        }
+        table.setModel(tableModel); //Define o novo modelo na tabela
+        configureTable(); //Configura novamente a tabela
+    }
+    
+    public GenericJScrollPaneList<T> setCellFont(Font font) {
+    	if(font != null) {
+    		this.cellFont = font;
+    	};
+    	
+    	return this;
+    }
+    
+    public GenericJScrollPaneList<T> setHeaderFont(Font font) {
+    	if(font != null) {
+    		this.headerFont = font;
+    	};
+    	
+    	return this;
+    }
+    
+    private void setCellRenderer() {
+    	cellRenderer = new DefaultTableCellRenderer() {
+    	        private static final long serialVersionUID = 1L;
+
+    	        @Override
+    	        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    	            Component cellComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    	            cellComponent.setFont(cellFont);
+    	            return cellComponent;
+    	        }
+    	    };
     }
 
     private void setPopupMenu() {

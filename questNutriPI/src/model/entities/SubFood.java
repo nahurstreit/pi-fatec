@@ -69,6 +69,11 @@ public class SubFood extends SubFoodDAO implements ICopy<SubFood>{
     	this(null, null, null, null, null, null);
     }
     
+    @Override
+    public Integer getId() {
+    	return this.idSubFood;
+    }
+    
     public SubFood setFood(Food food) {
     	if(this.food == null) this.food = food;
     	return this;

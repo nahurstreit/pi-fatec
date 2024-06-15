@@ -81,32 +81,32 @@ public class AlimentNutritionalTable extends AbstractTableModel {
 
     private String getNutrientName(int rowIndex) {
         switch (rowIndex) {
-            case 0: return "kcal";
+            case 0: return new LanguageUtil("kcal", "Calories").get();
             case 1: return "kJ";
-            case 2: return "carb";
-            case 3: return "protein";
-            case 4: return "fat";
-            case 5: return "humidity";
-            case 6: return "dietaryFiber";
-            case 7: return "cholesterol";
-            case 8: return "sodium";
-            case 9: return "calcium";
-            case 10: return "magnesium";
-            case 11: return "manganese";
-            case 12: return "phosphorus";
-            case 13: return "iron";
-            case 14: return "potassium";
-            case 15: return "copper";
-            case 16: return "zinc";
-            case 17: return "retinol";
-            case 18: return "rE";
-            case 19: return "rAE";
-            case 20: return "thiamine";
-            case 21: return "riboflavin";
-            case 22: return "pyridoxine";
-            case 23: return "niacin";
-            case 24: return "vitaminC";
-            case 25: return "ash";
+            case 2: return new LanguageUtil("Carboidratos", "Carb").get();
+            case 3: return new LanguageUtil("Proteína", "Protein").get();
+            case 4: return new LanguageUtil("Gordura", "Fat").get();
+            case 5: return new LanguageUtil("Umidade", "Humidity").get();
+            case 6: return new LanguageUtil("Fibra Dietética", "Dietary Fiber").get();
+            case 7: return new LanguageUtil("Colesterol", "Cholesterol").get();
+            case 8: return new LanguageUtil("Sódio", "Sodium").get();
+            case 9: return new LanguageUtil("Cálcio", "Calcium").get();
+            case 10: return new LanguageUtil("Magnésio", "Magnesium").get();
+            case 11: return new LanguageUtil("Manganês", "Manganese").get();
+            case 12: return new LanguageUtil("Fósforo", "Phosphorus").get();
+            case 13: return new LanguageUtil("Ferro", "Iron").get();
+            case 14: return new LanguageUtil("Potássio", "Potassium").get();
+            case 15: return new LanguageUtil("Cobre", "Copper").get();
+            case 16: return new LanguageUtil("Zinco", "Zinc").get();
+            case 17: return new LanguageUtil("Retinol", "Retinol").get();
+            case 18: return new LanguageUtil("Equivalente de Retinol", "RE").get();
+            case 19: return new LanguageUtil("Equivalente de Retinol Ativo", "RAE").get();
+            case 20: return new LanguageUtil("Tiamina", "Thiamine").get();
+            case 21: return new LanguageUtil("Riboflavina", "Riboflavin").get();
+            case 22: return new LanguageUtil("Piridoxina", "Pyridoxine").get();
+            case 23: return new LanguageUtil("Niacina", "Niacin").get();
+            case 24: return new LanguageUtil("Vitamina C", "Vitamin C").get();
+            case 25: return new LanguageUtil("Cinza", "Ash").get();
             default: return "";
         }
     }

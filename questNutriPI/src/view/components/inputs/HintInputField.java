@@ -26,7 +26,7 @@ public class HintInputField extends JFormattedTextField implements GeneralVisual
 	
 	 //Texto de dica de preenchimento que sempre aparecerá
 	private String hint = STD_HINT_TEXT;
-	private float fontSize; //Tamanho da fonte
+	private float fontSize = STD_HINT_FONT_SIZE; //Tamanho da fonte
 	private boolean showHint;
 	
 	protected Font STD_HINT_FONT = STD_EXTRA_LIGHT_FONT;
@@ -57,7 +57,8 @@ public class HintInputField extends JFormattedTextField implements GeneralVisual
 		}
 		
 		this.showHint = true;
-		this.setFont(this.STD_HINT_FONT.deriveFont(fontSize));
+		
+		this.setFont(this.STD_HINT_FONT.deriveFont(this.fontSize));
 
 		initHintListener();
 	}

@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 
+import controller.entities.FoodController;
 import model.entities.Food;
 import model.entities.Meal;
 import utils.FoodUtil;
@@ -265,7 +266,7 @@ public class DietMealPanel extends GenericJPanel {
     	addFoodBtn = StdButton.stdBtnConfig("+").setBgColor(STD_STRONG_GRAY);
     	addFoodBtn.setToolTipText(new LanguageUtil("Adicionar novo alimento", "Add new food").get());
     	addFoodBtn.setAction(() -> {
-    		QuestNutriJOP.showMessageDialog(null, "Add Food");
+    		FoodController.openNewFoodFrame(meal);
     	});
     	
         expandOptBtn = StdButton.stdBtnConfig(new LanguageUtil("Editar", "Edit").get()).setBgColor(STD_STRONG_GRAY);

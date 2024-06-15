@@ -39,6 +39,8 @@ public class SelectNewAlimentPanel extends GenericJPanel {
 	 * JScrolPane para exibir as informações nutricionais do alimento selecionado em alimentList
 	 */
 	private JScrollPane scrollPaneSelectedAlimentInfo;
+	
+	private Aliment currentSelected = null;
 
 	public SelectNewAlimentPanel(StdButton upperButton) {
 		this.setLayout(null);
@@ -86,7 +88,6 @@ public class SelectNewAlimentPanel extends GenericJPanel {
 		selectedAlimentPanel.add(selectedAlimentUpperLbl);
 		
 		//Label superior do lado direito que diz qual é o aliemnto selecionado atualmente.
-
 		selectedAliment = new BreakActionLbl()
 				.setUpText(new LanguageUtil("Nenhum.", "None.").get())
 				.setUpFont(STD_BOLD_FONT.deriveFont(12f))
@@ -97,18 +98,17 @@ public class SelectNewAlimentPanel extends GenericJPanel {
 		
 		alimentSearchList = new GenericJScrollPaneList<Aliment>()
 				.setOriginList(Aliment.findAll())
-				.setColumnNames(new Object[] {"Nome", "Grupo"})
-				.setRowMapper(aliment -> new Object[] {aliment.name, aliment.alimentGroup});
+				.setColumnNames(new Object[] {"Nome"})
+				.setRowMapper(aliment -> new Object[] {aliment.name})
+				.setCellFont(STD_REGULAR_FONT.deriveFont(12f));
 		
 		searchAlimentListPanel.add(alimentSearchList, searchPanel_gbc.fill("BOTH").anchor("NORTHWEST").wgt(1.0));
 		
 		//StdButton interactionButton = StdButton.stdBtnConfig(new LanguageUtil("Trocar alimento atual por este", "Set this as current aliment").get()).setUpFont(STD_BOLD_FONT.deriveFont(11f));
-		JButton interactionButton = new JButton("Trocar alimento atual por este");
-		interactionButton.setBounds(10, 11, 257, 24);
-		this.add(interactionButton);
-		interactionButton.setHorizontalAlignment(SwingConstants.LEFT);
-		
-
+		//JButton interactionButton = new JButton("Trocar alimento atual por este");
+		upperButton.setBounds(10, 11, 257, 24);
+		this.add(upperButton);
+		upperButton.setHorizontalAlignment(SwingConstants.LEFT);
 		
 	    JSeparator separator = new JSeparator(SwingConstants.VERTICAL);  // Separador vertical
 	    separator.setBounds(280, 11, 1, 379);
@@ -118,17 +118,22 @@ public class SelectNewAlimentPanel extends GenericJPanel {
         separator.setBorder(border);
         
         this.add(separator);
-        //init();
+        init();
 	}
 	
 	private void init() {
 		selectedAliment.init();
 		alimentSearchList
 		.setDoubleClickAction(aliment -> () -> {
+			currentSelected = aliment;
 			JTable table = new JTable(new AlimentNutritionalTable(aliment));
 			scrollPaneSelectedAlimentInfo.setViewportView(table);
 			selectedAliment.setText(aliment.name);
 		})
 		.init();
+	}
+	
+	public Aliment getSelectedAliment() {
+		return currentSelected;
 	}
 }

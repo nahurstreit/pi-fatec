@@ -16,6 +16,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import model.dao.CustomerDAO;
+import utils.CopyFactory;
 
 @Entity
 @Table(name = "Customers")
@@ -86,7 +87,7 @@ public class Customer extends CustomerDAO {
 		this(null, null, null, null, null, null, null, null, null);
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.idCustomer;
 	}
 	
@@ -312,6 +313,16 @@ public class Customer extends CustomerDAO {
 		} catch (Exception e) {
 			return false;
 		}
+    }
+    
+    @Override
+    public boolean save() {
+    	boolean res = super.save();
+    	if(this.getId() == null) {
+    		res = CopyFactory.clone(Customer.findLast(), this);
+    	}
+    	
+    	return res;
     }
     
     public boolean copyDietToAnotherCustomer(Customer destinyCustomer) {

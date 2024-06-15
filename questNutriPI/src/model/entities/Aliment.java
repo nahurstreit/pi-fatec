@@ -117,7 +117,7 @@ public class Aliment extends AlimentDAO {
 		return this.custom == 1;
 	}
 
-	public Integer getIdAliment() {
+	public Integer getId() {
 		return idAliment;
 	}
 

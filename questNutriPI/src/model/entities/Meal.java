@@ -87,6 +87,11 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 		this(null, null, null);
 	}
 	
+	@Override
+	public Integer getId() {
+		return this.idMeal;
+	}
+	
 	public List<Food> getFoods() {
 		return Food.findAllByMealPK(this.idMeal);
 	}
