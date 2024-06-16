@@ -63,7 +63,7 @@ public class AlimentController {
 				QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Alimento salvo!", "Aliment saved!").get());
 			}
 		} catch (Exception e) {
-			QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Alimento salvo!", "Aliment saved!").get());
+			QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Não foi possível salvar o alimento!", "Unable to save aliment!").get());
 		}
 
 	}
@@ -107,12 +107,11 @@ public class AlimentController {
 				.setAsh(ash);
 				
 				QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Alimento salvo!", "Aliment saved!").get());
-			
+				aliment.save();
 			} catch (Exception e) {
 				QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Não foi possível salvar o alimento!", "Unable to save aliment!").get());
 			}
 		}
-		aliment.save();
 		return true;
 	}
 
