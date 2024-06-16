@@ -49,8 +49,11 @@ public class AlimentController implements GeneralVisualSettings{
 		frame.setVisible(true);
 	}
 
-	public static void createAliment(Aliment aliment, String name, String alimentGroup, String kcal) {
-		aliment.setName(name).setAlimentGroup("Customizado").setKcal(kcal);
+	public static void createAliment(Aliment aliment, String name, String alimentGroup, String kcal, String carb, String protein, String fat, String humidity, String kj, String dietaryFiber, String cholesterol, String sodium, String calcium, String magnesium, String manganese, String phosphorus, String iron, String potassium, String copper, String zinc, String retinol, String rE, String rAE, String thiamine, String riboflavin, String pyridoxine, String niacin, String vitaminC, String ash ) {
+		aliment.setName(name).setAlimentGroup("Customizado").setKcal(kcal).setkJ(kj).setCarb(carb).setProtein(protein).setFat(fat)
+		.setHumidity(humidity).setDietaryFiber(dietaryFiber).setCholesterol(cholesterol).setSodium(sodium).setCalcium(calcium).setMagnesium(magnesium)
+		.setManganese(manganese).setPhosphorus(phosphorus).setIron(iron).setPotassium(potassium).setCopper(copper).setZinc(zinc).setRetinol(retinol).setrE(rE)
+		.setrAE(rAE).setThiamine(thiamine).setRiboflavin(riboflavin).setPyridoxine(pyridoxine).setNiacin(niacin).setVitaminC(vitaminC).setAsh(ash);
 
 		try {
 			if (aliment.save()) {

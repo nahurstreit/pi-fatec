@@ -95,7 +95,9 @@ public class AlimentFormPage extends GenericFormPage {
 		StdButton saveBtn = StdButton.stdBtnConfig(new LanguageUtil("Salvar", "Save").get());
 		
 		saveBtn.setAction(() -> {
-			if(Validate.formFields(name, kcalBox, carb, protein, fat)) {
+			if(Validate.formFields(name, kcalBox, carb, protein, fat, humidity, dietaryFiber, cholesterol, sodium, calcium, 
+								  magnesium, manganese, phosphorus, iron, potassium, copper, zinc, retinol, rE, rAE, thiamine,
+								  riboflavin,pyridoxine,niacin,vitaminC,ash)) {
 				AlimentController.saveAliment(
 						aliment,
 						name.getValue(), 
