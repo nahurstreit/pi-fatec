@@ -113,22 +113,43 @@ public class AlimentController {
 		return true;
 	}
 
+	/**
+	 * Método para a exclusão de registro de um alimento, esta ação só é permitida caso o alimento seja customizado.
+	 * Para alimetos customizados, é solicitado a confirmação do usuario por meio de uma String,
+	 * se o alimento não é customizado então uma mensagem de erro é exibida.
+	 * 
+	 * @param aliment A instancia de aliment a ser excluída
+	 * @return true se o alimento foi excluído com sucesso, false caso contrário.
+	 */
 	public static boolean deleteAliment(Aliment aliment) {
 		boolean res = false;
 
-		String choice = QuestNutriJOP.showInputDialog(null,
-				new LanguageUtil(
-						"Você está tentando excluir um alimento customizado: \nAlimento:" + aliment.name
-								+ "\nEssa ação é IRREVERSÍVEL. Digite '" + GeneralJPanelSettings.STD_DELETE_STRING
-								+ "' para deletar o registro.",
-						"You are trying to delete a custom aliment: \nAliment:" + aliment.name
-								+ "\nThis action is IRREVERSIBLE. Type '" + GeneralJPanelSettings.STD_DELETE_STRING
-								+ "' to delete the registry.")
-						.get());
-
-		if (aliment.isCustom()) {
+		if(aliment.isCustom()) {
 			try {
-				res = aliment.delete();
+				@SuppressWarnings("unused")
+				String choice = QuestNutriJOP.showInputDialog(null,
+						new LanguageUtil(
+								"Você está tentando excluir um alimento customizado: \nAlimento:" + aliment.name
+										+ "\nEssa ação é IRREVERSÍVEL. Digite '" + STD_DELETE_STRING
+										+ "' para deletar o registro.",
+								"You are trying to delete a custom aliment: \nAliment:" + aliment.name
+										+ "\nThis action is IRREVERSIBLE. Type '" + STD_DELETE_STRING
+										+ "' to delete the registry.")
+								.get());
+				if(choice != null) {
+					if(!choice.isBlank()) {
+						if(choice.equals(STD_DELETE_STRING)) {
+							res = aliment.delete();
+							if(res) {
+								QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Alimento excluído!", "Excluded aliment!").get());
+							} else {
+								QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Falha ao excluir o Alimento", "Failed to delete aliment").get());
+							}
+						} else {
+							QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Texto Inválido", "Invalid Text").get());
+						}
+					};
+				}
 			} catch (Exception e) {
 			}
 		} else {
@@ -137,13 +158,7 @@ public class AlimentController {
 							.get());
 			return false;
 		}
-
-		if (!res) {
-			QuestNutriJOP.showMessageDialog(null,
-					new LanguageUtil("Não foi possível excluir!", "Unable to delete!").get());
-		} else {
-			QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Alimento excluído!", "Excluded aliment!").get());
-		}
+		
 		return res;
 	}
 
