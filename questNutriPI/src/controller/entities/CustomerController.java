@@ -123,8 +123,11 @@ public class CustomerController {
         		
         		if(customer.save()) {
         			frame.dispose();
-        			openCustomerFrame(Customer.findLast());
-        		};
+        			openCustomerFrame(customer);
+        		} else {
+        			frame.dispose();
+        			QuestNutri.heraldOfDarkness();;
+        		}
     		} catch (Exception e) {
     			frame.dispose();
     			JOptionPane.showMessageDialog(null, "Ocorreu um erro!");

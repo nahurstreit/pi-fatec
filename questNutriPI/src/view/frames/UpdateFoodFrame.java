@@ -65,7 +65,7 @@ public class UpdateFoodFrame extends SubFrame implements GeneralVisualSettings {
 			if(right.getSelectedAliment() == null) {
 				QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Nenhum alimento selecionado.", "No aliment selected.").get());
 			} else {
-				if(FoodController.updateFood(food, right.getSelectedAliment())) {
+				if(FoodController.updateFoodAliment(food, right.getSelectedAliment())) {
 					panelUpdate.foodWasUpdated();
 					QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Alimento atualizado!", "Food updated!").get());
 					dispose();

@@ -322,7 +322,7 @@ public class Customer extends CustomerDAO {
     @Override
     public boolean save() {
     	boolean res = super.save();
-    	if(this.getId() == null) {
+    	if(res && this.getId() == null) {
     		res = CopyFactory.clone(Customer.findLast(), this);
     	}
     	

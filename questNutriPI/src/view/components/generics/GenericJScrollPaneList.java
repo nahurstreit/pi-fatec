@@ -51,6 +51,7 @@ public class GenericJScrollPaneList<T> extends JScrollPane implements GeneralVis
     	this.columnNames = columnNames;
     	this.rowMapper = rowMapper;
     	this.doubleClickAction = doubleClickAction;
+        setViewportBorder(null);
     }
     
     public GenericJScrollPaneList() {

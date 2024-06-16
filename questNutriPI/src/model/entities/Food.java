@@ -1,5 +1,6 @@
 package model.entities;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -75,6 +76,10 @@ public class Food extends FoodDAO implements ICopy<Food> {
     
     public LocalDateTime getCreationDateTime() {
     	return this.createdAt;
+    }
+    
+    public LocalDate getCreationDate() {
+    	return this.createdAt.toLocalDate();
     }
     
     public Food setAliment(Aliment aliment) {

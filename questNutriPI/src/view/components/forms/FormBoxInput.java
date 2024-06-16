@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 import utils.interfaces.Condition;
 import utils.validations.ValidationRule;
@@ -26,9 +28,12 @@ public class FormBoxInput extends GenericComponent {
 	private JLabel errorLabel;
 	private FormInputField tfInput;
 	private JComboBox<String> cbInput;
+	private JSpinner spinnerInput;
 	private boolean required;
 	
 	private final int STD_LATERAL_DISTANCE = 15;
+	
+	private int spinnerValue;
 	
 	public FormBoxInput(GenericJPanel ownerPanel) {
 		super(ownerPanel);
@@ -151,6 +156,30 @@ public class FormBoxInput extends GenericComponent {
 		return this;
 	}
 	
+	
+	public FormBoxInput setSpinnerInput(int initalValue, int min, int max, int step) {
+		spinnerInput = new JSpinner();
+		spinnerInput.setEditor(new JSpinner.NumberEditor(spinnerInput, "00")); //Formato para dois dígitos
+		spinnerInput.setModel(new SpinnerNumberModel(initalValue, min, max, step));
+		spinnerInput.setFont(STD_REGULAR_FONT);
+		if(tfInput != null) {
+			this.remove(tfInput);
+			tfInput = null;
+		}
+		if(cbInput != null) {
+			this.remove(cbInput);
+			cbInput = null;
+		}
+		
+	    spinnerInput.addChangeListener(e -> {
+	    	spinnerValue = (int) spinnerInput.getValue();
+	    });
+		
+		this.add(spinnerInput, gbc.grid(0, 1).insets(0, 15).wgt(1.0, 0));
+		
+		return this;
+	}
+	
 	public FormBoxInput setComboFont(Font selectedItem, Font dropBoxItems) {
 		try {
 			 //Personalizando a fonte no item selecionado
@@ -166,7 +195,7 @@ public class FormBoxInput extends GenericComponent {
 	            }
 	        });
 		} catch (Exception e) {
-			// TODO: handle exception
+			//TODO: handle exception
 		}
 		
 		return this;
@@ -268,15 +297,13 @@ public class FormBoxInput extends GenericComponent {
 	 */
 	public FormBoxInput setValue(String text) {
 		if(text != null) {
-			if(text.equalsIgnoreCase("null")) return this;
 			try {
-				tfInput.setInitialValue(text);
+				if(text.equalsIgnoreCase("null")) return this;
+				if(tfInput != null) tfInput.setInitialValue(text);
+				if(cbInput != null) cbInput.setSelectedItem(text);
+				if(spinnerInput != null) spinnerInput.setValue(Integer.parseInt(text));
 			} catch (Exception e) {
-				try {
-					cbInput.setSelectedItem(text);
-				} catch(Exception e2) {
-				}
-				
+
 			}
 		}
 		return this;
@@ -363,7 +390,15 @@ public class FormBoxInput extends GenericComponent {
 			response = tfInput.getValue().toString();
 		} else if(cbInput != null ) {
 			response = (String) cbInput.getSelectedItem().toString();
+		} else if(spinnerInput != null){
+			try {
+				response = spinnerValue + "";
+			} catch (Exception e) {
+				e.printStackTrace();
+				response = "00";
+			}
 		} else {
+		
 			response = null;
 		}
 		

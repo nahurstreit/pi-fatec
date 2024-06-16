@@ -37,7 +37,16 @@ public class AlimentsPage extends GenericListPage<Aliment> {
     
     @Override
     protected Function<Aliment, Object[]> setRowMapper() {
-    	return aliment -> new Object[] {aliment.name, aliment.alimentGroup, aliment.kcal};
+    	return aliment -> {
+    		String kcal = aliment.kcal;
+    		try {
+				kcal = String.format("%.2f", Double.parseDouble(kcal.replace(',', '.')));
+			} catch (Exception e) {
+				
+			}
+    		
+    		return new Object[] {aliment.name, aliment.alimentGroup, kcal};
+    	};
     }
     
     @Override

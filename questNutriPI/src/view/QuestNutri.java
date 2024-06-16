@@ -290,7 +290,9 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
     	try {
     		try {
     			loggedUser.setPreferredLanguage(QuestNutri.language);
-    			loggedUser.save();
+    			if(!SKIP_LOGIN) {
+    				loggedUser.save();
+    			}
 			} catch (Exception e1) {
 				throw new Exception(e1);
 			}

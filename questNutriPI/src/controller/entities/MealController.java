@@ -7,8 +7,8 @@ public class MealController {
 		boolean res = true;
 		try {
 			meal.setName(name)
-			.setHour(hour)
-			.setDaysOfWeek(daysOfWeek);
+				.setHour(hour)
+				.setDaysOfWeek(daysOfWeek);
 			
 			res = meal.save();
 		} catch (Exception e) {
@@ -19,4 +19,5 @@ public class MealController {
 		return res;
 		
 	}
+
 }

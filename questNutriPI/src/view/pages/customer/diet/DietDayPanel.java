@@ -23,7 +23,6 @@ import view.components.utils.IDoAction;
 public class DietDayPanel extends GenericJPanel {
 	private static final long serialVersionUID = 1L;
 	
-	
 	public DietWeekPanel dietWeekPanel;
 	public int weekDay;
 	public int position;
@@ -76,7 +75,35 @@ public class DietDayPanel extends GenericJPanel {
 	    creatMealBtn = new StdButton(new LanguageUtil("Criar Refeição", "Add Meal").get())
 	                                .setUpFont(STD_BOLD_FONT.deriveFont(12f))
 	                                .setColors(STD_BLUE_COLOR, STD_WHITE_COLOR)
-	                                .setAction(() -> QuestNutriJOP.showMessageDialog(null, "Criar refeição"));
+	                                .setAction(this::createMeal);
+	}
+	
+	private void createMeal() {
+	    try {
+	        Meal newMeal = new Meal().setCustomer(dietWeekPanel.getCustomer())
+	                            .setDaysOfWeek(weekDay)
+	                            .setHour("00:00")
+	                            .setName("Nova Refeição");
+	        
+	        newMeal.save();
+	        
+	        //Adiciona a nova Meal à lista de Meals deste DietDayPanel
+	        meals.add(0, newMeal);
+	        
+	        //Limpa e recria todos os cartões de refeição
+	        mealsGeneralPanel.removeAll();
+	        createMeals(); //Recria os cartões de refeição
+	        expandAllMeals();
+	        
+	        mealsGeneralPanel.refresh();
+	        
+	        //Força a revalidação e a repintura do painel
+	        revalidate();
+	        repaint();
+	        
+	    } catch (Exception e) {
+	        QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Não foi possível criar uma nova refeição.", "Unable to create new meal.").get());
+	    }
 	}
 	
 	public DietDayPanel init() {
@@ -159,20 +186,16 @@ public class DietDayPanel extends GenericJPanel {
 		this.refresh();
 	}
 	
-	public void createMeals() {		
-		mealsCards = new ArrayList<DietMealPanel>();
-		for(int i = 0; i < meals.size(); i++) {
-			DietMealPanel mealCard = new DietMealPanel(this, meals.get(i));
-			mealsCards.add(mealCard);
-			mealsGeneralPanel.add(mealCard, mealsGeneralPanel.gbc.insets(BETWEEN_DISTANCE, LATERAL_DISTANCE).grid(0, i+1).anchor("NORTHWEST").fill("BOTH").wgt(1.0));
-		}
-		
-		mealsGeneralPanel.refresh();
-		this.refresh();
-	}
-	
-	public boolean isOnFocus() {
-		return isOnFocus;
+	public void createMeals() {        
+	    mealsCards = new ArrayList<DietMealPanel>();
+	    for(int i = 0; i < meals.size(); i++) {
+	        DietMealPanel mealCard = new DietMealPanel(this, meals.get(i));
+	        mealsCards.add(mealCard);
+	        mealsGeneralPanel.add(mealCard, mealsGeneralPanel.gbc.insets(BETWEEN_DISTANCE, LATERAL_DISTANCE).grid(0, i+1).anchor("NORTHWEST").fill("BOTH").wgt(1.0));
+	    }
+	    
+	    mealsGeneralPanel.refresh();
+	    this.refresh();
 	}
 	
 	public void callFocus() {
@@ -288,5 +311,15 @@ public class DietDayPanel extends GenericJPanel {
         mealsScrollPane.revalidate();
         mealsScrollPane.repaint();
         refresh();
+	}
+	
+	
+	public DietMealPanel findMealPosition(Meal meal) {
+	    for (DietMealPanel mealPanel : mealsCards) {
+	        if(mealPanel.hasThisMeal(meal)) {
+	            return mealPanel;
+	        }
+	    }
+	    return null;
 	}
 } 

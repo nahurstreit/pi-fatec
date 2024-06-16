@@ -7,7 +7,9 @@ import javax.swing.JLabel;
 import controller.entities.FoodController;
 import model.entities.Food;
 import utils.FoodUtil;
+import utils.validations.Validate;
 import utils.view.LanguageUtil;
+import view.components.QuestNutriJOP;
 import view.components.buttons.StdButton;
 import view.components.forms.FormBoxInput;
 import view.components.forms.FormSection;
@@ -43,7 +45,7 @@ public class DietFoodPanel extends GenericJPanel {
 		
 		unityQtInput = new FormBoxInput(this).setLbl(new LanguageUtil("Unidade de Medida", "Measure Unity").get(), 8f)
 											 .setLblColor(STD_WHITE_COLOR)
-											 .setComboBoxInput(food.unityQt, "gramas", "mL")
+											 .setComboBoxInput(food.unityQt, "gramas")
 											 .setComboFont(STD_BOLD_FONT.deriveFont(12f));
 		
 		FormSection alimentVariables = new FormSection(this).addRow(quantityInput, unityQtInput)
@@ -65,7 +67,21 @@ public class DietFoodPanel extends GenericJPanel {
 		kcalInfo.setForeground(STD_WHITE_COLOR);
 		
 		infoAndSaveBtn.add(kcalInfo, infoAndSaveBtn.gbc.fill("HORIZONTAL").anchor("CENTER").grid(0).wgt(1.0, 0).insets("3", 0, 10));
-		infoAndSaveBtn.add(StdButton.stdBtnConfigInvert(new LanguageUtil("Salvar", "Save").get()), infoAndSaveBtn.gbc.yP().insets(10));
+		
+		
+		StdButton saveBtn = StdButton.stdBtnConfigInvert(new LanguageUtil("Salvar", "Save").get());
+		saveBtn.setAction(() -> {
+			if(Validate.formFields(quantityInput)) {
+				if(FoodController.updateFoodInfo(food, unityQtInput.getValue(), quantityInput.getValue())) {
+					QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Alimento salvo!", "Food saved!").get());
+					ownerPanel.foodWasUpdated();
+				} else {
+					QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Não foi possível salvar o alimento.", "The food couldn't be saved.").get());
+				};
+			}
+		});
+		
+		infoAndSaveBtn.add(saveBtn, infoAndSaveBtn.gbc.yP().insets(10));
 		
 		this.add(lblAliName, gbc.fill("HORIZONTAL").anchor("WEST").wgt(1.0).grid(0).insets(0, 10));
 		this.add(alimentVariables, gbc.xP());

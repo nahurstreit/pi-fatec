@@ -57,7 +57,7 @@ public abstract class GenericListPage<T> extends GenericPage {
 
         // Caixa de cima do painel branco
         whiteBox = new GenericComponent();
-        whiteBox.setBackground(Color.green);
+        whiteBox.setBackground(STD_WHITE_COLOR);
         whiteBox.ltGridBag();
 
         // Caixa do tipo de pesquisa
@@ -152,14 +152,14 @@ public abstract class GenericListPage<T> extends GenericPage {
         searchBox.add(inputSearchBox, searchBox.gbc.yP().insets("1", 0, 10));
 
         GenericComponent upperBox = new GenericComponent();
-        upperBox.setBackground(Color.red);
+        upperBox.setBackground(STD_WHITE_COLOR);
         upperBox.ltGridBag();
         upperBox.add(typeBox, upperBox.gbc.wgt(0).fill("NONE").insets(10));
         upperBox.add(searchBox, upperBox.gbc.wgt(1.0, 0).fill("BOTH").insets("2", 0, 10));
 
         whiteBox.add(upperBox, whiteBox.gbc.anchor("NORTH").wgt(1.0, 0).fill("HORIZONTAL"));
 
-        whiteBox.add(itemListComponent, whiteBox.gbc.gridY(1).anchor("NORTH").wgt(1.0).fill("BOTH").insets(10));
+        whiteBox.add(itemListComponent, whiteBox.gbc.gridY(1).anchor("NORTH").wgt(1.0).fill("BOTH").insets(10, 0, 0, 0));
 
         blueBox.add(whiteBox, blueBox.gbc.anchor("NORTHWEST").wgt(1.0).fill("BOTH").insets(30));
 

@@ -3,14 +3,11 @@ package view.pages.customer.diet.food;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -81,7 +78,7 @@ public class SelectNewAlimentPanel extends GenericJPanel {
         searchAlimentUpperLbl.setFont(STD_BOLD_FONT.deriveFont(10f));
         searchAlimentPanel.add(searchAlimentUpperLbl, searchAlimentPanel.gbc.grid(0, 0).fill("HORIZONTAL").anchor("NORTHWEST").insets(0));
 
-        HintInputField searchAlimentInputName = new HintInputField("Digite aqui...");
+        HintInputField searchAlimentInputName = new HintInputField();
         searchAlimentInputName.setHint("Digite aqui...");
         searchAlimentPanel.add(searchAlimentInputName, searchAlimentPanel.gbc.grid(0, 1).fill("HORIZONTAL").wgt(1.0, 0.0).insets(5, 0, 0, 0));
 

@@ -172,4 +172,8 @@ public class DietWeekPanel extends GenericComponent {
 		return holderDays;
 	}
 	
+	public Customer getCustomer() {
+		return customer;
+	}
+	
 }
