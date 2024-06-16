@@ -58,7 +58,12 @@ public class LoggedPanel extends GenericJPanel {
 		alimentsPage = new SideBarItem(new LanguageUtil("ALIMENTOS", "ALIMENTS").get(), () -> swapLoggedMainPanel(new AlimentsPage(this)));
 		settingsPage = new SideBarItem(new LanguageUtil("CONFIGURAÇÕES", "SETTINGS").get(), () -> swapLoggedMainPanel(new SettingsPage(this)));
 
-		menu = new SideBarMenu(customersPage, alimentsPage, settingsPage);
+		if(QuestNutri.isEditAuth()) {
+			menu = new SideBarMenu(customersPage, alimentsPage, settingsPage);
+		} else {
+			menu = new SideBarMenu(customersPage, settingsPage);
+		}
+		
 		menu.gbc
 			.wgt(0, 1.0)
 			.fill("NONE")

@@ -9,8 +9,8 @@ import utils.view.LanguageUtil;
 public interface GeneralVisualSettings {
 	//Cores do sistema
 	public static final Color STD_BLUE_COLOR = new Color(85, 183, 254);
-	public static final Color STD_LIGHT_GRAY = new Color(217, 217, 217);
-	public static final Color STD_STRONG_GRAY = new Color(103, 103, 103);
+	public static final Color STD_LIGHT_GRAY_COLOR = new Color(217, 217, 217);
+	public static final Color STD_STRONG_GRAY_COLOR = new Color(103, 103, 103);
 	public static final Color STD_NULL_COLOR = new Color(0, 0, 0, 0);
 	public static final Color STD_WHITE_COLOR = Color.WHITE;
 	public static final Color STD_RED_COLOR = Color.RED;

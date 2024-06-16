@@ -1,5 +1,7 @@
 package view.components.sidebar;
 
+import javax.swing.JLabel;
+
 public class SideBarItem {
 	/**
 	 * Interface para declar o tipo genérico de execução. Possibilitando uma alta escalabilidade de SideBarItem e SideBar,
@@ -13,6 +15,9 @@ public class SideBarItem {
 	private Boolean selected = false;
 	private Action event;
 	
+	private JLabel attachLbl;
+	private SideBarMenu menu;
+	
 	public SideBarItem(String text, Action event, Boolean ...selected) {
 		this.text = text;
 		this.event = event;
@@ -21,12 +26,25 @@ public class SideBarItem {
 		}
 	}
 	
+	public SideBarItem setLbl(JLabel lbl) {
+		this.attachLbl = lbl;
+		return this;
+	}
+	
+	public SideBarItem setBarMenu(SideBarMenu menu) {
+		this.menu = menu;
+		return this;
+	}
+	
 	/**
 	 * Método que executa o evento indicado na criação do SideItem
 	 */
 	public void performEvent() {
-        if (event != null) {
+        if(event != null) {
             event.execute();
+        }
+        if(attachLbl != null && menu != null) {
+        	menu.swapUnderline(attachLbl);
         }
 	}
 	

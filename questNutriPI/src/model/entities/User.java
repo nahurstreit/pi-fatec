@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import model.dao.UserDAO;
+import utils.interfaces.GeneralAppSettings;
 
 @Entity
 @Table(name = "Users")
@@ -28,7 +29,7 @@ public class User extends UserDAO {
 	private String firstName;
 	
 	@Column(name = "user_prefLanguage")
-	private Integer prefLanguage;
+	private Integer prefLanguage = GeneralAppSettings.STD_LANGUAGE;
 
 	@Column(name = "systemLevel")
 	private Integer systemLevel;
@@ -78,6 +79,11 @@ public class User extends UserDAO {
 	 */
 	public User setPassword(String password) {
 		this.password = password;
+		return this;
+	}
+	
+	public User setPreferredLanguage(int language) {
+		this.prefLanguage = language;
 		return this;
 	}
 

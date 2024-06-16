@@ -3,10 +3,10 @@ package view.pages.customer.diet;
 import java.awt.Color;
 import java.awt.Dimension;
 
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 
 import controller.entities.FoodController;
+import controller.entities.MealController;
 import model.entities.Food;
 import model.entities.Meal;
 import utils.FoodUtil;
@@ -43,7 +43,7 @@ public class DietMealPanel extends GenericJPanel {
     
     private GenericJPanel foodsPanel = new GenericJPanel().ltGridBag();
     
-    private GenericJPanel daysPanel = new GenericJPanel().ltGridBag().setBGColor(STD_STRONG_GRAY);
+    private DaySelectionPanel daysPanel;
     
     private GenericJPanel editPanel;
     
@@ -69,7 +69,7 @@ public class DietMealPanel extends GenericJPanel {
         lblMealHour.setForeground(STD_BLUE_COLOR);
         makeSmallFont(lblMealHour);
         
-        lblMealKcal = new JLabel(String.format("%.2f", FoodUtil.calculateMealKcal(meal)) + "kcal", JLabel.CENTER);
+        lblMealKcal = new JLabel(String.format("%.2f", calculateMealKcal()) + "kcal", JLabel.CENTER);
         lblMealKcal.setForeground(STD_BLUE_COLOR);
         makeSmallFont(lblMealKcal);
         
@@ -92,6 +92,8 @@ public class DietMealPanel extends GenericJPanel {
     	editPanel.add(deleteBtn, editPanel.gbc.fill("NONE").anchor("CENTER").grid(1, 0));
     	editPanel.add(copyMealBtn, editPanel.gbc.grid(0, 0).insets(0, 0, 0, 60));
         
+    	daysPanel = new DaySelectionPanel(this, meal.daysOfWeek);
+    	
         placeLabels();
         
         this.add(infoBox, gbc.fill("BOTH").wgt(1.0).grid(0));
@@ -102,9 +104,18 @@ public class DietMealPanel extends GenericJPanel {
         
     }
     
+    public double calculateMealKcal() {
+    	return FoodUtil.calculateMealKcal(this.meal);
+    }
+    
+    public void updateMealKcal() {
+    	lblMealKcal.setText(String.format("%.2f", calculateMealKcal()) + "kcal");
+    }
+    
     public void foodWasUpdated() {
     	dayPanel.callUpdate();
     	insertFoods();
+    	updateMealKcal();
     	dayPanel.refresh();
     	this.refresh();
     }
@@ -197,38 +208,49 @@ public class DietMealPanel extends GenericJPanel {
         infoBox.gbc.insets(); //Resetando o insets do gbc
     }
     
-    private void removeInputs() {
-    	infoBox.remove(nameBox);
-    	infoBox.remove(timeBox);
-    	infoBox.remove(lateralRBox);
+    public void removeInputs() {
+    	try {
+    		infoBox.remove(nameBox);
+		} catch (Exception e) {}
+    	
+    	try {
+    		infoBox.remove(timeBox);
+		} catch (Exception e) {}
+    	
+    	try {
+    		infoBox.remove(lateralRBox);
+		} catch (Exception e) {}
+    	
     }
     
+//    private void createDaysSelection() {
+//        //Array com os caracteres dos dias da semana
+//        String[] days = {"D", "S", "T", "Q", "Q", "S", "S"};
+//        int[] daysNumber = {64, 32, 16, 8, 4, 2, 1};
+//
+//        daysPanel.gbc.anchor("CENTER"); // Ajusta o alinhamento
+//        //Adiciona os labels e checkboxes ao painel
+//        for (int i = 0; i < days.length; i++) {
+//            JLabel label = new JLabel(days[i]);
+//            label.setFont(STD_BOLD_FONT); // Define a fonte
+//            label.setForeground(Color.WHITE); // Define a cor do texto
+//            label.setBackground(STD_STRONG_GRAY_COLOR); // Define a cor de fundo
+//            label.setOpaque(true); // Torna o fundo opaco
+//            daysPanel.add(label, daysPanel.gbc.grid(i, 0).wgt(1.0).insets("3", 0, 5).anchor("CENTER")); // Adiciona espaçamento
+//
+//            JCheckBox checkBox = new JCheckBox();
+//            checkBox.setPreferredSize(new Dimension(30, 30));
+//            checkBox.setBackground(STD_STRONG_GRAY_COLOR); // Define a cor de fundo da checkbox
+//            checkBox.setOpaque(true); // Torna o fundo opaco
+//            daysPanel.add(checkBox, daysPanel.gbc.yP().insets(5, 12, 5, 5)); // Adiciona espaçamento e centraliza
+//            
+//            if((daysNumber[i] & meal.daysOfWeek) == daysNumber[i]) {
+//            	checkBox.setSelected(true);
+//            }
+//        }
+//    }
+    
     private void placeDaysInfo() {
-        // Array com os caracteres dos dias da semana
-        String[] days = {"D", "S", "T", "Q", "Q", "S", "S"};
-        int[] daysNumber = {64, 32, 16, 8, 4, 2, 1};
-
-        daysPanel.gbc.anchor("CENTER"); // Ajusta o alinhamento
-        // Adiciona os labels e checkboxes ao painel
-        for (int i = 0; i < days.length; i++) {
-            JLabel label = new JLabel(days[i]);
-            label.setFont(STD_BOLD_FONT); // Define a fonte
-            label.setForeground(Color.WHITE); // Define a cor do texto
-            label.setBackground(STD_STRONG_GRAY); // Define a cor de fundo
-            label.setOpaque(true); // Torna o fundo opaco
-            daysPanel.add(label, daysPanel.gbc.grid(i, 0).wgt(1.0).insets("3", 0, 5).anchor("CENTER")); // Adiciona espaçamento
-
-            JCheckBox checkBox = new JCheckBox();
-            checkBox.setPreferredSize(new Dimension(30, 30));
-            checkBox.setBackground(STD_STRONG_GRAY); // Define a cor de fundo da checkbox
-            checkBox.setOpaque(true); // Torna o fundo opaco
-            daysPanel.add(checkBox, daysPanel.gbc.yP().insets(5, 12, 5, 5)); // Adiciona espaçamento e centraliza
-            
-            if((daysNumber[i] & meal.daysOfWeek) == daysNumber[i]) {
-            	checkBox.setSelected(true);
-            }
-        }
-
         this.remove(infoBox);
         
         this.add(daysPanel, gbc.grid(0).fill("BOTH").wgt(1.0));
@@ -241,13 +263,11 @@ public class DietMealPanel extends GenericJPanel {
         this.add(infoBox, gbc.fill("BOTH").wgt(1.0).grid(0));
     }
     
-    private void insertFoods() {
+    public void insertFoods() {
     	try {
 			foodsPanel.removeAll();
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-    	foodsPanel.gbc.fill("BOTH").wgt(1.0).anchor("NORTHWEST").grid(0).insets(10);
+		} catch (Exception e) {}
+    		foodsPanel.gbc.fill("BOTH").wgt(1.0).anchor("NORTHWEST").grid(0).insets(10);
     	for(Food food: meal.getFoods()) {
     		foodsPanel.add(new DietFoodPanel(this, food), foodsPanel.gbc);
     		foodsPanel.gbc.yP();
@@ -267,21 +287,33 @@ public class DietMealPanel extends GenericJPanel {
     private void initButtons() {
     	saveBtn = StdButton.stdBtnConfig(new LanguageUtil("Salvar", "Save").get());
     	saveBtn.setAction(() -> {
-    		QuestNutriJOP.showMessageDialog(null, "Save Meal");
+    		String hour = inputMealHour.getValue() + ":" + inputMealMinute.getValue();
+    		
+    		if(MealController.saveMeal(meal, inputMealName.getValue(), hour, daysPanel.getSelectedDaysValue())) {
+    			QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Refeição salva!", "Meal saved!").get());
+    			dayPanel.mealWasUpdated(() -> {
+    				dayPanel.rollTo(this);
+    			});
+    		} else {
+    			QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Não foi possível salvar", "Meal couldn't be saved!").get());
+    		}
+    		
     	});
     	
     	deleteBtn = StdButton.stdBtnConfig(new LanguageUtil("Excluir", "Delete").get()).setBgColor(STD_RED_COLOR);
     	deleteBtn.setAction(() -> {
+    		meal.delete();
+    		dayPanel.mealWasUpdated();
     		QuestNutriJOP.showMessageDialog(null, "Delete Meal");
     	});
     	
-    	addFoodBtn = StdButton.stdBtnConfig("+").setBgColor(STD_STRONG_GRAY);
+    	addFoodBtn = StdButton.stdBtnConfig("+").setBgColor(STD_STRONG_GRAY_COLOR);
     	addFoodBtn.setToolTipText(new LanguageUtil("Adicionar novo alimento", "Add new food").get());
     	addFoodBtn.setAction(() -> {
     		FoodController.openNewFoodFrame(meal);
     	});
     	
-        expandOptBtn = StdButton.stdBtnConfig(new LanguageUtil("Editar", "Edit").get()).setBgColor(STD_STRONG_GRAY);
+        expandOptBtn = StdButton.stdBtnConfig(new LanguageUtil("Editar", "Edit").get()).setBgColor(STD_STRONG_GRAY_COLOR);
         expandOptBtn.setAction(() -> {
         	expandEdit();
         });

@@ -115,23 +115,6 @@ public class CustomerFormPage extends GenericFormPage {
 									.setMask("###.###.###-##")
 									.setValue(customer.getCPF())
 									.clearMaskOnSelect(true)
-									.addValidation(
-											new ValidationRule(
-													  value -> {
-														  return !Validate.hasChar(value, '.', '-');
-		                                              }, new LanguageUtil("Não é permitido ter letras!", "Letters are not allowed!").get()),
-											new ValidationRule(
-													  value -> {
-														  String v = value.replaceAll("\\D", "");
-														  if(!v.isBlank()) {
-															  return (v.length() == 11);
-														  }
-														  return false;
-		                                              }, new LanguageUtil("Digite um CPF válido.", "Enter a valid CPF.").get()),
-											new ValidationRule(
-													  value -> {
-														  return Validate.checkCpf(value);
-		                                              }, new LanguageUtil("CPF inválido!", "Invalid CPF!").get()))
 									.setRequired();
 		
 		height = new FormBoxInput(this).setLbl(new LanguageUtil("Altura (cm)", "Height (cm)").get())
@@ -177,6 +160,24 @@ public class CustomerFormPage extends GenericFormPage {
 			gender.lockInput();
 			
 		} else {
+			cpf.addValidation(
+					new ValidationRule(
+							  value -> {
+								  return !Validate.hasChar(value, '.', '-');
+                            }, new LanguageUtil("Não é permitido ter letras!", "Letters are not allowed!").get()),
+					new ValidationRule(
+							  value -> {
+								  String v = value.replaceAll("\\D", "");
+								  if(!v.isBlank()) {
+									  return (v.length() == 11);
+								  }
+								  return false;
+                            }, new LanguageUtil("Digite um CPF válido.", "Enter a valid CPF.").get()),
+					new ValidationRule(
+							  value -> {
+								  return Validate.checkCpf(value);
+                            }, new LanguageUtil("CPF inválido!", "Invalid CPF!").get()));
+			
 			personalInfo.setInteractBtn(btnSavePersonalInfo());
 			lastWeight.setButtonBox(btnAccessWeights() , true);
 		}

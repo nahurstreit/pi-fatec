@@ -41,8 +41,6 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
     public static final String QUESTNUTRI_SVG_NAME = "QuestNutri";
     
     private static User loggedUser;
-    
-
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -88,13 +86,14 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
 					System.err.println("USER LOGIN HAVE BEEN DONE SUCESSFULLY"
 							+ "\nUser: "+userName+" - Logged at: "+LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
 				}
-						
+				
 				loggedPanel = new LoggedPanel(loggedUser.getFirstName());
 		        swapAppPanel(loggedPanel);
 			} else {
 				System.err.println("LOGIN HAVE BEEN DENIED, CHECK YOUR CREDENTIALS AND TRY AGAIN");
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			QuestNutriJOP.showMessageDialog(null, 
 					new LanguageUtil(
 							"Erro interno do sistema. Consulte o log para mais informações", 
@@ -257,6 +256,7 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
     
     public static void setConnectedUser(User user) {
     	loggedUser = user;
+    	language = user.userPrefLanguage();
     }
     
     public static boolean isEditAuth() {
@@ -288,11 +288,17 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
 		}
     	
     	try {
+    		try {
+    			loggedUser.setPreferredLanguage(QuestNutri.language);
+    			loggedUser.save();
+			} catch (Exception e1) {
+				throw new Exception(e1);
+			}
+    		
     		loggedPanel = new LoggedPanel(loggedUser.getFirstName());
     		loggedPanel.settingsPage.performEvent();
 		} catch (Exception e) {
 			QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Houve um erro ao definir a nova linguagem!", "An error occurred while setting the new language!").get());
-			System.out.println(e);
 			e.printStackTrace();
 			return false;
 		}

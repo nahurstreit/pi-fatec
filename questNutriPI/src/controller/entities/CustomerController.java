@@ -69,10 +69,18 @@ public class CustomerController {
 
     public static CustomerFrame openCustomerFrame(Customer customer) {
         CustomerFrame frame = new CustomerFrame(customer);
-        frame.setSideBarMenu(
-        		frame.sbProfilePage(), 
-        		frame.sbDietPage())
-        	 .init();
+        if(QuestNutri.isEditAuth()) {
+            frame.setSideBarMenu(
+            		frame.sbProfilePage(),
+            		frame.sbDietPage()
+            );
+        } else {
+        	frame.setSideBarMenu(
+            		frame.sbProfilePage()
+            );
+        }
+        		
+        frame.init();
         frame.setMinimumSize(new Dimension(1000, 500));;
         return frame;
     }

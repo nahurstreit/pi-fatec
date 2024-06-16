@@ -18,17 +18,18 @@ import view.components.QuestNutriJOP;
 import view.components.buttons.StdButton;
 import view.components.generics.GenericJPanel;
 import view.components.labels.ActionLbl;
+import view.components.utils.IDoAction;
 
 public class DietDayPanel extends GenericJPanel {
 	private static final long serialVersionUID = 1L;
 	
 	
-	public DietWeekPanel dietMainPanel;
+	public DietWeekPanel dietWeekPanel;
 	public int weekDay;
 	public int position;
 	
 	private GenericJPanel nameBox = new GenericJPanel().ltGridBag().setBGColor(STD_BLUE_COLOR);
-	private GenericJPanel mealsGeneralPanel = new GenericJPanel().ltGridBag().setBGColor(STD_LIGHT_GRAY);
+	private GenericJPanel mealsGeneralPanel = new GenericJPanel().ltGridBag().setBGColor(STD_LIGHT_GRAY_COLOR);
 	
 	private JScrollPane mealsScrollPane;
 	
@@ -51,24 +52,31 @@ public class DietDayPanel extends GenericJPanel {
 	
 	private DietMealPanel caller = null;
 
-	public DietDayPanel(DietWeekPanel dietMainPanel, int weekDay,  int position) {
-		super(dietMainPanel);
-		this.ltGridBag();
-		this.weekDay = weekDay;
-		this.dietMainPanel = dietMainPanel;
-		this.position = position;
-		this.setBackground(STD_LIGHT_GRAY);
-		
-		exitLbl = new ActionLbl("X").setUpFont(STD_BOLD_FONT.deriveFont(15f))
-									.setUpColor(Color.white)
-									.setNewAction(() -> dropFocus());
-		
-		creatMealBtn = new StdButton(new LanguageUtil("Criar Refeição", "Add Meal").get())
-									.setUpFont(STD_BOLD_FONT.deriveFont(12f))
-									.setColors(STD_BLUE_COLOR, STD_WHITE_COLOR)
-									.setAction(() -> {
-										QuestNutriJOP.showMessageDialog(null, "Criar refeição");
-									});
+	public DietDayPanel(DietWeekPanel dietWeekPanel, int weekDay, int position) {
+	    super(dietWeekPanel);
+	    this.ltGridBag();
+	    this.weekDay = weekDay;
+	    this.dietWeekPanel = dietWeekPanel;
+	    this.position = position;
+	    this.setBackground(STD_LIGHT_GRAY_COLOR);
+	    
+	    meals = new ArrayList<>();
+	    initializeComponents(); // Chama o método para inicializar os componentes visuais
+	}
+
+	private void initializeComponents() {
+	    nameBox = new GenericJPanel().ltGridBag().setBGColor(STD_BLUE_COLOR);
+	    mealsGeneralPanel = new GenericJPanel().ltGridBag().setBGColor(STD_LIGHT_GRAY_COLOR);
+	    kcalBox = new GenericJPanel().ltGridBag().setBGColor(STD_BLUE_COLOR);
+	    
+	    exitLbl = new ActionLbl("X").setUpFont(STD_BOLD_FONT.deriveFont(15f))
+	                                .setUpColor(Color.white)
+	                                .setNewAction(this::dropFocus);
+	    
+	    creatMealBtn = new StdButton(new LanguageUtil("Criar Refeição", "Add Meal").get())
+	                                .setUpFont(STD_BOLD_FONT.deriveFont(12f))
+	                                .setColors(STD_BLUE_COLOR, STD_WHITE_COLOR)
+	                                .setAction(() -> QuestNutriJOP.showMessageDialog(null, "Criar refeição"));
 	}
 	
 	public DietDayPanel init() {
@@ -77,11 +85,20 @@ public class DietDayPanel extends GenericJPanel {
 		return this;
 	}
 	
-	public void callUpdate() {
-		meals = new ArrayList<Meal>();
-		for(Meal meal : dietMainPanel.updateMeals()) {
-			setMeals(meal);
-		}
+	public void resetMeals() {
+		try {
+			meals.clear();
+		} catch (Exception e) {}
+		
+		try {
+			mealsCards.clear();
+		} catch (Exception e) {}
+		
+		try {
+			mealsGeneralPanel.removeAll();
+		} catch (Exception e) {}
+		
+		this.refresh();
 	}
 	
 	public DietDayPanel setMeals(Meal ...meals) {
@@ -91,7 +108,19 @@ public class DietDayPanel extends GenericJPanel {
 		return this;
 	}
 	
-	private void calculateDayKcal() {
+	
+	public void mealWasUpdated(IDoAction ...runAfter) {
+	    dietWeekPanel.updateMeals(this, runAfter);
+	}
+	
+	public void callUpdate() {
+		meals = new ArrayList<Meal>();
+		for(Meal meal : dietWeekPanel.getRecentMeal()) {
+			setMeals(meal);
+		}
+	}
+ 	
+	public double calculateDayKcal() {
 		double total = 0.0;
 		for(Meal meal: meals) {
 			if((meal.daysOfWeek & weekDay) == weekDay) {
@@ -99,26 +128,38 @@ public class DietDayPanel extends GenericJPanel {
 			}
 		}
 		
-		kcalLbl = new JLabel(String.format("%.2f", total) + " kcal", JLabel.CENTER);
-		kcalLbl.setForeground(STD_WHITE_COLOR);
-		kcalLbl.setFont(STD_BOLD_FONT.deriveFont(12f));
+		return total;
+	}
+	
+	public void updateDayKcal() {
+		try {
+			kcalLbl.setText(String.format("%.2f", calculateDayKcal()) + " kcal");
+		} catch (Exception e) {
+		}
 	}
 	
 	public void populate(List<Meal> meals) {        
-		lblDay = new ActionLbl(dietMainPanel.getDayName(this.weekDay), () -> callFocus(), JLabel.CENTER);
+		lblDay = new ActionLbl(dietWeekPanel.getDayName(this.weekDay), () -> callFocus(), JLabel.CENTER);
 		lblDay.setForeground(Color.white);
 		lblDay.setFont(STD_BOLD_FONT.deriveFont(15f));
 		nameBoxOffFocus();
 		this.add(nameBox, gbc.grid(0).wgt(1.0, 0).fill("BOTH"));
+		
+		kcalLbl = new JLabel(String.format("%.2f", calculateDayKcal()) + " kcal", JLabel.CENTER);
+		kcalLbl.setForeground(STD_WHITE_COLOR);
+		kcalLbl.setFont(STD_BOLD_FONT.deriveFont(12f));
 		
 		kcalBox.add(kcalLbl, kcalBox.gbc.fill("BOTH").wgt(1.0));
 		kcalBox.setMaximumSize(new Dimension(100, 20));
 		kcalBox.setMinimumSize(new Dimension(100, 20));
 		kcalBox.setPreferredSize(new Dimension(100, 20));
 		this.add(kcalBox, gbc.wgt(1.0, 0).fill("HORIZONTAL").yP());
-		
 		this.add(mealsGeneralPanel, gbc.wgt(1.0).fill("BOTH").yP());
 		
+		this.refresh();
+	}
+	
+	public void createMeals() {		
 		mealsCards = new ArrayList<DietMealPanel>();
 		for(int i = 0; i < meals.size(); i++) {
 			DietMealPanel mealCard = new DietMealPanel(this, meals.get(i));
@@ -126,6 +167,7 @@ public class DietDayPanel extends GenericJPanel {
 			mealsGeneralPanel.add(mealCard, mealsGeneralPanel.gbc.insets(BETWEEN_DISTANCE, LATERAL_DISTANCE).grid(0, i+1).anchor("NORTHWEST").fill("BOTH").wgt(1.0));
 		}
 		
+		mealsGeneralPanel.refresh();
 		this.refresh();
 	}
 	
@@ -138,7 +180,18 @@ public class DietDayPanel extends GenericJPanel {
 		lblDay.setNewAction(() -> dropFocus());
 		caller = null; //Redefine o valor do painel de meal que chamou o foco.
 		
-		for(DietMealPanel mealCard: mealsCards) mealCard.expandMeal();
+		swapPanel();
+
+        nameBoxOnFocus();
+        this.remove(kcalBox);
+        this.remove(mealsGeneralPanel);
+        this.add(mealsScrollPane, gbc.wgt(1.0).fill("BOTH").grid(0, 1).insets(15));
+		
+		this.dietWeekPanel.swapFocus(this);
+	}
+	
+	private void swapPanel() {
+		expandAllMeals();
         mealsScrollPane = new JScrollPane(mealsGeneralPanel);
         mealsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         mealsScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -151,13 +204,9 @@ public class DietDayPanel extends GenericJPanel {
                 refresh();
             }
         });
-
-        nameBoxOnFocus();
-        this.remove(kcalBox);
-        this.remove(mealsGeneralPanel);
-        this.add(mealsScrollPane, gbc.wgt(1.0).fill("BOTH").grid(0, 1).insets(15));
-		
-		this.dietMainPanel.swapFocus(this);
+        
+        mealsScrollPane.revalidate();
+        mealsScrollPane.repaint();
 	}
 	
 	/**
@@ -175,13 +224,13 @@ public class DietDayPanel extends GenericJPanel {
 		isOnFocus = false;
 		lblDay.setNewAction(() -> callFocus());
 		nameBoxOffFocus();
-		
 		this.add(kcalBox, kcalBox.gbc.fill("HORIZONTAL").wgt(1.0, 0).grid(0, 1));
 		
 		for(DietMealPanel mealCard: mealsCards) mealCard.retractMeal();
 		this.remove(mealsScrollPane);
         this.add(mealsGeneralPanel, gbc.wgt(1.0).fill("BOTH").grid(0, 2).insets());
-		this.dietMainPanel.swapFocus(null);
+		this.dietWeekPanel.swapFocus(null);
+		this.dietWeekPanel.updateMeals(null);
 	}
 	
 	private void nameBoxOnFocus() {
@@ -207,6 +256,15 @@ public class DietDayPanel extends GenericJPanel {
 					);
 	}
 	
+	public void expandAllMeals() {
+		try {
+			for(DietMealPanel mealCard: mealsCards) mealCard.expandMeal();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+	}
+	
 	private void nameBoxOffFocus() {
 		try {
 			nameBox.remove(exitLbl);
@@ -216,5 +274,19 @@ public class DietDayPanel extends GenericJPanel {
 		}
 		
 		nameBox.add(lblDay, nameBox.gbc.wgt(1.0).insets(10).grid(0).fill("BOTH"));
+	}
+	
+	public void dropMeals() {
+		mealsGeneralPanel.removeAll();
+		mealsCards.clear();
+		populate(meals);
+		this.refresh();
+	}
+	
+	public void rollTo(DietMealPanel mealPanel) {
+        mealsScrollPane.getVerticalScrollBar().setValue(mealPanel.getY());
+        mealsScrollPane.revalidate();
+        mealsScrollPane.repaint();
+        refresh();
 	}
 } 

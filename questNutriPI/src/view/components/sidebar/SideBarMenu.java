@@ -17,14 +17,14 @@ public class SideBarMenu extends SideBarComponent<GenericComponent> {
 	/**
 	 * Define a última label clicada para ter underline.
 	 */
-	private static JLabel lastSelectedLabel = null;
+	private JLabel lastSelectedLabel = null;
 	public SideBarItem[] items;
 	
 	public SideBarMenu(SideBarItem ...items) {
 		this.component = new GenericComponent();
 		this.items = items;
 		component.ltGridBag();
-		component.setBackground(STD_LIGHT_GRAY);
+		component.setBackground(STD_LIGHT_GRAY_COLOR);
 		createMenuItems(items);
 	}
 	
@@ -55,18 +55,12 @@ public class SideBarMenu extends SideBarComponent<GenericComponent> {
 	 */
 	private JLabel createItemLabel(SideBarItem item) {
 		JLabel optionLbl = new JLabel(item.text);
+		item.setLbl(optionLbl);
+		item.setBarMenu(this);
+		
 		optionLbl.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				item.performEvent();
-				
-				// Remove sublinhado da última JLabel selecionada
-                if (lastSelectedLabel != null) {
-                    removeUnderline(lastSelectedLabel);
-                }
-
-                // Definir a JLabel atual como selecionada
-                addUnderline(optionLbl);
-                lastSelectedLabel = optionLbl;
 			}
 			
 			//Quando passar o mouse em cima, muda o cursor
@@ -82,11 +76,19 @@ public class SideBarMenu extends SideBarComponent<GenericComponent> {
 		
 		//Define o primeiro item que já começa selecionado
 		if(item.isSelected()) {
-			addUnderline(optionLbl);
-			lastSelectedLabel = optionLbl;
+			item.performEvent();
 		}
 		
 		return optionLbl;
+	}
+	
+	public void swapUnderline(JLabel lbl) {
+        if (lastSelectedLabel != null) {
+            removeUnderline(lastSelectedLabel);
+        }
+
+        addUnderline(lbl);
+        lastSelectedLabel = lbl;
 	}
 	
 	/**

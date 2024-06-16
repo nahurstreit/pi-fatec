@@ -109,6 +109,11 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 		return this;
 	}
 	
+	public Meal setName(String name) {
+		this.name = name;
+		return this;
+	}
+	
 	public Meal setHour(String hour) {
 	    try {
 	        this.hour = formatHour(hour);
@@ -118,12 +123,17 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 	    return this;
 	}
 	
+	public Meal setDaysOfWeek(int daysOfWeek) {
+		this.daysOfWeek = daysOfWeek;
+		return this;
+	}
+	
 	/**
 	 * Método para formatar uma string como Objeto Time
 	 * @param hour - String da hora no formato "HH:mm"
 	 * @return Um objeto do tipo Time
 	 */
-	public Time formatHour(String hour) {
+	private Time formatHour(String hour) {
 		return Time.valueOf(LocalTime.parse(hour, DateTimeFormatter.ofPattern("HH:mm")));
 	}
 	

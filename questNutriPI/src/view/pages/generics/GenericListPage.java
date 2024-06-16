@@ -70,7 +70,7 @@ public abstract class GenericListPage<T> extends GenericPage {
         lblTypeBox.setFont(STD_BOLD_FONT.deriveFont(20f));
         typeBox.add(lblTypeBox, typeBox.gbc.grid(0, 0).wgt(1.0).fill("BOTH").insets("3", 0, 10));
 
-        // Criação da drop box com os possÃ­veis valores de pesquisa
+        // Criação da drop box com os possíveis valores de pesquisa
         comboBox = new JComboBox<>(searchOptions);
 
         // Personalizando a fonte no item selecionado
@@ -87,12 +87,12 @@ public abstract class GenericListPage<T> extends GenericPage {
             }
         });
         
-        //Adicionando um ActionListener ao comboBox para limpar o inputSearchBox quando uma nova seleÃ§Ã£o for feita
+        //Adicionando um ActionListener ao comboBox para limpar o inputSearchBox quando uma nova seleção for feita
         comboBox.addActionListener(e -> {
             inputSearchBox.setText(""); // Limpar o texto do inputSearchBox
         });
 
-        // Adicionando o JComboBox Ã  caixa do tipo de pesquisa (typeBox)
+        // Adicionando o JComboBox à caixa do tipo de pesquisa (typeBox)
         typeBox.add(comboBox, typeBox.gbc.yP().insets("1", 0, 10));
 
         // Caixa do termo de pesquisa

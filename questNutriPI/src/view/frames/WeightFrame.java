@@ -28,6 +28,8 @@ public class WeightFrame extends SubFrame {
 	
 	private FormBoxInput wgtValue;
 	
+	private static WeightFrame opened;
+	
 	public WeightFrame(GenericJFrame callerFrame, Customer customer, FormBoxInput updateInput) {
 		super(callerFrame, null);
 		this.customer = customer;
@@ -44,6 +46,11 @@ public class WeightFrame extends SubFrame {
 		this.setBounds(x, y, 500,500);
 
 		setTitle(new LanguageUtil("Pesos - ", "Weights - ").get() + customer.getName());
+		if(opened != null) {
+			opened.dispose();
+		}
+		opened = this;
+		
 	}
 	
 	private void setUpWgtList() {

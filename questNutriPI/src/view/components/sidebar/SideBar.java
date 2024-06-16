@@ -15,14 +15,14 @@ public class SideBar extends GenericJPanel {
 	 * @param <T>
 	 */
 	public SideBar(SideBarComponent<?> ...components) {
-		this.setBackground(STD_LIGHT_GRAY);
+		this.setBackground(STD_LIGHT_GRAY_COLOR);
 		this.ltGridBag();
 		
 		if(components.length > 0) {
 			for(SideBarComponent<?> component: components) {
 				GenericComponent holderPanel = new GenericComponent();
 				holderPanel.ltGridBag();
-				holderPanel.setBackground(STD_LIGHT_GRAY);
+				holderPanel.setBackground(STD_LIGHT_GRAY_COLOR);
 				holderPanel.add((Component) component.getComponent());
 				this.add(holderPanel, component.gbc);
 			}
