@@ -13,7 +13,6 @@ import view.components.buttons.StdButton;
 import view.components.generics.GenericJFrame;
 import view.components.generics.GenericJPanel;
 import view.components.utils.IDoAction;
-import view.pages.customer.diet.DietMealPanel;
 import view.pages.customer.diet.food.CurrentSelectedAlimentPanel;
 import view.pages.customer.diet.food.SelectNewAlimentPanel;
 

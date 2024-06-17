@@ -13,17 +13,23 @@ public class AlimentNutritionalTable extends AbstractTableModel {
     private List<String> columnNames = new ArrayList<>();
     private Double selectedPortion;
     private Aliment aliment;
+    private Aliment totalAliment;
     private boolean hasSelectedPortion;
-    
-    public AlimentNutritionalTable(Aliment aliment, Double selectedPortion) {
+
+    public AlimentNutritionalTable(Aliment aliment, Double selectedPortion, Aliment totalAliment) {
         this.aliment = aliment;
         this.selectedPortion = selectedPortion;
+        this.totalAliment = totalAliment;
         this.hasSelectedPortion = selectedPortion != null;
         setupColumnNames();
     }
 
+    public AlimentNutritionalTable(Aliment aliment, Double selectedPortion) {
+        this(aliment, selectedPortion, null);
+    }
+    
     public AlimentNutritionalTable(Aliment aliment) {
-        this(aliment, null);
+    	this(aliment, null, null);
     }
 
     private void setupColumnNames() {
@@ -32,11 +38,15 @@ public class AlimentNutritionalTable extends AbstractTableModel {
         if (hasSelectedPortion) {
             columnNames.add(selectedPortion + "g");
         }
+        if(totalAliment != null) {
+            columnNames.add(new LanguageUtil("Total Refeição", "Meal's Total").get());
+            columnNames.add(new LanguageUtil("% do Total", "% of Total").get());
+        }
     }
     
     @Override
     public int getRowCount() {
-        return 26; // Number of nutrients (excluding the 'name' and 'alimentGroup' rows)
+        return 26;
     }
 
     @Override
@@ -55,13 +65,7 @@ public class AlimentNutritionalTable extends AbstractTableModel {
             case 0:
                 return getNutrientName(rowIndex);
             case 1:
-            	String res = getNutrientValue(aliment, rowIndex);
-            	try {
-            		res = String.format("%.2f", Double.parseDouble(res.replace(',', '.')));
-				} catch (Exception e) {
-				}
-            	
-                return res;
+                return formatValue(getNutrientValue(aliment, rowIndex));
             case 2:
                 if (hasSelectedPortion) {
                     String value = getNutrientValue(aliment, rowIndex);
@@ -74,6 +78,10 @@ public class AlimentNutritionalTable extends AbstractTableModel {
                     }
                 }
                 return null;
+            case 3:
+                return formatValue(getNutrientValue(totalAliment, rowIndex));
+            case 4:
+                return calculatePercentage(rowIndex);
             default:
                 return null;
         }
@@ -140,6 +148,24 @@ public class AlimentNutritionalTable extends AbstractTableModel {
             case 24: return aliment.vitaminC;
             case 25: return aliment.ash;
             default: return "";
+        }
+    }
+
+    private String formatValue(String value) {
+        try {
+            return String.format("%.2f", Double.parseDouble(value.replace(',', '.')));
+        } catch (Exception e) {
+            return value;
+        }
+    }
+
+    private String calculatePercentage(int rowIndex) {
+        try {
+            double value = Double.parseDouble(getNutrientValue(aliment, rowIndex).replace(',', '.')) * (selectedPortion / 100);
+            double totalValue = Double.parseDouble(getNutrientValue(totalAliment, rowIndex).replace(',', '.'));
+            return String.format("%.2f%%", (value / totalValue) * 100);
+        } catch (Exception e) {
+            return "";
         }
     }
 }

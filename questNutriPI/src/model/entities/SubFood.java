@@ -31,7 +31,7 @@ public class SubFood extends SubFoodDAO implements ICopy<SubFood>{
     public Aliment aliment;
 
     @Column(name = "subFood_quantity")
-    public Float quantity;
+    public Double quantity;
 
     @Column(name = "subFood_unityQt")
     public String unityQt;
@@ -55,7 +55,7 @@ public class SubFood extends SubFoodDAO implements ICopy<SubFood>{
      * @param unityQt Recebe a Unidade da Comida Substituta
      * @param obs Recebe as Observações da Comida Substituta
      */
-    public SubFood(Integer idSubFood, Food food, Aliment aliment, Float quantity, String unityQt, String obs) {
+    public SubFood(Integer idSubFood, Food food, Aliment aliment, Double quantity, String unityQt, String obs) {
         super();
     	this.idSubFood = idSubFood;
         this.food = food;

@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import model.entities.Food;
 import utils.view.LanguageUtil;
 import view.components.generics.GenericJFrame;
-import view.pages.customer.diet.DietMealPanel;
 import view.pages.customer.diet.food.FoodInfoPanel;
 
 public class FoodInfoFrame extends SubFrame {
