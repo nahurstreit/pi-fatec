@@ -217,6 +217,7 @@ public class FormSection extends GenericComponent {
             rowPanel.gbc.grid(0).fill("BOTH").wgt(1.0).anchor("WEST"); //Layout inicial DA LINHA
             rowPanel.setPreferredSize(new Dimension(50, 75));
             for(FormBoxInput box: rows.get(i)) {
+            	box.init();
             	if(internalColor != null) box.setBackground(internalColor);
             	box.setPreferredSize(new Dimension(10, 10));
                 rowPanel.add(box, rowPanel.gbc);

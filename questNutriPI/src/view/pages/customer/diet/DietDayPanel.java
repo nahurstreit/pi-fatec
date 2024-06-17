@@ -168,7 +168,6 @@ public class DietDayPanel extends GenericJPanel {
 		try {
 			kcalLbl.setText(String.format("%.2f", calculateDayKcal()) + " kcal");
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 	

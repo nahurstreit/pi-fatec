@@ -29,10 +29,24 @@ public class FormBoxInput extends GenericComponent {
 	private FormInputField tfInput;
 	private JComboBox<String> cbInput;
 	private JSpinner spinnerInput;
+	private StdButton button;
+	
 	private boolean required;
 	
 	private final int STD_LATERAL_DISTANCE = 15;
+	private final int STD_UPPER_DISTANCE = 5;
+	private final int STD_LOWER_DISTANCE = 5;
+	private final int STD_BTN_DISTANCE = 5;
+	private final double STD_BTN_WGT = 0.1;
 	
+	private int upperDistance;
+	private int leftDistance;
+	private int lowerDistance;
+	private int rightDistance;
+	private int btnDistance;
+	private double btnWgt;
+	
+
 	private int spinnerValue;
 	
 	public interface ValueChangedListener {
@@ -46,11 +60,13 @@ public class FormBoxInput extends GenericComponent {
 		super(ownerPanel);
 		ltGridBag();
 		required = false;
-
 		
+		initComponents();
+	}
+	
+	private void initComponents() {
 		label = new JLabel("");
 		label.setFont(STD_BOLD_FONT.deriveFont(15f));
-		this.add(label, gbc.fill("BOTH").grid(0).insets(5, 15, 0, 15).anchor("WEST"));
 		
 		tfInput = new FormInputField(new LanguageUtil("Digite aqui...", "Type here...").get(), new Dimension(10, 30), 12f).setFormBoxInput(this);
 		tfInput.setMinimumSize(new Dimension(100, 20));
@@ -65,27 +81,88 @@ public class FormBoxInput extends GenericComponent {
 			public void focusLost(FocusEvent e) {
 			}
 		});
-		this.add(tfInput, gbc.yP().insets(0, 15).wgt(1.0, 0));
 		
 		errorLabel = new JLabel("");
 		errorLabel.setFont(STD_BOLD_FONT.deriveFont(12f));
-		this.add(errorLabel, gbc.yP().insets(0, 15, 5, 15));
+		
+		upperDistance = STD_UPPER_DISTANCE;
+		leftDistance = STD_LATERAL_DISTANCE;
+		lowerDistance = STD_LOWER_DISTANCE;
+		rightDistance = STD_LATERAL_DISTANCE;
+		btnDistance = STD_BTN_DISTANCE;
+		btnWgt = STD_BTN_WGT;
+	}
+	
+	public FormBoxInput init() {
+		placeComponents();
+		return this;
+	}
+	
+	private void placeComponents() {
+		this.add(label, gbc.fill("BOTH").grid(0).insets(upperDistance, leftDistance, 0, rightDistance).anchor("WEST").width("REMAINDER"));
+		
+		if(button != null) {
+			gbc.yP().insets(0, leftDistance, 0, btnDistance).wgt((1.0 - btnWgt), 0).width(1);
+		} else {
+			gbc.yP().insets(0, leftDistance, 0, rightDistance).wgt(1.0, 0).width(1);
+		}
+		
+		try {
+			this.add(tfInput, gbc);
+		} catch (Exception e) {
+			try {
+				this.add(cbInput, gbc);
+			} catch (Exception e2) {
+				try {
+					this.add(spinnerInput, gbc);
+				} catch (Exception e3) {
+					e3.printStackTrace();
+				}
+			}
+		}
+		
+		if(button != null) {
+			this.add(button, gbc.wgt(btnWgt, 0).xP().insets(0, 0, 0, rightDistance));
+			gbc.gridX(0);
+		}
+
+		this.add(errorLabel, gbc.yP().insets(0, leftDistance, lowerDistance, rightDistance).width("REMAINDER"));
 	}
 	
 	public String getLabel() {
 		return label.getText();
 	}
 	
-	public FormBoxInput setLateralDistance(Integer left, Integer right) {
-		if(left == null) left = STD_LATERAL_DISTANCE;
-		if(right == null) right = STD_LATERAL_DISTANCE;
-		try {
-			this.remove(tfInput);
-			this.add(tfInput, gbc.grid(0, 1).insets(0, left, 0, right).wgt(1.0, 0));
-		} catch (Exception e) {
-		}
+	
+	public FormBoxInput setUpperDistance(int distance) {
+		upperDistance = distance;
 		return this;
 	}
+	
+	public FormBoxInput setLowerDistance(int distance) {
+		lowerDistance = distance;
+		return this;
+	}
+	
+	public FormBoxInput setLateralDistance(Integer left, Integer right) {
+		if(left != null) leftDistance = left;
+		if(right != null) rightDistance = right;
+		return this;
+	}
+	
+	public FormBoxInput setLateralDistance(int distance) {
+		return setLateralDistance(distance, distance);
+	}
+	
+	public FormBoxInput setBtnDistance(int distance) {
+		btnDistance = distance;
+		return this;
+	}
+	
+	public FormBoxInput setBtnWgt(double value) {
+		btnWgt = value;
+		return this;
+	};
 	
 	/**
 	 * Método que bloqueia o input do usuário.
@@ -158,8 +235,6 @@ public class FormBoxInput extends GenericComponent {
 			cbInput.setSelectedItem(initialValue);
 		}
 		
-		this.add(cbInput, gbc.grid(0, 1).insets(0, 15).wgt(1.0, 0));
-		this.add(errorLabel, gbc.grid(0, 2).insets(0, 15, 5, 15)); //Readicionando errorLabel para adicionar o "espaço" faltante embaixo da comboBox
 		return this;
 	}
 	
@@ -181,8 +256,6 @@ public class FormBoxInput extends GenericComponent {
 	    spinnerInput.addChangeListener(e -> {
 	    	spinnerValue = (int) spinnerInput.getValue();
 	    });
-		
-		this.add(spinnerInput, gbc.grid(0, 1).insets(0, 15).wgt(1.0, 0));
 		
 		return this;
 	}
@@ -221,17 +294,24 @@ public class FormBoxInput extends GenericComponent {
 	public FormBoxInput setButtonBox(StdButton button, boolean keepInput) {
 		if(!keepInput) {
 			try {
-				if(tfInput != null) this.remove(tfInput);
-				if(cbInput != null) this.remove(cbInput);
+				if(tfInput != null) {
+					this.remove(tfInput);
+					tfInput = null;
+				}
+				if(cbInput != null) {
+					this.remove(cbInput);
+					cbInput = null;
+				}
+				if(spinnerInput != null) {
+					this.remove(spinnerInput);
+					spinnerInput = null;
+				}
 			} catch (Exception e) {
+				
 			}
 			
-			this.add(button, gbc.grid(0, 1).insets(0, 15).wgt(1.0, 0));
-		} else {
-			this.remove(label);
-			this.add(button, gbc.grid(1, 1).insets(0, 0, 0, 15).wgt(0));
-			this.add(label, gbc.fill("BOTH").grid(0).insets(5, 15, 0, 15).anchor("WEST").width("REMAINDER"));
 		}
+		this.button = button;
 		
 		return this;
 	}

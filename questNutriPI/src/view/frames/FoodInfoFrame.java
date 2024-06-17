@@ -18,7 +18,7 @@ public class FoodInfoFrame extends SubFrame {
 	}
 	
 	public static void main(String[] args) {
-		FoodInfoFrame frame = new FoodInfoFrame(null, Food.findByPK(1));
+		FoodInfoFrame frame = new FoodInfoFrame(null, Food.findByPK(8));
 		frame.setDefaultCloseApp();
 		frame.setVisible(true);
 	}

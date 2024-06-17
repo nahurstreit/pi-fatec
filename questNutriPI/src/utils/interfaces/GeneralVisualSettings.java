@@ -14,7 +14,7 @@ public interface GeneralVisualSettings {
 	public static final Color STD_NULL_COLOR = new Color(0, 0, 0, 0);
 	public static final Color STD_WHITE_COLOR = Color.WHITE;
 	public static final Color STD_RED_COLOR = Color.RED;
-	public static final Color STD_BLACK_COLOR = Color.RED;
+	public static final Color STD_BLACK_COLOR = Color.BLACK;
 	
 	//Fontes do sistema
 	public static final Font STD_EXTRA_LIGHT_FONT = FontsUtil.load("Montserrat-ExtraLight");
