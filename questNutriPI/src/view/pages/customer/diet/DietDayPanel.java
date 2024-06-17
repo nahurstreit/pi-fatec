@@ -147,9 +147,9 @@ public class DietDayPanel extends GenericJPanel {
 	}
 	
 	private void initializeLoadingDialog() {
-        loadingDialog = new JDialog((Frame) null, "Carregando", true);
-        JPanel panel = new JPanel(new BorderLayout());
-        JLabel label = new JLabel("Por favor, aguarde...", JLabel.CENTER);
+		loadingDialog = new JDialog((Frame) null, new LanguageUtil("Carregando", "Loading").get(), true);
+		JPanel panel = new JPanel(new BorderLayout());
+		JLabel label = new JLabel(new LanguageUtil("Por favor, aguarde...", "Please wait...").get(), JLabel.CENTER);
         panel.add(label, BorderLayout.CENTER);
         loadingDialog.getContentPane().add(panel);
         loadingDialog.setSize(200, 100);

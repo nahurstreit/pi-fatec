@@ -1,6 +1,7 @@
 package utils.validations;
 
 import utils.interfaces.Condition;
+import utils.view.LanguageUtil;
 
 /**
  * Classe para criar regras de validação.
@@ -30,7 +31,7 @@ public class ValidationRule {
      * @param rule A função de validação que implementa a interface Validate.
      */
     public ValidationRule(Condition rule) {
-        this(rule, "Erro de validação.");
+        this(rule, new LanguageUtil("Erro de validação", "Validation error").get());
     }
 
     /**

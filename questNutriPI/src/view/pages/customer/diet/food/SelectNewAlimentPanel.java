@@ -44,24 +44,14 @@ public class SelectNewAlimentPanel extends GenericJPanel {
         selectedAlimentUpperLbl.setFont(STD_MEDIUM_FONT.deriveFont(10f));
         leftPanel.add(selectedAlimentUpperLbl, leftPanel.gbc.grid(0, 1).fill("HORIZONTAL").anchor("NORTHWEST").wgt(1.0, 0).insets(0, 10));
         
-        selectedAliment = new BreakActionLbl()
-            .setUpText(new LanguageUtil("Nenhum.", "None.").get())
-            .setUpFont(STD_BOLD_FONT.deriveFont(12f))
-            .turnHoverOff()
-            .setBGColor(this.getBackground());
+        selectedAliment = new BreakActionLbl().setUpText(new LanguageUtil("Nenhum.", "None.").get())
+								              .setUpFont(STD_BOLD_FONT.deriveFont(12f))
+								              .turnHoverOff()
+								              .setBGColor(this.getBackground());
         leftPanel.add(selectedAliment, leftPanel.gbc.grid(0, 2).wgt(1.0, 0).insets(0, 10, 10, 10));
         
         scrollPaneSelectedAlimentInfo = new JScrollPane();
         leftPanel.add(scrollPaneSelectedAlimentInfo, leftPanel.gbc.grid(0, 3).fill("BOTH").wgt(1.0).insets(0, 10, 10, 10).height("REMAINDER"));
-        
-        
-//        //Separador do meio
-//        JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
-//        Border border = BorderFactory.createLineBorder(STD_BLUE_COLOR, 1);
-//        separator.setBorder(border);
-//        this.add(separator, gbc.grid(1, 0).fill("VERTICAL").anchor("CENTER").wgt(0.0, 1.0).insets(10));
-
-        
         
         //Panel da direita
         GenericJPanel rightPanel = new GenericJPanel().ltGridBag();

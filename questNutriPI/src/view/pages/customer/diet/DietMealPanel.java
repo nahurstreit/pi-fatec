@@ -104,7 +104,7 @@ public class DietMealPanel extends GenericJPanel {
         
     	editPanel = new GenericJPanel().ltGridBag().setBGColor(STD_WHITE_COLOR);
     	editPanel.add(deleteBtn, editPanel.gbc.fill("NONE").anchor("CENTER").grid(1, 0));
-    	editPanel.add(copyMealBtn, editPanel.gbc.grid(0, 0).insets(0, 0, 0, 60));
+    	//editPanel.add(copyMealBtn, editPanel.gbc.grid(0, 0).insets(0, 0, 0, 60));
         
     	daysPanel = new DaySelectionPanel(this, meal.daysOfWeek);
     	
@@ -330,15 +330,15 @@ public class DietMealPanel extends GenericJPanel {
     	
     	deleteBtn = StdButton.stdBtnConfig(new LanguageUtil("Excluir", "Delete").get()).setBgColor(STD_RED_COLOR);
     	deleteBtn.setAction(() -> {
-    		meal.delete();
-    		dayPanel.mealWasUpdated();
-    		QuestNutriJOP.showMessageDialog(null, "Delete Meal");
+    		if(MealController.deleteMeal(meal)) {
+    			dayPanel.mealWasUpdated();
+    		}
     	});
     	
     	addFoodBtn = StdButton.stdBtnConfig("+").setBgColor(STD_STRONG_GRAY_COLOR);
     	addFoodBtn.setToolTipText(new LanguageUtil("Adicionar novo alimento", "Add new food").get());
     	addFoodBtn.setAction(() -> {
-    		FoodController.openNewFoodFrame(this, meal);
+    		FoodController.openNewFoodFrame(getCallerFrame(), this, meal);
     	});
     	
         expandOptBtn = StdButton.stdBtnConfig(new LanguageUtil("Editar", "Edit").get()).setBgColor(STD_STRONG_GRAY_COLOR);

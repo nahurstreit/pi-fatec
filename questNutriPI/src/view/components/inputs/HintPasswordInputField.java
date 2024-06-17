@@ -205,7 +205,6 @@ public class HintPasswordInputField extends HintInputField {
 
     	}
 		currentCaret++;
-		System.out.println(getRealText());
     }
     
     

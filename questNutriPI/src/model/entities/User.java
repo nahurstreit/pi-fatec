@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import model.dao.UserDAO;
 import utils.interfaces.GeneralAppSettings;
+import view.QuestNutri;
 
 @Entity
 @Table(name = "Users")
@@ -32,7 +33,7 @@ public class User extends UserDAO {
 	private Integer prefLanguage = GeneralAppSettings.STD_LANGUAGE;
 
 	@Column(name = "systemLevel")
-	private Integer systemLevel;
+	private int systemLevel;
 
 	public User(String login, String password, String firstName, Integer systemLevel) {
 		super();
@@ -66,6 +67,11 @@ public class User extends UserDAO {
 		this.login = login;
 		return this;
 	}
+	
+	public User setFirstName(String name) {
+		this.firstName = name;
+		return this;
+	}
 
 	public String getPassword() {
 		return password;
@@ -97,15 +103,11 @@ public class User extends UserDAO {
 	 * @param systemLevel - Nível do Usuário de 1 a 3.
 	 * @return Retorna o nível de um Usuário no sistema.
 	 */
-	@SuppressWarnings("unused")
-	private User setSystemLevel(Integer systemLevel) {
-		switch (systemLevel) {
-		case 1:
-		case 2:
-		case 3:
-			this.systemLevel = systemLevel;
-			break;
-		default:
+	public User setSystemLevel(int systemLevel) {
+		if(QuestNutri.isAdminControl()) {
+			if(systemLevel > 0 && systemLevel <= 3) {
+				this.systemLevel = systemLevel;
+			}
 		}
 		return this;
 	}

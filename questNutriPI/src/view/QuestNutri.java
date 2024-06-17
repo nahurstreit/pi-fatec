@@ -316,4 +316,30 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
     	return true;
     }
     
+    public static int getLoggedUserId() {
+    	return loggedUser.getId();
+    }
+    
+    public static boolean updateLoggedUser(String username, String password) {
+    	try {
+    		loggedUser.setLogin(username).setPassword(password);
+    		return loggedUser.save();
+		} catch (Exception e) {
+			return false;
+		}
+    }
+    
+    public static void logOut() {
+    	loginPanel = new LoginPanel();
+    	swapAppPanel(loginPanel);
+    	loginPanel.placeLogo();
+    	loggedPanel = null;
+    	loggedUser = null;
+    	QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Você foi desconectado.", "You have been disconnected.").get());
+    }
+    
+    public static boolean isAdminControl() {
+    	return loggedUser.getSystemLevel() == 3;
+    }
+    
 }

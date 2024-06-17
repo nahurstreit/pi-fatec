@@ -88,12 +88,12 @@ public class Food extends FoodDAO implements ICopy<Food> {
     	return this;
     }
     
-    public Food setQuantity(Double quantity) {
+    public Food setQuantity(double quantity) {
     	this.quantity = quantity;
     	return this;
     }
     
-    public Food setQuantity(Integer quantity) {
+    public Food setQuantity(int quantity) {
     	this.quantity = (double) quantity;
     	return this;
     }

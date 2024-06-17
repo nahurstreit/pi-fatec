@@ -13,9 +13,9 @@ import view.components.sidebar.SideBar;
 import view.components.sidebar.SideBarComponent;
 import view.components.sidebar.SideBarItem;
 import view.components.sidebar.SideBarMenu;
-import view.pages.SettingsPage;
 import view.pages.aliment.AlimentsPage;
 import view.pages.customer.CustomersPage;
+import view.pages.settings.SettingsPage;
 
 /**
  * Classe que define o painel logado do usuário.

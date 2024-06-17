@@ -11,7 +11,7 @@ public abstract class SubFoodDAO extends GenericDAO<SubFood> {
 	}
 	
 	public static List<SubFood> findAllByFoodPK(int id) {
-		return SubFood.findAll("food.id = " + id);
+		return SubFood.findAll("food.id = " + id + " AND deactivatedAt IS NULL ORDER BY id DESC");
 	}
 	
 	public static SubFood findByPK(int id) {

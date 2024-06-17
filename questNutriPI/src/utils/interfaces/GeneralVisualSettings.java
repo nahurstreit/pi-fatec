@@ -23,9 +23,6 @@ public interface GeneralVisualSettings {
 	public static final Font STD_MEDIUM_FONT = FontsUtil.load("Montserrat-Medium");
 	public static final Font STD_BOLD_FONT = FontsUtil.load("Montserrat-Bold");
 	
-	//Textos padrão
-	public static final String STD_DELETE_STRING = new LanguageUtil("EXCLUIR", "DELETE").get();
-	
 	//Assets do sistema
 	public static final String QUESTNUTRI_SVG = "QuestNutri";
 	public static final String QUESTNUTRI_FRAME_ICON_PNG = "QuestNutriAlphaChannel";

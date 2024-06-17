@@ -75,6 +75,25 @@ public class SubFood extends SubFoodDAO implements ICopy<SubFood>{
     	return this;
     }
     
+    public SubFood setAliment(Aliment aliment) {
+    	this.aliment = aliment;
+    	return this;
+    }
+    
+    public SubFood setQuantity(double quantity) {
+    	this.quantity = quantity;
+    	return this;
+    }
+    
+    public SubFood setUnityQt(String unityQt) {
+    	this.unityQt = unityQt;
+    	return this;
+    }
+    
+    public boolean isActive() {
+    	return this.deactivatedAt == null;
+    }
+    
     /**
      * Método para adicionar ao objeto, a data e horário atual de registro.
      */

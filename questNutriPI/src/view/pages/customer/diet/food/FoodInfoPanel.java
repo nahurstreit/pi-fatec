@@ -4,8 +4,10 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import controller.entities.FoodController;
+import controller.entities.SubFoodController;
 import model.entities.Aliment;
 import model.entities.Food;
 import model.entities.SubFood;
@@ -21,6 +23,7 @@ import view.components.generics.GenericJFrame;
 import view.components.generics.GenericJPanel;
 import view.components.tables.AlimentNutritionalTable;
 import view.components.utils.IDoAction;
+import view.pages.customer.diet.food.subfood.DietSubFoodPanel;
 import view.pages.generics.GenericPage;
 
 public class FoodInfoPanel extends GenericPage {
@@ -49,7 +52,12 @@ public class FoodInfoPanel extends GenericPage {
     private FormBoxInput deleteFoodBtn;
     private FormBoxInput saveFoodBtn;
     
+    private SubFood lookingSubFood;
+    
     private IDoAction afterUpdate;
+    
+    private GenericJPanel holderNoSub = new GenericJPanel().ltGridBag();
+    private JLabel lblNoSubFoodYet;
 
     public FoodInfoPanel(GenericJPanel ownerPanel, GenericJFrame callerFrame, Food food, IDoAction afterUpdate) {
         super(ownerPanel);
@@ -62,15 +70,8 @@ public class FoodInfoPanel extends GenericPage {
         	this.afterUpdate = () -> {};
         }
         
-        
-        
-        
         //Lbl do alimento atual da food
         	GenericJPanel foodPanel = new GenericJPanel().ltGridBag();
-        
-//	        FoodController.openFoodUpdate(callerFrame, food, () -> {
-//	        	currentAlimentTitle.setValue(this.food.aliment.name);
-//            });
 	        
 	        
 	        currentAlimentTitle = new FormBoxInput(this).setLbl(new LanguageUtil("Selecionado atualmente", "Current Selected").get(), STD_REGULAR_FONT.deriveFont(10f))
@@ -94,7 +95,13 @@ public class FoodInfoPanel extends GenericPage {
 	        
 	        deleteFoodBtn = new FormBoxInput(this).setLbl("")
 					  						   	  .setButtonBox(StdButton.stdBtnConfig(new LanguageUtil("Deletar", "Delete").get())
-					  						   			  				 .setAction(() -> {})
+					  						   			  				 .setAction(() -> {
+					  						   			  					 if(FoodController.deleteFood(food)) {
+					  						   			  						 afterUpdate.execute();
+					  						   			  						 getCallerFrame().dispose();
+					  						   			  					 }
+					  						   			  				 })
+					  						   			  						 
 					  						   			  				 .setBgColor(STD_RED_COLOR), false);
 	        
 	        saveFoodBtn = new FormBoxInput(this).setLbl("")
@@ -129,9 +136,22 @@ public class FoodInfoPanel extends GenericPage {
 	        currentInfoScroll.setViewportView(currentTable);
 	        currentInfo.add(currentInfoScroll, currentInfo.gbc.yP().fill("BOTH").wgt(1.0).insets(5, 20, 20, 20));
         
-        
+	        
+	        GenericJPanel subFoodMainPanel = new GenericJPanel().ltGridBag();
+	        JLabel lblSubFoodPanel = new JLabel(new LanguageUtil("Opções de Substituição", "Replacement option").get());
+	        lblSubFoodPanel.setFont(STD_BOLD_FONT.deriveFont(15f));
+	        subFoodMainPanel.add(lblSubFoodPanel, subFoodMainPanel.gbc.fill("HORIZONTAL").wgt(1.0, 0).grid(0).insets(20, 20, 10, 20).anchor("NORTHWEST"));
+	        StdButton createSubFood = StdButton.stdBtnConfig(new LanguageUtil("Adicionar Opção", "Add Option").get());
+	        subFoodMainPanel.add(createSubFood, subFoodMainPanel.gbc.fill("VERTICAL").grid(1, 0).anchor("NORTHEAST").wgt(0));
+	        createSubFood.setAction(() -> {
+	        	SubFoodController.openNewSubFoodFrame(getCallerFrame(), food, this::addSubFoods);
+	        });
+	        
         //ScrollPane de todas as subfoods
     		subFoodsScroll.setViewportView(subFoodsPanel);
+    		subFoodMainPanel.add(subFoodsScroll, subFoodMainPanel.gbc.fill("BOTH").wgt(1.0).grid(0, 1).insets(0, 20, 20, 20).width("REMAINDER"));
+    		subFoodMainPanel.setBGColor(getBackground());
+    		
         
     	//Informações Nutricionais da subFoodSelecionada
 	        subFoodInfoScroll = new JScrollPane();
@@ -159,7 +179,7 @@ public class FoodInfoPanel extends GenericPage {
 	        topSplitPane.setDividerSize(0);
 	        topSplitPane.setDividerLocation(divisor);
 	        
-	        bottomSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, subFoodsScroll, subFoodInfo);
+	        bottomSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, subFoodMainPanel, subFoodInfo);
 	        bottomSplitPane.setResizeWeight(0.5); // 50% para cada lado
 	        bottomSplitPane.setDividerSize(0);
 	        bottomSplitPane.setDividerLocation(divisor);
@@ -168,6 +188,12 @@ public class FoodInfoPanel extends GenericPage {
 	        mainSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, topSplitPane, bottomSplitPane);
 	        mainSplitPane.setResizeWeight(0.3); // 50% para cada lado
 	        mainSplitPane.setDividerSize(0);
+	    //
+	    
+	    holderNoSub.setBGColor(getBackground());
+        lblNoSubFoodYet = new JLabel(new LanguageUtil("Nenhuma opção de substituição.", "No other food options.").get());
+        lblNoSubFoodYet.setFont(STD_REGULAR_FONT.deriveFont(12f));
+        holderNoSub.add(lblNoSubFoodYet, holderNoSub.gbc.fill("VERTICAL").wgt(0, 1.0).anchor("NORTHWEST").insets(10));
         
         addSubFoods();
         
@@ -181,13 +207,29 @@ public class FoodInfoPanel extends GenericPage {
                     SubFood subFood = subFoods[0];
                     subFoodTable.setModel(new AlimentNutritionalTable(subFood.aliment, subFood.quantity, FoodUtil.calculateTotalNutrients(food.meal, food, subFood)));
                     currentViewingSubFood.setText(subFood.aliment.name);
+                    lookingSubFood = subFood;
                 }
                 return null;
             };
+            
+            if(!(food.getSubFoods().size() > 0)) {
+            	subFoodsScroll.setViewportView(holderNoSub);
+            } else {
+            	subFoodsPanel.removeAll();
+            	subFoodsScroll.setViewportView(subFoodsPanel);
+            }
 
-            subFoodsPanel.gbc.fill("BOTH").wgt(1.0).anchor("NORTHWEST").grid(0).insets(10);
+            subFoodsPanel.gbc.fill("BOTH").wgt(1.0, 0).anchor("NORTHWEST").grid(0).insets(10);
             for (SubFood subFood : food.getSubFoods()) {
-                DietSubFoodPanel s = new DietSubFoodPanel(food, subFood, updateSubFoodTable);
+                DietSubFoodPanel s = new DietSubFoodPanel(this, food, subFood, updateSubFoodTable, () -> {
+                	addSubFoods();
+                	if(lookingSubFood != null && !lookingSubFood.isActive()) {
+                		subFoodTable.setModel(new DefaultTableModel());
+                		lookingSubFood = null;
+                	} else {
+                        subFoodTable.setModel(new AlimentNutritionalTable(subFood.aliment, subFood.quantity, FoodUtil.calculateTotalNutrients(food.meal, food, subFood)));
+                	}
+                });
                 subFoodsPanel.add(s, subFoodsPanel.gbc);
                 subFoodsPanel.gbc.yP();
             }
@@ -219,4 +261,16 @@ public class FoodInfoPanel extends GenericPage {
     		}
     	}
     }
+    
+    public int getLookingId() {
+    	if(lookingSubFood != null) {
+    		return lookingSubFood.idSubFood;
+    	}
+    	return 0;
+    }
+    
+    public void emptySubFoodTable() {
+		subFoodTable.setModel(new DefaultTableModel());
+    }
+
 }

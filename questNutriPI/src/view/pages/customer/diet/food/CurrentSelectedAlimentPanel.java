@@ -1,11 +1,12 @@
 package view.pages.customer.diet.food;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import model.entities.Food;
+
+import model.entities.Aliment;
 import utils.view.LanguageUtil;
+import view.components.generics.GenericJFrame;
 import view.components.generics.GenericJPanel;
 import view.components.labels.BreakActionLbl;
 import view.components.tables.AlimentNutritionalTable;
@@ -17,11 +18,14 @@ public class CurrentSelectedAlimentPanel extends GenericJPanel {
     private BreakActionLbl selectedAliment;
     private JTable table;
 
-    private Food food;
+    private Aliment aliment;
+    private double quantity;
 
-    public CurrentSelectedAlimentPanel(Food food) {
+    public CurrentSelectedAlimentPanel(GenericJFrame callerFrame, Aliment aliment, Double quantity) {
+    	setCallerFrame(callerFrame);
         ltGridBag();
-        this.food = food;
+        this.aliment = aliment;
+        this.quantity = quantity;
 
         JLabel comparisonLbl = new JLabel("Janela de Comparação");
         comparisonLbl.setFont(STD_BOLD_FONT.deriveFont(18f));
@@ -37,7 +41,7 @@ public class CurrentSelectedAlimentPanel extends GenericJPanel {
 
         // Label superior do lado direito que diz qual é o aliemnto selecionado atualmente.
         selectedAliment = new BreakActionLbl()
-                .setUpText(food.aliment.name)
+                .setUpText(aliment.name)
                 .setUpFont(STD_BOLD_FONT.deriveFont(12f))
                 .turnHoverOff()
                 .setBGColor(this.getBackground());
@@ -52,15 +56,8 @@ public class CurrentSelectedAlimentPanel extends GenericJPanel {
     }
 
     public void init() {
-        table = new JTable(new AlimentNutritionalTable(food.aliment, food.quantity));
+        table = new JTable(new AlimentNutritionalTable(aliment, quantity));
         scrollPaneSelectedAlimentInfo.setViewportView(table);
     }
 
-    public static void main(String[] args) {
-        JFrame f = new JFrame();
-        f.setBounds(100, 100, 883, 462);
-        f.setContentPane(new CurrentSelectedAlimentPanel(Food.findByPK(1)));
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setVisible(true);
-    }
 }

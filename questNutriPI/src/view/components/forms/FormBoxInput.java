@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -48,6 +50,9 @@ public class FormBoxInput extends GenericComponent {
 	private double btnWgt;
 
 	private int spinnerValue;
+	
+	private boolean lockInput;
+	private boolean initiated = false;
 	
 	public interface ValueChangedListener {
 	    void valueChanged(String newValue);
@@ -91,10 +96,13 @@ public class FormBoxInput extends GenericComponent {
 		rightDistance = STD_LATERAL_DISTANCE;
 		btnDistance = STD_BTN_DISTANCE;
 		btnWgt = STD_BTN_WGT;
+		lockInput = false;
 	}
 	
 	public FormBoxInput init() {
 		placeComponents();
+		if(lockInput) applyLock();
+		initiated = true;
 		return this;
 	}
 	
@@ -109,12 +117,23 @@ public class FormBoxInput extends GenericComponent {
 		
 		try {
 			this.add(tfInput, gbc);
+			if(lockInput) {
+				tfInput.setEnabled(false);
+			}
+
 		} catch (Exception e) {
 			try {
 				this.add(cbInput, gbc);
+				if(lockInput) {
+					cbInput.setEnabled(false);
+				}
+
 			} catch (Exception e2) {
 				try {
 					this.add(spinnerInput, gbc);
+					if(lockInput) {
+						spinnerInput.setEnabled(false);
+					}
 				} catch (Exception e3) {
 					try {
 						this.add(centralTitle, gbc);
@@ -187,12 +206,8 @@ public class FormBoxInput extends GenericComponent {
 	 * @return FormBoxInput para fluent interface.
 	 */
 	public FormBoxInput lockInput() {
-		if(tfInput != null) {
-			tfInput.setEditable(false);
-		} else if(cbInput != null) {
-			cbInput.setEditable(false);
-		}
-		
+		lockInput = true;
+		if(hasInitiated()) applyLock();
 		return this;
 	}
 	
@@ -201,12 +216,63 @@ public class FormBoxInput extends GenericComponent {
 	 * @return FormBoxInput para fluent interface.
 	 */
 	public FormBoxInput unlockInput() {
-		if(tfInput != null) {
-			tfInput.setEditable(true);
-		} else if(cbInput != null) {
-			cbInput.setEditable(true);
-		}
+		lockInput = false;
+		if(hasInitiated()) applyUnlock();
 		return this;
+	}
+	
+	private void applyLock() {
+        Color disabledColor = STD_STRONG_GRAY_COLOR;
+
+        try {
+            tfInput.setEnabled(false);
+            tfInput.setDisabledTextColor(disabledColor);
+            tfInput.setBackground(Color.WHITE);
+            tfInput.setForeground(STD_BLACK_COLOR);
+        } catch (Exception e) {
+            try {
+                cbInput.setEnabled(false);
+                cbInput.setForeground(disabledColor);
+                cbInput.setBackground(Color.WHITE);
+            } catch (Exception e2) {
+                try {
+                    spinnerInput.setEnabled(false);
+                    JComponent editor = spinnerInput.getEditor();
+                    if(editor instanceof JSpinner.DefaultEditor) {
+                        JFormattedTextField textField = ((JSpinner.DefaultEditor) editor).getTextField();
+                        textField.setDisabledTextColor(disabledColor);
+                        textField.setBackground(Color.WHITE);
+                    }
+                } catch (Exception e3) {
+                    e3.printStackTrace();
+                }
+            }
+        }
+    }
+	
+	private void applyUnlock() {
+		try {
+			if(lockInput) {
+				tfInput.setEnabled(true);
+			}
+		} catch (Exception e) {
+			try {
+				if(lockInput) {
+					cbInput.setEnabled(true);
+				}
+
+			} catch (Exception e2) {
+				try {
+					if(lockInput) {
+						spinnerInput.setEnabled(true);
+					}
+				} catch (Exception e3) {}
+			}
+		}
+	}
+	
+	private boolean hasInitiated() {
+		return initiated;
 	}
 	
 	public FormBoxInput setRequired() {

@@ -86,6 +86,14 @@ public class BreakActionLbl extends JTextPane {
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
         return this;
     }
+    
+    public BreakActionLbl alignTextLeft() {
+        StyledDocument doc = getStyledDocument();
+        SimpleAttributeSet left = new SimpleAttributeSet();
+        StyleConstants.setAlignment(left, StyleConstants.ALIGN_LEFT);
+        doc.setParagraphAttributes(0, doc.getLength(), left, false);
+        return this;
+    }
 
     public BreakActionLbl turnHoverOff() {
         if (hover) {

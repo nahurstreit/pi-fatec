@@ -4,8 +4,8 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
-import controller.entities.FoodController;
-import model.entities.Food;
+import controller.entities.SubFoodController;
+import model.entities.SubFood;
 import utils.interfaces.GeneralVisualSettings;
 import utils.view.LanguageUtil;
 import view.components.QuestNutriJOP;
@@ -16,21 +16,21 @@ import view.components.utils.IDoAction;
 import view.pages.customer.diet.food.CurrentSelectedAlimentPanel;
 import view.pages.customer.diet.food.SelectNewAlimentPanel;
 
-public class UpdateFoodFrame extends SubFrame implements GeneralVisualSettings {
+public class UpdateSubFoodFrame extends SubFrame implements GeneralVisualSettings {
 	private static final long serialVersionUID = 1L;
 	
-	private static UpdateFoodFrame opened;
+	private static UpdateSubFoodFrame opened;
 	
-	private Food food;
+	private SubFood subFood;
 	
 	private CurrentSelectedAlimentPanel left;
 	private SelectNewAlimentPanel right;
 	
 	private IDoAction afterUpdate;
 
-	public UpdateFoodFrame(GenericJFrame callerFrame, Food food, IDoAction afterUpdate) {
+	public UpdateSubFoodFrame(GenericJFrame callerFrame, SubFood subFood, IDoAction afterUpdate) {
 		super(callerFrame, null);
-		this.food = food;
+		this.subFood = subFood;
 		this.afterUpdate = afterUpdate;
 		initialize();
 		setBounds(100, 100, 883, 462);
@@ -43,7 +43,7 @@ public class UpdateFoodFrame extends SubFrame implements GeneralVisualSettings {
 
 	private void initialize() {
 		GenericJPanel panel = new GenericJPanel().ltGridBag();
-		left = new CurrentSelectedAlimentPanel(this, food.aliment, food.quantity); 
+		left = new CurrentSelectedAlimentPanel(this, subFood.aliment, subFood.quantity); 
 		
 		panel.add(left, panel.gbc.fill("BOTH").wgt(0.5, 1.0));
 		
@@ -66,7 +66,7 @@ public class UpdateFoodFrame extends SubFrame implements GeneralVisualSettings {
 				QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Nenhum alimento selecionado.", "No aliment selected.").get());
 			} else {
 				try {
-					if(FoodController.updateFoodAliment(food, right.getSelectedAliment())) {
+					if(SubFoodController.updateSubFoodAliment(subFood, right.getSelectedAliment())) {
 						if(afterUpdate != null) afterUpdate.execute();
 						QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Alimento atualizado!", "Food updated!").get());
 						dispose();

@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import utils.view.LanguageUtil;
 import view.components.QuestNutriJOP;
 import view.components.forms.FormBoxInput;
 
@@ -208,13 +209,15 @@ public class Validate {
     	ArrayList<FormBoxInput> wrongFields = FormBoxInput.validateFields(fields);
     	
     	if(wrongFields.size() > 0) {
-        	String errorMsg = "Não foi possível salvar pois existem campos inválidos.\n\n";
-        	
+    		String errorMsg = new LanguageUtil(
+    			    "Não foi possível salvar pois existem campos inválidos.\n\n", 
+    			    "Unable to save because there are invalid fields.\n\n"
+    			).get();        	
         	for(FormBoxInput wrong: wrongFields) {
         		errorMsg += wrong.getErrorText()+"\n";
         	}
         	
-        	QuestNutriJOP.showMessageDialog(null, errorMsg, "Impossível salvar", 1, null);
+        	QuestNutriJOP.showMessageDialog(null, errorMsg, new LanguageUtil("Impossível salvar", "Unable to save").get(), 1, null);
         	return false;
     	}
     	
