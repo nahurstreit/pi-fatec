@@ -35,6 +35,13 @@ public class FormBoxInput extends GenericComponent {
 	
 	private int spinnerValue;
 	
+	public interface ValueChangedListener {
+	    void valueChanged(String newValue);
+	}
+	
+	private ValueChangedListener valueChangedListener;
+
+	
 	public FormBoxInput(GenericJPanel ownerPanel) {
 		super(ownerPanel);
 		ltGridBag();
@@ -296,18 +303,25 @@ public class FormBoxInput extends GenericComponent {
 	 * @return Retorna o próprio objeto para implementar fluent interface.
 	 */
 	public FormBoxInput setValue(String text) {
-		if(text != null) {
-			try {
-				if(text.equalsIgnoreCase("null")) return this;
-				if(tfInput != null) tfInput.setInitialValue(text);
-				if(cbInput != null) cbInput.setSelectedItem(text);
-				if(spinnerInput != null) spinnerInput.setValue(Integer.parseInt(text));
-			} catch (Exception e) {
-
-			}
-		}
-		return this;
-	}
+        if(text != null) {
+            try {
+            	if(text.equalsIgnoreCase("null")) return this;
+                if(tfInput != null) tfInput.setInitialValue(text);
+                if(cbInput != null) cbInput.setSelectedItem(text);
+                if(spinnerInput != null) {
+                    spinnerInput.setValue(Integer.parseInt(text));
+                }
+                if(valueChangedListener != null) {
+                	notifyValueChanged(text);
+                }
+                // Adicionar notificação para cbInput também, se necessário
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        return this;
+    }
 	
 
 	/**
@@ -398,7 +412,6 @@ public class FormBoxInput extends GenericComponent {
 				response = "00";
 			}
 		} else {
-		
 			response = null;
 		}
 		
@@ -421,5 +434,16 @@ public class FormBoxInput extends GenericComponent {
 		
 		return wrongFields;
 	}
+	
+	public FormBoxInput setValueChangedListener(ValueChangedListener listener) {
+        this.valueChangedListener = listener;
+        return this;
+    }
+	
+	private void notifyValueChanged(String newValue) {
+        if(valueChangedListener != null) {
+            valueChangedListener.valueChanged(newValue);
+        }
+    }
 		
 }

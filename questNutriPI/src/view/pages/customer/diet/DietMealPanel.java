@@ -2,6 +2,8 @@ package view.pages.customer.diet;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JLabel;
 
@@ -39,7 +41,19 @@ public class DietMealPanel extends GenericJPanel {
     private JLabel lblMealKcal;
     private StdButton expandOptBtn;
     
+    //Labels dos macronutrientes
+    private JLabel lblCarbMacro;
+    private JLabel lblProteinMacro;
+    private JLabel lblFatMacro;
+    
+    private final String CARB_MACRO_LBL;
+    private final String PROTEIN_MACRO_LBL;
+    private final String FAT_MACRO_LBL;
+    
+    private GenericJPanel macroPanel = new GenericJPanel().ltGridBag();
+    
     private GenericJPanel foodsPanel = new GenericJPanel().ltGridBag();
+    private List<DietFoodPanel> foodCards;
     
     private DaySelectionPanel daysPanel;
     
@@ -51,7 +65,10 @@ public class DietMealPanel extends GenericJPanel {
     private StdButton saveBtn;
     private StdButton deleteBtn;
     private StdButton addFoodBtn;
+    
     private StdButton copyMealBtn;
+    
+    private double[] mealMacro;
 
     public DietMealPanel(DietDayPanel dayPanel, Meal meal) {
     	super(dayPanel);
@@ -93,6 +110,28 @@ public class DietMealPanel extends GenericJPanel {
     	
         placeLabels();
         
+        CARB_MACRO_LBL = new LanguageUtil("Carboidratos: ", "Carb: ").get();
+        PROTEIN_MACRO_LBL = new LanguageUtil("Proteínas: ", "Protein: ").get();
+        FAT_MACRO_LBL = new LanguageUtil("Gorduras: ", "Fat: ").get();
+        
+        lblCarbMacro = new JLabel("", JLabel.CENTER);
+        lblCarbMacro.setFont(STD_BOLD_FONT.deriveFont(12f));
+        lblCarbMacro.setForeground(STD_BLUE_COLOR);
+        
+        lblProteinMacro = new JLabel("", JLabel.CENTER);
+        lblProteinMacro.setFont(STD_BOLD_FONT.deriveFont(12f));
+        lblProteinMacro.setForeground(STD_BLUE_COLOR);
+        
+        lblFatMacro = new JLabel("", JLabel.CENTER);
+        lblFatMacro.setFont(STD_BOLD_FONT.deriveFont(12f));
+        lblFatMacro.setForeground(STD_BLUE_COLOR);
+        
+        macroPanel.add(lblCarbMacro, macroPanel.gbc.grid(0).anchor("CENTER").wgt(1.0).fill("BOTH"));
+        macroPanel.add(lblProteinMacro, macroPanel.gbc.xP());
+        macroPanel.add(lblFatMacro, macroPanel.gbc.xP());
+        
+        macroPanel.setBackground(infoBox.getBackground());
+        
         this.add(infoBox, gbc.fill("BOTH").wgt(1.0).grid(0));
         
         if (!((meal.daysOfWeek & this.dayPanel.weekDay) == this.dayPanel.weekDay)) {
@@ -122,6 +161,7 @@ public class DietMealPanel extends GenericJPanel {
     	dayPanel.callUpdate();
     	insertFoods();
     	updateMealKcal();
+    	updateMealMacro();
     	dayPanel.refresh();
     	this.refresh();
     }
@@ -133,6 +173,7 @@ public class DietMealPanel extends GenericJPanel {
     	placeDaysInfo();
         removeLabels();
         placeInputs();
+        updateMealMacro();
         this.add(foodsPanel, gbc.yP().fill("BOTH").wgt(1.0)); //Adicionando o painel de Meals
         this.refresh();
         dayPanel.refresh();
@@ -195,7 +236,17 @@ public class DietMealPanel extends GenericJPanel {
         infoBox.add(timeBox, infoBox.gbc.grid(1, 0).fill("BOTH").wgt(1.0).anchor("CENTER"));
         
         infoBox.add(lateralRBox, infoBox.gbc.grid(2, 0).fill("BOTH").wgt(1.0).anchor("CENTER").insets(0, 10));
-        infoBox.gbc.insets(); //Resetando o insets do gbc
+        
+        infoBox.add(macroPanel, infoBox.gbc.grid(0, 1).fill("BOTH").wgt(1.0).width("REMAINDER").insets(10));
+        
+        infoBox.gbc.insets().width(1); //Resetando o insets do gbc
+    }
+    
+    private void updateMealMacro() {
+    	mealMacro = FoodUtil.calculateMacronutrients(meal);
+        lblCarbMacro.setText(CARB_MACRO_LBL+String.format("%.2f", mealMacro[0]));
+        lblProteinMacro.setText(PROTEIN_MACRO_LBL+String.format("%.2f", mealMacro[1]));
+        lblFatMacro.setText(FAT_MACRO_LBL+String.format("%.2f", mealMacro[2]));
     }
     
     public void removeInputs() {
@@ -209,6 +260,10 @@ public class DietMealPanel extends GenericJPanel {
     	
     	try {
     		infoBox.remove(lateralRBox);
+		} catch (Exception e) {}
+    	
+    	try {
+    		infoBox.remove(macroPanel);
 		} catch (Exception e) {}
     	
     }
@@ -229,14 +284,19 @@ public class DietMealPanel extends GenericJPanel {
     public void insertFoods() {
     	try {
 			foodsPanel.removeAll();
+			foodCards = new ArrayList<DietFoodPanel>();
 		} catch (Exception e) {}
     		foodsPanel.gbc.fill("BOTH").wgt(1.0).anchor("NORTHWEST").grid(0).insets(10);
     		try {
     	   		for(Food food: meal.getFoods()) {
-    	    		foodsPanel.add(new DietFoodPanel(this, food), foodsPanel.gbc);
+    	   			DietFoodPanel f = new DietFoodPanel(this, food);
+    	   			foodCards.add(f);
+    	   			foodsPanel.add(f, foodsPanel.gbc);
     	    		foodsPanel.gbc.yP();
         		}
-			} catch (Exception e) {}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
  
     }
     
@@ -320,6 +380,12 @@ public class DietMealPanel extends GenericJPanel {
 		} catch (Exception e) {
 		
 		}
+    }
+    
+    public void forceSaveFoods() {
+    	for(DietFoodPanel foodCard: foodCards) {
+    		foodCard.saveThis();
+    	}
     }
  
 }

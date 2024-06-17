@@ -100,6 +100,7 @@ public class DietDayPanel extends GenericJPanel {
 	        //Força a revalidação e a repintura do painel
 	        revalidate();
 	        repaint();
+	        rollTo(null);
 	        
 	    } catch (Exception e) {
 	        QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Não foi possível criar uma nova refeição.", "Unable to create new meal.").get());
@@ -149,11 +150,16 @@ public class DietDayPanel extends GenericJPanel {
  	
 	public double calculateDayKcal() {
 		double total = 0.0;
-		for(Meal meal: meals) {
-			if((meal.daysOfWeek & weekDay) == weekDay) {
-				total += FoodUtil.calculateMealKcal(meal);
+		try {
+			for(Meal meal: meals) {
+				if((meal.daysOfWeek & weekDay) == weekDay) {
+					total += FoodUtil.calculateMealKcal(meal);
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+
 		
 		return total;
 	}
@@ -162,6 +168,7 @@ public class DietDayPanel extends GenericJPanel {
 		try {
 			kcalLbl.setText(String.format("%.2f", calculateDayKcal()) + " kcal");
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -254,6 +261,7 @@ public class DietDayPanel extends GenericJPanel {
         this.add(mealsGeneralPanel, gbc.wgt(1.0).fill("BOTH").grid(0, 2).insets());
 		this.dietWeekPanel.swapFocus(null);
 		this.dietWeekPanel.updateMeals(null);
+		updateDayKcal();
 	}
 	
 	private void nameBoxOnFocus() {
@@ -307,7 +315,12 @@ public class DietDayPanel extends GenericJPanel {
 	}
 	
 	public void rollTo(DietMealPanel mealPanel) {
-        mealsScrollPane.getVerticalScrollBar().setValue(mealPanel.getY());
+		if(mealPanel != null) {
+			mealsScrollPane.getVerticalScrollBar().setValue(mealPanel.getY());
+		} else {
+			mealsScrollPane.getVerticalScrollBar().setValue(0);
+		}
+        
         mealsScrollPane.revalidate();
         mealsScrollPane.repaint();
         refresh();

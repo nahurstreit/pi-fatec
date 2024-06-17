@@ -38,8 +38,12 @@ public class GenericJFrame extends JFrame implements IAssetsLoad {
 	}
 	
 	public GenericJFrame setCallerFrame(GenericJFrame frame) {
-		this.callerFrame = frame;
-		callerFrame.addStackFrame(this);
+		try {
+			this.callerFrame = frame;
+			callerFrame.addStackFrame(this);
+		} catch (Exception e) {
+		}
+
 		return this;
 	}
 	

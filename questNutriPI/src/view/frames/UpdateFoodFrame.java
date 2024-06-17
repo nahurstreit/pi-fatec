@@ -12,6 +12,7 @@ import view.components.QuestNutriJOP;
 import view.components.buttons.StdButton;
 import view.components.generics.GenericJFrame;
 import view.components.generics.GenericJPanel;
+import view.components.utils.IDoAction;
 import view.pages.customer.diet.DietMealPanel;
 import view.pages.customer.diet.food.CurrentSelectedAlimentPanel;
 import view.pages.customer.diet.food.SelectNewAlimentPanel;
@@ -26,12 +27,12 @@ public class UpdateFoodFrame extends SubFrame implements GeneralVisualSettings {
 	private CurrentSelectedAlimentPanel left;
 	private SelectNewAlimentPanel right;
 	
-	private DietMealPanel panelUpdate;
+	private IDoAction afterUpdate;
 
-	public UpdateFoodFrame(GenericJFrame callerFrame, Food food, DietMealPanel panelUpdate) {
+	public UpdateFoodFrame(GenericJFrame callerFrame, Food food, IDoAction afterUpdate) {
 		super(callerFrame, null);
 		this.food = food;
-		this.panelUpdate = panelUpdate;
+		this.afterUpdate = afterUpdate;
 		initialize();
 		setBounds(100, 100, 883, 462);
 		setResizable(false);
@@ -65,13 +66,18 @@ public class UpdateFoodFrame extends SubFrame implements GeneralVisualSettings {
 			if(right.getSelectedAliment() == null) {
 				QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Nenhum alimento selecionado.", "No aliment selected.").get());
 			} else {
-				if(FoodController.updateFoodAliment(food, right.getSelectedAliment())) {
-					panelUpdate.foodWasUpdated();
-					QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Alimento atualizado!", "Food updated!").get());
-					dispose();
-				} else {
-					QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Não foi possível atualizar.", "Food update have failed.").get());
-				};
+				try {
+					if(FoodController.updateFoodAliment(food, right.getSelectedAliment())) {
+						if(afterUpdate != null) afterUpdate.execute();
+						QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Alimento atualizado!", "Food updated!").get());
+						System.out.println(food);
+						dispose();
+					} else {
+						QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Não foi possível atualizar.", "Food update have failed.").get());
+					};
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		

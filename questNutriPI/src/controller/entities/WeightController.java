@@ -28,7 +28,7 @@ public class WeightController implements GeneralVisualSettings {
 		
 		String choice = QuestNutriJOP.showInputDialog(null, 
 				"Você está tentando excluir o peso: \nPeso (em kg):" + wgt.value + " - Registrado em: "+wgt.getRegisterDate()+"."
-                + "\nEssa ação é IRREVERS�?VEL. Digite '"+STD_DELETE_STRING+"' para deletar o registro.");
+                + "\nEssa ação é IRREVERSIVEL. Digite '"+STD_DELETE_STRING+"' para deletar o registro.");
 		
 		if(choice != null) {
 			if(!choice.isBlank()) {
@@ -53,7 +53,7 @@ public class WeightController implements GeneralVisualSettings {
 		}
 		
 		if(value != null) {
-			updateInput.setValue(value + "");
+			updateInput.setValue(value + "kg");
 		} else {
 			updateInput.setValue("Nenhum registro.");
 		}

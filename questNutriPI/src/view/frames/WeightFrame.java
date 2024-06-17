@@ -71,7 +71,7 @@ public class WeightFrame extends SubFrame {
 													   new ValidationRule(
 															   value -> {
 																   try {
-																		Double.parseDouble(value);
+																		Double.parseDouble(value.replace(',', '.'));
 																		return true;
 																	} catch (Exception e) {
 																		return false;
@@ -92,7 +92,7 @@ public class WeightFrame extends SubFrame {
 		StdButton addNew = StdButton.stdBtnConfig(new LanguageUtil("Registrar", "Register").get());
 		addNew.setAction(() -> {
 			if(Validate.formFields(wgtValue)) {
-				Weight wgt = new Weight(customer, Double.parseDouble(wgtValue.getValue()));
+				Weight wgt = new Weight(customer, Double.parseDouble(wgtValue.getValue().replace(',', '.')));
 				try {
 					if(wgt.save()) {
 						framePanel.remove(weightList);

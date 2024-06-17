@@ -8,6 +8,7 @@ import model.entities.Meal;
 import utils.view.LanguageUtil;
 import view.components.QuestNutriJOP;
 import view.components.generics.GenericJFrame;
+import view.components.utils.IDoAction;
 import view.frames.NewFoodFrame;
 import view.frames.UpdateFoodFrame;
 import view.pages.customer.diet.DietMealPanel;
@@ -19,23 +20,16 @@ public class FoodController {
 		foodFrame.setVisible(true);
 	}
 	
-	public static void openFoodUpdate(GenericJFrame callerFrame, Food food, DietMealPanel onUpdate) {
-		UpdateFoodFrame frame = new UpdateFoodFrame(callerFrame, food, onUpdate);
+	public static void openFoodUpdate(GenericJFrame callerFrame, Food food, IDoAction afterUpdate) {
+		UpdateFoodFrame frame = new UpdateFoodFrame(callerFrame, food, afterUpdate);
 		frame.setVisible(true);
 	}
 	
 	public static boolean updateFoodAliment(Food food, Aliment aliment) {
 		boolean res = true;
 		try {
-			if(food.getCreationDate() != LocalDate.now()) { //Se a data de criação for igual a data de hoje, não há a necessidade de histórico, portanto a food será apenas atualizada.
-				Food updated = Food.createCopyFrom(food);
-				food.delete();
-				updated.aliment = aliment;
-				updated.save();
-			} else {
-				food.aliment = aliment;
-				food.save();
-			}
+			food.aliment = aliment;
+			res = food.save();
 		} catch (Exception e) {
 			e.printStackTrace();
 			res = false;

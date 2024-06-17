@@ -14,7 +14,7 @@ import view.components.forms.FormSection;
 import view.components.generics.GenericJPanel;
 import view.pages.generics.GenericFormPage;
 
-public class CustomerFormPage extends GenericFormPage {
+public class CustomerFormPage extends GenericFormPage implements CustomerFieldRules {
 	private static final long serialVersionUID = 1L;
 	protected Customer customer;
 
@@ -78,6 +78,17 @@ public class CustomerFormPage extends GenericFormPage {
 		});
 		
 		return saveBtn;
+	}
+	
+	protected ValidationRule strSizeBetween(int min, int max) {
+		return new ValidationRule(value -> {
+			if(value.length() != 0) {
+				return value.length() >= min && value.length() <= max;
+			} else {
+				return true;
+			}
+			
+		} , new LanguageUtil("Campo precisa ter entre "+min+ " e "+max+".", "Field size must be between "+min+ " and "+max+".").get());
 	}
 	
 	protected FormSection personalInfo() {
@@ -228,7 +239,8 @@ public class CustomerFormPage extends GenericFormPage {
 	protected FormSection contactInfo() {
 		email = new FormBoxInput(this).setLbl("E-mail")
 								      .setValue(customer.email)
-								      .setRequired();
+								      .setRequired()
+								      .addValidation(strSizeBetween(MIN_SIZE_EMAIL, MAX_SIZE_EMAIL));
 		
 		phoneNumber = new FormBoxInput(this).setLbl(new LanguageUtil("Telefone", "Phone Number").get())
 										 	.setMask("(##) # ####-####", text -> {
@@ -251,7 +263,8 @@ public class CustomerFormPage extends GenericFormPage {
 										 			new ValidationRule(
 															  value -> {
 																  return !Validate.hasChar(value, '(', ')', '-');
-		                                                      }, new LanguageUtil("Não é permitido ter letras!", "Letters are not allowed!").get()))
+		                                                      }, new LanguageUtil("Não é permitido ter letras!", "Letters are not allowed!").get()),
+										 			strSizeBetween(MIN_SIZE_PHONE, MAX_SIZE_PHONE))
 										 	.setRequired();
 		
 		//Criando o form de informações de contato
