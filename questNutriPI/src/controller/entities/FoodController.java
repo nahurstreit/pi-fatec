@@ -1,7 +1,5 @@
 package controller.entities;
 
-import java.time.LocalDate;
-
 import model.entities.Aliment;
 import model.entities.Food;
 import model.entities.Meal;
@@ -9,6 +7,7 @@ import utils.view.LanguageUtil;
 import view.components.QuestNutriJOP;
 import view.components.generics.GenericJFrame;
 import view.components.utils.IDoAction;
+import view.frames.FoodInfoFrame;
 import view.frames.NewFoodFrame;
 import view.frames.UpdateFoodFrame;
 import view.pages.customer.diet.DietMealPanel;
@@ -41,21 +40,11 @@ public class FoodController {
 	public static boolean updateFoodInfo(Food food, String unityQt, String quantity) {
 		boolean res = true;
 		try {
-			if(food.getCreationDate() != LocalDate.now()) { //Se a data de criação for igual a data de hoje, não há a necessidade de histórico, portanto a food será apenas atualizada.
-				Food updated = Food.createCopyFrom(food);
-				food.delete();
-				updated.setUnityQt(unityQt);
-				try {
-					updated.setQuantity(Double.parseDouble(quantity));
-				} catch (Exception e) {}
-				updated.save();
-			} else {
-				food.setUnityQt(unityQt);
-				try {
-					food.setQuantity(Double.parseDouble(quantity));
-				} catch (Exception e) {}
-				food.save();
-			}
+			food.setUnityQt(unityQt);
+			try {
+				food.setQuantity(Double.parseDouble(quantity.replace(',', '.')));
+			} catch (Exception e) {}
+			food.save();
 		} catch (Exception e) {
 			e.printStackTrace();
 			res = false;
@@ -80,6 +69,11 @@ public class FoodController {
 		}
 
 		return res;
+	}
+	
+	public static void openFoodInfo(GenericJFrame callerFrame, Food food, IDoAction afterUpdate) {
+		FoodInfoFrame f = new FoodInfoFrame(callerFrame, food, afterUpdate);
+		f.setVisible(true);
 	}
 	
 }

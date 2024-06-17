@@ -43,9 +43,6 @@ public class Meal extends MealDAO implements ICopy<Meal> {
     @Temporal(TemporalType.TIME)
     public Time hour;
 
-	@Column(name = "meal_obs")
-	public String obs;
-
 	@Column(name = "meal_createdAt")
 	private LocalDateTime createdAt;
 
@@ -62,13 +59,12 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 	 * @param hour - hora de acontecimento da refeição
 	 * @param obs - observação sobre a refeição.
 	 */
-	public Meal(Customer customer, String name, Integer daysOfWeek, String hour, String ...obs) {
+	public Meal(Customer customer, String name, Integer daysOfWeek, String hour) {
 		super();
 		this.customer = customer;
 		this.name = name;
 		this.daysOfWeek = daysOfWeek;
 		this.hour = (hour != null) ? formatHour(hour) : null;
-		this.obs = obs.length > 0 ? obs[0] : null;
 	}
 	
 	/**
@@ -79,8 +75,8 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 	 * @param hour - hora de acontecimento da refeição
 	 * @param obs - observação sobre a refeição.
 	 */
-	public Meal(String name, Integer daysOfWeek, String hour, String ...obs) {
-		this(null, name, daysOfWeek, hour, obs);
+	public Meal(String name, Integer daysOfWeek, String hour) {
+		this(null, name, daysOfWeek, hour);
 	}
 
 	public Meal() {
@@ -211,7 +207,6 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 			this.name = originObject.name;
 			this.daysOfWeek = originObject.daysOfWeek;
 			this.hour = originObject.hour;
-			this.obs = originObject.obs;
 			
 			this.save();
 			
@@ -233,7 +228,6 @@ public class Meal extends MealDAO implements ICopy<Meal> {
         	destinyObject.name = this.name;
         	destinyObject.daysOfWeek = this.daysOfWeek;
         	destinyObject.hour = this.hour;
-        	destinyObject.obs = this.obs;
         	
         	if(destinyObject.idMeal == null) destinyObject.save();
         	
@@ -290,7 +284,6 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 				+ "\n    name: " + name + ", "
 				+ "\n    active: " + (deactivatedAt == null? false: true) + ","
 				+ "\n    hour: " + hour + ", "
-				+ "\n    obs: " + (obs != null? "\""+obs+"\"":  obs) +  ", "
 				+ "\n    createdAt: " + createdAt + ", "
 				+ "\n    deactivatedAt: "+ deactivatedAt
 				+ "\n}";

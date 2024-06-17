@@ -38,7 +38,7 @@ public class DietFoodPanel extends GenericJPanel {
 		lblAliName = new ActionLbl(food.aliment.name).setUpFont(STD_BOLD_FONT.deriveFont(12f))
 													 .setUpColor(STD_WHITE_COLOR)
 													 .setNewAction(() -> {
-														 FoodController.openFoodUpdate(getCallerFrame(), this.food, ownerPanel::foodWasUpdated);
+														 FoodController.openFoodInfo(getCallerFrame(), food, ownerPanel::foodWasUpdated);
 													 });
 		lblAliName.setPreferredSize(new Dimension(100, 75));
 		
@@ -48,7 +48,6 @@ public class DietFoodPanel extends GenericJPanel {
 											  .setLateralDistance(null, 0)
 											  .setValueChangedListener(value -> {
 											        unsavedChanges = true;
-											        System.out.println(unsavedChanges); // Debug para verificar se o listener está sendo invocado corretamente
 											    });
 		
 		unityQtInput = new FormBoxInput(this).setLbl(new LanguageUtil("Unidade de Medida", "Measure Unity").get(), 8f)

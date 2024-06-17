@@ -30,6 +30,7 @@ public class FormBoxInput extends GenericComponent {
 	private JComboBox<String> cbInput;
 	private JSpinner spinnerInput;
 	private StdButton button;
+	private JLabel centralTitle;
 	
 	private boolean required;
 	
@@ -45,7 +46,6 @@ public class FormBoxInput extends GenericComponent {
 	private int rightDistance;
 	private int btnDistance;
 	private double btnWgt;
-	
 
 	private int spinnerValue;
 	
@@ -102,9 +102,9 @@ public class FormBoxInput extends GenericComponent {
 		this.add(label, gbc.fill("BOTH").grid(0).insets(upperDistance, leftDistance, 0, rightDistance).anchor("WEST").width("REMAINDER"));
 		
 		if(button != null) {
-			gbc.yP().insets(0, leftDistance, 0, btnDistance).wgt((1.0 - btnWgt), 0).width(1);
+			gbc.yP().insets(0, leftDistance, 0, btnDistance).wgt((1.0 - btnWgt), 0).width(1); //Se o botão existir, aplica uma configuração diferente.
 		} else {
-			gbc.yP().insets(0, leftDistance, 0, rightDistance).wgt(1.0, 0).width(1);
+			gbc.yP().insets(0, leftDistance, 0, rightDistance).wgt(1.0, 0);
 		}
 		
 		try {
@@ -116,13 +116,22 @@ public class FormBoxInput extends GenericComponent {
 				try {
 					this.add(spinnerInput, gbc);
 				} catch (Exception e3) {
-					e3.printStackTrace();
+					try {
+						this.add(centralTitle, gbc);
+					} catch (Exception e4) {}
+					
 				}
 			}
 		}
 		
 		if(button != null) {
-			this.add(button, gbc.wgt(btnWgt, 0).xP().insets(0, 0, 0, rightDistance));
+			if(tfInput != null || cbInput != null || spinnerInput != null) { //Se algum dos outros inputs ainda existirem, o botão será posicionado ao lado.
+				gbc.wgt(btnWgt, 0).grid(1).insets(0, 0, 0, rightDistance).width(1);
+			} else {
+				gbc.wgt(1.0, 0).grid(0, 1).insets(0, leftDistance, 0, rightDistance);
+			}
+			
+			this.add(button, gbc);
 			gbc.gridX(0);
 		}
 
@@ -133,7 +142,6 @@ public class FormBoxInput extends GenericComponent {
 		return label.getText();
 	}
 	
-	
 	public FormBoxInput setUpperDistance(int distance) {
 		upperDistance = distance;
 		return this;
@@ -141,6 +149,16 @@ public class FormBoxInput extends GenericComponent {
 	
 	public FormBoxInput setLowerDistance(int distance) {
 		lowerDistance = distance;
+		return this;
+	}
+	
+	public FormBoxInput setRightDistance(int distance) {
+		rightDistance = distance;
+		return this;
+	}
+	
+	public FormBoxInput setLeftDistance(int distance) {
+		leftDistance = distance;
 		return this;
 	}
 	
@@ -238,28 +256,6 @@ public class FormBoxInput extends GenericComponent {
 		return this;
 	}
 	
-	
-	public FormBoxInput setSpinnerInput(int initalValue, int min, int max, int step) {
-		spinnerInput = new JSpinner();
-		spinnerInput.setEditor(new JSpinner.NumberEditor(spinnerInput, "00")); //Formato para dois dígitos
-		spinnerInput.setModel(new SpinnerNumberModel(initalValue, min, max, step));
-		spinnerInput.setFont(STD_REGULAR_FONT);
-		if(tfInput != null) {
-			this.remove(tfInput);
-			tfInput = null;
-		}
-		if(cbInput != null) {
-			this.remove(cbInput);
-			cbInput = null;
-		}
-		
-	    spinnerInput.addChangeListener(e -> {
-	    	spinnerValue = (int) spinnerInput.getValue();
-	    });
-		
-		return this;
-	}
-	
 	public FormBoxInput setComboFont(Font selectedItem, Font dropBoxItems) {
 		try {
 			 //Personalizando a fonte no item selecionado
@@ -285,6 +281,28 @@ public class FormBoxInput extends GenericComponent {
 		return setComboFont(font, font);
 	}
 	
+	
+	public FormBoxInput setSpinnerInput(int initalValue, int min, int max, int step) {
+		spinnerInput = new JSpinner();
+		spinnerInput.setEditor(new JSpinner.NumberEditor(spinnerInput, "00")); //Formato para dois dígitos
+		spinnerInput.setModel(new SpinnerNumberModel(initalValue, min, max, step));
+		spinnerInput.setFont(STD_REGULAR_FONT);
+		if(tfInput != null) {
+			this.remove(tfInput);
+			tfInput = null;
+		}
+		if(cbInput != null) {
+			this.remove(cbInput);
+			cbInput = null;
+		}
+		
+	    spinnerInput.addChangeListener(e -> {
+	    	spinnerValue = (int) spinnerInput.getValue();
+	    });
+		
+		return this;
+	}
+	
 	/**
 	 * Adiciona um botão ao box input.
 	 * @param button - Objeto de StdButton para ser adicionado.
@@ -294,18 +312,9 @@ public class FormBoxInput extends GenericComponent {
 	public FormBoxInput setButtonBox(StdButton button, boolean keepInput) {
 		if(!keepInput) {
 			try {
-				if(tfInput != null) {
-					this.remove(tfInput);
-					tfInput = null;
-				}
-				if(cbInput != null) {
-					this.remove(cbInput);
-					cbInput = null;
-				}
-				if(spinnerInput != null) {
-					this.remove(spinnerInput);
-					spinnerInput = null;
-				}
+				tfInput = null;
+				cbInput = null;
+				spinnerInput = null;
 			} catch (Exception e) {
 				
 			}
@@ -316,6 +325,28 @@ public class FormBoxInput extends GenericComponent {
 		return this;
 	}
 	
+	public FormBoxInput setCentralTitle(String text, boolean center, Font font) {
+		try {
+			tfInput = null;
+			cbInput = null;
+			spinnerInput = null;
+			button = null;
+		} catch (Exception e) {
+		}
+		
+		centralTitle = new JLabel();
+		
+		if(center) {
+			centralTitle = new JLabel(text, JLabel.CENTER);
+		} else {
+			centralTitle = new JLabel(text);
+		}
+		centralTitle.setFont(font);
+		
+		return this;
+		
+	}
+	
 	/**
 	 * Método para definir a label de exibição do Box.
 	 * @param text - Texto da label
@@ -323,6 +354,12 @@ public class FormBoxInput extends GenericComponent {
 	 */
 	public FormBoxInput setLbl(String text) {
 		label.setText(text);
+		return this;
+	}
+	
+	public FormBoxInput setLbl(String text, Font font) {
+		label.setText(text);
+		label.setFont(font);
 		return this;
 	}
 	
@@ -391,6 +428,7 @@ public class FormBoxInput extends GenericComponent {
                 if(spinnerInput != null) {
                     spinnerInput.setValue(Integer.parseInt(text));
                 }
+                if(centralTitle != null) centralTitle.setText(text);
                 if(valueChangedListener != null) {
                 	notifyValueChanged(text);
                 }

@@ -32,6 +32,9 @@ public class FormSection extends GenericComponent {
     private int nameUpperDistance = 5;
     private int nameLowerDistance = 5;
     
+    private Integer fieldLeftDistance = null;
+    private Integer fieldRightDistance = null;
+    
     private boolean showRequiredLbl;
     
     private boolean hideBorder = false;
@@ -163,6 +166,13 @@ public class FormSection extends GenericComponent {
     	this.hideBorder = true;
     	return this;
     }
+    
+    public FormSection setAllFieldsLateralDistance(Integer left, Integer right) {
+    	if(left != null) fieldLeftDistance = left;
+    	if(right != null) fieldRightDistance = right;
+    	
+    	return this;
+    }
 
     /**
      * Método de inicialização visual do FormSection.
@@ -217,6 +227,8 @@ public class FormSection extends GenericComponent {
             rowPanel.gbc.grid(0).fill("BOTH").wgt(1.0).anchor("WEST"); //Layout inicial DA LINHA
             rowPanel.setPreferredSize(new Dimension(50, 75));
             for(FormBoxInput box: rows.get(i)) {
+            	if(fieldLeftDistance != null) box.setLeftDistance(fieldLeftDistance);
+            	if(fieldRightDistance != null) box.setRightDistance(fieldRightDistance);
             	box.init();
             	if(internalColor != null) box.setBackground(internalColor);
             	box.setPreferredSize(new Dimension(10, 10));

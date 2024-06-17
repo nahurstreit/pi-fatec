@@ -37,9 +37,6 @@ public class Food extends FoodDAO implements ICopy<Food> {
 
 	    @Column(name = "food_unityQt")
 	    public String unityQt;
-
-	    @Column(name = "food_obs")
-	    public String obs;
 	    
 		@Column(name = "food_createdAt")
 		private LocalDateTime createdAt;
@@ -56,17 +53,16 @@ public class Food extends FoodDAO implements ICopy<Food> {
 	 * @param unityQt Recebe a unidade dessa Comida
 	 * @param obs Recebe as observações/anotações dessa Comida
 	 */
-    public Food(Meal meal, Aliment aliment, Double quantity, String unityQt, String obs) {
+    public Food(Meal meal, Aliment aliment, Double quantity, String unityQt) {
     	super();
         this.meal = meal;
         this.aliment = aliment;
         this.quantity = quantity;
         this.unityQt = unityQt;
-        this.obs = obs;
     }
     
     public Food() {
-    	this(null, null, null, null, null);
+    	this(null, null, null, null);
     }
     
     @Override
@@ -148,7 +144,6 @@ public class Food extends FoodDAO implements ICopy<Food> {
         	this.aliment = originObject.aliment;
         	this.quantity = originObject.quantity;
         	this.unityQt = originObject.unityQt;
-        	this.obs = originObject.obs;
         	
         	this.save();
         	
@@ -169,7 +164,6 @@ public class Food extends FoodDAO implements ICopy<Food> {
         	destinyObject.aliment = this.aliment;
         	destinyObject.quantity = this.quantity;
         	destinyObject.unityQt = this.unityQt;
-        	destinyObject.obs = this.obs;
         	
         	if(destinyObject.idFood == null) destinyObject.save();
         	
@@ -223,7 +217,6 @@ public class Food extends FoodDAO implements ICopy<Food> {
 				+ "\n    aliment_smallInfo: " + aliment.smallInfo()+","
 				+ "\n    quantity: "+ quantity + ","
 				+ "\n    unityQt: "+unityQt + ","
-				+ "\n    obs: " + (obs != null? "\"" + obs +"\"": obs) 
 				+ "\n}";
     }
     

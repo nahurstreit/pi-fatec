@@ -1,8 +1,12 @@
 package model.utils;
 
+import javax.swing.JOptionPane;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
+import view.components.QuestNutriJOP;
 
 public class HibernateUtil {
 
@@ -17,21 +21,18 @@ public class HibernateUtil {
 	 * SessionFactory
 	 */
 	private static SessionFactory buildSessionFactory() {
-		try {
-			/**
-			 * Cria uma nova instancia de Configuration que recebe as configurações
-			 * definidas no arquivo xml.
-			 */
-			Configuration configuration = new Configuration().configure("model/config/database/hibernate.cfg.xml");
+        try {
+            // Cria uma nova instancia de Configuration que recebe as configurações definidas no arquivo XML
+            Configuration configuration = new Configuration().configure("model/config/database/hibernate.cfg.xml");
 
-			// Após carregar as configurações do Hibernate, retorna a construção da
-			// SessionFactory.
-			return configuration.buildSessionFactory();
-		} catch (Throwable ex) {
-			System.err.println("Initial SessionFactory creation failed." + ex);
-			throw new ExceptionInInitializerError(ex);
-		}
-	}
+            // Após carregar as configurações do Hibernate, retorna a construção da SessionFactory.
+            return configuration.buildSessionFactory();
+        } catch (Throwable e) {
+            // Tratar quaisquer outros erros
+            handleException("Falha na criação inicial da SessionFactory. Verifique se o banco de dados foi criado e está ativo.", e);
+            return null;
+        }
+    }
 
 	/*
 	 * Método público getter para retornar a instância de sessionFactory Ele que vai
@@ -55,4 +56,11 @@ public class HibernateUtil {
 			e.printStackTrace();
 		}
 	}
+	
+	private static void handleException(String message, Throwable ex) {
+        System.err.println(message);
+        ex.printStackTrace();
+        QuestNutriJOP.showMessageDialog(null, message, "Erro", JOptionPane.ERROR_MESSAGE);
+        System.exit(1);
+    }
 }

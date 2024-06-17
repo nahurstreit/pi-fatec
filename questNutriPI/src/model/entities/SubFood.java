@@ -35,9 +35,6 @@ public class SubFood extends SubFoodDAO implements ICopy<SubFood>{
 
     @Column(name = "subFood_unityQt")
     public String unityQt;
-
-    @Column(name = "subFood_obs")
-    public String obs;
     
 	@Column(name = "subFood_createdAt")
 	private LocalDateTime createdAt;
@@ -55,18 +52,17 @@ public class SubFood extends SubFoodDAO implements ICopy<SubFood>{
      * @param unityQt Recebe a Unidade da Comida Substituta
      * @param obs Recebe as Observações da Comida Substituta
      */
-    public SubFood(Integer idSubFood, Food food, Aliment aliment, Double quantity, String unityQt, String obs) {
+    public SubFood(Integer idSubFood, Food food, Aliment aliment, Double quantity, String unityQt) {
         super();
     	this.idSubFood = idSubFood;
         this.food = food;
         this.aliment = aliment;
         this.quantity = quantity;
         this.unityQt = unityQt;
-        this.obs = obs;
     }
 
     public SubFood() {
-    	this(null, null, null, null, null, null);
+    	this(null, null, null, null, null);
     }
     
     @Override
@@ -109,7 +105,6 @@ public class SubFood extends SubFoodDAO implements ICopy<SubFood>{
         	this.aliment = originObject.aliment;
         	this.quantity = originObject.quantity;
         	this.unityQt = originObject.unityQt;
-        	this.obs = originObject.obs;
 		} catch (Exception e) {
 			System.err.println("Não foi possível copiar o objeto.");
 		}
@@ -125,7 +120,6 @@ public class SubFood extends SubFoodDAO implements ICopy<SubFood>{
         	destinyObject.aliment = this.aliment;
         	destinyObject.quantity = this.quantity;
         	destinyObject.unityQt = this.unityQt;
-        	destinyObject.obs = this.obs;
 		} catch (Exception e) {
 			System.err.println("Não foi possível copiar o objeto.");
 			res = false;
@@ -142,7 +136,6 @@ public class SubFood extends SubFoodDAO implements ICopy<SubFood>{
 				+ "\n    aliment_smallInfo: " + aliment.smallInfo()+","
 				+ "\n    quantity: "+ quantity + ","
 				+ "\n    unityQt: "+unityQt + ","
-				+ "\n    obs: " + (obs != null? "\"" + obs +"\"": obs) 
 				+ "\n}";
     }
     

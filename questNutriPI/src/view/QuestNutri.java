@@ -250,8 +250,13 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
     /**
      * Método para inicializar a conexão com o banco de dados.
      */
-    public static void connectDB() {
-        HibernateUtil.getSessionFactory();
+    public static void connectDB() throws Exception {
+    	try {
+    		HibernateUtil.getSessionFactory();
+		} catch (Exception e) {
+	        throw new Exception("Não foi possível conectar ao banco de dados, veja se o banco existe.", e);
+		}
+        
     }
     
     public static void setConnectedUser(User user) {

@@ -1,14 +1,20 @@
 package view.pages.customer.diet;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 
 import model.entities.Meal;
@@ -50,6 +56,8 @@ public class DietDayPanel extends GenericJPanel {
 	private static final int LATERAL_DISTANCE = 10;
 	
 	private DietMealPanel caller = null;
+	
+    private JDialog loadingDialog;
 
 	public DietDayPanel(DietWeekPanel dietWeekPanel, int weekDay, int position) {
 	    super(dietWeekPanel);
@@ -61,6 +69,7 @@ public class DietDayPanel extends GenericJPanel {
 	    
 	    meals = new ArrayList<>();
 	    initializeComponents(); // Chama o método para inicializar os componentes visuais
+	    initializeLoadingDialog();
 	}
 
 	private void initializeComponents() {
@@ -103,6 +112,7 @@ public class DietDayPanel extends GenericJPanel {
 	        rollTo(null);
 	        
 	    } catch (Exception e) {
+	    	e.printStackTrace();
 	        QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Não foi possível criar uma nova refeição.", "Unable to create new meal.").get());
 	    }
 	}
@@ -136,10 +146,36 @@ public class DietDayPanel extends GenericJPanel {
 		return this;
 	}
 	
+	private void initializeLoadingDialog() {
+        loadingDialog = new JDialog((Frame) null, "Carregando", true);
+        JPanel panel = new JPanel(new BorderLayout());
+        JLabel label = new JLabel("Por favor, aguarde...", JLabel.CENTER);
+        panel.add(label, BorderLayout.CENTER);
+        loadingDialog.getContentPane().add(panel);
+        loadingDialog.setSize(200, 100);
+        loadingDialog.setLocationRelativeTo(null);
+    }
+	
 	
 	public void mealWasUpdated(IDoAction ...runAfter) {
-	    dietWeekPanel.updateMeals(this, runAfter);
-	}
+        // Exibe a tela de carregamento
+        SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+
+        SwingWorker<Void, Void> worker = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground() {
+                dietWeekPanel.updateMeals(DietDayPanel.this, runAfter);
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                // Esconde a tela de carregamento
+                loadingDialog.setVisible(false);
+            }
+        };
+        worker.execute();
+    }
 	
 	public void callUpdate() {
 		meals = new ArrayList<Meal>();
@@ -157,7 +193,6 @@ public class DietDayPanel extends GenericJPanel {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 
 		

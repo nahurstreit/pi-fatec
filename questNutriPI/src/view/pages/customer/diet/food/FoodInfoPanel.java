@@ -11,14 +11,16 @@ import model.entities.Food;
 import model.entities.SubFood;
 import utils.FoodUtil;
 import utils.interfaces.ActionFunction;
+import utils.validations.Validate;
 import utils.view.LanguageUtil;
+import view.components.QuestNutriJOP;
 import view.components.buttons.StdButton;
 import view.components.forms.FormBoxInput;
 import view.components.forms.FormSection;
 import view.components.generics.GenericJFrame;
 import view.components.generics.GenericJPanel;
-import view.components.labels.ActionLbl;
 import view.components.tables.AlimentNutritionalTable;
+import view.components.utils.IDoAction;
 import view.pages.generics.GenericPage;
 
 public class FoodInfoPanel extends GenericPage {
@@ -40,31 +42,40 @@ public class FoodInfoPanel extends GenericPage {
     private JSplitPane bottomSplitPane;
     private JSplitPane mainSplitPane;
     
+    private FormBoxInput currentAlimentTitle;
     private FormBoxInput foodQuantityInput;
     private FormBoxInput foodUnityQtInput;
     private FormBoxInput chooseAnotherFoodBtn;
     private FormBoxInput deleteFoodBtn;
     private FormBoxInput saveFoodBtn;
+    
+    private IDoAction afterUpdate;
 
-    public FoodInfoPanel(GenericJPanel ownerPanel, GenericJFrame callerFrame, Food food) {
+    public FoodInfoPanel(GenericJPanel ownerPanel, GenericJFrame callerFrame, Food food, IDoAction afterUpdate) {
         super(ownerPanel);
         setCallerFrame(callerFrame);
         ltGridBag();
         this.food = food;
+        if(afterUpdate != null) {
+        	this.afterUpdate = afterUpdate;
+        } else {
+        	this.afterUpdate = () -> {};
+        }
+        
+        
         
         
         //Lbl do alimento atual da food
         	GenericJPanel foodPanel = new GenericJPanel().ltGridBag();
         
-	        ActionLbl lblFoodInfo = new ActionLbl(food.aliment.name);
-	        lblFoodInfo.setFont(STD_BOLD_FONT.deriveFont(25f));
-	        lblFoodInfo.setNewAction(() -> {
-	            FoodController.openFoodUpdate(callerFrame, food, () -> {
-	                lblFoodInfo.setText(this.food.aliment.name);
-	            });
-	        });
+//	        FoodController.openFoodUpdate(callerFrame, food, () -> {
+//	        	currentAlimentTitle.setValue(this.food.aliment.name);
+//            });
 	        
-	        foodPanel.add(lblFoodInfo, foodPanel.gbc.grid(0).fill("HORIZONTAL").wgt(1.0, 0));
+	        
+	        currentAlimentTitle = new FormBoxInput(this).setLbl(new LanguageUtil("Selecionado atualmente", "Current Selected").get(), STD_REGULAR_FONT.deriveFont(10f))
+	        											.setCentralTitle(food.aliment.name, false, STD_BOLD_FONT.deriveFont(25f));
+	        
 	        
 	        foodQuantityInput = new FormBoxInput(this).setLbl(new LanguageUtil("Quantidade", "Quantity").get(), 8f)
 													  .setValue(food.quantity + "")
@@ -76,24 +87,31 @@ public class FoodInfoPanel extends GenericPage {
 													 .setComboFont(STD_BOLD_FONT.deriveFont(12f));
 	        
 	        chooseAnotherFoodBtn = new FormBoxInput(this).setLbl("")
-	        										  	 .setButtonBox(StdButton.stdBtnConfig("Escolher outro"), false);
+	        										  	 .setButtonBox(StdButton.stdBtnConfig(new LanguageUtil("Escolher Novo Alimento", "Choose New Food").get())
+	        										  			 				.setAction(this::chooseAnotherFood)
+	        										  			 				.setBgColor(STD_STRONG_GRAY_COLOR)
+	        										  			 				, false);
 	        
 	        deleteFoodBtn = new FormBoxInput(this).setLbl("")
-					  						   	  .setButtonBox(StdButton.stdBtnConfig("Deletar"), false);
+					  						   	  .setButtonBox(StdButton.stdBtnConfig(new LanguageUtil("Deletar", "Delete").get())
+					  						   			  				 .setAction(() -> {})
+					  						   			  				 .setBgColor(STD_RED_COLOR), false);
 	        
 	        saveFoodBtn = new FormBoxInput(this).setLbl("")
-				   	  							.setButtonBox(StdButton.stdBtnConfig("Salvar"), false);
+				   	  							.setButtonBox(StdButton.stdBtnConfig(new LanguageUtil("Salvar", "Save").get())
+				   	  									 			   .setAction(this::saveFood), false);
 	        
 			
 			FormSection alimentVariables = new FormSection(this).setInternalColor(STD_WHITE_COLOR)
 												.hideRequiredLbl()
 												.hideBorder()
+												.setAllFieldsLateralDistance(0, null)
+												.addRow(currentAlimentTitle)
+												.addRow(foodQuantityInput, foodUnityQtInput)
+												.addRow(saveFoodBtn)
+												.addRow(chooseAnotherFoodBtn, deleteFoodBtn)
 												.setUpperDistance(0)
 												.setLowerDistance(0)
-												.setLateralDistance(0)
-												.addRow(foodQuantityInput, foodUnityQtInput)
-												.addRow(chooseAnotherFoodBtn, deleteFoodBtn)
-												.addRow(saveFoodBtn)
 												.init();
         
 			foodPanel.add(alimentVariables, foodPanel.gbc.fill("BOTH").wgt(1.0).yP());
@@ -103,12 +121,13 @@ public class FoodInfoPanel extends GenericPage {
 	        currentInfo.setBackground(getBackground());
 	        JLabel lblCurrent = new JLabel(new LanguageUtil("Informações Nutricionais do Alimento Atual", "Current Food Nutritional info").get());
 	        lblCurrent.setFont(STD_BOLD_FONT.deriveFont(13f));
-	        currentInfo.add(lblCurrent, currentInfo.gbc.grid(0).fill("HORIZONTAL").wgt(1.0, 0).insets(0, 0, 10, 0));
+	        currentInfo.add(lblCurrent, currentInfo.gbc.grid(0).fill("HORIZONTAL").wgt(1.0, 0).insets(20, 20, 0, 20));
 	        
 	        currentInfoScroll = new JScrollPane();
-	        currentTable = new JTable(new AlimentNutritionalTable(food.aliment, food.quantity, FoodUtil.calculateTotalNutrients(food.meal)));
+	        currentTable = new JTable();
+	        updateCurrentFoodInfoTable();
 	        currentInfoScroll.setViewportView(currentTable);
-	        currentInfo.add(currentInfoScroll, currentInfo.gbc.yP().fill("BOTH").wgt(1.0).insets());
+	        currentInfo.add(currentInfoScroll, currentInfo.gbc.yP().fill("BOTH").wgt(1.0).insets(5, 20, 20, 20));
         
         
         //ScrollPane de todas as subfoods
@@ -123,14 +142,13 @@ public class FoodInfoPanel extends GenericPage {
         //Painel que reune as infos de subFood + lbl.
 	        JLabel upperLblCurrentViewing = new JLabel(new LanguageUtil("Visualizando atualmente:", "Currently Viewing:").get());
 	        upperLblCurrentViewing.setFont(STD_REGULAR_FONT.deriveFont(10f));
-	        subFoodInfo.add(upperLblCurrentViewing, subFoodInfo.gbc.fill("HORIZONTAL").grid(0).wgt(1.0, 0).insets(0));
-	        
+	        subFoodInfo.add(upperLblCurrentViewing, subFoodInfo.gbc.fill("HORIZONTAL").grid(0).wgt(1.0, 0).insets(20, 20, 0, 20));
 	        
 	        currentViewingSubFood = new JLabel(new LanguageUtil("Nenhum.", "None").get());
 	        currentViewingSubFood.setFont(STD_BOLD_FONT.deriveFont(13f));
-	        subFoodInfo.add(currentViewingSubFood, subFoodInfo.gbc.fill("HORIZONTAL").grid(0, 1).wgt(1.0, 0).insets(0, 0, 10, 0));
+	        subFoodInfo.add(currentViewingSubFood, subFoodInfo.gbc.fill("HORIZONTAL").grid(0, 1).wgt(1.0, 0).insets(0, 20, 0, 20));
 	        
-	        subFoodInfo.add(subFoodInfoScroll, subFoodInfo.gbc.fill("BOTH").yP().wgt(1.0).width("REMAINDER").insets());
+	        subFoodInfo.add(subFoodInfoScroll, subFoodInfo.gbc.fill("BOTH").yP().wgt(1.0).width("REMAINDER").insets(5, 20, 20, 20));
 	        subFoodInfo.setBGColor(getBackground());
         
 	        
@@ -148,7 +166,7 @@ public class FoodInfoPanel extends GenericPage {
 	        
 	        
 	        mainSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, topSplitPane, bottomSplitPane);
-	        mainSplitPane.setResizeWeight(0.5); // 50% para cada lado
+	        mainSplitPane.setResizeWeight(0.3); // 50% para cada lado
 	        mainSplitPane.setDividerSize(0);
         
         addSubFoods();
@@ -176,5 +194,29 @@ public class FoodInfoPanel extends GenericPage {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    private void updateCurrentFoodInfoTable() {
+        currentTable.setModel(new AlimentNutritionalTable(food.aliment, food.quantity, FoodUtil.calculateTotalNutrients(food.meal)));
+    }
+    
+    private void chooseAnotherFood() {
+        FoodController.openFoodUpdate(getCallerFrame(), food, () -> {
+        	currentAlimentTitle.setValue(this.food.aliment.name);
+        	updateCurrentFoodInfoTable();
+        	afterUpdate.execute();
+        });
+    }
+    
+    private void saveFood() {
+    	if(Validate.formFields(foodQuantityInput)) {
+    		if(FoodController.updateFoodInfo(food, foodUnityQtInput.getValue(), foodQuantityInput.getValue())) {
+				QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Alimento salvo!", "Food saved!").get());
+				updateCurrentFoodInfoTable();
+				afterUpdate.execute();
+    		} else {
+				QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Não foi possível salvar o alimento.", "The food couldn't be saved.").get());
+    		}
+    	}
     }
 }

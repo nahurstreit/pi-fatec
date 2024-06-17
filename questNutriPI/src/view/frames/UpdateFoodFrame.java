@@ -69,7 +69,6 @@ public class UpdateFoodFrame extends SubFrame implements GeneralVisualSettings {
 					if(FoodController.updateFoodAliment(food, right.getSelectedAliment())) {
 						if(afterUpdate != null) afterUpdate.execute();
 						QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Alimento atualizado!", "Food updated!").get());
-						System.out.println(food);
 						dispose();
 					} else {
 						QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Não foi possível atualizar.", "Food update have failed.").get());

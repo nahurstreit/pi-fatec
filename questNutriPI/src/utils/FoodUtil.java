@@ -129,14 +129,14 @@ public class FoodUtil {
         double totalNiacin = 0.0;
         double totalVitaminC = 0.0;
         double totalAsh = 0.0;
-
-        // Iterar sobre todas as comidas presentes na refeição
-        for (Food food : meal.getFoods()) {
+        
+        //Iterar sobre todas as comidas presentes na refeição
+        for(Food food: meal.getFoods()) {
             Aliment aliment = food.aliment;
             Double quantity = food.quantity;
-
+            
             // Verificar se a comida atual deve ser substituída
-            if (blockedFood != null && food.equals(blockedFood)) {
+            if(blockedFood != null && food.idFood == blockedFood.idFood) {
             	quantity = replacedFood.quantity;
                 aliment = replacedFood.aliment;
             }
