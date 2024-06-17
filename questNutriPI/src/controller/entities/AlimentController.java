@@ -5,13 +5,8 @@ import java.util.List;
 import model.entities.Aliment;
 import utils.interfaces.GeneralVisualSettings;
 import utils.view.LanguageUtil;
-import javax.swing.JFrame;
-import model.entities.Customer;
-import model.entities.Food;
 import view.components.QuestNutriJOP;
 import view.frames.AlimentFrame;
-import view.panels.components.GeneralJPanelSettings;
-import view.utils.LanguageUtil;
 
 
 public class AlimentController implements GeneralVisualSettings{
@@ -127,6 +122,8 @@ public class AlimentController implements GeneralVisualSettings{
 	 */
 	public static boolean deleteAliment(Aliment aliment) {
 		boolean res = false;
+		
+		final String STD_DELETE_STRING = new LanguageUtil("EXCLUIR", "DELETE").get();
 
 		if(aliment.isCustom()) {
 			try {
