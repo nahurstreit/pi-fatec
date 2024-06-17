@@ -3,6 +3,7 @@ package controller.entities;
 import java.util.List;
 
 import model.entities.Aliment;
+import utils.interfaces.GeneralVisualSettings;
 import utils.view.LanguageUtil;
 import javax.swing.JFrame;
 import model.entities.Customer;
@@ -12,7 +13,8 @@ import view.frames.AlimentFrame;
 import view.panels.components.GeneralJPanelSettings;
 import view.utils.LanguageUtil;
 
-public class AlimentController {
+
+public class AlimentController implements GeneralVisualSettings{
 	/**
 	 * Procura os alimentos que satisfaçam as condições em: 'searchField LIKE
 	 * searchTerm' no banco de dados.;
