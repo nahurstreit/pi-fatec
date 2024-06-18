@@ -459,7 +459,6 @@ public class Customer extends CustomerDAO {
 	 * 
 	 * @return Retorna verdadeiro se a operação foi bem-sucedida, falso caso contrário.
 	 */
-    @Override
     public boolean save() {
     	boolean res = super.save();
     	if(res && this.getId() == null) {

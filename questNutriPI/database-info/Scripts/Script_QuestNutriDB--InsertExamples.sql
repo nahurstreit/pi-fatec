@@ -1,37 +1,37 @@
 /*================================================== LEIA AQUI ====================================================
-Este È um arquivo complementar que tem por objetivo adicionar registros aleatÛrios ‡s tabelas do banco de dados
-QuestNutri e, portanto, n„o ter· utilidade alguma caso ainda n„o tenha sido executado o arquivo de criaÁ„o das
-tabelas, Script_QuestNutriDB--CreateDB.sql e tambÈm o arquivo que adiciona as informaÁıes dos alimentos padrıes do
+Este √© um arquivo complementar que tem por objetivo adicionar registros aleat√≥rios √†s tabelas do banco de dados
+QuestNutri e, portanto, n√£o ter√° utilidade alguma caso ainda n√£o tenha sido executado o arquivo de cria√ß√£o das
+tabelas, Script_QuestNutriDB--CreateDB.sql e tamb√©m o arquivo que adiciona as informa√ß√µes dos alimentos padr√µes do
 sistema, Script_QuestNutriDB--InsertStdAliments.sql;
 
 EXECUTE OS SCRIPTS: Script_QuestNutriDB--CreateDB.sql e Script_QuestNutriDB--InsertStdAliments.sql ANTES DE TENTAR
 EXECUTAR ESTE SCRIPT.
 
-As consultas deste arquivo podem ser realizadas simultaneamente, portanto, È possÌvel executar o arquivo inteiro,
+As consultas deste arquivo podem ser realizadas simultaneamente, portanto, √© poss√≠vel executar o arquivo inteiro,
 sem a necessidade de selecionar quaisquer linhas.
 
 Vale destacar que no corpo deste arquivo, existem linhas comentadas que tentam referenciar o contexto do que
-est· sendo adicionado.
+est√° sendo adicionado.
 
-Ao final da execuÁ„o, ser„o adicionadas ‡s tabelas registros para:
-Addresses: 7 registros de endereÁos das cidades de Indaiatuba, Campinas e Salto;
-Customers: 5 clientes aleatÛrios, com informaÁıes fictÌcias;
-Weights: No mÌnimo 1 registro de peso para cada um dos clientes;
-MedicalExams: Alguns registros de solicitaÁ„o de exame para alguns dos clientes - Nem todos os clientes precisam ter
-exames mÈdicos;
-Meals: No mÌnimo 5 registros de refeiÁıes para CADA um dos clientes, e nessas samples todas est„o ativas;
-Foods: No mÌnimo 3 registros de alimentos em CADA um dos registros de Meals
-SubFoods: 10 registros aleatÛrios de Alimentos de substituiÁ„o.
-Admins: 1 registro (admin, admin) para logar na aplicaÁ„o.
+Ao final da execu√ß√£o, ser√£o adicionadas √†s tabelas registros para:
+Addresses: 7 registros de endere√ßos das cidades de Indaiatuba, Campinas e Salto;
+Customers: 5 clientes aleat√≥rios, com informa√ß√µes fict√≠cias;
+Weights: No m√≠nimo 1 registro de peso para cada um dos clientes;
+MedicalExams: Alguns registros de solicita√ß√£o de exame para alguns dos clientes - Nem todos os clientes precisam ter
+exames m√©dicos;
+Meals: No m√≠nimo 5 registros de refei√ß√µes para CADA um dos clientes, e nessas samples todas est√£o ativas;
+Foods: No m√≠nimo 3 registros de alimentos em CADA um dos registros de Meals
+SubFoods: 10 registros aleat√≥rios de Alimentos de substitui√ß√£o.
+Admins: 1 registro (admin, admin) para logar na aplica√ß√£o.
 ====================================================================================================================*/
 
 USE QuestNutriDB;
 
--- Cri„Á„o do login de usu·rio: 'adminQuestNutri'
+-- Cri√£√ß√£o do login de usu√°rio: 'adminQuestNutri'
 CREATE LOGIN adminQuestNutri WITH PASSWORD = '123';
--- Associar usu·rio ao banco de dados
+-- Associar usu√°rio ao banco de dados
 CREATE USER adminQuestNutri FOR LOGIN adminQuestNutri;
--- Conceder permissıes para todas as tabelas
+-- Conceder permiss√µes para todas as tabelas
 GRANT SELECT, INSERT, UPDATE, DELETE ON Addresses TO adminQuestNutri;
 GRANT SELECT, INSERT, UPDATE, DELETE ON Users TO adminQuestNutri;
 GRANT SELECT, INSERT, UPDATE, DELETE ON Customers TO adminQuestNutri;
@@ -41,13 +41,13 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON Meals TO adminQuestNutri;
 GRANT SELECT, INSERT, UPDATE, DELETE ON Foods TO adminQuestNutri;
 GRANT SELECT, INSERT, UPDATE, DELETE ON SubFoods TO adminQuestNutri;
 
--- EndereÁos registrados em sistema, ainda que n„o tenham mais clientes vÌnculados.
+-- Endere√ßos registrados em sistema, ainda que n√£o tenham mais clientes v√≠nculados.
 INSERT INTO Addresses (addr_street, addr_num, addr_comp, addr_cep, addr_neighborhood, addr_city, addr_state)
 VALUES 
     ('Rua das Flores', 123, 'Apto 101', '13330000', 'Jardim Primavera', 'Indaiatuba', 'SP'),
-	('Rua dos IpÍs', 321, NULL, '13330100', 'Jardim das Flores', 'Indaiatuba', 'SP'),
+	('Rua dos Ip√™s', 321, NULL, '13330100', 'Jardim das Flores', 'Indaiatuba', 'SP'),
     ('Avenida Central', 456, NULL, '13000000', 'Centro', 'Campinas', 'SP'),
-	('Avenida das ¡rvores', 555, 'Bloco C', '13020000', 'Jardim Bot‚nico', 'Campinas', 'SP'),
+	('Avenida das √Årvores', 555, 'Bloco C', '13020000', 'Jardim Bot√¢nico', 'Campinas', 'SP'),
     ('Avenida Principal', 654, NULL, '13010000', 'Centro', 'Campinas', 'SP'),
     ('Rua do Lago', 987, 'Casa 5', '13320100', 'Bairro do Lago', 'Salto', 'SP'),
 	('Rua da Praia', 789, 'Casa 2', '13320000', 'Bairro do Mar', 'Salto', 'SP');
@@ -56,7 +56,7 @@ VALUES
 -- Clientes/Pacientes do profissional nutricionista.
 INSERT INTO Customers (cust_name, cust_email, cpf, cust_phoneNumber, cust_activityStatus, cust_setKcal, cust_height, cust_birth, cust_gender, idAddress)
 VALUES 
-    ('JosÈ da Silva', 'jose.silva@mail.com', '12345678910', '11912345678', 1, 2000, 170, '1990-01-15', 'M', 1),
+    ('Jos√© da Silva', 'jose.silva@mail.com', '12345678910', '11912345678', 1, 2000, 170, '1990-01-15', 'M', 1),
     ('Ana Souza', 'ana.souza@mail.com', '23456789021', '19987654321', 2, 1800, 160, '1985-07-20', 'F', 2),
     ('Carlos Oliveira', 'carlos.oliveira@mail.com', '34567890132', '15998765432', 3, 2200, 180, '1982-03-10', 'M', 7),
     ('Mariana Santos', 'mariana.santos@mail.com', '45678901243', '11987651234', 4, 1900, 165, '1988-11-25', 'F', 4),
@@ -65,12 +65,12 @@ VALUES
 INSERT INTO Users (user_login, user_password, user_personalName, systemLevel) VALUES 
 	('admin', 'admin', 'Admin', 3),
 	('camila', 'nutri', 'Camila', 2),
-	('recepcao', '123', 'RecepÁ„o', 1);
+	('recepcao', '123', 'Recep√ß√£o', 1);
 
--- Registros de diferentes pesos para cada um dos clientes. Sendo no mÌnimo um registro para cada.
+-- Registros de diferentes pesos para cada um dos clientes. Sendo no m√≠nimo um registro para cada.
 INSERT INTO Weights (idCustomer, wgt_value)
 VALUES
-	-- Cliente: JosÈ da Silva
+	-- Cliente: Jos√© da Silva
     (1, 75.5),
     (1, 73.2),
     (1, 72.8),
@@ -92,58 +92,58 @@ VALUES
     (5, 69.5);
 
 
--- Registros de RefeiÁıes (Meals) para cada um dos clientes, sendo no mÌnimo 5 refeiÁıes por cliente.
+-- Registros de Refei√ß√µes (Meals) para cada um dos clientes, sendo no m√≠nimo 5 refei√ß√µes por cliente.
 INSERT INTO Meals (idCustomer, meal_name, meal_daysOfWeek, meal_hour, meal_createdAt)
 VALUES
-	-- Cliente: JosÈ da Silva
-    (1, 'CafÈ da Manh„', 65, '08:00:00', GETDATE()),
-	(1, 'CafÈ da Manh„', 62, '08:00:00', GETDATE()),
-    (1, 'AlmoÁo', 65, '12:00:00', GETDATE()),
-	(1, 'AlmoÁo', 62, '12:00:00', GETDATE()),
+	-- Cliente: Jos√© da Silva
+    (1, 'Caf√© da Manh√£', 65, '08:00:00', GETDATE()),
+	(1, 'Caf√© da Manh√£', 62, '08:00:00', GETDATE()),
+    (1, 'Almo√ßo', 65, '12:00:00', GETDATE()),
+	(1, 'Almo√ßo', 62, '12:00:00', GETDATE()),
     (1, 'Jantar', 65, '18:00:00', GETDATE()),
 	(1, 'Jantar', 62, '18:00:00', GETDATE()),
 
 	-- Cliente: Ana Souza
-    (2, 'CafÈ da Manh„', 127, '07:30:00', GETDATE()),
-	(2, 'Lanche da Manh„', 127, '10:00:00', GETDATE()),
-    (2, 'AlmoÁo', 127, '12:30:00', GETDATE()),
+    (2, 'Caf√© da Manh√£', 127, '07:30:00', GETDATE()),
+	(2, 'Lanche da Manh√£', 127, '10:00:00', GETDATE()),
+    (2, 'Almo√ßo', 127, '12:30:00', GETDATE()),
     (2, 'Lanche da Tarde', 127, '15:30:00', GETDATE()),
     (2, 'Jantar', 127, '19:00:00', GETDATE()),
 	(2, 'Lanche da Noite', 127, '21:00:00', GETDATE()),
 
 	-- Cliente: Carlos Oliveira
-    (3, 'CafÈ da Manh„', 127, '06:30:00', GETDATE()),
-	(3, 'Lanche da Manh„', 85, '10:00:00', GETDATE()),
-	(3, 'Lanche da Manh„', 42, '10:00:00',GETDATE()),
-    (3, 'AlmoÁo', 127, '13:00:00', GETDATE()),
+    (3, 'Caf√© da Manh√£', 127, '06:30:00', GETDATE()),
+	(3, 'Lanche da Manh√£', 85, '10:00:00', GETDATE()),
+	(3, 'Lanche da Manh√£', 42, '10:00:00',GETDATE()),
+    (3, 'Almo√ßo', 127, '13:00:00', GETDATE()),
 	(3, 'Lanche da Tarde', 85, '17:30:00', GETDATE()),
 	(3, 'Lanche da Tarde', 42, '17:30:00', GETDATE()),
     (3, 'Jantar', 127, '20:00:00', GETDATE()),
 
 
 	-- Cliente: Mariana Santos
-	(4, 'CafÈ da Manh„', 127, '07:00:00', GETDATE()),
-    (4, 'AlmoÁo', 127, '12:00:00', GETDATE()),
+	(4, 'Caf√© da Manh√£', 127, '07:00:00', GETDATE()),
+    (4, 'Almo√ßo', 127, '12:00:00', GETDATE()),
     (4, 'Lanche da Tarde', 127, '15:30:00', GETDATE()),
     (4, 'Jantar', 127, '19:30:00', GETDATE()),
     (4, 'Lanche da Noite', 127, '22:30:00', GETDATE()),
 
 	-- Cliente: Fernanda Lima
-    (5, 'CafÈ da Manh„', 64, '07:00:00', GETDATE()),
-	(5, 'CafÈ da Manh„', 32, '07:00:00', GETDATE()),
-	(5, 'CafÈ da Manh„', 16, '07:00:00', GETDATE()),
-	(5, 'CafÈ da Manh„', 8, '07:00:00', GETDATE()),
-	(5, 'CafÈ da Manh„', 4, '07:00:00', GETDATE()),
-	(5, 'CafÈ da Manh„', 2, '05:00:00', GETDATE()),
-	(5, 'CafÈ da Manh„', 1, '07:00:00', GETDATE()),
-	(5, 'Lanche da manh„', 2, '09:00:00', GETDATE()),
-	(5, 'AlmoÁo', 64, '12:30:00', GETDATE()),
-	(5, 'AlmoÁo', 32, '12:30:00', GETDATE()),
-	(5, 'AlmoÁo', 16, '12:30:00', GETDATE()),
-	(5, 'AlmoÁo', 8, '12:30:00', GETDATE()),
-	(5, 'AlmoÁo', 4, '12:30:00', GETDATE()),
-	(5, 'AlmoÁo', 2, '12:30:00', GETDATE()),
-	(5, 'AlmoÁo', 1, '12:30:00', GETDATE()),
+    (5, 'Caf√© da Manh√£', 64, '07:00:00', GETDATE()),
+	(5, 'Caf√© da Manh√£', 32, '07:00:00', GETDATE()),
+	(5, 'Caf√© da Manh√£', 16, '07:00:00', GETDATE()),
+	(5, 'Caf√© da Manh√£', 8, '07:00:00', GETDATE()),
+	(5, 'Caf√© da Manh√£', 4, '07:00:00', GETDATE()),
+	(5, 'Caf√© da Manh√£', 2, '05:00:00', GETDATE()),
+	(5, 'Caf√© da Manh√£', 1, '07:00:00', GETDATE()),
+	(5, 'Lanche da manh√£', 2, '09:00:00', GETDATE()),
+	(5, 'Almo√ßo', 64, '12:30:00', GETDATE()),
+	(5, 'Almo√ßo', 32, '12:30:00', GETDATE()),
+	(5, 'Almo√ßo', 16, '12:30:00', GETDATE()),
+	(5, 'Almo√ßo', 8, '12:30:00', GETDATE()),
+	(5, 'Almo√ßo', 4, '12:30:00', GETDATE()),
+	(5, 'Almo√ßo', 2, '12:30:00', GETDATE()),
+	(5, 'Almo√ßo', 1, '12:30:00', GETDATE()),
     (5, 'Jantar', 64, '19:00:00', GETDATE()),
 	(5, 'Jantar', 32, '19:00:00', GETDATE()),
 	(5, 'Jantar', 16, '19:00:00', GETDATE()),
@@ -154,28 +154,28 @@ VALUES
 	(5, 'Lanche da noite', 4, '20:30:00', GETDATE());
 
 
--- Registros de Foods (ou alimentos de uma refeiÁ„o) para CADA um dos registros de Meal anteriormente adicionados.
--- O mÌnimo de alimentos em nosso exemplo È 3.
+-- Registros de Foods (ou alimentos de uma refei√ß√£o) para CADA um dos registros de Meal anteriormente adicionados.
+-- O m√≠nimo de alimentos em nosso exemplo √© 3.
 INSERT INTO Foods (idMeal, idAliment, food_quantity, food_unityQt)
 VALUES
-	-- Cliente: JosÈ da Silva
-		-- CafÈ da Manh„ (1)
+	-- Cliente: Jos√© da Silva
+		-- Caf√© da Manh√£ (1)
 			(1, 222, 150, 'gramas'),
 			(1, 489, 250, 'gramas'),
 			(1, 451, 100, 'gramas'),
 
-		-- CafÈ da Manh„ (2)
+		-- Caf√© da Manh√£ (2)
 			(2, 52, 100, 'gramas'),
 			(2, 468, 30, 'gramas'),
 			(2, 215, 250, 'gramas'),
 
-		-- AlmoÁo (1)
+		-- Almo√ßo (1)
 			(3, 410, 200, 'gramas'),
 			(3, 1, 150, 'gramas'),
 			(3, 567, 100, 'gramas'),
 			(3, 77, 100, 'gramas'),
 
-		-- AlmoÁo (2)
+		-- Almo√ßo (2)
 			(4, 326, 200, 'gramas'),
 			(4, 1, 150, 'gramas'),
 			(4, 561, 100, 'gramas'),
@@ -192,17 +192,17 @@ VALUES
 			(6, 589, 30, 'gramas'),
 		
 	-- Cliente: Ana Souza
-		-- CafÈ da Manh„
+		-- Caf√© da Manh√£
 			(7, 26,30,'gramas'),
 			(7, 458,200, 'gramas'),
 			(7, 63,300,'gramas'),
 
-		-- Lanche da Manh„
+		-- Lanche da Manh√£
 			(8, 182, 70 , 'gramas'),
 			(8, 448, 100,'gramas'),
 			(8, 189, 127,'gramas'),
 
-		-- AlmoÁo
+		-- Almo√ßo
 			(9, 331,100,'gramas'),
 			(9, 539,100,'gramas'),
 			(9, 1,200,'gramas'),
@@ -223,22 +223,22 @@ VALUES
 			(12, 18,50,'gramas'),
 
 	-- Cliente: Carlos Oliveira
-		-- CafÈ da Manh„
+		-- Caf√© da Manh√£
 			(13, 46,30,'gramas'),
 			(13, 99,5,'unidades'),
 			(13, 588,5,'gramas'),
 
-		-- Lanche da Manh„ 1
+		-- Lanche da Manh√£ 1
 			(14, 199,10,'gramas'),
 			(14, 452,100,'gramas'),
 			(14, 214,5,'gramas'),
 
-		-- Lanche da Manh„ 2
+		-- Lanche da Manh√£ 2
 			(15, 478,100,'gramas'),
 			(15, 226,30,'gramas'),
 			(15, 243,150,'gramas'),
 
-		-- AlmoÁo
+		-- Almo√ßo
 			(16, 527,200,'gramas'),
 			(16, 131,20,'gramas'),
 			(16, 41,70,'gramas'),
@@ -259,12 +259,12 @@ VALUES
 			(19, 209,250,'gramas'),
 
 	-- Cliente: Mariana Santos
-		-- CafÈ da Manh„
+		-- Caf√© da Manh√£
 			(20, 140,30,'gramas'),
 			(20, 484,50,'gramas'),
 			(20, 219,150,'gramas'),
 
-		-- AlmoÁo
+		-- Almo√ßo
 			(21, 3,150,'gramas'),
 			(21, 561,120,'gramas'),
 			(21, 411,220,'gramas'),
@@ -286,7 +286,7 @@ VALUES
 			(24, 263,10,'gramas'),
 
 	-- Cliente: Fernanda Lima
-		-- CafÈ da Manh„ 1
+		-- Caf√© da Manh√£ 1
 			(25, 488,126,'gramas'),
 			(25, 7,10,'gramas'),
 			(25, 484,200,'gramas'),
@@ -294,14 +294,14 @@ VALUES
 			(25, 484, 300, 'gramas'),
 
 
-		-- CafÈ da Manh„ 2
+		-- Caf√© da Manh√£ 2
 			(26, 7,8,'gramas'),
 			(26, 175,50,'gramas'),
 			(26, 52,84,'gramas'),
 			(26, 239, 60, 'gramas'),
 			(26, 140, 150, 'gramas'),
 
-		-- CafÈ da Manh„ 3
+		-- Caf√© da Manh√£ 3
 			(27, 226,141,'gramas'),
 			(27, 507,4,'gramas'),
 			(27, 209,200,'gramas'),
@@ -309,35 +309,35 @@ VALUES
 			(27, 222, 60, 'gramas'),
 
 
-		-- CafÈ da Manh„ 4
+		-- Caf√© da Manh√£ 4
 			(28, 458,100,'gramas'),
 			(28, 460,80,'gramas'),
 			(28, 449,170,'gramas'),
 			(28, 594, 30, 'gramas'),
 			(28, 448, 170, 'gramas'),
 
-		-- CafÈ da Manh„ 5
+		-- Caf√© da Manh√£ 5
 			(29, 461,60,'gramas'),
 			(29, 557,3,'gramas'),
 			(29, 594,3,'gramas'),
 			(29, 236, 150, 'gramas'),
 			(29, 507, 2.5, 'gramas'),
 
-		-- CafÈ da Manh„ 6
+		-- Caf√© da Manh√£ 6
 			(30, 52,50,'gramas'),
 			(30, 488,63,'gramas'),
 			(30, 243,250,'gramas'),
 			(30, 485, 100, 'gramas'),
 			(30, 218, 150, 'gramas'),
 
-		-- CafÈ da Manh„ 7
+		-- Caf√© da Manh√£ 7
 			(31, 182,70,'gramas'),
 			(31, 48,53,'gramas'),
 			(31, 507,5,'gramas'),
 			(31, 502, 15, 'gramas'),
 			(31, 278, 90, 'gramas'),
 
-		-- Lanche da Manh„
+		-- Lanche da Manh√£
 			(32, 451,170,'gramas'),
 			(32, 221,205,'gramas'),
 			(32, 244,35,'gramas'),
@@ -345,49 +345,49 @@ VALUES
 			(32, 257, 80, 'gramas'),
 
 
-		-- AlmoÁo 1
+		-- Almo√ßo 1
 			(33, 410,150,'gramas'),
 			(33, 328,170,'gramas'),
 			(33, 340,160,'gramas'),
 			(33, 401, 120, 'gramas'),
 			(33, 337, 100, 'gramas'),
 
-		-- AlmoÁo 2
+		-- Almo√ßo 2
 			(34, 88,355,'gramas'),
 			(34, 88,355,'gramas'),
 			(34, 3,90,'gramas'),
 			(34, 575, 190, 'gramas'),
 			(34, 358, 150, 'gramas'),
 
-		-- AlmoÁo 3
+		-- Almo√ßo 3
 			(35, 100,240,'gramas'),
 			(35, 100,190,'gramas'),
 			(35, 110,50,'gramas'),
 			(35, 260, 15, 'gramas'),
 			(35, 545, 200, 'gramas'),
 
-		-- AlmoÁo 4
+		-- Almo√ßo 4
 			(36, 1, 82.5,'gramas'),
 			(36, 260, 2.5,'gramas'),
 			(36, 259, 3,'gramas'),
 			(36, 316, 130, 'gramas'),
 			(36, 260, 2, 'gramas'),
 
-		-- AlmoÁo 5
+		-- Almo√ßo 5
 			(37, 539, 80, 'gramas'),
 			(37, 79, 40, 'gramas'),
 			(37, 161, 99, 'gramas'),
 			(37, 142, 150, 'gramas'),
 			(37, 152, 20, 'gramas'),
 
-		-- AlmoÁo 6
+		-- Almo√ßo 6
 			(38, 546, 170, 'gramas'),
 			(38, 161, 99, 'gramas'),
 			(38, 129, 70, 'gramas'),
 			(38, 161, 99, 'gramas'),
 			(38, 75, 18, 'gramas'),
 
-		-- AlmoÁo 7
+		-- Almo√ßo 7
 			(39, 478, 190, 'gramas'),
 			(39, 5, 82.5, 'gramas'),
 			(39, 138, 90, 'gramas'),
@@ -451,27 +451,27 @@ VALUES
 			(47, 450, 170, 'gramas');
 
 
--- Registros de opÁıes de substituiÁ„o para alimentos aleatÛrios de uma dada refeiÁ„o anteriormente adicionados.
+-- Registros de op√ß√µes de substitui√ß√£o para alimentos aleat√≥rios de uma dada refei√ß√£o anteriormente adicionados.
 INSERT INTO SubFoods (idFood, idAliment, subFood_quantity, subFood_unityQt)
 VALUES
-	-- AlmoÁo (1) JosÈ da Silva
+	-- Almo√ßo (1) Jos√© da Silva
 	(8, 542, 100, 'gramas'),
 
-	-- AlmoÁo (2) JosÈ da Silva
+	-- Almo√ßo (2) Jos√© da Silva
 	(12, 542, 100, 'gramas'),
 	
 	-- Jantar (1) Ana Souza
 	(33, 542, 100, 'gramas'),
 
-	-- CafÈ da manha (4) Fernanda Lima
+	-- Caf√© da manha (4) Fernanda Lima
 	(96, 463, 50, 'gramas'),
 
-	-- CafÈ da manha (7) Fernanda Lima
+	-- Caf√© da manha (7) Fernanda Lima
 	(106, 209, 70, 'gramas'),
 	(106, 222, 40, 'gramas'),
 	(106, 45, 40, 'gramas'),
 
-	-- AlmoÁo (2) Fernanda Lima
+	-- Almo√ßo (2) Fernanda Lima
 	(121, 91, 200, 'gramas'),
 
 	-- Jantar (1) Fernanda Lima

@@ -111,6 +111,7 @@ public class DietWeekPanel extends GenericComponent {
                 for(DietDayPanel day: daysPanels) day.init();
                 javax.swing.SwingUtilities.invokeLater(() -> {
                 	this.remove(holderLoading);
+//                    this.add(upperPanel, gbc.grid(0));
                 	this.add(holderDays, gbc.fill("BOTH").wgt(1.0).insets(10, 5));
                     this.refresh();
                 });

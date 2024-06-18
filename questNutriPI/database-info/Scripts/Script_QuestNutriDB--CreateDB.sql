@@ -1,48 +1,48 @@
 /*================================================== LEIA AQUI ====================================================
-As linhas a seguir devem ser executadas em uma ordem especÌfica para ter o comportamento esperado.
-VocÍ dever· executar em ordem os seguintes comandos abaixo:
+As linhas a seguir devem ser executadas em uma ordem espec√≠fica para ter o comportamento esperado.
+Voc√™ dever√° executar em ordem os seguintes comandos abaixo:
 	- COMANDO [1]: feito para criar efetivamente o Banco de Dados;
 	- COMANDO [2]: feito para criar as Tabelas do sistema;
-Para isso ser· indicado o 'INÕCIO DO COMANDO [X]' e o 'FIM DO COMANDO [X]'. Selecione TODAS AS LINHAS entre
-esses dois indicadores e execute. Executar estes comandos fora da ordem resultar· em ERRO.
-Executar todo o arquivo N√O FUNCIONAR¡! Execute os dois comandos indicados.
+Para isso ser√° indicado o 'IN√çCIO DO COMANDO [X]' e o 'FIM DO COMANDO [X]'. Selecione TODAS AS LINHAS entre
+esses dois indicadores e execute. Executar estes comandos fora da ordem resultar√° em ERRO.
+Executar todo o arquivo N√ÉO FUNCIONAR√Å! Execute os dois comandos indicados.
 
-Ao executar nessa ordem vocÍ ter· criado o Banco de Dados fÌsico do QuestNutri.
+Ao executar nessa ordem voc√™ ter√° criado o Banco de Dados f√≠sico do QuestNutri.
 Tabelas presentes no sistema:
-	-> Addresses: armazena os endereÁos dos clientes;
+	-> Addresses: armazena os endere√ßos dos clientes;
 	-> Customers: armazena os clientes do profissional Nutricionista;
-	-> Aliments: armazena as informaÁıes nutricionais dos alimentos como um todo;
+	-> Aliments: armazena as informa√ß√µes nutricionais dos alimentos como um todo;
 	-> Weights: armazena os registros de peso do cliente;
-	-> MedicalExams: armazena exames solicitados pelo Nutricionista para fornecer uma melhor prescriÁ„o da Dieta;
-	-> Meals: armazena as refeiÁıes dos clientes;
-	-> Foods: surge do relacionamento (n para n) entre as tabelas 'Meals' e 'Aliments', armazena as informaÁıes
-			  gerais de um alimento em uma dada refeiÁ„o, como exemplo, quantidade e unidade de medida;
-	-> SubFoods: atua como uma tabela que registra diferentes opÁıes de substituiÁ„o para um ˙nico alimento em uma
-			  dada refeiÁ„o;
-	-> Users: usu·rios disponÌveis para login no sistema
+	-> MedicalExams: armazena exames solicitados pelo Nutricionista para fornecer uma melhor prescri√ß√£o da Dieta;
+	-> Meals: armazena as refei√ß√µes dos clientes;
+	-> Foods: surge do relacionamento (n para n) entre as tabelas 'Meals' e 'Aliments', armazena as informa√ß√µes
+			  gerais de um alimento em uma dada refei√ß√£o, como exemplo, quantidade e unidade de medida;
+	-> SubFoods: atua como uma tabela que registra diferentes op√ß√µes de substitui√ß√£o para um √∫nico alimento em uma
+			  dada refei√ß√£o;
+	-> Users: usu√°rios dispon√≠veis para login no sistema
 
-============================================ INFORMA«’ES ADICIONAIS =============================================
-Depois de criado o Banco de Dados e suas Tabelas siga as seguintes orientaÁıes para adicionar os registros.
-	- (1) Inserir os alimentos padrıes: 
+============================================ INFORMA√á√ïES ADICIONAIS =============================================
+Depois de criado o Banco de Dados e suas Tabelas siga as seguintes orienta√ß√µes para adicionar os registros.
+	- (1) Inserir os alimentos padr√µes: 
 		Use o arquivo: Script_QuestNutriDB--InsertStdAliments.sql
-	- (2) Inserir registros aleatÛrios para todas as tabelas: 
+	- (2) Inserir registros aleat√≥rios para todas as tabelas: 
 		Use o arquivo: Script_QuestNutriDB--InsertExamples.sql
 
 Para *EXCLUIR* completamente o Banco de Dados e suas tabelas:
 	<!> Use o arquivo: Script_CAUTION_QuestNutri--DeleteDB.sql <!>
-Lembre-se: essa aÁ„o È IRREVERSÕVEL, tome cuidado!
+Lembre-se: essa a√ß√£o √© IRREVERS√çVEL, tome cuidado!
 
 ====================================================================================================================*/
 
 --COMANDO [1]
---INÕCIO DO COMANDO [1]
+--IN√çCIO DO COMANDO [1]
 USE master;
 CREATE DATABASE QuestNutriDB;
 --FIM DO COMANDO [1]
 
 
 --COMANDO [2]
---INÕCIO DO COMANDO [2]
+--IN√çCIO DO COMANDO [2]
 USE QuestNutriDB;
 CREATE TABLE Addresses(
     idAddress INT PRIMARY KEY IDENTITY,

@@ -207,6 +207,7 @@ public class CustomerFormPage extends GenericFormPage implements CustomerFieldRu
 			cpf.lockInput();
 			height.lockInput();
 			gender.lockInput();
+			activityStatus.lockInput();
 			
 		} else {
 			cpf.addValidation(

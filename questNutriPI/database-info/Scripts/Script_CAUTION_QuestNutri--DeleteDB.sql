@@ -1,27 +1,27 @@
-/*========================================= !!! ATEN«√O - LEIA AQUI !!! ===========================================
-Este È um arquivo complementar que tem por objetivo fazer a EXCLUS√O COMPLETA DO BANCO DE DADOS QuestNutri e, portanto, 
-n„o ter· utilidade alguma caso ainda n„o tenha sido executado o arquivo de criaÁ„o das 
+/*========================================= !!! ATEN√á√ÉO - LEIA AQUI !!! ===========================================
+Este √© um arquivo complementar que tem por objetivo fazer a EXCLUS√ÉO COMPLETA DO BANCO DE DADOS QuestNutri e, portanto, 
+n√£o ter√° utilidade alguma caso ainda n√£o tenha sido executado o arquivo de cria√ß√£o das 
 tabelas, Script_QuestNutriDB--CreateDB.sql;
 
 EXECUTE O SCRIPT: Script_QuestNutriDB--CreateDB.sql ANTES DE TENTAR EXECUTAR ESTE SCRIPT.
 
-O RESULTADO DA EXECU«√O DESSES COMANDOS … IRREVERSÕVEL, N√O SER¡ POSSÕVEL RECUPERAR OS DADOS.
-EXECUTE APENAS EM TESTES E QUANDO O MOTIVO FOR VI¡VEL. A intenÁ„o È facilitar o processo de exclus„o para TESTES DE 
-IMPLEMENTA«√O DO SISTEMA e N√O DEVER¡ SER UTILIZADO EM AMBIENTES DE PRODU«√O.
+O RESULTADO DA EXECU√á√ÉO DESSES COMANDOS √â IRREVERS√çVEL, N√ÉO SER√Å POSS√çVEL RECUPERAR OS DADOS.
+EXECUTE APENAS EM TESTES E QUANDO O MOTIVO FOR VI√ÅVEL. A inten√ß√£o √© facilitar o processo de exclus√£o para TESTES DE 
+IMPLEMENTA√á√ÉO DO SISTEMA e N√ÉO DEVER√Å SER UTILIZADO EM AMBIENTES DE PRODU√á√ÉO.
 
-As linhas a seguir devem ser executadas em uma ordem especÌfica para ter o comportamento esperado.
-VocÍ dever· executar em ordem os seguintes comandos abaixo:
+As linhas a seguir devem ser executadas em uma ordem espec√≠fica para ter o comportamento esperado.
+Voc√™ dever√° executar em ordem os seguintes comandos abaixo:
 	- COMANDO [1]: feito para DELETAR as TABELAS associadas ao Banco de Dados em uma ordem livre de erros;
-	- COMANDO [2] (OPCIONAL): feito para DELETAR o usu·rio adminQuestNutri, criado ao executar o arquivo de inserÁ„o de exemplos
+	- COMANDO [2] (OPCIONAL): feito para DELETAR o usu√°rio adminQuestNutri, criado ao executar o arquivo de inser√ß√£o de exemplos
 	- COMANDO [3]: feito para DELETAR o BANCO DE DADOS.
-Para isso ser· indicado o 'INÕCIO DO COMANDO [X]' e o 'FIM DO COMANDO [X]'. Selecione TODAS AS LINHAS entre
-esses dois indicadores e execute. Executar estes comandos fora da ordem resultar· em ERRO.
-Executar todo o arquivo N√O FUNCIONAR¡! Execute os dois comandos indicados.
+Para isso ser√° indicado o 'IN√çCIO DO COMANDO [X]' e o 'FIM DO COMANDO [X]'. Selecione TODAS AS LINHAS entre
+esses dois indicadores e execute. Executar estes comandos fora da ordem resultar√° em ERRO.
+Executar todo o arquivo N√ÉO FUNCIONAR√Å! Execute os dois comandos indicados.
 
 ====================================================================================================================*/
 
 --COMANDO [1]
---INÕCIO DO COMANDO [1]
+--IN√çCIO DO COMANDO [1]
 USE QuestNutriDB;
 DROP TABLE dbo.SubFoods;
 DROP TABLE dbo.Foods;
@@ -33,10 +33,10 @@ DROP TABLE dbo.Addresses;
 DROP TABLE dbo.Users;
 --FIM DO COMANDO [1]
 
---COMANDO 2 (Opcional): Execute apenas se vocÍ tiver criado o usu·rio adminQuestNutri.
+--COMANDO 2 (Opcional): Execute apenas se voc√™ tiver criado o usu√°rio adminQuestNutri.
 --INICIO DO COMANDO [2]
 USE QuestNutriDB;
--- Remover permissıes do usu·rio
+-- Remover permiss√µes do usu√°rio
 REVOKE SELECT, INSERT, UPDATE, DELETE ON Addresses FROM adminQuestNutri;
 REVOKE SELECT, INSERT, UPDATE, DELETE ON Customers FROM adminQuestNutri;
 REVOKE SELECT, INSERT, UPDATE, DELETE ON Aliments FROM adminQuestNutri;
@@ -44,7 +44,7 @@ REVOKE SELECT, INSERT, UPDATE, DELETE ON Weights FROM adminQuestNutri;
 REVOKE SELECT, INSERT, UPDATE, DELETE ON Meals FROM adminQuestNutri;
 REVOKE SELECT, INSERT, UPDATE, DELETE ON Foods FROM adminQuestNutri;
 REVOKE SELECT, INSERT, UPDATE, DELETE ON SubFoods FROM adminQuestNutri;
--- Remover usu·rio do banco de dados
+-- Remover usu√°rio do banco de dados
 DROP USER adminQuestNutri;
 -- Remover login
 DROP LOGIN adminQuestNutri;
@@ -52,7 +52,7 @@ DROP LOGIN adminQuestNutri;
 
 
 --COMANDO [3]
---INÕCIO DO COMANDO [3]
+--IN√çCIO DO COMANDO [3]
 USE master;
 DROP DATABASE QuestNutriDB;
 --FIM DO COMANDO [3]
