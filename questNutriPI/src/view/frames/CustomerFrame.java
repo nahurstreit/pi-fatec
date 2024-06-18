@@ -2,17 +2,24 @@ package view.frames;
 
 import java.awt.Dimension;
 
+import controller.app.PdfGeneratorController;
 import model.entities.Customer;
 import utils.view.LanguageUtil;
 import view.QuestNutri;
+import view.components.buttons.StdButton;
 import view.components.generics.GenericJPanel;
 import view.components.sidebar.SideBar;
+import view.components.sidebar.SideBarComponent;
 import view.components.sidebar.SideBarItem;
 import view.components.sidebar.SideBarMenu;
 import view.components.utils.StdGBC;
 import view.pages.customer.diet.DietPage;
 import view.pages.customer.profile.CustomerFormPage;
 
+/**
+ * Frame para exibição e interação com informações de um cliente.
+ * Extende SubFrameFromMain para manter a consistência visual e funcional do aplicativo.
+ */
 public class CustomerFrame extends SubFrameFromMain {
 	private static final long serialVersionUID = 1L;
 	
@@ -34,6 +41,11 @@ public class CustomerFrame extends SubFrameFromMain {
 	private DietPage dietPage;
 	
 	
+    /**
+     * Construtor para CustomerFrame.
+     * 
+     * @param customer objeto Customer representando o cliente a ser exibido no frame
+     */
 	public CustomerFrame(Customer customer) {
 		super();
 		this.frameName = "Customer Frame";
@@ -54,6 +66,11 @@ public class CustomerFrame extends SubFrameFromMain {
 		setFrameTitle(customer.name != null? new LanguageUtil("Cliente", "Customer").get() + " - " + customer.name: stdFrameName);
 	}
 	
+    /**
+     * Método para trocar o painel principal exibido no frame.
+     * 
+     * @param panel novo painel a ser exibido como painel principal
+     */
 	public void swapMainPanel(GenericJPanel panel) {
 		try {
 			framePanel.remove(mainPanel);
@@ -66,10 +83,20 @@ public class CustomerFrame extends SubFrameFromMain {
 		}
 	}
 	
+    /**
+     * Obtém o objeto Customer associado a este frame.
+     * 
+     * @return objeto Customer associado a este frame
+     */
 	public Customer getCustomer() {
 		return customer;
 	}
 	
+    /**
+     * Obtém o painel principal do frame.
+     * 
+     * @return painel principal do frame
+     */
 	public GenericJPanel getMainPanel() {
 		return mainPanel;
 	}
@@ -81,13 +108,13 @@ public class CustomerFrame extends SubFrameFromMain {
 	 */
 	public CustomerFrame setSideBarMenu(SideBarItem ...items) {
 		menu = new SideBarMenu(items);
-		
-		sideBar = new SideBar(menu);
+		sideBar = new SideBar(menu, sbPrintDiet());
 		
 		sideBar.setMinimumSize(new Dimension(250, this.getHeight()));
 		sideBar.setPreferredSize(new Dimension(250, this.getHeight()));
 		return this;
 	}
+	
 	
 	/**
 	 * Método para definir a primeira página do frame, quando o frame não tiver uma sideBar.
@@ -131,14 +158,39 @@ public class CustomerFrame extends SubFrameFromMain {
 		return this;
 	}
 	
+	/**
+     * Cria um SideBarItem para a página de perfil do cliente.
+     * 
+     * @return SideBarItem para a página de perfil do cliente
+     */
 	public SideBarItem sbProfilePage() {
 		profilePage = new CustomerFormPage(this.getMainPanel(), customer);
 		return new SideBarItem(new LanguageUtil("PERFIL", "PROFILE").get(), () -> this.swapMainPanel(profilePage), true);
 	}
 	
+	/**
+     * Cria um SideBarItem para a página de dieta do cliente.
+     * 
+     * @return SideBarItem para a página de dieta do cliente
+     */
 	public SideBarItem sbDietPage() {
 		dietPage = new DietPage(this.getMainPanel(), customer);
 		return new SideBarItem(new LanguageUtil("DIETA", "DIET").get(), () -> this.swapMainPanel(dietPage));
+	}
+	
+    /**
+     * Cria um componente de barra lateral para o botão de exportar dieta.
+     * 
+     * @return componente de barra lateral para o botão de exportar dieta
+     */
+	public SideBarComponent<StdButton> sbPrintDiet() {
+		StdButton printDietBtn = StdButton.stdBtnConfig(new LanguageUtil("Exportar Dieta", "Export Diet").get());
+		printDietBtn.setAction(() -> {
+			PdfGeneratorController.generate(customer);
+		});
+		SideBarComponent<StdButton> sideBarButton = new SideBarComponent<StdButton>(printDietBtn);
+		sideBarButton.gbc.grid(0, 1).insets(300, 0, 0, 0);
+	    return sideBarButton;
 	}
 
 }

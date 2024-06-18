@@ -18,15 +18,20 @@ import model.entities.Aliment;
 import utils.interfaces.GeneralVisualSettings;
 import view.components.tables.CustomTableModel;
 	
-public class InterfaceController implements GeneralVisualSettings {
+/**
+ * Controlador de interface que oferece métodos para criação e configuração de componentes visuais,
+ * como tabelas interativas e popups de contexto.
+ */
+public abstract class InterfaceController implements GeneralVisualSettings {
 	/**
-	 * Método genérico para criação de tabelas interativas com os resultados do banco de dados
-	 * @param <T> - Tipo do retorno da tabela
-	 * @param originList - Lista a ser exibida
-	 * @param columnNames - Nome das colunas superiores
-	 * @param rowMapper - Formatações opcionais dos resultados nas colunas
+	 * Método genérico para criação de tabelas interativas com os resultados do banco de dados.
+	 *
+	 * @param <T>              - Tipo do retorno da tabela
+	 * @param originList       - Lista a ser exibida
+	 * @param columnNames      - Nome das colunas superiores
+	 * @param rowMapper        - Formatações opcionais dos resultados nas colunas
 	 * @param doubleClickAction - Função executada ao dar double click em algum dos itens na tabela
-	 * @return -> Retorna um JScrollpane contendo a tabela já configurada.
+	 * @return -> Retorna um JScrollPane contendo a tabela já configurada.
 	 */
     public static <T> JScrollPane createTable(List<T> originList, 
     										  Object[] columnNames,
@@ -118,6 +123,12 @@ public class InterfaceController implements GeneralVisualSettings {
         return scrollPane;
     }
 	
+    /**
+     * Método para obter uma lista de alimentos em um JScrollPane com tabela configurada.
+     *
+     * @param originList - Lista de alimentos a ser exibida.
+     * @return JScrollPane contendo a tabela configurada.
+     */
 	public static JScrollPane getAlimentList(List<Aliment> originList) {
         return createTable(
                 originList,
@@ -133,6 +144,11 @@ public class InterfaceController implements GeneralVisualSettings {
         );
     }
 	
+	/**
+	 * Método para obter uma lista de todos os alimentos em um JScrollPane com tabela configurada.
+	 *
+	 * @return JScrollPane contendo a tabela configurada.
+	 */
 	public static JScrollPane getAlimentList() {
 		return InterfaceController.getAlimentList(Aliment.findAll());
 	}

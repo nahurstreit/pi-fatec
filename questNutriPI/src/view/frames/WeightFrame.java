@@ -17,6 +17,9 @@ import view.components.generics.GenericJFrame;
 import view.components.generics.GenericJPanel;
 import view.components.generics.GenericJScrollPaneList;
 
+/**
+ * Frame para gerenciamento de pesos de clientes.
+ */
 public class WeightFrame extends SubFrame {
 	private static final long serialVersionUID = 1L;
 
@@ -30,6 +33,13 @@ public class WeightFrame extends SubFrame {
 	
 	private static WeightFrame opened;
 	
+    /**
+     * Construtor para inicializar o frame de gerenciamento de pesos.
+     * 
+     * @param callerFrame O frame que chamou este frame.
+     * @param customer    O cliente para o qual os pesos estão sendo gerenciados.
+     * @param updateInput O input para atualização dos pesos no frame anterior.
+     */
 	public WeightFrame(GenericJFrame callerFrame, Customer customer, FormBoxInput updateInput) {
 		super(callerFrame, null);
 		this.customer = customer;
@@ -53,6 +63,9 @@ public class WeightFrame extends SubFrame {
 		
 	}
 	
+    /**
+     * Configura a lista de pesos para exibição no frame.
+     */
 	private void setUpWgtList() {
 		weightList = new GenericJScrollPaneList<Weight>(
 					Weight.findAllByCustomerPK(customer.getId()),
@@ -65,6 +78,9 @@ public class WeightFrame extends SubFrame {
 		framePanel.add(weightList, framePanel.gbc.yP().wgt(1.0).insets("1", 0, 15));
 	}
 	
+    /**
+     * Configura o formulário superior para adicionar novos pesos.
+     */
 	private void setUpUpperForm() {
 		wgtValue = new FormBoxInput(framePanel).setLbl(new LanguageUtil("Adicionar novo peso (kg)", "Add new weight (kg)").get())
 											   .addValidation(
@@ -88,24 +104,31 @@ public class WeightFrame extends SubFrame {
 		
 	}
 	
+    /**
+     * Cria e configura o botão para adicionar um novo peso.
+     * 
+     * @return O botão configurado para registrar o novo peso.
+     */
 	private StdButton addNewWeight() {
 		StdButton addNew = StdButton.stdBtnConfig(new LanguageUtil("Registrar", "Register").get());
 		addNew.setAction(() -> {
 			if(Validate.formFields(wgtValue)) {
-				Weight wgt = new Weight(customer, Double.parseDouble(wgtValue.getValue().replace(',', '.')));
-				try {
-					if(wgt.save()) {
-						framePanel.remove(weightList);
-						setUpWgtList();
-						framePanel.revalidate();
-						framePanel.repaint();
-						updateInput.setValue(wgt.value + "kg");
-						QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Novo peso registrado!", "New weight registered!").get());
-					} else {
-						QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Não foi possível registrar.", "Unable to register.").get());
+				if(!wgtValue.getValue().replace(',', '.').isBlank()) {
+					Weight wgt = new Weight(customer, Double.parseDouble(wgtValue.getValue().replace(',', '.')));
+					try {
+						if(wgt.save()) {
+							framePanel.remove(weightList);
+							setUpWgtList();
+							framePanel.revalidate();
+							framePanel.repaint();
+							updateInput.setValue(wgt.value + "kg");
+							QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Novo peso registrado!", "New weight registered!").get());
+						} else {
+							QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Não foi possível registrar.", "Unable to register.").get());
+						}
+					} catch (Exception e) {
+						QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Houve um erro ao registrar.", "An error occurred while registering.").get());
 					}
-				} catch (Exception e) {
-					QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Houve um erro ao registrar.", "An error occurred while registering.").get());
 				}
 			}
 		});
@@ -113,6 +136,11 @@ public class WeightFrame extends SubFrame {
 	}
 	
 	
+    /**
+     * Método para inicializar e configurar o frame de gerenciamento de pesos.
+     * 
+     * @return O próprio frame para implementar fluent interface.
+     */
 	public WeightFrame init() {
 		setUpUpperForm();
 		setUpWgtList();

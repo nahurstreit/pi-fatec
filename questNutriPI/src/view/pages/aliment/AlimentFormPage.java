@@ -1,18 +1,24 @@
+/**
+ * Package que contém as paginas relacionadas aos Alimentos sistema.
+ */
 package view.pages.aliment;
 
 import controller.entities.AlimentController;
 import model.entities.Aliment;
 import utils.FoodUtil;
+import utils.interfaces.IDoAction;
 import utils.validations.Validate;
 import utils.validations.ValidationRule;
 import utils.view.LanguageUtil;
-import view.components.QuestNutriJOP;
 import view.components.buttons.StdButton;
 import view.components.forms.FormBoxInput;
 import view.components.forms.FormSection;
 import view.components.generics.GenericJPanel;
 import view.pages.generics.GenericFormPage;
 
+/**
+ * Página de formulário para gerenciar informações de alimentos.
+ */
 public class AlimentFormPage extends GenericFormPage {
 	private static final long serialVersionUID = 1L;
 	
@@ -53,13 +59,32 @@ public class AlimentFormPage extends GenericFormPage {
 	// Valores padrões de validação
 		private final int MIN_SIZE_NAME = 5;
 		private final int MAX_SIZE_NAME = 50;
+		
+		private IDoAction onUpdate;
 
-	public AlimentFormPage(GenericJPanel ownerPanel, Aliment aliment) {
+    /**
+     * Construtor para inicializar a página de formulário de alimentos.
+     * 
+     * @param ownerPanel O painel proprietário onde esta página será exibida.
+     * @param aliment    O alimento associado a esta página de formulário.
+     * @param onUpdate   Ação a ser executada quando uma atualização é realizada.
+     */
+	public AlimentFormPage(GenericJPanel ownerPanel, Aliment aliment, IDoAction onUpdate) {
 		super(ownerPanel);
 		this.aliment = aliment;
+		if(onUpdate != null) {
+			this.onUpdate = onUpdate;
+		} else {
+			this.onUpdate = () -> {};
+		}
 		buildForm();
 	}
 	
+    /**
+     * Regra de validação para valores do tipo double.
+     * 
+     * @return A regra de validação para verificar se o valor é um double.
+     */
 	public ValidationRule isDouble() {
 		return new ValidationRule(
 					value -> {
@@ -91,6 +116,11 @@ public class AlimentFormPage extends GenericFormPage {
 		return this;
 	}
 	
+    /**
+     * Cria o botão de salvar para o formulário.
+     * 
+     * @return O botão configurado para salvar as informações do alimento.
+     */
 	protected StdButton saveBtn() {
 		StdButton saveBtn = StdButton.stdBtnConfig(new LanguageUtil("Salvar", "Save").get());
 		
@@ -127,7 +157,8 @@ public class AlimentFormPage extends GenericFormPage {
 						pyridoxine.getValue(),
 						niacin.getValue(),
 						vitaminC.getValue(),
-						ash.getValue()
+						ash.getValue(),
+						onUpdate
 						);
 
 			}
@@ -137,6 +168,11 @@ public class AlimentFormPage extends GenericFormPage {
 		return saveBtn;
 	}
 	
+	 /**
+     * Configura a seção de informações essenciais do formulário.
+     * 
+     * @return A seção configurada para exibir as informações essenciais do alimento.
+     */
 	protected FormSection essentialInfo() {
 		//Essenciais
 			name = new FormBoxInput(this).setLbl(new LanguageUtil("Nome", "Name").get())
@@ -205,6 +241,11 @@ public class AlimentFormPage extends GenericFormPage {
 		return essentialInfo;
 	}
 
+    /**
+     * Configura a seção de informações básicas do formulário.
+     * 
+     * @return A seção configurada para exibir as informações básicas do alimento.
+     */
 	protected FormSection basicInfo() {
 		//Secundários
 		humidity = new FormBoxInput(this).setLbl(new LanguageUtil("Umidade (%)", "Humidity (%)").get())

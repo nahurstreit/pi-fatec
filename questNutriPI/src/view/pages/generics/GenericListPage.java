@@ -27,6 +27,11 @@ import view.components.generics.GenericJPanel;
 import view.components.generics.GenericJScrollPaneList;
 import view.components.inputs.HintInputField;
 
+/**
+ * Página genérica para exibir listas de itens com funcionalidades de pesquisa e interação.
+ *
+ * @param <T> Tipo genérico dos itens na lista.
+ */
 public abstract class GenericListPage<T> extends GenericPage {
     private static final long serialVersionUID = 1L;
 
@@ -46,6 +51,14 @@ public abstract class GenericListPage<T> extends GenericPage {
      */
     private int centralBoxLateralDownPadding = 40;
 
+    
+    /**
+     * Construtor da página genérica de lista.
+     *
+     * @param ownerPanel    Painel proprietário onde esta página será exibida.
+     * @param searchOptions Opções para o JComboBox de tipo de pesquisa.
+     * @param pageTitle     Título da página.
+     */
     public GenericListPage(GenericJPanel ownerPanel, String[] searchOptions, String pageTitle) {
         super(ownerPanel);
         this.ltGridBag();
@@ -163,13 +176,16 @@ public abstract class GenericListPage<T> extends GenericPage {
 
         blueBox.add(whiteBox, blueBox.gbc.anchor("NORTHWEST").wgt(1.0).fill("BOTH").insets(30));
 
-        JLabel pageLbl = new JLabel(pageTitle);
+        JLabel pageLbl = new JLabel(pageTitle, JLabel.CENTER);
         pageLbl.setFont(STD_BOLD_FONT.deriveFont(40f));
-        this.add(pageLbl, gbc.grid(0));
+        this.add(pageLbl, gbc.grid(0).wgt(1.0, 0).fill("HORIZONTAL").anchor("CENTER").width("REMAINDER"));
 
-        this.add(blueBox, gbc.yP().wgt(1.0).insets("1", 20, centralBoxLateralDownPadding).fill("BOTH"));
+        this.add(blueBox, gbc.yP().wgt(1.0).insets("1", 20, centralBoxLateralDownPadding).fill("BOTH").width("REMAINDER"));
     }
     
+    /**
+     * Método de inicialização dos componentes da página.
+     */
     private void init() {
     	initialList = setInitialList();
     	columnNames = setColumnNames();
@@ -183,18 +199,31 @@ public abstract class GenericListPage<T> extends GenericPage {
     	itemListComponent.init();
     }
     
+    /**
+     * Método para configurar o padding lateral da caixa central.
+     *
+     * @param value Valor do padding lateral.
+     */
     protected void setCentralBoxLateralPadding(int value) {
         this.centralBoxLateralDownPadding = value;
     }
     
+    /**
+     * Define um botão de criação na página com ação específica.
+     *
+     * @param createFunction Ação a ser executada ao clicar no botão.
+     */
     protected void setCreateBtn(Action createFunction) {
         StdButton createOne = new StdButton(new LanguageUtil("Criar novo", "Create New").get(), createFunction)
                                 .setColors(Color.white, STD_BLUE_COLOR)
                                 .setUpFont(STD_BOLD_FONT.deriveFont(15f))
                                 .setUpSize(new Dimension(150, 35));
-        this.add(createOne, gbc.grid(0).anchor("EAST").insets("4", centralBoxLateralDownPadding, 0).wgt(0).fill("NONE"));
+        this.add(createOne, gbc.grid(1, 0).anchor("EAST").insets("4", centralBoxLateralDownPadding, 0).wgt(0).fill("NONE").width(1));
     }
     
+    /**
+     * Realiza a pesquisa na lista com base no termo de pesquisa atual.
+     */
     private void performSearch() {
         String searchField = (String) comboBox.getSelectedItem();
         String searchTerm = inputSearchBox.getText();
@@ -202,46 +231,19 @@ public abstract class GenericListPage<T> extends GenericPage {
         updateItemList(results);
     }
     
+    /**
+     * Método para forçar a atualização da lista.
+     */
     public void updateList() {
     	performSearch();
     }
-
-	/**
-     * MÃ©todo que representa o conjunto inicial de resultados da lista.
-     * @return Lista com os objetos da lista.
-     */
-    protected abstract List<T> setInitialList();
-    
     
     /**
-     * MÃ©todo que representa a chamada de pesquisa dos objetos na lista.
-     * @param searchField - coluna no banco de dados
-     * @param searchTerm - termo a ser procurado
-     * @return Lista com os objetos que satisfaÃ§am a condiÃ§Ã£o.
+     * Método para atualizar a lista de itens exibidos na página.
+     *
+     * @param newList Nova lista de itens a ser exibida.
+     * @return true se a atualização foi bem sucedida, false caso contrário.
      */
-    protected abstract BiFunction<String, String, List<T>> setSearchMethod();
-    
-    /**
-     * MÃ©todo que representa o nome das colunas na lista de exibiÃ§Ã£o.
-     * <br>Para implementar faÃ§a um return de um array de Strings que representam as colunas a serem exibidas.
-     * @return Objeto de Strings
-     */
-    protected abstract Object[] setColumnNames();    
-    
-    protected abstract Function<T, Object[]> setRowMapper();
-    
-    protected void createPopUpOption(String text, Function<T, Runnable> action) {
-    	itemListComponent.addPopUpOption(text, action);
-    }
-    
-    protected void createDeleteItemPopUpOption(String text, Function<T, Supplier<Boolean>> additionalAction) {
-    	itemListComponent.addDeleteItemPopUpOption(text, additionalAction);
-    }
-    
-    protected abstract void setPopUpOptions();
-    
-    protected abstract Function<T, Runnable> setDoubleClickAction();
-
     public boolean updateItemList(List<T> newList) {
         try {
             // Atualiza a lista de origem
@@ -258,4 +260,67 @@ public abstract class GenericListPage<T> extends GenericPage {
         }
         return true;
     }
+
+    /**
+     * Método abstrato para definir a lista inicial de itens a ser exibida.
+     *
+     * @return Lista inicial de objetos do tipo T.
+     */
+    protected abstract List<T> setInitialList();
+    
+    
+    /**
+     * Método abstrato para definir o método de pesquisa de itens na lista.
+     *
+     * @return BiFunction que define como buscar itens na lista com base no campo e termo de pesquisa.
+     */
+    protected abstract BiFunction<String, String, List<T>> setSearchMethod();
+    
+    /**
+     * Método abstrato para definir os nomes das colunas na lista de exibição.
+     *
+     * @return Array de Strings com os nomes das colunas.
+     */
+    protected abstract Object[] setColumnNames();    
+    
+    /**
+     * Método abstrato para definir o mapeamento de objetos para linhas na tabela.
+     *
+     * @return Função que mapeia objetos do tipo T para um array de objetos para exibição.
+     */
+    protected abstract Function<T, Object[]> setRowMapper();
+    
+    /**
+     * Método abstrato para definir a ação a ser executada ao duplo clique em um item da lista.
+     *
+     * @return Função que define a ação a ser executada ao duplo clique em um item.
+     */
+    protected abstract Function<T, Runnable> setDoubleClickAction();
+    
+    /**
+     * Método abstrato para definir as opções de menu de contexto para itens da lista.
+     */
+    protected abstract void setPopUpOptions();
+    
+    /**
+     * Método para criar uma opção de menu de contexto customizada.
+     *
+     * @param text   Texto da opção de menu.
+     * @param action Ação a ser executada ao selecionar a opção.
+     */
+    protected void createPopUpOption(String text, Function<T, Runnable> action) {
+    	itemListComponent.addPopUpOption(text, action);
+    }
+    
+    /**
+     * Método para criar uma opção de menu de contexto para deletar itens com ação adicional.
+     *
+     * @param text            Texto da opção de menu.
+     * @param additionalAction Ação adicional a ser executada ao selecionar a opção de deletar.
+     */
+    protected void createDeleteItemPopUpOption(String text, Function<T, Supplier<Boolean>> additionalAction) {
+    	itemListComponent.addDeleteItemPopUpOption(text, additionalAction);
+    }
+
+
 }

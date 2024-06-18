@@ -152,21 +152,41 @@ public class FormSection extends GenericComponent {
         return this;
     }
     
+    /**
+     * Método que esconde a label que indica que alguns campos são obrigatórios. Os campos marcados como obrigatórios ainda serão obrigatórios, mas 
+     * a label inferior que lembra que alguns campos são obrigatórios não será exibida.
+     * @return O próprio objeto FormSection para permitir fluent interface.
+     */
     public FormSection hideRequiredLbl() {
         this.showRequiredLbl = false;
         return this;
     }
     
+    /**
+     * Método que define a cor interna dos campos desse formulário.
+     * @param color - Cor interna
+     * @return O próprio objeto FormSection para permitir fluent interface.
+     */
     public FormSection setInternalColor(Color color) {
     	this.internalColor = color;
     	return this;
     }
     
+    /**
+     * Método que retira a borda ao redor do formulário
+     * @return O próprio objeto FormSection para permitir fluent interface.
+     */
     public FormSection hideBorder() {
     	this.hideBorder = true;
     	return this;
     }
     
+    /**
+     * Método que define de forma geral, qual será a distância dos campos no formulário
+     * @param left - distancia da esquerda
+     * @param right - distancia da direita.
+     * @return O próprio objeto FormSection para permitir fluent interface.
+     */
     public FormSection setAllFieldsLateralDistance(Integer left, Integer right) {
     	if(left != null) fieldLeftDistance = left;
     	if(right != null) fieldRightDistance = right;
@@ -179,7 +199,7 @@ public class FormSection extends GenericComponent {
      * Este deve ser o <b>último</b> método chamado pela fluent interface.
      * Deixar de chamar este método não resultará em erros, mas não será exibida a parte gráfica do objeto.
      *
-     * @details
+     * <br><br>
      * O objeto não é inicializado graficamente quando é instanciado pois, com a implementação
      * da fluent interface, é esperado a chamada sucessiva de métodos para definir suas configurações
      * gráficas. Se as partes gráficas do objeto fossem criadas no momento da instanciação, não seria

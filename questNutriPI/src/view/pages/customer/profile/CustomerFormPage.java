@@ -1,8 +1,12 @@
+/**
+ * Package que contém as classes que controlam a visualização do perfil de Customers.
+ */
 package view.pages.customer.profile;
 
 import controller.entities.CustomerController;
 import controller.entities.WeightController;
 import model.entities.Customer;
+import utils.interfaces.CustomerFieldRules;
 import utils.validations.Validate;
 import utils.validations.ValidationRule;
 import utils.view.LanguageUtil;
@@ -14,6 +18,10 @@ import view.components.forms.FormSection;
 import view.components.generics.GenericJPanel;
 import view.pages.generics.GenericFormPage;
 
+/**
+ * Página de formulário para edição do perfil do cliente.
+ * Estende a classe GenericFormPage e implementa CustomerFieldRules.
+ */
 public class CustomerFormPage extends GenericFormPage implements CustomerFieldRules {
 	private static final long serialVersionUID = 1L;
 	protected Customer customer;
@@ -25,6 +33,7 @@ public class CustomerFormPage extends GenericFormPage implements CustomerFieldRu
 			protected FormBoxInput cpf;
 			protected FormBoxInput height;
 			protected FormBoxInput gender;
+			protected FormBoxInput activityStatus;
 			protected FormBoxInput lastWeight;
 
 		//contactInfo
@@ -52,6 +61,12 @@ public class CustomerFormPage extends GenericFormPage implements CustomerFieldRu
 		private String txtHolder_btnSave = new LanguageUtil("Salvar", "Save").get();
 			
 	
+    /**
+     * Construtor da página de formulário do cliente.
+     *
+     * @param ownerPanel Painel proprietário que contém esta página.
+     * @param customer   Cliente cujo perfil está sendo editado.
+     */
 	public CustomerFormPage(GenericJPanel ownerPanel, Customer customer) {
 		super(ownerPanel);
 		this.customer = customer;
@@ -59,12 +74,22 @@ public class CustomerFormPage extends GenericFormPage implements CustomerFieldRu
 	}
 	
 
+    /**
+     * Constrói o formulário, chamando métodos para configurar as seções do formulário.
+     *
+     * @return o próprio objeto para implementar fluent interface.
+     */
 	@Override
 	protected GenericFormPage buildForm() {
 		build(personalInfo().init(), contactInfo().init(), addrInfo().init());
 		return this;
 	}
 	
+    /**
+     * Cria um botão padrão para salvar as informações pessoais do cliente.
+     *
+     * @return Botão configurado para salvar informações pessoais.
+     */
 	private StdButton btnSavePersonalInfo() {
 		StdButton saveBtn = StdButton.stdBtnConfig(txtHolder_btnSave);
 		
@@ -72,7 +97,7 @@ public class CustomerFormPage extends GenericFormPage implements CustomerFieldRu
 			if(Validate.formFields(name, birth, cpf, height, gender)) {
 				CustomerController.saveCustPersonalInfo(customer, 
 			   			name.getValue(), birth.getValue(), cpf.getValue(), 
-			   			height.getValue(), gender.getValue());
+			   			height.getValue(), gender.getValue(), activityStatus.getValue() );
 			}
 
 		});
@@ -80,6 +105,13 @@ public class CustomerFormPage extends GenericFormPage implements CustomerFieldRu
 		return saveBtn;
 	}
 	
+    /**
+     * Método para criação de regra de validação de tamanho de string entre min e max.
+     *
+     * @param min Tamanho mínimo da string.
+     * @param max Tamanho máximo da string.
+     * @return Regra de validação de tamanho.
+     */
 	protected ValidationRule strSizeBetween(int min, int max) {
 		return new ValidationRule(value -> {
 			if(value.length() != 0) {
@@ -91,6 +123,11 @@ public class CustomerFormPage extends GenericFormPage implements CustomerFieldRu
 		} , new LanguageUtil("Campo precisa ter entre "+min+ " e "+max+".", "Field size must be between "+min+ " and "+max+".").get());
 	}
 	
+    /**
+     * Configuração da seção de informações pessoais no formulário.
+     *
+     * @return Seção de informações pessoais configurada.
+     */
 	protected FormSection personalInfo() {
 		//Criando as linhas do form
 		name = new FormBoxInput(this).setLbl(new LanguageUtil("Nome", "Name").get())
@@ -155,7 +192,8 @@ public class CustomerFormPage extends GenericFormPage implements CustomerFieldRu
 									   .setComboBoxInput(customer.gender, "M", "F")
 									   .setRequired();
 		
-        lastWeight = new FormBoxInput(this).setLbl(new LanguageUtil("Último peso registrado (kg)", "Last Registered Weight (kg)").get())
+		
+        lastWeight = new FormBoxInput(this).setLbl(new LanguageUtil("Último peso (kg)", "Last Weight (kg)").get(), 14f)
 										   .lockInput()
                                            .setHint(new LanguageUtil("Nenhum registro.", "No registers yet.").get());
 		
@@ -198,7 +236,11 @@ public class CustomerFormPage extends GenericFormPage implements CustomerFieldRu
 			if(customer.getLastWeight() != null) {
 				lastWeight.setValue(customer.getLastWeight().value + "kg");
 			}
-			personalInfo.addRow(height, gender, lastWeight);
+			
+			activityStatus = new FormBoxInput(this).setLbl(new LanguageUtil("Nível de atividade", "Activity Level").get())
+												   .setComboBoxInput(customer.getActivityStatus()+"", "1", "2", "3", "4", "5");
+			if(!QuestNutri.isEditAuth()) activityStatus.lockInput();
+			personalInfo.addRow(height, gender, activityStatus, lastWeight);
 		} else {
 			personalInfo.addRow(height, gender);
 		}
@@ -206,6 +248,11 @@ public class CustomerFormPage extends GenericFormPage implements CustomerFieldRu
 		return personalInfo;
 	}
 	
+    /**
+     * Cria um botão padrão para acessar os pesos registrados.
+     *
+     * @return Botão configurado para acesso aos pesos.
+     */
 	private StdButton btnAccessWeights() {
 		StdButton btn = StdButton.stdBtnConfig(new LanguageUtil("Registrar", "Add new").get());
 		btn.setAction(() -> {
@@ -215,6 +262,11 @@ public class CustomerFormPage extends GenericFormPage implements CustomerFieldRu
 		return btn;
 	}
 	
+    /**
+     * Cria um botão padrão para salvar as informações de contato do cliente.
+     *
+     * @return Botão configurado para salvar informações de contato.
+     */
 	private StdButton btnSaveContactInfo() {
 		StdButton saveBtn = StdButton.stdBtnConfig(txtHolder_btnSave);
 		
@@ -236,6 +288,11 @@ public class CustomerFormPage extends GenericFormPage implements CustomerFieldRu
 		return saveBtn;
 	}
 	
+    /**
+     * Configuração da seção de informações de contato no formulário.
+     *
+     * @return Seção de informações de contato configurada.
+     */
 	protected FormSection contactInfo() {
 		email = new FormBoxInput(this).setLbl("E-mail")
 								      .setValue(customer.email)
@@ -275,6 +332,11 @@ public class CustomerFormPage extends GenericFormPage implements CustomerFieldRu
 		return contactInfo;
 	}
 	
+    /**
+     * Cria um botão padrão para salvar as informações de endereço do cliente.
+     *
+     * @return Botão configurado para salvar informações de endereço.
+     */
 	private StdButton btnSaveAddrInfo() {
 		StdButton saveBtn = StdButton.stdBtnConfig(txtHolder_btnSave);
 		
@@ -301,8 +363,12 @@ public class CustomerFormPage extends GenericFormPage implements CustomerFieldRu
 		return saveBtn;
 	}
 	
+    /**
+     * Configuração da seção de informações de endereço no formulário.
+     *
+     * @return Seção de informações de endereço configurada.
+     */
 	protected FormSection addrInfo() {
-		
 		addrCep = new FormBoxInput(this).setLbl("CEP")
  									    .setMask("#####-###")
  									    .clearMaskOnSelect(true)

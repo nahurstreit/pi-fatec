@@ -1,3 +1,6 @@
+/**
+ * Package que contém as classes utilitárias de View.
+ */
 package utils.view;
 
 import java.awt.Font;
@@ -7,7 +10,10 @@ import java.io.InputStream;
 
 import view.QuestNutri;
 
-public class FontsUtil {
+/**
+ * Classe utilitária para lidar com fontes do sistema.
+ */
+public abstract class FontsUtil {
 	/**
 	 * Método que carrega uma instância de Font com o nome indicado. A fonte deve estar salva dentro do caminho:
 	 * <pre>/src/view/assets/fonts</pre>

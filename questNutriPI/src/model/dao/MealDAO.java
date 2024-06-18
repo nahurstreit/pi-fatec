@@ -4,13 +4,17 @@ import java.util.List;
 
 import model.entities.Meal;
 
+/**
+ * Classe abstrata que define operações de acesso a dados para a entidade Meal.
+ * Implementa operações genéricas definidas em GenericDAO para Meal.
+ */
 public abstract class MealDAO extends GenericDAO<Meal> {
 
 	/**
 	 * Método que encontra todos os registros de Meal e retorna uma lista de todas
 	 * as Meals que correspondem aos parâmetros fornecidos
 	 *
-	 * @param Parâmetros de filtro opcionais para a consulta devem ser escritos de
+	 * @param params Parâmetros de filtro opcionais para a consulta devem ser escritos de
 	 * acordo com a declaração das classes de entidade.
 	 * 
 	 * @return Lista de Meals que correspondem aos parâmetros fornecidos.
@@ -68,6 +72,11 @@ public abstract class MealDAO extends GenericDAO<Meal> {
 		return null;
 	}
 	
+	/**
+	 * Método para encontrar a última Meal salva.
+	 * 
+	 * @return Objeto meal da última Meal salva.
+	 */
 	public static Meal findLast() {
 		return GenericDAO.findLast(Meal.class);
 	}

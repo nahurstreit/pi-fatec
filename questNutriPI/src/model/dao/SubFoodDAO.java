@@ -4,13 +4,17 @@ import java.util.List;
 
 import model.entities.SubFood;
 
+/**
+ * Classe abstrata que define operações de acesso a dados para a entidade SubFood.
+ * Implementa operações genéricas definidas em GenericDAO para SubFood.
+ */
 public abstract class SubFoodDAO extends GenericDAO<SubFood> {
 
 	/**
 	 * Método que encontra todos os registros de SubFood e retorna uma lista de
 	 * todas as SubFoods que correspondem aos parâmetros fornecidos
 	 *
-	 * @param Parâmetros de filtro opcionais para a consulta devem ser escritos de
+	 * @param params Parâmetros de filtro opcionais para a consulta devem ser escritos de
 	 * acordo com a declaração das classes de entidade.
 	 * 
 	 * @return Lista de SubFoods que correspondem aos parâmetros fornecidos.

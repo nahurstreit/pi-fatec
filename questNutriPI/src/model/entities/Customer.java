@@ -18,57 +18,114 @@ import jakarta.persistence.Table;
 import model.dao.CustomerDAO;
 import utils.CopyFactory;
 
+/**
+ * Entidade que representa um cliente no sistema.
+ * Extende as funcionalidades básicas de persistência da classe CustomerDAO.
+ */
 @Entity
 @Table(name = "Customers")
-
 public class Customer extends CustomerDAO {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idCustomer")
-	public Integer idCustomer;
 
-	@Column(name = "cust_createdAt")
-	private LocalDateTime createdAt;
-	
-	@Column(name = "cust_deletedAt")
-	private LocalDateTime deletedAt;
+	/**
+	 * Id associado a esse objeto no banco de dados
+	 */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idCustomer")
+    public Integer idCustomer;
 
-	@Column(name = "cust_name")
-	public String name;
+    /**
+     * Data e hora de criação do cliente.
+     */
+    @Column(name = "cust_createdAt")
+    private LocalDateTime createdAt;
 
-	@Column(name = "cust_email")
-	public String email;
+    /**
+     * Data e hora de exclusão do cliente.
+     */
+    @Column(name = "cust_deletedAt")
+    private LocalDateTime deletedAt;
 
-	@Column(name = "cpf")
-	private String cpf;
+    /**
+     * Nome do cliente.
+     */
+    @Column(name = "cust_name")
+    public String name;
 
-	@Column(name = "cust_phoneNumber")
-	public String phoneNumber;
+    /**
+     * E-mail do cliente.
+     */
+    @Column(name = "cust_email")
+    public String email;
 
-	@Column(name = "cust_activityStatus")
-	public Integer activityStatus;
+    /**
+     * CPF do cliente.
+     */
+    @Column(name = "cpf")
+    private String cpf;
 
-	@Column(name = "cust_setKcal")
-	public Double settedKcal;
+    /**
+     * Número de telefone do cliente.
+     */
+    @Column(name = "cust_phoneNumber")
+    public String phoneNumber;
 
-	@Column(name = "cust_height")
-	public Double height;
+    /**
+     * Nível de atividade física do cliente.
+     * <br> 1 -> sedentário
+     * <br> 2 -> levemente ativo
+     * <br> 3 -> moderadamente ativo
+     * <br> 4 -> muito ativo
+     * <br> 5 -> extretamente ativo.
+     */
+    @Column(name = "cust_activityStatus")
+    public Integer activityStatus = 1;
 
-	@Column(name = "cust_birth")
-	private LocalDate birth;
+    /**
+     * Valor de calorias estabelecido para o cliente.
+     */
+    @Column(name = "cust_setKcal")
+    public Double settedKcal;
 
-	@Column(name = "cust_gender")
-	public String gender;
+    /**
+     * Altura do cliente em metros.
+     */
+    @Column(name = "cust_height")
+    public Double height;
 
-	@ManyToOne
+    /**
+     * Data de nascimento do cliente.
+     */
+    @Column(name = "cust_birth")
+    private LocalDate birth;
+
+    /**
+     * Gênero do cliente.
+     */
+    @Column(name = "cust_gender")
+    public String gender;
+
+    /**
+     * Endereço associado ao cliente.
+     */
+    @ManyToOne
     @JoinColumn(name = "idAddress")
-	public Address address;
+    public Address address;
 	
-//	public Customer(String name2, String email2, String cpf2, String phoneNumber2, int activityStatus2,
-//			double settedKcal2, int i, Date birth2, String gender2) {
-//		// TODO Auto-generated constructor stub
-//	}
 	
+	/**
+	 * Construtor da classe Customer com parâmetros.
+	 * 
+	 * @param name Nome do cliente.
+	 * @param email Email do cliente.
+	 * @param cpf CPF do cliente.
+	 * @param phoneNumber Número de telefone do cliente.
+	 * @param activityStatus Nível de atividade do cliente.
+	 * @param settedKcal Quantidade de calorias definidas para o cliente.
+	 * @param height Altura do cliente.
+	 * @param birth Data de nascimento do cliente.
+	 * @param gender Gênero do cliente.
+	 */
 	public Customer(String name, String email, String cpf, String phoneNumber,
 			Integer activityStatus, Double settedKcal, Double height, LocalDate birth, String gender) {
 		super();
@@ -83,6 +140,9 @@ public class Customer extends CustomerDAO {
 		this.gender = gender;
 	}
 
+	/**
+	 * Construtor padrão da classe Customer.
+	 */
 	public Customer() {
 		this(null, null, null, null, null, null, null, null, null);
 	}
@@ -132,11 +192,20 @@ public class Customer extends CustomerDAO {
 		return phoneNumber;
 	}
 	
+
+	/**
+	 * Método para exibir as datas de criação e exclusão do cliente.
+	 */
 	public void showDates() {
 		System.out.println(this.createdAt);
 		System.out.println(this.deletedAt);
 	}
 	
+	/**
+	 * Método para recuperar o número de telefone formatado do Cliente.
+	 *
+	 * @return Retorna o número de telefone formatado do Cliente.
+	 */
 	public String getFormattedPhoneNumber() {
 		if(phoneNumber == null) return null;
         // Formatar o número de telefone
@@ -153,7 +222,19 @@ public class Customer extends CustomerDAO {
     }
 	
 	/**
-	 * Método para setar o nome de um Customer.
+	 * Método para recuperar o nível de atividade do cliente.
+	 *
+	 * @return Retorna o status de atividade do cliente.
+	 */
+	public int getActivityStatus() {
+		if(activityStatus == null) {
+			setActivity(1);
+		}
+		return activityStatus;
+	}
+	
+	/**
+	 * Método para definir o nome de um Customer.
 	 * 
 	 * @param name - String do nome
 	 * @return Retorna o próprio Customer, para implementação de fluent interface.
@@ -203,8 +284,10 @@ public class Customer extends CustomerDAO {
 	 * @return Retorna o próprio Customer, para implementação de fluent interface.
 	 */
 	public Customer setActivity(int activityStatus) {
-		//Adicionar validação depois
-		this.activityStatus = activityStatus;
+		if(activityStatus >= 1 && activityStatus <= 5) {
+			this.activityStatus = activityStatus;
+		}
+		
 		return this;
 	}
 	
@@ -325,7 +408,7 @@ public class Customer extends CustomerDAO {
 	
 	/**
 	 * Método que retorna a data de nascimento no formato 'dd/MM/yyyy'
-	 * @return
+	 * @return a data de nascimento formatada como string.
 	 */
     public String getBirth() {
         if (birth != null) {
@@ -337,12 +420,17 @@ public class Customer extends CustomerDAO {
     
     /**
 	 * Método que retorna a data de nascimento no formato 'dd/MM/yyyy'
-	 * @return
+	 * @return LocalDate da data de nascimento.
 	 */
     public LocalDate getLocalDateBirth() {
         return birth;
     }
     
+    /**
+	 * Método para marcar um Customer como excluído.
+	 * 
+	 * @return Retorna verdadeiro se a operação foi bem-sucedida, falso caso contrário.
+	 */
     public boolean softDelete() {
     	try {
 			deletedAt = LocalDateTime.now();
@@ -352,6 +440,25 @@ public class Customer extends CustomerDAO {
 		}
     }
     
+    /**
+	 * Método para reativar um Customer que foi excluído.
+	 * 
+	 * @return Retorna verdadeiro se a operação foi bem-sucedida, falso caso contrário.
+	 */
+    public boolean reactivate() {
+    	try {
+    		deletedAt = null;
+    		return this.save();
+		} catch (Exception e) {
+			return false;
+		}
+    }
+    
+    /**
+	 * Método para salvar um Customer.
+	 * 
+	 * @return Retorna verdadeiro se a operação foi bem-sucedida, falso caso contrário.
+	 */
     @Override
     public boolean save() {
     	boolean res = super.save();
@@ -362,6 +469,13 @@ public class Customer extends CustomerDAO {
     	return res;
     }
     
+    /**
+	 * Método para copiar a dieta de um Customer para outro.
+	 * 
+	 * @param destinyCustomer Customer que receberá a cópia da dieta.
+	 * @return Retorna verdadeiro se a operação foi bem-sucedida, falso caso contrário.
+	 * @deprecated
+	 */
     public boolean copyDietToAnotherCustomer(Customer destinyCustomer) {
     	boolean res = true;
     	try {
@@ -377,12 +491,22 @@ public class Customer extends CustomerDAO {
     	return res;
     }
 	
+	/**
+	 * Método para criar uma refeição associada a um Customer.
+	 * 
+	 * @param meal Objeto Meal a ser criado.
+	 */
 	public void createMeal(Meal meal) {
 		this.save();
 		meal.setCustomer(this);
 		meal.save();
 	}
 	
+	/**
+	 * Método para retornar uma representação textual do objeto Customer.
+	 * 
+	 * @return String representando o objeto Customer.
+	 */
 	public String toString() {
 		return "Customer: {"
 		+ "\n    idCustomer: "+ idCustomer
@@ -401,10 +525,6 @@ public class Customer extends CustomerDAO {
 	 */
 	public String smallInfo() {
 		return "{id: "+idCustomer+", name: "+name+"}";
-	}
-	
-	public String listShow() {
-		return name + "     " + cpf + "     "+birth;
 	}
 	
 }

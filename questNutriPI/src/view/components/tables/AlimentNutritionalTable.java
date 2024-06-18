@@ -1,3 +1,6 @@
+/**
+ * Package que contém o componente personalizado de tabelas.
+ */
 package view.components.tables;
 
 import java.util.ArrayList;
@@ -7,6 +10,9 @@ import javax.swing.table.AbstractTableModel;
 import model.entities.Aliment;
 import utils.view.LanguageUtil;
 
+/**
+ * Modelo de tabela para exibição dos valores nutricionais de um alimento.
+ */
 public class AlimentNutritionalTable extends AbstractTableModel {
     private static final long serialVersionUID = 1L;
     
@@ -16,6 +22,14 @@ public class AlimentNutritionalTable extends AbstractTableModel {
     private Aliment totalAliment;
     private boolean hasSelectedPortion;
 
+    /**
+     * Construtor que inicializa a tabela de valores nutricionais com um alimento específico, uma porção selecionada
+     * (opcional) e O total nutricional da refeição (opcional).
+     *
+     * @param aliment         O alimento cujos valores nutricionais serão exibidos na tabela.
+     * @param selectedPortion A porção selecionada do alimento, se especificada.
+     * @param totalAliment    O total nutricional da refeição.
+     */
     public AlimentNutritionalTable(Aliment aliment, Double selectedPortion, Aliment totalAliment) {
         this.aliment = aliment;
         this.selectedPortion = selectedPortion;
@@ -24,14 +38,29 @@ public class AlimentNutritionalTable extends AbstractTableModel {
         setupColumnNames();
     }
 
+    /**
+     * Construtor que inicializa a tabela de valores nutricionais com um alimento específico e uma porção selecionada
+     * (opcional).
+     *
+     * @param aliment         O alimento cujos valores nutricionais serão exibidos na tabela.
+     * @param selectedPortion A porção selecionada do alimento, se especificada.
+     */
     public AlimentNutritionalTable(Aliment aliment, Double selectedPortion) {
         this(aliment, selectedPortion, null);
     }
     
+    /**
+     * Construtor que inicializa a tabela de valores nutricionais com um alimento específico.
+     *
+     * @param aliment O alimento cujos valores nutricionais serão exibidos na tabela.
+     */
     public AlimentNutritionalTable(Aliment aliment) {
     	this(aliment, null, null);
     }
 
+    /**
+     * Configura os nomes das colunas da tabela com base nos atributos definidos na instância.
+     */
     private void setupColumnNames() {
         columnNames.add(new LanguageUtil("Nutrientes", "Nutrients").get());
         columnNames.add("100g");
@@ -87,6 +116,12 @@ public class AlimentNutritionalTable extends AbstractTableModel {
         }
     }
 
+    /**
+     * Obtém o nome do nutriente com base no índice da linha.
+     *
+     * @param rowIndex Índice da linha para o nutriente.
+     * @return Nome do nutriente correspondente ao índice.
+     */
     private String getNutrientName(int rowIndex) {
         switch (rowIndex) {
             case 0: return new LanguageUtil("kcal", "Calories").get();
@@ -119,6 +154,13 @@ public class AlimentNutritionalTable extends AbstractTableModel {
         }
     }
 
+    /**
+     * Obtém o valor do nutriente para um alimento específico com base no índice da linha.
+     *
+     * @param aliment  O alimento do qual se deseja obter o valor do nutriente.
+     * @param rowIndex Índice da linha para o nutriente.
+     * @return Valor do nutriente correspondente ao índice e ao alimento especificado.
+     */
     private String getNutrientValue(Aliment aliment, int rowIndex) {
         switch (rowIndex) {
             case 0: return aliment.kcal;
@@ -151,6 +193,12 @@ public class AlimentNutritionalTable extends AbstractTableModel {
         }
     }
 
+    /**
+     * Formata o valor do nutriente para exibição na tabela.
+     *
+     * @param value Valor do nutriente a ser formatado.
+     * @return Valor do nutriente formatado.
+     */
     private String formatValue(String value) {
         try {
             return String.format("%.2f", Double.parseDouble(value.replace(',', '.')));
@@ -159,6 +207,12 @@ public class AlimentNutritionalTable extends AbstractTableModel {
         }
     }
 
+    /**
+     * Calcula a porcentagem do valor do nutriente em relação ao total da refeição, se especificado.
+     *
+     * @param rowIndex Índice da linha para o nutriente.
+     * @return Porcentagem do valor do nutriente em relação ao total, formatada como string.
+     */
     private String calculatePercentage(int rowIndex) {
         try {
             double value = Double.parseDouble(getNutrientValue(aliment, rowIndex).replace(',', '.')) * (selectedPortion / 100);

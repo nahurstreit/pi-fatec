@@ -1,3 +1,6 @@
+/**
+ * Package que contém as entidades do sistema.
+ */
 package model.entities;
 
 import jakarta.persistence.Column;
@@ -8,46 +11,59 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import model.dao.AddressDAO;
 
+/**
+ * Entidade que representa um endereço.
+ * Herda funcionalidades básicas de acesso a dados de endereço.
+ */
 @Entity
 @Table(name = "Addresses")
 public class Address extends AddressDAO {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idAddress")
-	public Integer idAddress;
-
-	@Column(name = "addr_street")
-	public String street;
-
-	@Column(name = "addr_num")
 	
-	public Integer number;
-
-	@Column(name = "addr_comp")
-	public String comp;
-
-	@Column(name = "addr_cep")
-	public String cep;
-
-	@Column(name = "addr_neighborhood")
-	public String hood;
-
-	@Column(name = "addr_city")
-	public String city;
-
-	@Column(name = "addr_state")
-	public String state;
-
 	/**
-	 * 
-	 * @param idAddress Identificador(Id) do Endereço
-	 * @param addrStreet Recebe a Rua do Endereço
-	 * @param addrNum Recebe o Número do Endereços
-	 * @param addrComp Recebe o Complemento do Endereço
-	 * @param addrCep Recebe o CEP do Endereço
-	 * @param addrNeighborhood Recebe o Bairro do Endereço
-	 * @param addrCity Recebe a Cidade do Endereeço
-	 * @param addrState Recebe o Estado do Endereço
+	 * Id associado a esse objeto no banco de dados
+	 */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idAddress")
+    public Integer idAddress;
+
+    /** Rua do endereço. */
+    @Column(name = "addr_street")
+    public String street;
+
+    /** Número do endereço. */
+    @Column(name = "addr_num")
+    public Integer number;
+
+    /** Complemento do endereço. */
+    @Column(name = "addr_comp")
+    public String comp;
+
+    /** CEP do endereço. */
+    @Column(name = "addr_cep")
+    public String cep;
+
+    /** Bairro do endereço. */
+    @Column(name = "addr_neighborhood")
+    public String hood;
+
+    /** Cidade do endereço. */
+    @Column(name = "addr_city")
+    public String city;
+
+    /** Estado do endereço. */
+    @Column(name = "addr_state")
+    public String state;
+    
+	/**
+	 * Constructor de endereço.
+	 * @param street Recebe a Rua do Endereço
+	 * @param number Recebe o Número do Endereços
+	 * @param comp Recebe o Complemento do Endereço
+	 * @param cep Recebe o CEP do Endereço
+	 * @param hood Recebe o Bairro do Endereço
+	 * @param city Recebe a Cidade do Endereeço
+	 * @param state Recebe o Estado do Endereço
 	 */
 	public Address(String street, Integer number, String comp, String cep,
 			String hood, String city, String state) {
@@ -60,6 +76,9 @@ public class Address extends AddressDAO {
 		this.state = state;
 	}
 
+	/**
+	 * Constructor padrão
+	 */
 	public Address() {
 		this(null, null, null, null, null, null, null);
 	}
@@ -213,6 +232,10 @@ public class Address extends AddressDAO {
 		return this;
 	}
 
+	/**
+	 * Representação como string do estado desse objeto.
+	 * @return String -> string com o estado do objeto.
+	 */
 	@Override
 	public String toString() {
 		return "Address: {"

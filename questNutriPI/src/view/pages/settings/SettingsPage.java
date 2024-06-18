@@ -1,3 +1,6 @@
+/**
+ * Package que contém as classes que controlam a visualização das configurações do sistema
+ */
 package view.pages.settings;
 
 import javax.swing.JScrollPane;
@@ -16,6 +19,10 @@ import view.components.forms.FormSection;
 import view.components.generics.GenericJPanel;
 import view.pages.generics.GenericPage;
 
+/**
+ * Página de configurações do sistema, que permite ao usuário visualizar e modificar suas informações, 
+ * criar novos usuários, alterar configurações de sistema e realizar logout.
+ */
 public class SettingsPage extends GenericPage {
 	private static final long serialVersionUID = 1L;
 	
@@ -24,6 +31,13 @@ public class SettingsPage extends GenericPage {
 	
 	JScrollPane userList = new JScrollPane();
 	
+	/**
+     * Cria uma regra de validação para strings com tamanho entre min e max.
+     *
+     * @param min Tamanho mínimo permitido.
+     * @param max Tamanho máximo permitido.
+     * @return Regra de validação para strings.
+     */
 	protected ValidationRule strSizeBetween(int min, int max) {
 		return new ValidationRule(value -> {
 			if(value.length() != 0) {
@@ -35,6 +49,11 @@ public class SettingsPage extends GenericPage {
 		} , new LanguageUtil("Campo precisa ter entre "+min+ " e "+max+".", "Field size must be between "+min+ " and "+max+".").get());
 	}
 	
+    /**
+     * Construtor da página de configurações.
+     *
+     * @param ownerPanel Painel proprietário que contém esta página.
+     */
 	public SettingsPage(GenericJPanel ownerPanel) {
 		super(ownerPanel);
 		ltGridBag();
@@ -78,7 +97,6 @@ public class SettingsPage extends GenericPage {
 		}
 		
 		FormBoxInput changeUserName = new FormBoxInput(this).setLbl("Username")
-															.setValue(User.findByPK(QuestNutri.getLoggedUserId()).getLogin())
 														  	.addValidation(
 														  			new ValidationRule(
 														  					value -> {
@@ -93,8 +111,17 @@ public class SettingsPage extends GenericPage {
 														  						return false;
 														  					}, new LanguageUtil("Username já existe", "Username already exists").get())
 														  	).setRequired();
+		
+		
 
 		FormBoxInput changePassword = new FormBoxInput(this).setLbl(new LanguageUtil("Senha", "Password").get()).addValidation(strSizeBetween(5, 30)).setRequired();
+		
+		try {
+			changeUserName.setValue(User.findByPK(QuestNutri.getLoggedUserId()).getLogin());
+		} catch (Exception e2) {
+			changeUserName.lockInput();
+			changePassword.lockInput();
+		}
 		
 		FormSection changeUser = new FormSection(this).setUpName(new LanguageUtil("Atualizar usuário", "Update user").get())
 													  .addRow(changeUserName, changePassword)
@@ -163,6 +190,9 @@ public class SettingsPage extends GenericPage {
 		this.add(scrollPane, gbc.fill("BOTH").wgt(1.0));
 	}
 	
+    /**
+     * Atualiza a lista de usuários exibida na interface.
+     */
 	private void updateUsersList() {	    
 	    userList.setViewportView(new UserList(this::updateUsersList).getViewport().getView());
 	    userList.revalidate();

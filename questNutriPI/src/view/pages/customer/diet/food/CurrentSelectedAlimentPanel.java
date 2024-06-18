@@ -1,3 +1,6 @@
+/**
+ * Package que contém as classes que controlam a visualização de Foods da dieta de um Customer.
+ */
 package view.pages.customer.diet.food;
 
 import javax.swing.JLabel;
@@ -11,6 +14,10 @@ import view.components.generics.GenericJPanel;
 import view.components.labels.BreakActionLbl;
 import view.components.tables.AlimentNutritionalTable;
 
+/**
+ * Painel que exibe as informações detalhadas de um alimento selecionado atualmente,
+ * incluindo seu nome e informações nutricionais em uma tabela.
+ */
 public class CurrentSelectedAlimentPanel extends GenericJPanel {
     private static final long serialVersionUID = 1L;
 
@@ -21,13 +28,20 @@ public class CurrentSelectedAlimentPanel extends GenericJPanel {
     private Aliment aliment;
     private double quantity;
 
+    /**
+     * Construtor para inicializar o CurrentSelectedAlimentPanel com o frame que o chamou, um alimento e uma quantidade.
+     *
+     * @param callerFrame Frame genérico chamador que contém este painel.
+     * @param aliment     Objeto Aliment representando o alimento selecionado.
+     * @param quantity    Quantidade do alimento selecionado.
+     */
     public CurrentSelectedAlimentPanel(GenericJFrame callerFrame, Aliment aliment, Double quantity) {
     	setCallerFrame(callerFrame);
         ltGridBag();
         this.aliment = aliment;
         this.quantity = quantity;
 
-        JLabel comparisonLbl = new JLabel("Janela de Comparação");
+        JLabel comparisonLbl = new JLabel(new LanguageUtil("Janela de Comparação", "Comparison Window").get());
         comparisonLbl.setFont(STD_BOLD_FONT.deriveFont(18f));
         this.add(comparisonLbl, gbc.grid(0).fill("BOTH").wgt(1.0, 0).anchor("NORTHWEST").insets(20, 20, 15, 20));
 
@@ -55,6 +69,9 @@ public class CurrentSelectedAlimentPanel extends GenericJPanel {
         init();
     }
 
+    /**
+     * Inicializa a tabela de informações nutricionais do alimento com base no objeto Aliment e na quantidade.
+     */
     public void init() {
         table = new JTable(new AlimentNutritionalTable(aliment, quantity));
         scrollPaneSelectedAlimentInfo.setViewportView(table);

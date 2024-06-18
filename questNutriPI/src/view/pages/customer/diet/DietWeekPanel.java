@@ -8,13 +8,16 @@ import java.util.concurrent.CountDownLatch;
 
 import model.entities.Customer;
 import model.entities.Meal;
+import utils.interfaces.IDoAction;
 import utils.view.LanguageUtil;
 import utils.view.PanelsUtil;
 import view.QuestNutri;
 import view.components.generics.GenericComponent;
 import view.components.generics.GenericJPanel;
-import view.components.utils.IDoAction;
 
+/**
+ * Painel semanal de dieta de um cliente.
+ */
 public class DietWeekPanel extends GenericComponent {
 	private static final long serialVersionUID = 1L;
 	
@@ -29,6 +32,12 @@ public class DietWeekPanel extends GenericComponent {
 	
 	public GenericJPanel holderLoading = new GenericJPanel().setBGColor(STD_WHITE_COLOR);
 
+    /**
+     * Construtor do painel semanal de dieta.
+     *
+     * @param ownerPanel Painel proprietário onde este painel será exibido.
+     * @param customer   Cliente cuja dieta será exibida.
+     */
 	public DietWeekPanel(GenericJPanel ownerPanel, Customer customer) {
 		super(ownerPanel);
 		this.customer = customer;
@@ -51,6 +60,11 @@ public class DietWeekPanel extends GenericComponent {
 		loadDays();
 	}
 	
+    /**
+     * Método para trocar o foco para um determinado dia.
+     *
+     * @param dayToFocus Dia da dieta para o qual o foco deve ser trocado.
+     */
 	public void swapFocus(DietDayPanel dayToFocus) {
 		if(currentDayFocus != null) {
 			holderDays.remove(currentDayFocus);
@@ -70,11 +84,19 @@ public class DietWeekPanel extends GenericComponent {
 		this.refreshDays();
 	}
 	
+    /**
+     * Obtém as refeições mais recentes do cliente.
+     *
+     * @return Lista de refeições do cliente.
+     */
 	public List<Meal> getRecentMeal() {
 		this.meals = customer.getDiet();
 		return this.meals;
 	}
 	
+    /**
+     * Carrega os dias da semana no painel.
+     */
 	private void loadDays() {
 	    holderDays.ltGridBag();
 	    holderDays.setBackground(STD_NULL_COLOR);
@@ -100,11 +122,14 @@ public class DietWeekPanel extends GenericComponent {
         }).start();
 	}
 	
+    /**
+     * Cria os painéis dos dias da semana.
+     */
 	private void createDaysPanels() {
 		Dimension panelsSize = new Dimension(150, QuestNutri.app.getHeight());
 		latch = new CountDownLatch(avbDays.length);
 		for(int i = 0; i < avbDays.length; i++) {
-        	DietDayPanel day = new DietDayPanel(this, avbDays[i], i);
+        	DietDayPanel day = new DietDayPanel(this, avbDays[i], i, customer);
         	day.setPreferredSize(panelsSize);
         	day.setMinimumSize(panelsSize);
         	day.setMaximumSize(panelsSize);
@@ -114,6 +139,11 @@ public class DietWeekPanel extends GenericComponent {
 		}
 	}
 	
+    /**
+     * Distribui as refeições nos respectivos dias da semana.
+     *
+     * @param afterDistribute Ação a ser executada após a distribuição das refeições.
+     */
 	private void distributeMeals(IDoAction afterDistribute) {
         for(DietDayPanel day: daysPanels) {
         	day.resetMeals();
@@ -132,11 +162,20 @@ public class DietWeekPanel extends GenericComponent {
         }
     }
 	
+    /**
+     * Distribui as refeições nos dias da semana.
+     */
 	private void distributeMeals() {
 		distributeMeals(null);
 	};
 	
 	
+    /**
+     * Atualiza as refeições de um dia da semana.
+     *
+     * @param callerDay Dia da semana que chamou a atualização.
+     * @param runAfter   Ações a serem executadas após a atualização.
+     */
 	public void updateMeals(DietDayPanel callerDay, IDoAction ...runAfter) {
 		getRecentMeal();
 		distributeMeals(() -> {
@@ -151,6 +190,9 @@ public class DietWeekPanel extends GenericComponent {
 		this.refresh();
 	}
 	
+    /**
+     * Atualiza a visibilidade dos dias da semana.
+     */
 	private void refreshDays() {
 		for(DietDayPanel day: daysPanels) {
 			day.setVisible(true);
@@ -161,6 +203,12 @@ public class DietWeekPanel extends GenericComponent {
 		}
 	}
 	
+    /**
+     * Obtém o nome de um dia da semana.
+     *
+     * @param day Dia da semana.
+     * @return Nome do dia da semana.
+     */
 	public String getDayName(int day) {
 		for(int i = 0; i < this.avbDays.length; i++) {
 			if(day == this.avbDays[i]) return avbStrDays[i];
@@ -168,10 +216,20 @@ public class DietWeekPanel extends GenericComponent {
 		return "";
 	}
 	
+    /**
+     * Obtém o painel que contém os dias da semana.
+     *
+     * @return Painel  que contém os dias da semana.
+     */
 	public GenericJPanel getHolderDays() {
 		return holderDays;
 	}
 	
+    /**
+     * Obtém o cliente associado ao painel de dieta.
+     *
+     * @return Cliente associado ao painel de dieta.
+     */
 	public Customer getCustomer() {
 		return customer;
 	}

@@ -4,6 +4,10 @@ import java.util.List;
 
 import model.entities.User;
 
+/**
+ * Classe abstrata que define operações de acesso a dados para a entidade User.
+ * Implementa operações genéricas definidas em GenericDAO para User.
+ */
 public abstract class UserDAO extends GenericDAO<User> {
 
 	/**
@@ -33,7 +37,7 @@ public abstract class UserDAO extends GenericDAO<User> {
 	 * Método que procura e retorna apenas o primeiro registro dentro de todos os
 	 * registros de User, que corresponde aos parâmetros fornecidos
 	 *
-	 * @param Parâmetros de filtro opcionais para a consulta devem ser escritos de
+	 * @param params Parâmetros de filtro opcionais para a consulta devem ser escritos de
 	 * acordo com a declaração das classes de entidade.
 	 * 
 	 * @return Primeiro registro de User que corresponde aos parâmetros

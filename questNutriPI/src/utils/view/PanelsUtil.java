@@ -20,7 +20,9 @@ public class PanelsUtil implements GeneralVisualSettings {
 	 * @param showLabel true se o texto de carregamento deve ser exibido; false caso contrário
 	 * @param labelFont a fonte a ser usada para o texto de carregamento; se for null, será usada uma fonte padrão
 	 * @param labelPosition a posição do texto de carregamento em relação ao GIF de carregamento:
+	 * <ul>
 	 * <li> 0 para acima do GIF, qualquer outro valor para abaixo do GIF
+	 * </ul>
 	 * @param labelDistance a distância entre o GIF de carregamento e o texto de carregamento, em pixels
 	 */
 	public static void applyLoadingGif(GenericJPanel targetPanel, int width, int height, boolean showLabel, Font labelFont, int labelPosition, int labelDistance) {

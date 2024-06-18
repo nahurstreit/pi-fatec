@@ -3,7 +3,6 @@ package view.pages.customer.diet.food;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -21,6 +20,10 @@ import view.components.inputs.HintInputField;
 import view.components.labels.BreakActionLbl;
 import view.components.tables.AlimentNutritionalTable;
 
+/**
+ * Painel para seleção de um novo alimento.
+ * Permite buscar e selecionar alimentos da lista, exibindo informações detalhadas do alimento selecionado.
+ */
 public class SelectNewAlimentPanel extends GenericJPanel {
     private static final long serialVersionUID = 1L;
 
@@ -29,6 +32,11 @@ public class SelectNewAlimentPanel extends GenericJPanel {
     private JScrollPane scrollPaneSelectedAlimentInfo;
     private Aliment currentSelected = null;
 
+    /**
+     * Construtor que inicializa o painel para seleção de novo alimento.
+     *
+     * @param upperButton Botão superior para ações relacionadas à seleção de alimentos.
+     */
     public SelectNewAlimentPanel(StdButton upperButton) {
         this.setLayout(new GridBagLayout());
         
@@ -69,7 +77,7 @@ public class SelectNewAlimentPanel extends GenericJPanel {
         searchAlimentPanel.add(searchAlimentUpperLbl, searchAlimentPanel.gbc.grid(0, 0).fill("HORIZONTAL").anchor("NORTHWEST").insets(0));
 
         HintInputField searchAlimentInputName = new HintInputField();
-        searchAlimentInputName.setHint("Digite aqui...");
+        searchAlimentInputName.setHint(new LanguageUtil("Digite aqui...", "Type here...").get());
         searchAlimentPanel.add(searchAlimentInputName, searchAlimentPanel.gbc.grid(0, 1).fill("HORIZONTAL").wgt(1.0, 0.0).insets(5, 0, 0, 0));
 
      // Adicionando DocumentListener para monitorar mudanças no texto do campo de busca
@@ -101,7 +109,7 @@ public class SelectNewAlimentPanel extends GenericJPanel {
         
         alimentSearchList = new GenericJScrollPaneList<Aliment>()
             .setOriginList(Aliment.findAll())
-            .setColumnNames(new Object[] {"Nome"})
+            .setColumnNames(new Object[] {new LanguageUtil("Nome", "Name").get()})
             .setRowMapper(aliment -> new Object[] {aliment.name})
             .setCellFont(STD_REGULAR_FONT.deriveFont(12f));
         rightPanel.add(alimentSearchList, rightPanel.gbc.grid(0, 2).fill("BOTH").wgt(1.0));
@@ -109,6 +117,9 @@ public class SelectNewAlimentPanel extends GenericJPanel {
         init();
     }
 
+    /**
+     * Inicializa os componentes do painel.
+     */
     private void init() {
         selectedAliment.init();
         alimentSearchList
@@ -121,15 +132,12 @@ public class SelectNewAlimentPanel extends GenericJPanel {
             .init();
     }
 
+    /**
+     * Obtém o alimento atualmente selecionado.
+     *
+     * @return O alimento selecionado.
+     */
     public Aliment getSelectedAliment() {
         return currentSelected;
     }
-    
-    public static void main(String[] args) {
-        JFrame f = new JFrame();
-        f.setBounds(100, 100, 883, 462);
-        f.setContentPane(new SelectNewAlimentPanel(new StdButton()));
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setVisible(true);
-	}
 }

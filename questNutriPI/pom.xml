@@ -12,10 +12,10 @@
 	  ministrada pelo professor doutor Sérgio Furgeri.
   </description>
   <build>
-    <sourceDirectory>../src/main/java</sourceDirectory>
+    <sourceDirectory>src</sourceDirectory>
     <resources>
       <resource>
-        <directory>/src/main/java</directory>
+        <directory>src</directory>
         <excludes>
           <exclude>**/*.java</exclude>
         </excludes>

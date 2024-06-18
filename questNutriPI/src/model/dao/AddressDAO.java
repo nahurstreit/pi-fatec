@@ -1,7 +1,14 @@
+/**
+ * Package que contém os DAOs de cada classe.
+ */
 package model.dao;
 
 import model.entities.Address;
 
+/**
+ * Classe abstrata que define operações de acesso a dados para a entidade Address.
+ * Implementa operações genéricas definidas em GenericDAO para Address.
+ */
 public abstract class AddressDAO extends GenericDAO<Address> {
 
 	/**

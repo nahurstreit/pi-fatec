@@ -9,103 +9,202 @@ import jakarta.persistence.Table;
 import model.dao.AlimentDAO;
 import model.utils.HibernateUtil;
 
+/**
+ * Entidade que representa um alimento no sistema.
+ * Extende as funcionalidades básicas de persistência da classe AlimentDAO.
+ */
 @Entity
 @Table(name = "Aliments")
 public class Aliment extends AlimentDAO {
+	
+	/**
+	 * Id associado a esse objeto no banco de dados
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idAliment")
 	private Integer idAliment;
 
+    /**
+     * Indica se o alimento é customizado (1 para customizado, 0 para não customizado).
+     */
 	@Column(name = "ali_custom", columnDefinition = "BIT")
 	private Integer custom = 1;
 
+   /**
+     * Nome do alimento.
+     */
 	@Column(name = "ali_name")
 	public String name;
 
+    /**
+     * Grupo alimentar ao qual o alimento pertence.
+     */
 	@Column(name = "alimentGroup")
 	public String alimentGroup;
 
+
+    /**
+     * Quantidade de calorias alimento.
+     */
 	@Column(name = "ali_kcal")
 	public String kcal;
-
+	
+    /**
+     * Conteúdo energético do alimento em quilojoules (kJ).
+     */
 	@Column(name = "ali_kJ")
 	public String kJ;
 
+    /**
+     * Quantidade de carboidratos do alimento.
+     */
 	@Column(name = "ali_carb")
 	public String carb;
 
+    /**
+     * Quantidade de proteínas do alimento.
+     */
 	@Column(name = "ali_protein")
 	public String protein;
 
+    /**
+     * Quantidade de gorduras do alimento.
+     */
 	@Column(name = "ali_fat")
 	public String fat;
 
+    /**
+     * Teor de umidade do alimento.
+     */
 	@Column(name = "humidity")
 	public String humidity;
 
+    /**
+     * Conteúdo de fibras dietéticas do alimento.
+     */
 	@Column(name = "dietaryFiber")
 	public String dietaryFiber;
 
-	@Column(name = "cholesterol")
-	public String cholesterol;
+    /**
+     * Conteúdo de colesterol do alimento.
+     */
+    @Column(name = "cholesterol")
+    public String cholesterol;
 
-	@Column(name = "sodium")
-	public String sodium;
+    /**
+     * Conteúdo de sódio do alimento.
+     */
+    @Column(name = "sodium")
+    public String sodium;
 
-	@Column(name = "calcium")
-	public String calcium;
+    /**
+     * Conteúdo de cálcio do alimento.
+     */
+    @Column(name = "calcium")
+    public String calcium;
 
-	@Column(name = "magnesium")
-	public String magnesium;
+    /**
+     * Conteúdo de magnésio do alimento.
+     */
+    @Column(name = "magnesium")
+    public String magnesium;
 
-	@Column(name = "manganese")
-	public String manganese;
+    /**
+     * Conteúdo de manganês do alimento.
+     */
+    @Column(name = "manganese")
+    public String manganese;
 
-	@Column(name = "phosphorus")
-	public String phosphorus;
+    /**
+     * Conteúdo de fósforo do alimento.
+     */
+    @Column(name = "phosphorus")
+    public String phosphorus;
 
-	@Column(name = "iron")
-	public String iron;
+    /**
+     * Conteúdo de ferro do alimento.
+     */
+    @Column(name = "iron")
+    public String iron;
 
-	@Column(name = "potassium")
-	public String potassium;
+    /**
+     * Conteúdo de potássio do alimento.
+     */
+    @Column(name = "potassium")
+    public String potassium;
 
-	@Column(name = "copper")
-	public String copper;
+    /**
+     * Conteúdo de cobre do alimento.
+     */
+    @Column(name = "copper")
+    public String copper;
 
-	@Column(name = "zinc")
-	public String zinc;
+    /**
+     * Conteúdo de zinco do alimento.
+     */
+    @Column(name = "zinc")
+    public String zinc;
 
-	@Column(name = "retinol")
-	public String retinol;
+    /**
+     * Conteúdo de retinol (vitamina A) do alimento.
+     */
+    @Column(name = "retinol")
+    public String retinol;
 
-	@Column(name = "RE")
-	public String rE;
+    /**
+     * Conteúdo de equivalente de retinol (vitamina A) do alimento.
+     */
+    @Column(name = "RE")
+    public String rE;
 
-	@Column(name = "RAE")
-	public String rAE;
+    /**
+     * Conteúdo de equivalente de atividade de retinol (vitamina A) do alimento.
+     */
+    @Column(name = "RAE")
+    public String rAE;
 
-	@Column(name = "thiamine")
-	public String thiamine;
+    /**
+     * Conteúdo de tiamina (vitamina B1) do alimento.
+     */
+    @Column(name = "thiamine")
+    public String thiamine;
 
-	@Column(name = "riboflavin")
-	public String riboflavin;
+    /**
+     * Conteúdo de riboflavina (vitamina B2) do alimento.
+     */
+    @Column(name = "riboflavin")
+    public String riboflavin;
 
-	@Column(name = "pyridoxine")
-	public String pyridoxine;
+    /**
+     * Conteúdo de piridoxina (vitamina B6) do alimento.
+     */
+    @Column(name = "pyridoxine")
+    public String pyridoxine;
 
-	@Column(name = "niacin")
-	public String niacin;
+    /**
+     * Conteúdo de niacina (vitamina B3) do alimento.
+     */
+    @Column(name = "niacin")
+    public String niacin;
 
-	@Column(name = "vitaminC")
-	public String vitaminC;
+    /**
+     * Conteúdo de vitamina C do alimento.
+     */
+    @Column(name = "vitaminC")
+    public String vitaminC;
 
-	@Column(name = "ash")
-	public String ash;
+    /**
+     * Conteúdo de cinzas do alimento.
+     */
+    @Column(name = "ash")
+    public String ash;
 
-	public Aliment() {
-	};
+    /**
+     * Construtor padrão da classe Aliment.
+     */
+    public Aliment() {
+    }
 
 	/**
 	 * Retorna se o objeto Aliment é customizável. Alimentos da tabela TACO, NÃO
@@ -143,6 +242,12 @@ public class Aliment extends AlimentDAO {
 
 	}
 
+	/**
+	 * Método para salvar este objeto no banco de dados, caso seja um registro customizável.
+	 * @return <b>boolean</b> - O resultado da operação.
+	 * <br>Se <b>true</b> - O objeto foi salvo.
+	 * <br>Se <b>false</b> - O objeto não foi salvo.
+	 */
 	@Override
 	public boolean save() {
 		boolean result = false;
@@ -156,6 +261,12 @@ public class Aliment extends AlimentDAO {
 		return result;
 	}
 
+	/**
+	 * Método para excluir este objeto no banco de dados, caso seja um registro customizável.
+	 * @return <b>boolean</b> - O resultado da operação.
+	 * <br>Se <b>true</b> - O objeto foi excluído.
+	 * <br>Se <b>false</b> - O objeto não pôde ser excluído.
+	 */
 	@Override
 	public boolean delete() {
 		boolean result = false;

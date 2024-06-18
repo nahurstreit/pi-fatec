@@ -11,14 +11,27 @@ import view.QuestNutri;
 import view.components.generics.GenericJPanel;
 import view.pages.generics.GenericListPage;
 
+/**
+ * Página para controle de alimentos, que lista e permite gerenciar os alimentos.
+ */
 public class AlimentsPage extends GenericListPage<Aliment> {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Construtor da página de alimentos.
+     *
+     * @param ownerPanel Painel proprietário onde esta página será exibida.
+     */
     public AlimentsPage(GenericJPanel ownerPanel) {
         super(ownerPanel, 
         	  new String[]{new LanguageUtil("Nome", "Name").get(), new LanguageUtil("Grupo", "Group").get()}, 
               new LanguageUtil("Controle de Alimentos", "Food Control").get());
-        setCreateBtn(() -> {});
+        setCreateBtn(() -> {
+        	AlimentController.openAlimentFrame(new Aliment(), () -> {
+        		this.updateList();
+        		QuestNutri.followYouIntoTheDark();
+        	});
+        });
     }
 
     @Override
@@ -51,7 +64,7 @@ public class AlimentsPage extends GenericListPage<Aliment> {
     
     @Override
     protected Function<Aliment, Runnable> setDoubleClickAction() {
-    	return aliment -> () -> {};
+    	return aliment -> () -> {AlimentController.openAlimentFrame(aliment, () -> {});};
     }
     
     @Override

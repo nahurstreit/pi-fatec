@@ -1,3 +1,6 @@
+/**
+ * Package que contém as classes que controlam a visualização dos estados da aplicação.
+ */
 package view.states;
 
 import java.awt.Dimension;
@@ -36,9 +39,11 @@ public class LoggedPanel extends GenericJPanel {
 	public SideBarItem alimentsPage;
 	public SideBarItem settingsPage;
 
-	/**
-	 * Método construtor da instância de painel logado.
-	 */
+    /**
+     * Construtor da instância de painel logado.
+     *
+     * @param nutriName Nome do nutricionista logado para exibir na saudação.
+     */
 	public LoggedPanel(String nutriName) {
 		this.ltGridBag();
 		
@@ -99,7 +104,7 @@ public class LoggedPanel extends GenericJPanel {
 	
 	/**
 	 * Método que troca a tela principal de exibição de um painel Logado.
-	 * @param panel
+     * @param panel Novo painel a ser exibido no painel logado.
 	 */
 	public void swapLoggedMainPanel(GenericJPanel panel) {
 		if(mainPanel != null) this.remove(mainPanel);

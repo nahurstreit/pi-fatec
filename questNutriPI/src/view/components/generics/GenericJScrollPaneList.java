@@ -21,6 +21,12 @@ import javax.swing.table.JTableHeader;
 import utils.interfaces.GeneralVisualSettings;
 import view.components.tables.CustomTableModel;
 
+/**
+ * Classe que define um componente JScrollPane já embutido com uma lista, para ser usado no sistema QuestNutri.
+ * 
+ * @param <T> O tipo dos elementos da lista. Toda linha terá armazenada em si um objeto desse tipo. Dessa forma é possível definir
+ * a exibição das linhas com as propriedades de um objeto desse tipo e também interargir com esse objeto com funções.
+ */
 public class GenericJScrollPaneList<T> extends JScrollPane implements GeneralVisualSettings {
     private static final long serialVersionUID = 1L;
 
@@ -42,6 +48,13 @@ public class GenericJScrollPaneList<T> extends JScrollPane implements GeneralVis
     
     private DefaultTableCellRenderer cellRenderer;
 
+    /**
+     * Método construtor da classe.
+     * @param originList - Array que contém os dados que comporão o conteúdo da lista deste JScrollPane.
+     * @param columnNames - Nome das colunas da lista
+     * @param rowMapper - A função que deve ser executada para preencher a lista. Sempre será passado à função o conteúdo do array.
+     * @param doubleClickAction - O que deve acontecer caso o usuário dê um duplo clique em um dos itens da lista. Sempre será passado à função o conteúdo associado da linha.
+     */
     public GenericJScrollPaneList(List<T> originList, 
 								  Object[] columnNames,
 								  Function<T, Object[]> rowMapper, //Método de formatação das linhas
@@ -54,9 +67,15 @@ public class GenericJScrollPaneList<T> extends JScrollPane implements GeneralVis
         setViewportBorder(null);
     }
     
+    /**
+     * Método construtor padrão.
+     */
     public GenericJScrollPaneList() {
     }
     
+    /**
+     * Método que inicializa a configuração da tabela.
+     */
     private void configureTable() {
         table.setRowHeight(20);
 
@@ -72,26 +91,54 @@ public class GenericJScrollPaneList<T> extends JScrollPane implements GeneralVis
         }
     }
 
+    /**
+     * Método para definir os dados de origem da lista.
+     * @param originList - Lista contendo os dados de origem
+     * @return o próprio objeto para implementar fluent interface.
+     */
     public GenericJScrollPaneList<T> setOriginList(List<T> originList) {
         this.originList = originList;
         return this;
     }
 
+    /**
+     * Método para definir os nomes da coluna. Deverá ser enviado um array de Objetos que sejam String.
+     * 
+     * @param columnNames Array de Objetos do tipo string.
+     * @return o próprio objeto para implementar fluent interface.
+     */
     public GenericJScrollPaneList<T> setColumnNames(Object[] columnNames) {
         this.columnNames = columnNames;
         return this;
     }
 
+    /**
+     * Método para definir a função que será executada para preencher os dados das linhas.
+     * 
+     * @param rowMapper Função que recebe um objeto T da lista e retorna um array de Objetos para preencher as colunas.
+     * @return o próprio objeto para implementar fluent interface.
+     */
     public GenericJScrollPaneList<T> setRowMapper(Function<T, Object[]> rowMapper) {
         this.rowMapper = rowMapper;
         return this;
     }
 
+    /**
+     * Método para definir a ação a ser executada em um duplo clique na lista.
+     * 
+     * @param doubleClickAction Função que recebe um objeto T da lista e retorna um Runnable para ser executado.
+     * @return o próprio objeto para implementar fluent interface.
+     */
     public GenericJScrollPaneList<T> setDoubleClickAction(Function<T, Runnable> doubleClickAction) {
         this.doubleClickAction = doubleClickAction;
         return this;
     }
-
+    
+    /**
+     * Método para construir o modelo da tabela com os dados de origem.
+     * 
+     * @return o próprio objeto para implementar fluent interface.
+     */
     public GenericJScrollPaneList<T> buildTableModel() {
         tableModel = new CustomTableModel<>(columnNames, 0);
         for (T item : originList) {
@@ -100,6 +147,11 @@ public class GenericJScrollPaneList<T> extends JScrollPane implements GeneralVis
         return this;
     }
 
+    /**
+     * Método para inicializar a tabela.
+     * 
+     * @return o próprio objeto para implementar fluent interface.
+     */
     public GenericJScrollPaneList<T> init() {
     	buildTableModel();
         table = new JTable(tableModel);
@@ -110,6 +162,14 @@ public class GenericJScrollPaneList<T> extends JScrollPane implements GeneralVis
         return this;
     }
     
+    
+    /**
+     * Método para adicionar uma opção de menu popup.
+     * 
+     * @param text Texto da opção do menu.
+     * @param action Ação a ser executada quando a opção for selecionada.
+     * @return o próprio objeto para implementar fluent interface.
+     */
     public GenericJScrollPaneList<T> addPopUpOption(String text, Function<T, Runnable> action) {
     	JMenuItem menuItem = new JMenuItem(text);
         menuItem.addActionListener(e -> {
@@ -124,6 +184,13 @@ public class GenericJScrollPaneList<T> extends JScrollPane implements GeneralVis
         return this;
     }
     
+    /**
+     * Método para adicionar uma opção de menu popup para deletar um item.
+     * 
+     * @param text Texto da opção do menu.
+     * @param additionalAction Função para validar se o item foi de fato excluído. Recebe um objeto do tipo T, e retorna um booleano indicando a exclusão.
+     * @return o próprio objeto para implementar fluent interface.
+     */
     public GenericJScrollPaneList<T> addDeleteItemPopUpOption(String text, Function<T, Supplier<Boolean>> additionalAction) {
         JMenuItem deleteItem = new JMenuItem(text);
         deleteItem.addActionListener(new ActionListener() {
@@ -159,6 +226,12 @@ public class GenericJScrollPaneList<T> extends JScrollPane implements GeneralVis
     }
     
     
+    /**
+     * Método para definir a fonte das células da lista.
+     * 
+     * @param font Fonte a ser usada nas células.
+     * @return o próprio objeto para implementar fluent interface.
+     */
     public GenericJScrollPaneList<T> setCellFont(Font font) {
     	if(font != null) {
     		this.cellFont = font;
@@ -167,6 +240,12 @@ public class GenericJScrollPaneList<T> extends JScrollPane implements GeneralVis
     	return this;
     }
     
+    /**
+     * Método para definir a fonte do cabeçalho.
+     * 
+     * @param font Fonte a ser usada no cabeçalho.
+     * @return o próprio objeto para implementar fluent interface.
+     */
     public GenericJScrollPaneList<T> setHeaderFont(Font font) {
     	if(font != null) {
     		this.headerFont = font;
@@ -175,6 +254,9 @@ public class GenericJScrollPaneList<T> extends JScrollPane implements GeneralVis
     	return this;
     }
     
+    /**
+     * Método para aplicar as configurações de fonte nas células.
+     */
     private void setCellRenderer() {
     	cellRenderer = new DefaultTableCellRenderer() {
     	        private static final long serialVersionUID = 1L;
@@ -188,6 +270,9 @@ public class GenericJScrollPaneList<T> extends JScrollPane implements GeneralVis
     	    };
     }
 
+    /**
+     * Método que configura o menu popup.
+     */
     private void setPopupMenu() {
     	popUpMenu = new JPopupMenu();
     	for(JMenuItem item: popUpMenuItems) {
@@ -219,6 +304,9 @@ public class GenericJScrollPaneList<T> extends JScrollPane implements GeneralVis
         });
     }
 
+    /**
+     * Método que configura a interação de duplo clique.
+     */
     private void setDoubleClickInteraction() {
         table.addMouseListener(new MouseAdapter() {
             @Override	
@@ -232,17 +320,34 @@ public class GenericJScrollPaneList<T> extends JScrollPane implements GeneralVis
         });
     }
 
-    //Métodos adicionais para interações de clique, mouse press/release, etc.
+    /**
+     * Método para definir a interação de pressionar o mouse.
+     * 
+     * @param mouseAdapter Adaptador de mouse a ser usado.
+     * @return o próprio objeto para implementar fluent interface.
+     */
     public GenericJScrollPaneList<T> setMousePressedInteraction(MouseAdapter mouseAdapter) {
         table.addMouseListener(mouseAdapter);
         return this;
     }
 
+    /**
+     * Método para definir a interação de soltar o mouse.
+     * 
+     * @param mouseAdapter Adaptador de mouse a ser usado.
+     * @return o próprio objeto para implementar fluent interface.
+     */
     public GenericJScrollPaneList<T> setMouseReleasedInteraction(MouseAdapter mouseAdapter) {
         table.addMouseListener(mouseAdapter);
         return this;
     }
 
+    /**
+     * Método para definir a interação de clique do mouse.
+     * 
+     * @param mouseAdapter Adaptador de mouse a ser usado.
+     * @return o próprio objeto para implementar fluent interface.
+     */
     public GenericJScrollPaneList<T> setMouseClickedInteraction(MouseAdapter mouseAdapter) {
         table.addMouseListener(mouseAdapter);
         return this;

@@ -32,29 +32,31 @@ import model.entities.Customer;
 import model.entities.Food;
 import model.entities.Meal;
 import model.entities.SubFood;
+import utils.FoodUtil;
+import utils.view.LanguageUtil;
 import view.QuestNutri;
 
-public class PdfGeneratorController {
-	
-	public static void main(String[] args) {
-		generate(Customer.findByPK(1));
-	}
-
+/**
+ * Classe abstrata utilitária que gera um PDF da dieta de um dado Customer através do método generate.
+ */
+public abstract class PdfGeneratorController {
+	/**
+	 * Caminho de acesso padrão da logotipo.
+	 */
 	public static final String IMG_PATH = "../img/QuestNutri.png";
 
 	/**
-	 * Gera um PDF com as informações do cliente.
+	 * Gera um PDF com a dieta do cliente especificado.
 	 * 
 	 * @param customer O cliente cujas informações serão usadas para gerar o PDF.
 	 */
 	public static void generate(Customer customer) {
 		String pdfName = customer.name + ".pdf";
-		System.out.println("Criar PDF usando iText");
 
-		// Criar um JFileChooser para permitir que o usuário escolha o local para salvar
+		// Criar um JFileChooser para permitir que o usuario escolha o local para salvar
 		// o PDF.
 		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Escolha o local para salvar o PDF");
+		fileChooser.setDialogTitle(new LanguageUtil("Escolha o local para salvar o PDF", "Choose the location to save the PDF").get());
 		fileChooser.setSelectedFile(new File(pdfName));
 
 		int userSelection = fileChooser.showSaveDialog(null);
@@ -70,7 +72,7 @@ public class PdfGeneratorController {
 				// Inicializar o escritor de PDF
 				PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(downloadPath));
 
-				// Adicionar evento para imagem e parágrafo em cada página
+				// Adicionar evento para imagem e paragrafo em cada pagina
 				writer.setPageEvent(new PdfPageEventHelper() {
 					@Override
 					public void onEndPage(PdfWriter writer, Document document) {
@@ -146,9 +148,10 @@ public class PdfGeneratorController {
 				int age = Period.between(birthDate, currentDate).getYears();
 
 				// Criar um parágrafo com a informação do cliente
-				Paragraph info = new Paragraph("Informações do Cliente:\n", fontBlue1);
+				Paragraph info = new Paragraph(new LanguageUtil("Informações do Cliente:\n", "Customer Information:\n").get(), fontBlue1);
 				Paragraph customerInfo = new Paragraph(
-						"\nNome: " + customer.name + "\n" + "Idade: " + age + " anos\n\n", fontBlue12);
+				    "\n" + new LanguageUtil("Nome:", "Name:").get() + " " + customer.name + "\n" + 
+				    new LanguageUtil("Idade:", "Age:").get() + " " + age + " " + new LanguageUtil("anos", "years").get() + "\n\n", fontBlue12);
 				document.add(info);
 				document.add(customerInfo);
 
@@ -191,30 +194,42 @@ public class PdfGeneratorController {
 				}
 
 				// Adiciona as refeições ao documento separadas por dia da semana
-				String[] daysOfWeekNames = { "\nDomingo", "\nSegunda-Feira", "\nTerça-Feira", "\nQuarta-Feira",
-						"\nQuinta-Feira", "\nSexta-Feira", "\nSábado" };
-				for (int i = 1; i <= 7; i++) {
-					List<Meal> dayMeals = mealsByDayOfWeek.get(i);
-					if (!dayMeals.isEmpty()) {
-						document.add(new Paragraph(daysOfWeekNames[i - 1] + ":", fontBlue15));
-						for (Meal meal : dayMeals) {
-							document.add(new Paragraph(" - " + meal.name, font1));
+				String[] daysOfWeekNames = { 
+					    new LanguageUtil("\nDomingo", "\nSunday").get(),
+					    new LanguageUtil("\nSegunda-Feira", "\nMonday").get(),
+					    new LanguageUtil("\nTerça-Feira", "\nTuesday").get(),
+					    new LanguageUtil("\nQuarta-Feira", "\nWednesday").get(),
+					    new LanguageUtil("\nQuinta-Feira", "\nThursday").get(),
+					    new LanguageUtil("\nSexta-Feira", "\nFriday").get(),
+					    new LanguageUtil("\nSábado", "\nSaturday").get()
+					};
 
-							List<Food> foods = meal.getFoods();
-							for (Food food : foods) {
-								document.add(new Paragraph("        " + food.aliment.name, font3));
-								document.add(new Paragraph("        " + food.quantity + " " + food.unityQt, font12));
-								List<SubFood> subFoods = food.getSubFoods();
-								if (subFoods != null && !subFoods.isEmpty()) {
-									for (SubFood subFood : subFoods) {
-										document.add(new Paragraph("                Alimento substituto: " + subFood.aliment.name, font4));
-										document.add(new Paragraph("                " + subFood.quantity + " " + subFood.unityQt, font13));
-									}
-								}
-							}
-						}
+					for (int i = 1; i <= 7; i++) {
+					    List<Meal> dayMeals = mealsByDayOfWeek.get(i);
+					    if (!dayMeals.isEmpty()) {
+					        document.add(new Paragraph(daysOfWeekNames[i - 1] + ":", fontBlue15));
+					        for (Meal meal : dayMeals) {
+					            document.add(new Paragraph(" - " + meal.name + " ("+String.format("%.2f", FoodUtil.calculateMealKcal(meal))+"kcal)", font1));
+
+					            List<Food> foods = meal.getFoods();
+					            int j = 1;
+					            for (Food food: foods) {
+					                document.add(new Paragraph("        ("+j+") " + food.aliment.name, font3));
+					                document.add(new Paragraph("             • " + food.quantity + " " + food.unityQt, font12));
+					                List<SubFood> subFoods = food.getSubFoods();
+					                int k = 1;
+					                if (subFoods != null && !subFoods.isEmpty()) {
+					                    for (SubFood subFood : subFoods) {
+					                        document.add(new Paragraph("                ("+j+"."+k+") " + new LanguageUtil("Opção de substituição:", "Replacement option:").get() + " " + subFood.aliment.name, font4));
+					                        document.add(new Paragraph("                     • " + subFood.quantity + " " + subFood.unityQt, font13));
+					                        k++;
+					                    }
+					                }
+					                j++;
+					            }
+					        }
+					    }
 					}
-				}
 
 				// Fechar o documento
 				document.close();

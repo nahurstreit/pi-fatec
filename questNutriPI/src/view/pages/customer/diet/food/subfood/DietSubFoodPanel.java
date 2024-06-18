@@ -1,3 +1,6 @@
+/**
+ * Package que contém as classes que controlam a visualização de SubFoods do Customer.
+ */
 package view.pages.customer.diet.food.subfood;
 
 import java.awt.Dimension;
@@ -7,6 +10,7 @@ import model.entities.Aliment;
 import model.entities.Food;
 import model.entities.SubFood; // Importa a entidade SubFood
 import utils.interfaces.ActionFunction;
+import utils.interfaces.IDoAction;
 import utils.validations.Validate;
 import utils.view.LanguageUtil;
 import view.components.QuestNutriJOP;
@@ -15,9 +19,11 @@ import view.components.forms.FormBoxInput;
 import view.components.forms.FormSection;
 import view.components.generics.GenericJPanel;
 import view.components.labels.ActionLbl;
-import view.components.utils.IDoAction;
 import view.pages.customer.diet.food.FoodInfoPanel;
 
+/**
+ * Painel para exibição e edição de informações de opções de substituição (SubFoods) de uma Food em uma Meal.
+ */
 public class DietSubFoodPanel extends GenericJPanel {
     private static final long serialVersionUID = 1L;
     
@@ -34,6 +40,15 @@ public class DietSubFoodPanel extends GenericJPanel {
     @SuppressWarnings("unused")
 	private IDoAction afterUpdate;
 
+    /**
+     * Construtor para inicializar o painel de SubFood.
+     *
+     * @param ownerPanel      Painel principal ao qual este painel de SubFood pertence.
+     * @param ownerFood       Alimento principal ao qual esta SubFood está associada.
+     * @param subFood         SubFood que está sendo exibido/editado.
+     * @param updateSubFoodTable Função para atualizar a tabela de SubFoods após modificações.
+     * @param afterUpdate     Ação a ser executada após atualização/modificação da SubFood.
+     */
     public DietSubFoodPanel(FoodInfoPanel ownerPanel, Food ownerFood, SubFood subFood, ActionFunction<Aliment, SubFood> updateSubFoodTable, IDoAction afterUpdate) {
         super(ownerPanel);
     	this.food = ownerFood;
@@ -54,7 +69,7 @@ public class DietSubFoodPanel extends GenericJPanel {
         lblAliName = new ActionLbl(subFood.aliment.name).setUpFont(STD_BOLD_FONT.deriveFont(12f))
                                                        .setUpColor(STD_WHITE_COLOR);
         if(updateSubFoodTable != null) {
-            lblAliName.setNewAction(() -> {
+            lblAliName.setAction(() -> {
                 updateSubFoodTable.execute(subFood);
             });
         }
@@ -134,6 +149,9 @@ public class DietSubFoodPanel extends GenericJPanel {
         this.add(infoAndSaveBtn, gbc.xP().fill("VERTICAL").wgt(0, 1.0).insets(10));
     }
     
+    /**
+     * Expande ou retrai o painel de edição de acordo com seu estado atual.
+     */
     private void expandEdit() {
         if (this.getComponentCount() > 0 && this.getComponent(this.getComponentCount() - 1) == editPanel) {
             this.remove(editPanel);
@@ -144,6 +162,11 @@ public class DietSubFoodPanel extends GenericJPanel {
         this.repaint();
     }
     
+    /**
+     * Salva as informações atuais da SubFood.
+     *
+     * @return true se a SubFood foi salva com sucesso, false caso contrário.
+     */
     public boolean saveThis() {
         if(Validate.formFields(quantityInput)) {
             return SubFoodController.updateSubFoodInfo(subFood, unityQtInput.getValue(), quantityInput.getValue());

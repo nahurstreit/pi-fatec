@@ -4,13 +4,17 @@ import java.util.List;
 
 import model.entities.Customer;
 
+/**
+ * Classe abstrata que define operações de acesso a dados para a entidade Customer.
+ * Implementa operações genéricas definidas em GenericDAO para Customer.
+ */
 public abstract class CustomerDAO extends GenericDAO<Customer> {
 
 	/**
 	 * Método que retorna uma lista de todos os Customers que correspondem aos
 	 * parâmetros fornecidos
 	 *
-	 * @param Parâmetros de filtro opcionais para a consulta devem ser escritos de
+	 * @param params Parâmetros de filtro opcionais para a consulta devem ser escritos de
 	 * acordo com a declaração das classes de entidade EX:
 	 * "CustName = Matheus"
 	 * 
@@ -34,7 +38,7 @@ public abstract class CustomerDAO extends GenericDAO<Customer> {
 	 * Método que procura e retorna apenas o primeiro registro dentro de todos os
 	 * registros de Customer, que corresponde aos parâmetros fornecidos
 	 *
-	 * @param Parâmetros de filtro opcionais para a consulta devem ser escritos de
+	 * @param params Parâmetros de filtro opcionais para a consulta devem ser escritos de
 	 * acordo com a declaração das classes de entidade.
 	 * 
 	 * @return Primeiro registro de Customer que corresponde aos parâmetros

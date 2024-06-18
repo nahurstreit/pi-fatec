@@ -1,3 +1,6 @@
+/**
+ * Package que contém as classes da camada view.
+ */
 package view;
 
 import java.awt.BorderLayout;
@@ -26,22 +29,49 @@ import utils.view.ImagesUtil;
 import utils.view.LanguageUtil;
 import view.components.QuestNutriJOP;
 import view.components.generics.GenericJFrame;
+import view.frames.LoadingFrame;
 import view.states.LoggedPanel;
 import view.states.LoginPanel;
 
 /**
- * Classe principal da Aplicação.
+ * Classe principal da Aplicação e ponto de início.
  */
 public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{	
+	/**
+	 * Linguagem atual do sistema.
+	 */
 	private static int language = STD_LANGUAGE;
 	
+	/**
+	 * Frame principal do sistema.
+	 */
     public static GenericJFrame app;
+    
+    /**
+     * Panel de estado login do sistema.
+     */
     public static LoginPanel loginPanel;
+    
+    /**
+     * Panel de estado logado do sistema.
+     */
     public static LoggedPanel loggedPanel;
+    
+    /**
+     * Nome do SVG para ser carregado pelo sistema.
+     */
     public static final String QUESTNUTRI_SVG_NAME = "QuestNutri";
     
+    /**
+     * Usuário atualmente logado no sistema.
+     */
     private static User loggedUser;
 
+    
+    /**
+     * Método de início da aplicação.
+     * @param args
+     */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -70,21 +100,22 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
     }
 
     /**
-     * TROCAR DEPOIS: AuthController
+     * Método para realizar o login na aplicação.
+     * @param username -> username do usuário.
+     * @param password -> senha do usuário.m
      */
-    @SuppressWarnings("unused")
-	public static void doLogin(String userName, String password) {
+	public static void doLogin(String username, String password) {
     	try {
     		System.err.println("SKIP LOGIN: "+SKIP_LOGIN);
     		if(!SKIP_LOGIN) System.err.println("SKIPPED DENIED, TRYING TO DO MANUAL LOGIN");
-			if(SKIP_LOGIN || AuthController.doLogin(userName, password)) {
+			if(SKIP_LOGIN || AuthController.doLogin(username, password)) {
 				if(SKIP_LOGIN) {
 					System.err.println("LOGING SKIPPED SUCESSFULLY");
 					setConnectedUser(new User("master", "", "{nutri}", 3));
 				}
 				else {
 					System.err.println("USER LOGIN HAVE BEEN DONE SUCESSFULLY"
-							+ "\nUser: "+userName+" - Logged at: "+LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+							+ "\nUser: "+username+" - Logged at: "+LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
 				}
 				
 				loggedPanel = new LoggedPanel(loggedUser.getFirstName());
@@ -120,8 +151,10 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
     /**
      * Método que inicializa a tela de login
      * @param doDelay -> valor booleano que define se será feito um delay para a exibição da logotipo
+     * <ul>
      * <li> Se <b>true</b> exibirá a tela de login
      * <li> Se <b>false</b> pulará a animação. -> Valor padrão.
+     * </ul>
      */
     public static void swapToLogin(boolean... doDelay) {
         boolean delay = false;
@@ -191,19 +224,35 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
         swapAppPanel(darkScene);
     }
 
+    /**
+     * Método que esclarece a tela da aplicação.
+     */
     public static void heraldOfDarkness() {
         app.setEnabled(true);
         swapAppPanel(loggedPanel);
         app.toFront();
     }
 
+    /**
+     * Classe que inicializa o carregamento da aplicação enquanto exibe um frame de carregamento.
+     */
     private static class LoadAppWorker extends SwingWorker<Void, Void> {
+    	/**
+    	 * Frame de carregamento.
+    	 */
         private LoadingFrame loadingFrame;
 
+        /**
+         * Constructor do frame de carregamento.
+         * @param loadingFrame
+         */
         public LoadAppWorker(LoadingFrame loadingFrame) {
             this.loadingFrame = loadingFrame;
         }
 
+        /**
+         * Método que carrega os assets do sistema, ao mesmo tempo que aumenta a barra do loadingFrame
+         */
         @Override
         protected Void doInBackground() throws Exception {
             loadingFrame.setProgress(10);
@@ -225,6 +274,9 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
             return null;
         }
 
+        /**
+         * Método que inicializa a aplicação quando tudo tiver sido carregado.
+         */
         @Override
         protected void done() { //Define o comportamento depois de carregado
             try {
@@ -233,7 +285,7 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
                 loadingFrame.dispose(); // Fecha a janela de carregamento
                 
                 // Inicializa o JFrame principal
-                app = new GenericJFrame(new Dimension(1000, 500));
+                app = new GenericJFrame(new Dimension(1150, 600));
                 app.setDefaultCloseApp();
                 app.setTitle("QuestNutri (Desktop App)");
                 app.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -259,11 +311,21 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
         
     }
     
+    /**
+     * Define o usuário que está conectado atualmente ao sistema.
+     * @param user
+     */
     public static void setConnectedUser(User user) {
     	loggedUser = user;
     	language = user.userPrefLanguage();
     }
     
+    /**
+     * Indica se o usuário logado no sistema tem nível de autorização > 1, que permite a edição de partes do sistema.
+     * @return - retorna se o usuário tem permissão de edição
+     * <br><b>true</b> - o usuário tem permissão
+     * <br><b>false</b> - o usuário não tem permissão
+     */
     public static boolean isEditAuth() {
     	if(SKIP_LOGIN) return true;
     	
@@ -275,10 +337,23 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
     	return res;
     }
     
+    /**
+     * Retorna qual é a linguagem atual do sistema.
+     * @return integer indicando qual é a linguagem atual do sistema
+     * <br>0 -> português;
+     * <br>1 -> inglês;
+     */
     public static int language() {
     	return QuestNutri.language;
     }
     
+    /**
+     * Método que faz a troca das linguagens do sistema e salva essa linguagem como a padrão para o usuário logado.
+     * @param language -> Nova linguaguem.
+     * @return - o status da troca de linguagem.
+     * <br><b>true</b> - a troca foi realizada
+     * <br><b>false</b> - a troca não pôde ser realizada.
+     */
     public static boolean changeLanguage(String language) {
     	try {
         	switch(language) {
@@ -316,10 +391,31 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
     	return true;
     }
     
+    /**
+     * Retorna o número de id no banco de dados do usuário logado atualmente.
+     * @return integer -> que representa o id do usuário no banco de dados.
+     */
     public static int getLoggedUserId() {
-    	return loggedUser.getId();
+
+    	if(loggedUser != null) {
+    		try {
+    			return loggedUser.getId();
+			} catch (Exception e) {
+				return 0;
+			}
+    		
+    	}
+    	else return 0;
     }
     
+    /**
+     * Método que atualiza as informações do usuário logado atualmente.
+     * @param username -> novo nome de usuário
+     * @param password -> nova senha.
+     * @return - o status da atualização.
+     * <br><b>true</b> - a atualização foi realizada
+     * <br><b>false</b> - a atualização não pôde ser realizada.
+     */
     public static boolean updateLoggedUser(String username, String password) {
     	try {
     		loggedUser.setLogin(username).setPassword(password);
@@ -329,6 +425,9 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
 		}
     }
     
+    /**
+     * Método que desloga o usuário atual do sistema.
+     */
     public static void logOut() {
     	loginPanel = new LoginPanel();
     	swapAppPanel(loginPanel);
@@ -338,6 +437,12 @@ public class QuestNutri implements GeneralVisualSettings, GeneralAppSettings{
     	QuestNutriJOP.showMessageDialog(null, new LanguageUtil("Você foi desconectado.", "You have been disconnected.").get());
     }
     
+    /**
+     * Indica se o usuário logado no sistema tem o maior nível de autorização (systemLevel == 3), que permite a edição de todas as partes do sistema e o controle completo de usuários.
+     * @return - retorna se o usuário tem permissão de admin.
+     * <br><b>true</b> - o usuário tem permissão
+     * <br><b>false</b> - o usuário não tem permissão
+     */
     public static boolean isAdminControl() {
     	return loggedUser.getSystemLevel() == 3;
     }

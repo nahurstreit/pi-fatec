@@ -2,15 +2,18 @@ package utils;
 
 import java.lang.reflect.Field;
 
-public class CopyFactory {
+/**
+ * Classe utilitária para copiar o estado de um objeto para outro.
+ */
+public abstract class CopyFactory {
 	/**
 	 * Método que permite a cópia automática do estado das propriedades de um objeto de uma dada classe a outro objeto da <b>mesma classe</b>.
 	 * @param <T> - Classe dos objetos.
 	 * @param origin - objeto que contém as propriedades a serem copiadas em destiny.
 	 * @param destiny - objeto que receberá as propriedades de origin.
 	 * @return <b>boolean</b> - O resultado da operação.
-	 * <li>Se <b>true</b> - Todas as propriedades foram copiadas.
-	 * <li>Se <b>false</b> - Houve algum erro e a cópia não foi bem sucedida.
+	 * <br>Se <b>true</b> - Todas as propriedades foram copiadas.
+	 * <br>Se <b>false</b> - Houve algum erro e a cópia não foi bem sucedida.
 	 */
 	public static <T> boolean clone(T origin, T destiny) {
         if (destiny == null || origin == null) {

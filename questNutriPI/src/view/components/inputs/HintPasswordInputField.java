@@ -5,12 +5,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
-import view.components.utils.IDoAction;
+import utils.interfaces.IDoAction;
 
 /**
  * Classe que estende HintInputField para controlar Inputs do Usuário que devem ser escondidos ao mesmo tempo que
  * fornece um texto de orientação de preenchimento chamado "hint".
- * @see view.components.inputs.HintInputField
  */
 public class HintPasswordInputField extends HintInputField {
 	private static final long serialVersionUID = 1L;
@@ -22,20 +21,27 @@ public class HintPasswordInputField extends HintInputField {
 
 	/**
 	 * Método Construtor da classe para controlar inputs do usuário que devem ser escondidos ao mesmo tempo que fornece uma dica de preenchimento
-	 * @param hint -> (String) Texto a ser exibido na dica
-	 * @param size -> (Dimension) Instância de Dimension para controlar o tamanho do TextField
-	 * @param fontSize -> (float) Tamanho de exibição da fonte durante o preenchimento
+	 * @param hint - (String) Texto a ser exibido na dica
+	 * @param size - (Dimension) Instância de Dimension para controlar o tamanho do TextField
+	 * @param fontSize - (float) Tamanho de exibição da fonte durante o preenchimento
 	 */
     public HintPasswordInputField(String hint, Dimension size, float fontSize) {
     	super(hint, size, fontSize);
     	this.setText(hint);
     }
     
+    /**
+     * Inicializa os listeners para o campo de senha.
+     * @return o próprio objeto para implementar fluent interface.
+     */
     public HintPasswordInputField init() {
     	setListeners();
     	return this;
     }
     
+    /**
+     * Configura os listeners de eventos de teclado para o campo de senha.
+     */
     private void setListeners() {
     	this.addKeyListener(new KeyListener() { //Adiciona um Listener para teclas digitadas
 			
@@ -126,6 +132,12 @@ public class HintPasswordInputField extends HintInputField {
 		});
     }
     
+    /**
+     * Define a ação a ser executada quando a tecla Enter é pressionada.
+     *
+     * @param action Objeto que implementa a interface IDoAction para ação de execução
+     * @return o próprio objeto para implementar fluent interface.
+     */
     public HintPasswordInputField setEnterAction(IDoAction action) {
     	enterAction = action;
     	return this;
@@ -210,10 +222,10 @@ public class HintPasswordInputField extends HintInputField {
     
     /**
      * Método genérico para a cópia de um trecho uma lista, começando de um ponto determinando e indo até outro ponto determinado.
-     * @param originList -> (ArrayList<-Character->) A lista de origem
+     * @param originList -> A lista de origem
      * @param startIndex -> (int) número que representa a posição relativa de início no array de origem
      * @param endIndex -> (int) ponto final da cópia
-     * @return <b>ArrayList<-Character-></> -> retorna a lista dividida pelos parâmetros passados.
+     * @return retorna a lista dividida pelos parâmetros passados.
      */
     private ArrayList<Character> generateList(ArrayList<Character> originList, int startIndex, int endIndex) {
     	try {

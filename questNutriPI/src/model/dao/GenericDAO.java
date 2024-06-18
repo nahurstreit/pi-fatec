@@ -14,15 +14,19 @@ import com.microsoft.sqlserver.jdbc.SQLServerException;
 import model.utils.HibernateUtil;
 import utils.CopyFactory;
 
+/**
+ * Classe abstrata que provê operações genéricas de acesso a dados para entidades mapeadas pelo ORM.
+ * Implementa métodos básicos de persistência como salvar, deletar e buscar registros.
+ * @param <T> Tipo genérico que representa a entidade associada ao DAO.
+ */
 public abstract class GenericDAO<T> {
-	
 	/**
 	 * Método para salvar um registro no banco de dados do objeto enviado.
-	 * <\n>Se o objeto <b><u>NÃO EXISTIR</u></b> no banco de dados, será criado.
-	 * <\n>Se o objeto <b><u>EXISTIR</u></b> existir no banco de dados, será criado.
+	 * <br>Se o objeto <b><u>NÃO EXISTIR</u></b> no banco de dados, será criado.
+	 * <br>Se o objeto <b><u>EXISTIR</u></b> existir no banco de dados, será criado.
 	 * @return Retorna o status da operação.
-	 * <li>Se <b>true</b>: o objeto foi salvo.
-	 * <li>Se <b>false</b>: houve um erro durante a execução. Consulte o log.
+	 * <br>Se <b>true</b>: o objeto foi salvo.
+	 * <br>Se <b>false</b>: houve um erro durante a execução. Consulte o log.
 	 */
 	public boolean save() {
 		boolean result = true;
@@ -47,13 +51,17 @@ public abstract class GenericDAO<T> {
 		return result;
 	}
 	
+	/**
+	 * Método para retornar o id do objeto.
+	 * @return integer com o id do objeto.
+	 */
 	public abstract Integer getId();
 
 	/**
 	 * Deleta o registro no banco de dados associado à entidade que chama esse método.
 	 * @return Retorna o status da operação.
-	 * <li>Se <b>true</b>: se o objeto existir no banco de dados, então foi deletado.
-	 * <li>Se <b>false</b>: houve um erro durante a execução. Consulte o log.
+	 * <br>Se <b>true</b>: se o objeto existir no banco de dados, então foi deletado.
+	 * <br>Se <b>false</b>: houve um erro durante a execução. Consulte o log.
 	 */
 	public boolean delete() {
 		boolean result = true;

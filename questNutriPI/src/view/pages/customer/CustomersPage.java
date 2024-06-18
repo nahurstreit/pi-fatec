@@ -1,3 +1,6 @@
+/**
+ * Package que contém as páginas relacionadas a entidade Customer.
+ */
 package view.pages.customer;
 
 import java.util.List;
@@ -11,9 +14,17 @@ import view.QuestNutri;
 import view.components.generics.GenericJPanel;
 import view.pages.generics.GenericListPage;
 
+/**
+ * Página para controle de clientes, que lista e permite gerenciar os clientes.
+ */
 public class CustomersPage extends GenericListPage<Customer> {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Construtor da página de clientes.
+     *
+     * @param ownerPanel Painel proprietário onde esta página será exibida.
+     */
     public CustomersPage(GenericJPanel ownerPanel) {
         super(ownerPanel, 
         	  new String[]{"CPF", new LanguageUtil("Nome", "Name").get(), new LanguageUtil("Telefone", "Phone Number").get()}, 

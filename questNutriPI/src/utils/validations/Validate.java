@@ -1,3 +1,6 @@
+/**
+ * Package que contém as classes utilitárias de validação.
+ */
 package utils.validations;
 
 import java.time.LocalDate;
@@ -9,19 +12,53 @@ import utils.view.LanguageUtil;
 import view.components.QuestNutriJOP;
 import view.components.forms.FormBoxInput;
 
-public class Validate {
+/**
+ * Classe abstrata utilitária para definir métodos de validação para reuso.
+ */
+public abstract class Validate {
+    /**
+     * Verifica se uma string contém pelo menos um dígito.
+     *
+     * @param str String a ser verificada.
+     * @return true se a string contiver pelo menos um dígito, false caso contrário.
+     */
 	public static boolean hasNumber(String str) {
         return str != null && str.matches(".*\\d.*");
 	}
 	
+    /**
+     * Verifica se o tamanho de uma string está entre um mínimo e um máximo dado.
+     *
+     * @param str String a ser verificada.
+     * @param min Tamanho mínimo da string.
+     * @param max Tamanho máximo da string.
+     * @return true se o tamanho da string estiver entre min e max, false caso contrário.
+     */
 	public static boolean sizeBetween(String str, int min, int max) {
 		return str.length() >= min && str.length() <= max;
 	}
 	
+    /**
+     * Verifica se um número inteiro está dentro de um intervalo dado.
+     *
+     * @param num Número inteiro a ser verificado.
+     * @param min Valor mínimo do intervalo.
+     * @param max Valor máximo do intervalo.
+     * @return true se o número estiver dentro do intervalo, false caso contrário.
+     */
 	public static boolean numberBetween(int num, int min, int max) {
 		return num >= min && num <= max;
 	}
 	
+	
+    /**
+     * Verifica se um número decimal está dentro de um intervalo dado.
+     *
+     * @param num Número decimal a ser verificado.
+     * @param min Valor mínimo do intervalo.
+     * @param max Valor máximo do intervalo.
+     * @return true se o número estiver dentro do intervalo, false caso contrário.
+     */
 	public static boolean numberBetween(double num, double min, double max) {
 		return num >= min && num <= max;
 	}
@@ -31,8 +68,8 @@ public class Validate {
 	 * @param str - String verificada
 	 * @param allowed - caracteres permitidos pela validação.
 	 * @return 
-	 * <li><b>true</b> - se a String tiver letras.
-	 * <li><b>false</b> - se a String não tiver letras.
+	 * <br><b>true</b> - se a String tiver letras.
+	 * <br><b>false</b> - se a String não tiver letras.
 	 */
 	public static boolean hasChar(String str, Character ...allowed) {
 	    if (str == null) {
@@ -49,6 +86,13 @@ public class Validate {
 	    return str.matches(regex);
 	}
 	
+    /**
+     * Verifica se uma string contém um caractere específico.
+     *
+     * @param str String a ser verificada.
+     * @param searchChar Caractere a ser procurado.
+     * @return true se a string contiver o caractere específico, false caso contrário.
+     */
 	public static boolean haveSpecifChar(String str, char searchChar) {
 	    if (str == null) {
 	        return false;
@@ -59,6 +103,12 @@ public class Validate {
 	    return str.matches(".*" + regex + ".*");
 	}
 	
+    /**
+     * Verifica se uma string representa uma data válida no formato "dd/MM/yyyy".
+     *
+     * @param date String a ser verificada como data.
+     * @return true se a string representar uma data válida, false caso contrário.
+     */
 	public static boolean isDate(String date) {
 		try {
 			LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"));			
@@ -68,13 +118,20 @@ public class Validate {
 		return true;		
 	}
 	
+    /**
+     * Verifica se uma string tem tamanho maior que um limite especificado.
+     *
+     * @param str String a ser verificada.
+     * @param limitSize Limite de tamanho.
+     * @return true se a string tiver tamanho maior que o limite, false caso contrário.
+     */
 	public static boolean isBiggerThan(String str, int limitSize) {
 		return str.length() > limitSize;
 	}
 	
 	/**
 	 * Método que faz a validação de um dado CPF passado como String.
-	 * <h1>Processo de validação: </h1>
+	 * <br><b>Processo de validação: </b>
 	 * <p>Os CPFs possuem um algoritmo de validação próprio, que confirma a validade da sequência de números de um dado CPF.
 	 * <br>Um CPF é constituído em uma parte por uma sequência de quaisquer 9 números inteiros entre 0 e 9, e dois digitos, também entre 0 e 9.
 	 * A definição dos dígitos de um CPF acontece através de um algoritmo específico em seus números, que é descrita
@@ -97,7 +154,6 @@ public class Validate {
 	 * <li> Se o resto for menor que 2, o digito será: 0.
 	 * <li> Se o resto for maior ou igual a 2, o digito será: 11 - resto.
 	 * </ul>
-	 * </p>
 	 * 
 	 * <br>
 	 * <b>Segundo Digito:</b>
@@ -105,7 +161,7 @@ public class Validate {
 	 * mas também o digito encontrado anteriormente. Além disso, o número padrão de multiplicação que decresce inicia-se pelo 11, não mais
 	 * pelo 10.
 	 *
-	 * <br><br><h1>Exemplo: Validar o CPF de número <u>988.121.450-82</u></h1>
+	 * <br><br><b>Exemplo:</b> Validar o CPF de número <u>988.121.450-82</u>
 	 * Obter primeiro dígito:<br>
 	 * (<u>9</u> x <i>10</i>) = 90<br>
 	 * (<u>8</u> x <i>9</i>) = 72<br>
@@ -138,7 +194,6 @@ public class Validate {
 	 * 329 / 11 = 29 com <b>resto 10</b>.
 	 * Resto 10 > 2, portanto digito 2 = 11 - 10 = 1.
 	 * <br>
-	 * </p>
 	 * 
 	 * <p>O número de CPF informado foi 988.121.450-54, mas a validação indicou que o primeiro digito está correto,
 	 * mas o segundo deveria ser 1, portanto o CPF está incorreto.
@@ -200,11 +255,12 @@ public class Validate {
 		return sum;
 	}
 	
-	/**
-	 * 
-	 * @param fields
-	 * @return
-	 */
+    /**
+     * Valida os campos de um formulário.
+     *
+     * @param fields Campos do formulário a serem validados.
+     * @return true se todos os campos forem válidos, false caso contrário.
+     */
     public static boolean formFields(FormBoxInput ...fields) {
     	ArrayList<FormBoxInput> wrongFields = FormBoxInput.validateFields(fields);
     	

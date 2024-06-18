@@ -14,11 +14,22 @@ import view.components.forms.FormBoxInput;
 import view.components.forms.FormSection;
 import view.components.generics.GenericJPanel;
 
+/**
+ * Frame para alteração de dados de usuário.
+ * Extende SubFrameFromMain para manter a consistência visual e funcional do aplicativo.
+ */
 public class ChangeUserFrame extends SubFrameFromMain {
 	private static final long serialVersionUID = 1L;
 
 	GenericJPanel panel = new GenericJPanel().ltGridBag().setBGColor(STD_WHITE_COLOR);
 	
+    /**
+     * Regra de validação para tamanho de strings entre min e max caracteres.
+     * 
+     * @param min tamanho mínimo da string
+     * @param max tamanho máximo da string
+     * @return objeto ValidationRule para validação de tamanho de string
+     */
 	protected ValidationRule strSizeBetween(int min, int max) {
 		return new ValidationRule(value -> {
 			if(value.length() != 0) {
@@ -30,6 +41,11 @@ public class ChangeUserFrame extends SubFrameFromMain {
 		} , new LanguageUtil("Campo precisa ter entre "+min+ " e "+max+".", "Field size must be between "+min+ " and "+max+".").get());
 	}
 	
+    /**
+     * Construtor para ChangeUserFrame.
+     * 
+     * @param user objeto User contendo os dados do usuário a ser alterado
+     */
 	public ChangeUserFrame(User user) {
 		super();
 		setContentPane(panel);

@@ -21,31 +21,56 @@ import jakarta.persistence.TemporalType;
 import model.dao.MealDAO;
 import utils.interfaces.ICopy;
 
+/**
+ * Entidade que representa uma refeição cadastrada no sistema.
+ */
 @Entity
 @Table(name = "Meals")
 public class Meal extends MealDAO implements ICopy<Meal> {
+	
+	/**
+	 * Id associado a esse objeto no banco de dados
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idMeal")
 	public Integer idMeal;
 	
+	/**
+	 * Cliente que possui essa refeição.
+	 */
 	@ManyToOne
 	@JoinColumn(name = "idCustomer")
 	private Customer customer;
 
+	/**
+	 * Dias da semana que essa refeição acontece.
+	 */
 	@Column(name = "meal_daysOfWeek")
 	public Integer daysOfWeek;
 
+	/**
+	 * Nome da refeição.
+	 */
 	@Column(name = "meal_name")
 	public String name;
 
+	/**
+	 * Horário da refeição.
+	 */
 	@Column(name = "meal_hour")
     @Temporal(TemporalType.TIME)
     public Time hour;
 
+	/**
+	 * Data e hora que a refeição foi criada.
+	 */
 	@Column(name = "meal_createdAt")
 	private LocalDateTime createdAt;
 
+	/**
+	 * Data e hora em que a refeição foi 'excluída'.
+	 */
 	@Column(name = "meal_deactivatedAt")
 	private LocalDateTime deactivatedAt;
 	
@@ -54,10 +79,8 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 	 * Método construtor de Meal.
 	 * @param customer - Customer owner da refeição.
 	 * @param name - Nome da refeição.
-	 * @param active - inteiro que representa se a Meal está ativa. Se 1: ativo, se 0: não ativo.
 	 * @param daysOfWeek - Inteiro entre 1 e 127 que representa os dias que a refeição acontece
 	 * @param hour - hora de acontecimento da refeição
-	 * @param obs - observação sobre a refeição.
 	 */
 	public Meal(Customer customer, String name, Integer daysOfWeek, String hour) {
 		super();
@@ -70,19 +93,24 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 	/**
 	 * Método construtor sem atribuir um customer.
 	 * @param name - Nome da refeição.
-	 * @param active - inteiro que representa se a Meal está ativa. Se 1: ativo, se 0: não ativo.
 	 * @param daysOfWeek - Inteiro entre 1 e 127 que representa os dias que a refeição acontece
 	 * @param hour - hora de acontecimento da refeição
-	 * @param obs - observação sobre a refeição.
 	 */
 	public Meal(String name, Integer daysOfWeek, String hour) {
 		this(null, name, daysOfWeek, hour);
 	}
 
+	/**
+	 * Constructor padrão da classe Meal
+	 */
 	public Meal() {
 		this(null, null, null);
 	}
 	
+	/**
+	 * Obtém o id deste objeto no banco de dados
+	 * @return integer -> id no banco de dados
+	 */
 	@Override
 	public Integer getId() {
 		return this.idMeal;
@@ -126,11 +154,21 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 		return this;
 	}
 	
+	/**
+	 * Método para definir o nome da refeição.
+	 * @param name -> Nome da refeição
+     * @return Retorna a própria Meal, para implementação de fluent interface.
+	 */
 	public Meal setName(String name) {
 		this.name = name;
 		return this;
 	}
 	
+	/**
+	 * Método para definir o horário da refeição
+	 * @param hour -> String que representa a hora em 'HH:mm'
+     * @return Retorna a própria Meal, para implementação de fluent interface.
+	 */
 	public Meal setHour(String hour) {
 	    try {
 	        this.hour = formatHour(hour);
@@ -140,8 +178,15 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 	    return this;
 	}
 	
+	/**
+	 * Método para definir os dias de repetição da refeição.
+	 * @param daysOfWeek -> número inteiro entre (1 e 127).
+     * @return Retorna a própria Meal, para implementação de fluent interface.
+	 */
 	public Meal setDaysOfWeek(int daysOfWeek) {
-		this.daysOfWeek = daysOfWeek;
+		if(daysOfWeek >= 1 && daysOfWeek <= 127) {
+			this.daysOfWeek = daysOfWeek;
+		}
 		return this;
 	}
 	
@@ -185,7 +230,7 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 	 * Método para criação rápida de Foods em uma Meal já salva.
 	 * 
 	 * É preciso já estar vinculada à um cliente.
-	 * @param foods
+	 * @param food - objeto food a ser criada.
 	 */
 	public void createFood(Food food) {
 		if(this.customer != null) {
@@ -194,6 +239,12 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 		}
 	}
 	
+	/**
+	 * Método que diz se a refeição está ativa.
+	 * @return boolean
+	 * <br><b>true</b> - se esta ativa.
+	 * <br><b>false</b> - não está ativa.
+	 * */
 	public boolean isActive() {
 		return this.deactivatedAt == null;
 	}
@@ -219,12 +270,22 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 		return this.save();
 	}
 	
+	/**
+	 * Método para criar uma nova instância com o mesmo estado de outra instância.
+	 * @param mold - objeto que servirá como molde do estado
+	 * @return Um novo objeto do tipo Meal.
+	 */
     public static Meal createCopyFrom(Meal mold) {
     	Meal copy = new Meal();
     	copy.copyFrom(mold);
     	return copy;
     }
 	
+    /**
+     * Copia o estado de um objeto Meal para este objeto.
+     * @param originObject -> objeto do tipo Meal que tem as informações de origem.
+     * @return o mesmo objeto para implementar fluent interface.
+     */
 	@Override
 	public Meal copyFrom(Meal originObject) {
 		try {
@@ -244,7 +305,13 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 		return this;
 	}
 	
-	
+    /**
+     * Método que copia o estado deste objeto para outro.
+     * @param destinyObject -> objeto que receberá o estado deste objeto.
+	 * @return <b>boolean</b> - O resultado da operação.
+	 * <br>Se <b>true</b> - O objeto foi copiado.
+	 * <br>Se <b>false</b> - O objeto não pôde ser copiado.
+     */
 	@Override
 	public boolean copyMeTo(Meal destinyObject) {
     	boolean res = true;
@@ -272,8 +339,10 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 	 * @param origin - Objeto Meal cujos objetos de Food associados devem ser copiados para destiny.
 	 * @param destiny - Objeto Meal que receberá copias de objetos de Food associados ao origin.
 	 * @return <b>boolean</b> - O resultado da operação.
+	 * <ul>
 	 * <li>Se <b>true</b> - Todas as foods foram copiadas.
 	 * <li>Se <b>false</b> - Houve algum erro e a cópia não foi bem sucedida.
+	 * </ul>
 	 */
 	private boolean copyFoods(Meal origin, Meal destiny) {
 		boolean res = true;
@@ -299,7 +368,11 @@ public class Meal extends MealDAO implements ICopy<Meal> {
 		
 		return res;
 	}
-
+	
+	/**
+	 * Representação como string do estado desse objeto.
+	 * @return String -> string com o estado do objeto.
+	 */
 	@Override
 	public String toString() {
 		return "Meal: {"

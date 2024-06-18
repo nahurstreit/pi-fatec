@@ -4,8 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 
 import utils.view.FontsUtil;
-import utils.view.LanguageUtil;
 
+/**
+ * Interface para definição de propriedades comuns do sistema, como cores, fontes e imagens.
+ */
 public interface GeneralVisualSettings {
 	//Cores do sistema
 	public static final Color STD_BLUE_COLOR = new Color(85, 183, 254);

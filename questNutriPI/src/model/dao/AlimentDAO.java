@@ -4,13 +4,17 @@ import java.util.List;
 
 import model.entities.Aliment;
 
+/**
+ * Classe abstrata que define operações de acesso a dados para a entidade Aliment.
+ * Implementa operações genéricas definidas em GenericDAO para Aliment.
+ */
 public abstract class AlimentDAO extends GenericDAO<Aliment> {
 
 	/**
 	 * Método que encontra todos os registros de Aliments e retorna uma lista de
 	 * todos os Aliments que correspondem aos parâmetros fornecidos
 	 *
-	 * @param Parâmetros de filtro opcionais para a consulta devem ser escritos de
+	 * @param params Parâmetros de filtro opcionais para a consulta devem ser escritos de
 	 * acordo com a declaração das classes de entidade.
 	 * 
 	 * @return Lista de Aliments que correspondem aos parâmetros fornecidos.
@@ -33,7 +37,7 @@ public abstract class AlimentDAO extends GenericDAO<Aliment> {
 	 * Método que procura e retorna apenas o primeiro registro dentro de todos os
 	 * registros de Aliment que corresponde aos parâmetros fornecidos
 	 *
-	 * @param Parâmetros de filtro opcionais para a consulta devem ser escritos de
+	 * @param params Parâmetros de filtro opcionais para a consulta devem ser escritos de
 	 * acordo com a declaração das classes de entidade 
 	 * 
 	 * @return primeiro registro de Aliment que corresponde aos parâmetros

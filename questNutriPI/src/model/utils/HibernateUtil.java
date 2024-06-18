@@ -1,3 +1,6 @@
+/**
+ * Package que contém as classes utilitárias dos models
+ */
 package model.utils;
 
 import javax.swing.JOptionPane;
@@ -8,7 +11,12 @@ import org.hibernate.cfg.Configuration;
 
 import view.components.QuestNutriJOP;
 
-public class HibernateUtil {
+/**
+ * Classe utilitária para gerenciar a sessão do Hibernate.
+ * Provê métodos para configurar e obter a SessionFactory, além de métodos
+ * auxiliares para atualizar instâncias e lidar com exceções.
+ */
+public abstract class HibernateUtil {
 
 	/**
 	 * Variavel estatica apenas para armazenar o SessionFactory
@@ -34,12 +42,12 @@ public class HibernateUtil {
         }
     }
 
-	/*
+	/**
 	 * Método público getter para retornar a instância de sessionFactory Ele que vai
 	 * permitir que as classes obtenham a sessionFactory para poder interagir com o
 	 * banco de dados.
+	 * @return objeto SessionFactory.
 	 */
-
 	public static SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
@@ -57,6 +65,11 @@ public class HibernateUtil {
 		}
 	}
 	
+	/**
+	 * Método para exibir uma mensagem de erro em conexões com o banco de dados.
+	 * @param message - String da mensagem
+	 * @param ex - Exceção que foi lançada.
+	 */
 	private static void handleException(String message, Throwable ex) {
         System.err.println(message);
         ex.printStackTrace();

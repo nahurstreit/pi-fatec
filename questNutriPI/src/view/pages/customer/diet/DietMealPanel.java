@@ -20,6 +20,11 @@ import view.components.forms.FormSection;
 import view.components.generics.GenericJPanel;
 import view.components.labels.BreakActionLbl;
 
+/**
+ * Painel para exibição e edição de uma refeição específica em um dia da dieta.
+ * Este painel permite visualizar os detalhes da refeição, incluindo alimentos, 
+ * macros nutricionais e botões de interação para salvar, excluir e editar a refeição.
+ */
 public class DietMealPanel extends GenericJPanel {
     private static final long serialVersionUID = 1L;
 
@@ -70,6 +75,12 @@ public class DietMealPanel extends GenericJPanel {
     
     private double[] mealMacro;
 
+    /**
+     * Construtor para inicializar o painel de refeição da dieta.
+     * 
+     * @param dayPanel Painel do dia da dieta ao qual esta refeição pertence.
+     * @param meal     Refeição que será exibida e editada neste painel.
+     */
     public DietMealPanel(DietDayPanel dayPanel, Meal meal) {
     	super(dayPanel);
         this.meal = meal;
@@ -140,6 +151,11 @@ public class DietMealPanel extends GenericJPanel {
         
     }
     
+    /**
+     * Calcula o total de calorias da refeição com base nos alimentos associados.
+     * 
+     * @return Total de calorias da refeição.
+     */
     public double calculateMealKcal() {
     	double res = 0.0;
     	try {
@@ -149,14 +165,27 @@ public class DietMealPanel extends GenericJPanel {
     	return res;
     }
     
+    /**
+     * Verifica se esta instância de DietMealPanel corresponde à refeição fornecida.
+     * 
+     * @param meal Refeição para comparar.
+     * @return true se esta instância corresponder à refeição fornecida, false caso contrário.
+     */
     public boolean hasThisMeal(Meal meal) {
     	return this.meal.equals(meal);
     }
     
+    /**
+     * Atualiza o texto das calorias da refeição com o valor atualizado.
+     */
     public void updateMealKcal() {
     	lblMealKcal.setText(String.format("%.2f", calculateMealKcal()) + "kcal");
     }
     
+    /**
+     * Método chamado quando um alimento associado à refeição é atualizado.
+     * Atualiza todos os componentes relacionados à exibição da refeição.
+     */
     public void foodWasUpdated() {
     	dayPanel.callUpdate();
     	insertFoods();
@@ -179,7 +208,9 @@ public class DietMealPanel extends GenericJPanel {
         dayPanel.refresh();
     }
 
-    //Método retractMeal
+    /**
+     * Reduz a visualização do painel da refeição, ocultando os detalhes de alimentos.
+     */
     public void retractMeal() {
     	removeDaysInfo();
     	removeInputs();
@@ -190,6 +221,9 @@ public class DietMealPanel extends GenericJPanel {
         dayPanel.refresh();
     }
     
+    /**
+     * Coloca os labels de nome e horário da refeição no painel de informações.
+     */
     private void placeLabels() {
     	lblMealName.setText(meal.name);
     	lblMealHour.setText(meal.hour.toString());
@@ -197,12 +231,18 @@ public class DietMealPanel extends GenericJPanel {
         infoBox.add(lblMealHour, infoBox.gbc.yP());
     }
     
+    /**
+     * Remove os labels de nome, horário e calorias da refeição do painel de informações.
+     */
     private void removeLabels() {
     	infoBox.remove(lblMealName);
     	infoBox.remove(lblMealHour);
         infoBox.remove(lblMealKcal);
     }
     
+    /**
+     * Coloca os campos de entrada para edição do nome, horário e outros detalhes da refeição.
+     */
     private void placeInputs() {
         //Adicionando a caixa de input do nome da refeição.
         inputMealName = new FormBoxInput(this).setValue(meal.name).setLbl(new LanguageUtil("Nome da refeição", "Meal name").get(), 8f);
@@ -242,13 +282,9 @@ public class DietMealPanel extends GenericJPanel {
         infoBox.gbc.insets().width(1); //Resetando o insets do gbc
     }
     
-    private void updateMealMacro() {
-    	mealMacro = FoodUtil.calculateMacronutrients(meal);
-        lblCarbMacro.setText(CARB_MACRO_LBL+String.format("%.2f", mealMacro[0]));
-        lblProteinMacro.setText(PROTEIN_MACRO_LBL+String.format("%.2f", mealMacro[1]));
-        lblFatMacro.setText(FAT_MACRO_LBL+String.format("%.2f", mealMacro[2]));
-    }
-    
+    /**
+     * Remove os campos de entrada do painel de informações da refeição.
+     */
     public void removeInputs() {
     	try {
     		infoBox.remove(nameBox);
@@ -268,6 +304,19 @@ public class DietMealPanel extends GenericJPanel {
     	
     }
     
+    /**
+     * Atualiza os valores dos macros nutricionais da refeição com base nos alimentos associados.
+     */
+    private void updateMealMacro() {
+    	mealMacro = FoodUtil.calculateMacronutrients(meal);
+        lblCarbMacro.setText(CARB_MACRO_LBL+String.format("%.2f", mealMacro[0]));
+        lblProteinMacro.setText(PROTEIN_MACRO_LBL+String.format("%.2f", mealMacro[1]));
+        lblFatMacro.setText(FAT_MACRO_LBL+String.format("%.2f", mealMacro[2]));
+    }
+    
+    /**
+     * Coloca o painel de seleção de dias da semana para a refeição no painel principal.
+     */
     private void placeDaysInfo() {
         this.remove(infoBox);
         
@@ -275,12 +324,18 @@ public class DietMealPanel extends GenericJPanel {
         this.add(infoBox, gbc.fill("BOTH").wgt(1.0).grid(0, 1));
     }
     
+    /**
+     * Remove o painel de seleção de dias da semana da refeição do painel principal.
+     */
     private void removeDaysInfo() {
     	this.remove(daysPanel);
     	this.remove(infoBox);
         this.add(infoBox, gbc.fill("BOTH").wgt(1.0).grid(0));
     }
     
+    /**
+     * Insere os paineis de Foods referentes a essa Meal
+     */
     public void insertFoods() {
     	try {
 			foodsPanel.removeAll();
@@ -300,16 +355,29 @@ public class DietMealPanel extends GenericJPanel {
  
     }
     
+    /**
+     * Aplica uma fonte menor ao rótulo fornecido.
+     * @param lbl JLabel ao qual a fonte será aplicada.
+     * @return JLabel com a fonte menor aplicada.
+     */
     private JLabel makeSmallFont(JLabel lbl) {
     	lbl.setFont(STD_BOLD_FONT.deriveFont(12f));
     	return lbl;
     }
     
+    /**
+     * Aplica uma fonte maior ao rótulo fornecido.
+     * @param lbl JLabel ao qual a fonte será aplicada.
+     * @return JLabel com a fonte maior aplicada.
+     */
     private JLabel makeBigFont(JLabel lbl) {
         lblMealKcal.setFont(STD_BOLD_FONT.deriveFont(15f));
         return lbl;
     }
     
+    /**
+     * Inicializa e configura os botões de interação do painel da refeição.
+     */
     private void initButtons() {
     	saveBtn = StdButton.stdBtnConfig(new LanguageUtil("Salvar", "Save").get());
     	saveBtn.setAction(() -> {
@@ -353,6 +421,9 @@ public class DietMealPanel extends GenericJPanel {
     	
     }
     
+    /**
+     * Expande a visualização do painel para mostrar opções de edição da refeição.
+     */
     private void expandEdit() {
     	expandOptBtn.setAction(() -> {
     		retractEdit();
@@ -366,6 +437,9 @@ public class DietMealPanel extends GenericJPanel {
 
     }
     
+    /**
+     * Retrai a visualização expandida do painel de edição da refeição.
+     */
     private void retractEdit() {
     	expandOptBtn.setAction(() -> {
     		expandEdit();
@@ -382,6 +456,9 @@ public class DietMealPanel extends GenericJPanel {
 		}
     }
     
+    /**
+     * Força o salvamento das Foods associadas à refeição.
+     */
     public void forceSaveFoods() {
     	for(DietFoodPanel foodCard: foodCards) {
     		foodCard.saveThis();

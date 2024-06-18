@@ -7,15 +7,18 @@ import javax.swing.border.Border;
 import controller.entities.FoodController;
 import model.entities.Food;
 import utils.interfaces.GeneralVisualSettings;
+import utils.interfaces.IDoAction;
 import utils.view.LanguageUtil;
 import view.components.QuestNutriJOP;
 import view.components.buttons.StdButton;
 import view.components.generics.GenericJFrame;
 import view.components.generics.GenericJPanel;
-import view.components.utils.IDoAction;
 import view.pages.customer.diet.food.CurrentSelectedAlimentPanel;
 import view.pages.customer.diet.food.SelectNewAlimentPanel;
 
+/**
+ * Frame para atualização de informações de uma Food.
+ */
 public class UpdateFoodFrame extends SubFrame implements GeneralVisualSettings {
 	private static final long serialVersionUID = 1L;
 	
@@ -28,6 +31,13 @@ public class UpdateFoodFrame extends SubFrame implements GeneralVisualSettings {
 	
 	private IDoAction afterUpdate;
 
+    /**
+     * Construtor para inicializar o frame de atualização de alimento.
+     * 
+     * @param callerFrame O frame que chamou este frame.
+     * @param food        Food a ser atualizada.
+     * @param afterUpdate A ação a ser executada após a atualização da Food.
+     */
 	public UpdateFoodFrame(GenericJFrame callerFrame, Food food, IDoAction afterUpdate) {
 		super(callerFrame, null);
 		this.food = food;
@@ -41,6 +51,9 @@ public class UpdateFoodFrame extends SubFrame implements GeneralVisualSettings {
 	}
 	
 
+	/**
+     * Método para inicializar e configurar os componentes do frame.
+     */
 	private void initialize() {
 		GenericJPanel panel = new GenericJPanel().ltGridBag();
 		left = new CurrentSelectedAlimentPanel(this, food.aliment, food.quantity); 
@@ -59,6 +72,11 @@ public class UpdateFoodFrame extends SubFrame implements GeneralVisualSettings {
 		this.setContentPane(panel);
 	}
 	
+    /**
+     * Método para criar e configurar o botão de atualização da Food.
+     * 
+     * @return O botão configurado para salvar a Food.
+     */
 	private StdButton updateBtn() {
 		StdButton btn = StdButton.stdBtnConfig(new LanguageUtil("Salvar como Novo Alimento", "Save as New Aliment").get());
 		btn.setAction(() -> {

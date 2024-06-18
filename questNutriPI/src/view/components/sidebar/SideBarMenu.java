@@ -13,13 +13,25 @@ import javax.swing.JLabel;
 
 import view.components.generics.GenericComponent;
 
+/**
+ * Classe que representa um menu lateral (SideBar) composto por itens de menu (SideBarItem).
+ */
 public class SideBarMenu extends SideBarComponent<GenericComponent> {
 	/**
 	 * Define a última label clicada para ter underline.
 	 */
 	private JLabel lastSelectedLabel = null;
+	
+    /**
+     * Array de itens de menu (SideBarItem) no menu lateral.
+     */
 	public SideBarItem[] items;
 	
+    /**
+     * Construtor que inicializa o SideBarMenu com uma lista de itens de menu.
+     *
+     * @param items Array de SideBarItem representando os itens do menu.
+     */
 	public SideBarMenu(SideBarItem ...items) {
 		this.component = new GenericComponent();
 		this.items = items;
@@ -82,6 +94,11 @@ public class SideBarMenu extends SideBarComponent<GenericComponent> {
 		return optionLbl;
 	}
 	
+    /**
+     * Método que troca o sublinhado para a JLabel especificada, removendo o sublinhado do último selecionado.
+     *
+     * @param lbl JLabel que terá o sublinhado aplicado.
+     */
 	public void swapUnderline(JLabel lbl) {
         if (lastSelectedLabel != null) {
             removeUnderline(lastSelectedLabel);
@@ -110,6 +127,10 @@ public class SideBarMenu extends SideBarComponent<GenericComponent> {
         label.setText(text);
     }
     
+    
+    /**
+     * Método que define o primeiro painel a ser exibido, baseado nos itens inicialmente selecionados.
+     */
     public void setFirstPanel() {
     	for(SideBarItem item: items) {
     		if(item.isSelected()) item.performEvent();

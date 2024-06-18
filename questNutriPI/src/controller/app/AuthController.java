@@ -1,23 +1,32 @@
+/**
+ * Package que contém os controllers da Aplicação.
+ */
 package controller.app;
 
 import model.dao.UserDAO;
 import model.entities.User;
+import utils.interfaces.IDoAction;
 import utils.view.LanguageUtil;
 import view.QuestNutri;
 import view.components.QuestNutriJOP;
-import view.components.utils.IDoAction;
 import view.frames.ChangeUserFrame;
 
-public class AuthController {
+/**
+ * Controlador responsavel por operacoes relacionadas a relacionadas a autenticacao do sistema.
+ */
+public abstract class AuthController {
 
 	/**
 	 * Método para adicionar um novo usuário.
 	 *
-	 * @param name        - Nome do usuário.
+	 * @param login       - Nome do usuário.
 	 * @param password    - Senha do usuário.
+	 * @param firstName   - Primeiro nome do usuário.
 	 * @param systemLevel - Nível do usuário no sistema.
+	 * @param onUpdate    - Interface para ação após atualização.
 	 * @return Mensagem de sucesso ou erro.
 	 */
+
 	public static String createUser(String login, String password, String firstName, Integer systemLevel, IDoAction onUpdate) {
 		try {
 			// Verificar se o nome de usuário já existe
@@ -43,6 +52,7 @@ public class AuthController {
 	 * @param newPassword - Nova senha do usuário.
 	 * @return Mensagem de sucesso ou erro.
 	 */
+
 	public String changePassword(int userId, String oldPassword, String newPassword) {
 		try {
 			User user = UserDAO.findByPK(userId);
@@ -66,9 +76,9 @@ public class AuthController {
 	/**
 	 * Método para logar no sistema.
 	 *
-	 * @param name     - Nome do usuário.
+	 * @param login    - Login usuário.
 	 * @param password - Senha do usuário.
-	 * @return Mensagem de sucesso ou erro.
+	 * @return true se o login foi bem sucedido, false caso contrário.
 	 */
 	public static boolean doLogin(String login, String password) {
 		boolean res = false;
@@ -111,6 +121,18 @@ public class AuthController {
 		}
 	}
 	
+	/**
+	 * Método para atualizar todas as informações de um usuário.
+	 *
+	 * @param user        - Usuário a ser atualizado.
+	 * @param login       - Novo nome de usuário.
+	 * @param password    - Nova senha de usuário.
+	 * @param firstName   - Novo primeiro nome do usuário.
+	 * @param systemLevel - Novo nível do usuário no sistema.
+	 * @param onUpdate    - Interface para ação após atualização.
+	 * @return Mensagem de sucesso ou erro.
+	 */
+
 	public static String updateFullUser(User user, String login, String password, String firstName, int systemLevel, IDoAction onUpdate) {
 		String msg = "";
 		try {
@@ -147,6 +169,11 @@ public class AuthController {
 		
 	}
 	
+	/**
+	 * Método para abrir o frame de alteração de usuário.
+	 *
+	 * @param user - Usuário a ser alterado.
+	 */
 	public static void openUserChangeFrame(User user) {
 		ChangeUserFrame frame = new ChangeUserFrame(user);
 		frame.setVisible(true);

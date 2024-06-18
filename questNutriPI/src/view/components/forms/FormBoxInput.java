@@ -1,3 +1,6 @@
+/**
+ * Package que contém as classes do componente VS-FlexFormUI(Vertical Scale - Flex Form User Interface)
+ */
 package view.components.forms;
 
 import java.awt.Color;
@@ -23,6 +26,11 @@ import view.components.buttons.StdButton;
 import view.components.generics.GenericComponent;
 import view.components.generics.GenericJPanel;
 
+/**
+ * Componente personalizado para definir um campo de formulário do componente VS-FlexFormUI.
+ * É possível definir o campo de diversas maneiras, como TextField, ComboBox, Spinner, Botão e Título.
+ * É possível aplicar rótulos (labels), regras de validação e máscaras de entrada condicional.
+ */
 public class FormBoxInput extends GenericComponent {
 	private static final long serialVersionUID = 1L;
 	
@@ -53,14 +61,11 @@ public class FormBoxInput extends GenericComponent {
 	
 	private boolean lockInput;
 	private boolean initiated = false;
-	
-	public interface ValueChangedListener {
-	    void valueChanged(String newValue);
-	}
-	
-	private ValueChangedListener valueChangedListener;
 
-	
+	/**
+	 * Contructor que recebe o panel que o chamou.
+	 * @param ownerPanel GenericJPanel que chamou esse FormBox
+	 */
 	public FormBoxInput(GenericJPanel ownerPanel) {
 		super(ownerPanel);
 		ltGridBag();
@@ -69,6 +74,9 @@ public class FormBoxInput extends GenericComponent {
 		initComponents();
 	}
 	
+	/**
+	 * Método que inicializa os componentes básicos.
+	 */
 	private void initComponents() {
 		label = new JLabel("");
 		label.setFont(STD_BOLD_FONT.deriveFont(15f));
@@ -99,6 +107,10 @@ public class FormBoxInput extends GenericComponent {
 		lockInput = false;
 	}
 	
+	/**
+	 * Método que inicializa o componente depois de configurá-lo.
+	 * @return O próprio objeto para implementar fluent interface.
+	 */
 	public FormBoxInput init() {
 		placeComponents();
 		if(lockInput) applyLock();
@@ -106,6 +118,9 @@ public class FormBoxInput extends GenericComponent {
 		return this;
 	}
 	
+    /**
+     * Posiciona os componentes dentro do layout.
+     */
 	private void placeComponents() {
 		this.add(label, gbc.fill("BOTH").grid(0).insets(upperDistance, leftDistance, 0, rightDistance).anchor("WEST").width("REMAINDER"));
 		
@@ -157,45 +172,90 @@ public class FormBoxInput extends GenericComponent {
 		this.add(errorLabel, gbc.yP().insets(0, leftDistance, lowerDistance, rightDistance).width("REMAINDER"));
 	}
 	
+    /**
+     * Obtém o texto do rótulo do formulário.
+     * @return O texto do rótulo.
+     */
 	public String getLabel() {
 		return label.getText();
 	}
 	
+    /**
+     * Define a distância superior do campo.
+     * @param distance A distância superior desejada.
+     * @return O próprio objeto para implementar fluent interface.
+     */
 	public FormBoxInput setUpperDistance(int distance) {
 		upperDistance = distance;
 		return this;
 	}
 	
+    /**
+     * Define a distância inferior do campo.
+     * @param distance A distância inferior desejada.
+     * @return O próprio objeto para implementar fluent interface.
+     */
 	public FormBoxInput setLowerDistance(int distance) {
 		lowerDistance = distance;
 		return this;
 	}
 	
+    /**
+     * Define a distância direita do campo.
+     * @param distance A distância direita desejada.
+     * @return O próprio objeto para implementar fluent interface.
+     */
 	public FormBoxInput setRightDistance(int distance) {
 		rightDistance = distance;
 		return this;
 	}
 	
+    /**
+     * Define a distância esquerda do campo.
+     * @param distance A distância esquerda desejada.
+     * @return O próprio objeto para implementar fluent interface.
+     */
 	public FormBoxInput setLeftDistance(int distance) {
 		leftDistance = distance;
 		return this;
 	}
 	
+    /**
+     * Define a distância lateral do campo.
+     * @param left A distância esquerda desejada.
+     * @param right A distância direita desejada.
+     * @return O próprio objeto para implementar fluent interface.
+     */
 	public FormBoxInput setLateralDistance(Integer left, Integer right) {
 		if(left != null) leftDistance = left;
 		if(right != null) rightDistance = right;
 		return this;
 	}
 	
+    /**
+     * Define a distância lateral do campo (mesma distância para esquerda e direita).
+     * @param distance A distância lateral desejada.
+     * @return O próprio objeto para implementar fluent interface.
+     */
 	public FormBoxInput setLateralDistance(int distance) {
 		return setLateralDistance(distance, distance);
 	}
 	
+    /**
+     * Define a distância do botão em relação ao input, caso seja mantido.
+     * @param distance A distância desejada do botão.
+     * @return O próprio objeto para implementar fluent interface.
+     */
 	public FormBoxInput setBtnDistance(int distance) {
 		btnDistance = distance;
 		return this;
 	}
 	
+    /**
+     * Define o peso do botão dentro do layout.
+     * @param value O peso do botão desejado.
+     * @return O próprio objeto para implementar fluent interface.
+     */
 	public FormBoxInput setBtnWgt(double value) {
 		btnWgt = value;
 		return this;
@@ -221,6 +281,9 @@ public class FormBoxInput extends GenericComponent {
 		return this;
 	}
 	
+	/**
+	 * Método que aplica a trava do campo.
+	 */
 	private void applyLock() {
         Color disabledColor = STD_STRONG_GRAY_COLOR;
 
@@ -250,6 +313,9 @@ public class FormBoxInput extends GenericComponent {
         }
     }
 	
+	/**
+	 * Método que tira a trava do campo.
+	 */
 	private void applyUnlock() {
 		try {
 			if(lockInput) {
@@ -271,10 +337,19 @@ public class FormBoxInput extends GenericComponent {
 		}
 	}
 	
+	/**
+	 * Método que indica se o objeto já foi inicializado. Usado para caso tenha sido inicializado e depois as configurações mudem, o objeto precise ser refeito.
+	 * @return
+	 */
 	private boolean hasInitiated() {
 		return initiated;
 	}
 	
+	
+    /**
+     * Define o campo como obrigatório.
+     * @return O próprio objeto para implementar fluent interface.
+     */
 	public FormBoxInput setRequired() {
 		required = true;
 		String holderLabel = this.label.getText();
@@ -282,6 +357,10 @@ public class FormBoxInput extends GenericComponent {
 		return this;
 	}
 	
+	/**
+	 * Indica se o campo é obrigatório
+	 * @return True se for obrigatório, false caso contrário.
+	 */
 	public boolean isRequired() {
 		return this.required;
 	}
@@ -322,6 +401,12 @@ public class FormBoxInput extends GenericComponent {
 		return this;
 	}
 	
+	/**
+	 * Define as fontes do FormBox caso seja um comboBox. 
+	 * @param selectedItem -> Fonte do item selecionado.
+	 * @param dropBoxItems -> Fonte dos itens da lista.
+	 * @return Retorna o próprio objeto para implementar fluent interface.
+	 */
 	public FormBoxInput setComboFont(Font selectedItem, Font dropBoxItems) {
 		try {
 			 //Personalizando a fonte no item selecionado
@@ -336,18 +421,28 @@ public class FormBoxInput extends GenericComponent {
 	                return this;
 	            }
 	        });
-		} catch (Exception e) {
-			//TODO: handle exception
-		}
+		} catch (Exception e) {}
 		
 		return this;
 	}
 	
+	/**
+	 * Define uma mesma fonte para o item selecionado e a lista de itens. 
+	 * @param font -> Fonte do item selecionado e da lista.
+	 * @return Retorna o próprio objeto para implementar fluent interface.
+	 */
 	public FormBoxInput setComboFont(Font font) {
 		return setComboFont(font, font);
 	}
 	
-	
+	/**
+	 * Define o formbox como um spinner.
+	 * @param initalValue - Valor inicial do spinner.
+	 * @param min - valor mínimo
+	 * @param max - valor máximo
+	 * @param step - número que será somado ou subtraído ao clicar para aumentar ou diminuir o valor atual.
+	 * @return Retorna o próprio objeto para implementar fluent interface.
+	 */
 	public FormBoxInput setSpinnerInput(int initalValue, int min, int max, int step) {
 		spinnerInput = new JSpinner();
 		spinnerInput.setEditor(new JSpinner.NumberEditor(spinnerInput, "00")); //Formato para dois dígitos
@@ -372,7 +467,7 @@ public class FormBoxInput extends GenericComponent {
 	/**
 	 * Adiciona um botão ao box input.
 	 * @param button - Objeto de StdButton para ser adicionado.
-	 * @param keepInput - valor booleano que mantém o input do usuário.
+	 * @param keepInput - valor booleano que mantém o input do usuário. True se o formbox precise ter um input + um botão ou false para ter apenas um botão.
 	 * @return Retorna o próprio objeto para implementar fluent interface.
 	 */
 	public FormBoxInput setButtonBox(StdButton button, boolean keepInput) {
@@ -391,6 +486,13 @@ public class FormBoxInput extends GenericComponent {
 		return this;
 	}
 	
+	/**
+	 * Método que define o formBox como um título ao invés de um input de usuário.
+	 * @param text -> Texto a ser exibido.
+	 * @param center -> Se o texto deve ser centralizado.
+	 * @param font -> Fonte do texto.
+	 * @return Retorna o próprio objeto para implementar fluent interface.
+	 */
 	public FormBoxInput setCentralTitle(String text, boolean center, Font font) {
 		try {
 			tfInput = null;
@@ -423,18 +525,35 @@ public class FormBoxInput extends GenericComponent {
 		return this;
 	}
 	
+	/**
+	 * Método para definir a label e a fonte.
+	 * @param text - Texto da label
+	 * @param font - Fonte da label
+	 * @return Retorna o próprio objeto para implementar fluent interface.
+	 */
 	public FormBoxInput setLbl(String text, Font font) {
 		label.setText(text);
 		label.setFont(font);
 		return this;
 	}
 	
+	/**
+	 * Método para definir a label e o tamanho da fonte, usando a fonte padrão.
+	 * @param text - Texto da label
+	 * @param size - Tamanho da fonte
+	 * @return Retorna o próprio objeto para implementar fluent interface.
+	 */
 	public FormBoxInput setLbl(String text, float size) {
 		label.setText(text);
 		label.setFont(label.getFont().deriveFont(size));
 		return this;
 	}
 	
+	/**
+	 * Método para definir a cor da label
+	 * @param color - cor da label.
+	 * @return Retorna o próprio objeto para implementar fluent interface.
+	 */
 	public FormBoxInput setLblColor(Color color) {
 		label.setForeground(color);
 		return this;
@@ -470,6 +589,12 @@ public class FormBoxInput extends GenericComponent {
 		return this;
 	}
 	
+	/**
+	 * Método que define uma máscara e sua condição de aplicação.
+	 * @param mask - String da máscara. Use # para definir caracteres curingas.
+	 * @param condition - Condição para que a máscara seja aplicada. 
+	 * @return
+	 */
 	public FormBoxInput setMask(String mask, Condition condition) {
 		try {
 			tfInput.setMask(mask, condition);
@@ -495,9 +620,6 @@ public class FormBoxInput extends GenericComponent {
                     spinnerInput.setValue(Integer.parseInt(text));
                 }
                 if(centralTitle != null) centralTitle.setText(text);
-                if(valueChangedListener != null) {
-                	notifyValueChanged(text);
-                }
                 // Adicionar notificação para cbInput também, se necessário
             } catch (Exception e) {
                 e.printStackTrace();
@@ -537,7 +659,10 @@ public class FormBoxInput extends GenericComponent {
         return this;
     }
 	
-	
+	/**
+	 * Método para definir a label de erro no preenchimento do campo.
+	 * @param text - Texto da label de erro
+	 */
 	public void setErrorLbl(String text) {
 		try {
 			errorLabel.setText(text);
@@ -604,7 +729,7 @@ public class FormBoxInput extends GenericComponent {
 	
 	/**
 	 * Método estático que valida se os box passados como parâmetros, em fields, estão sem erros de preenchimento.
-	 * @param fiels - varargs com FormBoxInput.
+	 * @param fields - varargs com FormBoxInput.
 	 * @return ArrayList de FormBoxInput, contendo os campos que estão incorretos.
 	 */
 	public static ArrayList<FormBoxInput> validateFields(FormBoxInput ...fields) {
@@ -618,16 +743,5 @@ public class FormBoxInput extends GenericComponent {
 		
 		return wrongFields;
 	}
-	
-	public FormBoxInput setValueChangedListener(ValueChangedListener listener) {
-        this.valueChangedListener = listener;
-        return this;
-    }
-	
-	private void notifyValueChanged(String newValue) {
-        if(valueChangedListener != null) {
-            valueChangedListener.valueChanged(newValue);
-        }
-    }
 		
 }

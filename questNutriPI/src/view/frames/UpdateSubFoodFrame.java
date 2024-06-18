@@ -7,15 +7,18 @@ import javax.swing.border.Border;
 import controller.entities.SubFoodController;
 import model.entities.SubFood;
 import utils.interfaces.GeneralVisualSettings;
+import utils.interfaces.IDoAction;
 import utils.view.LanguageUtil;
 import view.components.QuestNutriJOP;
 import view.components.buttons.StdButton;
 import view.components.generics.GenericJFrame;
 import view.components.generics.GenericJPanel;
-import view.components.utils.IDoAction;
 import view.pages.customer.diet.food.CurrentSelectedAlimentPanel;
 import view.pages.customer.diet.food.SelectNewAlimentPanel;
 
+/**
+ * Frame para atualização de informações de SubFoods.
+ */
 public class UpdateSubFoodFrame extends SubFrame implements GeneralVisualSettings {
 	private static final long serialVersionUID = 1L;
 	
@@ -28,6 +31,13 @@ public class UpdateSubFoodFrame extends SubFrame implements GeneralVisualSetting
 	
 	private IDoAction afterUpdate;
 
+    /**
+     * Construtor para inicializar o frame de atualização de SubFood.
+     * 
+     * @param callerFrame O frame que chamou este frame.
+     * @param subFood     SubFood a ser atualizada.
+     * @param afterUpdate A ação a ser executada após a atualização da SubFood.
+     */
 	public UpdateSubFoodFrame(GenericJFrame callerFrame, SubFood subFood, IDoAction afterUpdate) {
 		super(callerFrame, null);
 		this.subFood = subFood;
@@ -40,7 +50,9 @@ public class UpdateSubFoodFrame extends SubFrame implements GeneralVisualSetting
 		opened = this;
 	}
 	
-
+    /**
+     * Método para inicializar e configurar os componentes do frame.
+     */
 	private void initialize() {
 		GenericJPanel panel = new GenericJPanel().ltGridBag();
 		left = new CurrentSelectedAlimentPanel(this, subFood.aliment, subFood.quantity); 
@@ -59,6 +71,11 @@ public class UpdateSubFoodFrame extends SubFrame implements GeneralVisualSetting
 		this.setContentPane(panel);
 	}
 	
+    /**
+     * Método para criar e configurar o botão de atualização da SubFood.
+     * 
+     * @return O botão configurado para salvar a SubFood.
+     */
 	private StdButton updateBtn() {
 		StdButton btn = StdButton.stdBtnConfig(new LanguageUtil("Salvar como Novo Alimento", "Save as New Aliment").get());
 		btn.setAction(() -> {

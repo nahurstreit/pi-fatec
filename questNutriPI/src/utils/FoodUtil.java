@@ -6,7 +6,7 @@ import model.entities.Meal;
 import model.entities.SubFood;
 
 /**
- * classe que fornece métodos para calcular o total de calorias de uma refeição.
+ * Classe utilitária que fornece métodos de manipulação e cálculos relacionados à entidade Food.
  */
 public class FoodUtil {
 
@@ -42,6 +42,11 @@ public class FoodUtil {
 		return totalKcal;
 	}
 	
+	/**
+	 * Método que calcula a quantidade de kcal de uma dada food.
+	 * @param food objeto food a ter suas calorias calculadas.
+	 * @return <b>double</b> com o total de calorias.
+	 */
 	public static double calculateFoodKcal(Food food) {
 		double totalKcal = 0.0;
 		
@@ -62,6 +67,14 @@ public class FoodUtil {
 		return totalKcal;
 	}
 	
+	/**
+	 * Método que calcula o total de macronutrientes de uma Meal.
+	 * @param meal objeto meal a ter seus macronutrientes calculados.
+	 * @return retorna um array cuja ordem é:
+	 * <br>[0] -> Carboidratos
+	 * <br>[1] -> Proteínas
+	 * <br>[2] -> Gorduras
+	 */
 	public static double[] calculateMacronutrients(Meal meal) {
         double totalCarb = 0.0;
         double totalProtein = 0.0;
@@ -98,10 +111,23 @@ public class FoodUtil {
         return new double[] { totalCarb, totalProtein, totalFat };
     }
 	
+	/**
+	 * Método 
+	 * @param meal
+	 * @return
+	 */
 	public static Aliment calculateTotalNutrients(Meal meal) {
         return calculateTotalNutrients(meal, null, null);
     }
 
+	/**
+	 * Método que calcula o total de nutrientes gerais de uma dada meal e substitui uma das foods indicadas por uma subfood.
+	 * @param meal - refeição a ter seus nutrientes calculados
+	 * @param blockedFood - food a ser desconsiderada
+	 * @param replacedFood - subfood a ser colocada no lugar da food.
+	 * @return Retorna um objeto Aliment cujas propriedades representam a somatória total da refeição. Isso foi feito
+	 * para facilitar os cálculos e acesso aos nutrientes depois que o resultado é calculado.
+	 */
     public static Aliment calculateTotalNutrients(Meal meal, Food blockedFood, SubFood replacedFood) {
         double totalCarb = 0.0;
         double totalProtein = 0.0;
@@ -278,6 +304,13 @@ public class FoodUtil {
         return totalAliment;
     }
 	
+    
+    /**
+     * Método para formatar uma propriedade de food em uma visualização mais agradável, limitando a quantidade de casas em apenas 2.
+     * @param str - String a ser formatada
+     * @param point - vararg para definir a quantidade de casas decimais  (padrão = 2);
+     * @return String formatada com a quantidade de casas decimais informada.
+     */
 	public static String formatNumber(String str, int ...point) {
 		if(str == null) return "";
 		int pointValue = 2;

@@ -4,17 +4,20 @@ import java.util.List;
 
 import model.entities.Weight;
 
+/**
+ * Classe abstrata que define operações de acesso a dados para a entidade Weight.
+ * Implementa operações genéricas definidas em GenericDAO para Weight.
+ */
 public abstract class WeightDAO extends GenericDAO<Weight> {
 	
 	 /**
 	   * Método que encontra todos os registros de Weight e retorna
 	   * uma lista de todos os Weights que correspondem aos parâmetros fornecidos.
 	   *
-	   * @param Parâmetros de filtro opcionais para a consulta
+	   * @param params Parâmetros de filtro opcionais para a consulta
 	   * devem ser escritos de acordo com a declaração das classes
 	   * de entidade.
 	   * 
-	   * @param params Parâmetros de filtro opcionais para a consulta.
 	   * @return Lista de Weights que correspondem aos parâmetros fornecidos.
 	   */
 	public static List<Weight> findAll(String... params) {

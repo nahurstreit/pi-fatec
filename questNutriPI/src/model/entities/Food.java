@@ -16,42 +16,67 @@ import jakarta.persistence.Table;
 import model.dao.FoodDAO;
 import utils.interfaces.ICopy;
 
+/**
+ * Entidade que representa a associação entre uma entidade Meal e uma entidade Aliment.
+ * Extende as funcionalidades básicas de persistência da classe FoodDAO e implementa a interface ICopy.
+ */
 @Entity
 @Table(name = "Foods")
-public class Food extends FoodDAO implements ICopy<Food> {	
-	 @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    @Column(name = "idFood")
-	    public Integer idFood;
+public class Food extends FoodDAO implements ICopy<Food> {
+	
+	/**
+	 * Id associado a esse objeto no banco de dados
+	 */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idFood")
+    public Integer idFood;
 
-	    @ManyToOne
-	    @JoinColumn(name = "idMeal")
-	    public Meal meal;
+    /**
+     * Refeição à qual o alimento estará associado.
+     */
+    @ManyToOne
+    @JoinColumn(name = "idMeal")
+    public Meal meal;
 
-	    @ManyToOne
-	    @JoinColumn(name = "idAliment")
-	    public Aliment aliment;
+    /**
+     * Alimento básico associado à food.
+     */
+    @ManyToOne
+    @JoinColumn(name = "idAliment")
+    public Aliment aliment;
 
-	    @Column(name = "food_quantity")
-	    public Double quantity;
+    /**
+     * Quantidade do alimento.
+     */
+    @Column(name = "food_quantity")
+    public Double quantity;
 
-	    @Column(name = "food_unityQt")
-	    public String unityQt;
-	    
-		@Column(name = "food_createdAt")
-		private LocalDateTime createdAt;
+    /**
+     * Unidade de medida do alimento.
+     */
+    @Column(name = "food_unityQt")
+    public String unityQt;
 
-		@Column(name = "food_deactivatedAt")
-		private LocalDateTime deactivatedAt;
+    /**
+     * Data e hora de criação da food.
+     */
+    @Column(name = "food_createdAt")
+    private LocalDateTime createdAt;
+
+    /**
+     * Data e hora de desativação da food.
+     */
+    @Column(name = "food_deactivatedAt")
+    private LocalDateTime deactivatedAt;
 
 	/**
+	 * Construtor para criar uma instância de Food com parâmetros.
 	 * 
-	 * @param idFood Recebe o Identificador(Id) da Comida
-	 * @param meal Recebe uma Refeição (da Classe Meal) a qual essa Comida faz parte
-	 * @param aliment Recebe um Alimento (da Classe Aliment) que forma essa Comida
-	 * @param quantity Recebe a quantidade (kg/ml) dessa Comida
-	 * @param unityQt Recebe a unidade dessa Comida
-	 * @param obs Recebe as observações/anotações dessa Comida
+	 * @param meal     Recebe uma Refeição (da Classe Meal) a qual essa Comida faz parte.
+	 * @param aliment  Recebe um Alimento (da Classe Aliment) que forma essa Comida.
+	 * @param quantity Recebe a quantidade (kg/ml) dessa Comida.
+	 * @param unityQt  Recebe a unidade dessa Comida.
 	 */
     public Food(Meal meal, Aliment aliment, Double quantity, String unityQt) {
     	super();
@@ -61,19 +86,34 @@ public class Food extends FoodDAO implements ICopy<Food> {
         this.unityQt = unityQt;
     }
     
+	/**
+	 * Construtor padrão.
+	 */
     public Food() {
     	this(null, null, null, null);
     }
     
+	/**
+	 * Obtém o id deste objeto no banco de dados
+	 * @return integer -> id no banco de dados
+	 */
     @Override
     public Integer getId() {
     	return this.idFood;
     }
     
+    /**
+     * Obtém a data e hora de criação do registro
+     * @return LocalDateTime -> data e hora de criação
+     */
     public LocalDateTime getCreationDateTime() {
     	return this.createdAt;
     }
     
+    /**
+     * Obtém a data de criação do registro
+     * @return LocalDate -> data de criação
+     */
     public LocalDate getCreationDate() {
     	return this.createdAt.toLocalDate();
     }
@@ -142,6 +182,10 @@ public class Food extends FoodDAO implements ICopy<Food> {
     	return SubFood.findAllByFoodPK(this.idFood);
     }
     
+    /**
+     * Método para criar uma subfood associada a essa food.
+     * @param sub -> SubFood a ser criada.
+     */
     public void createSubFood(SubFood sub) {
     	if(this.meal != null) {
     		sub.setFood(this);
@@ -166,12 +210,22 @@ public class Food extends FoodDAO implements ICopy<Food> {
 		return this.save();
 	}
 	
+	/**
+	 * Método para criar uma nova instância com o mesmo estado de outra instância.
+	 * @param mold - objeto que servirá como molde do estado
+	 * @return Um novo objeto do tipo Food.
+	 */
     public static Food createCopyFrom(Food mold) {
     	Food copy = new Food();
     	copy.copyFrom(mold);
     	return copy;
     }
     
+    /**
+     * Copia o estado de um objeto Food para este objeto.
+     * @param originObject -> objeto do tipo food que tem as informações de origem.
+     * @return o mesmo objeto para implementar fluent interface.
+     */
     @Override
     public Food copyFrom(Food originObject) {
     	try {
@@ -191,6 +245,13 @@ public class Food extends FoodDAO implements ICopy<Food> {
     	return this;
     }
     
+    /**
+     * Método que copia o estado deste objeto para outro.
+     * @param destinyObject -> objeto que receberá o estado deste objeto.
+	 * @return <b>boolean</b> - O resultado da operação.
+	 * <br>Se <b>true</b> - O objeto foi copiado.
+	 * <br>Se <b>false</b> - O objeto não pôde ser copiado.
+     */
     @Override
     public boolean copyMeTo(Food destinyObject) {
     	boolean res = true;
@@ -217,8 +278,10 @@ public class Food extends FoodDAO implements ICopy<Food> {
 	 * @param origin - Objeto Meal cujos objetos de Food associados devem ser copiados para destiny.
 	 * @param destiny - Objeto Meal que receberá copias de objetos de Food associados ao origin.
 	 * @return <b>boolean</b> - O resultado da operação.
-	 * <li>Se <b>true</b> - Todas as foods foram copiadas.
+	 * <ul>
+	 * <li>Se <b>true</b> - Todas as subfoods foram copiadas.
 	 * <li>Se <b>false</b> - Houve algum erro e a cópia não foi bem sucedida.
+	 * </ul>
 	 */
 	private boolean copySubFoods(Food origin, Food destiny) {
 		boolean res = true;
@@ -244,6 +307,10 @@ public class Food extends FoodDAO implements ICopy<Food> {
 		return res;
 	}
 
+	/**
+	 * Representação como string do estado desse objeto.
+	 * @return String -> string com o estado do objeto.
+	 */
     @Override
     public String toString() {
     	return "Food: {"

@@ -5,11 +5,19 @@ import view.QuestNutri;
 import view.components.generics.GenericJPanel;
 import view.pages.customer.profile.NewCustomerForm;
 
+/**
+ * Frame para cadastro de novo cliente.
+ * Extende SubFrameFromMain para herdar funcionalidades comuns de frames secundários.
+ */
 public class NewCustomerFrame extends SubFrameFromMain {
 	private static final long serialVersionUID = 1L;
 
 	private GenericJPanel mainPanel;
 	
+    /**
+     * Método construtor para NewCustomerFrame.
+     * @param onCreate Runnable a ser executado ao criar um novo cliente.
+     */
 	public NewCustomerFrame(Runnable onCreate) {
 		super();
 		int x = QuestNutri.app.getX() + QuestNutri.app.getWidth()/5;

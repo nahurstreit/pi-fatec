@@ -11,7 +11,7 @@ import view.QuestNutri;
 /**
  * Classe de utilidade geral na camada de View para manipulação de imagens
  */
-public class ImagesUtil {
+public abstract class ImagesUtil {
 	/**
 	 * Cria um JSVGCanvas que pode ser interpretado como Icone adicionáveis à JPanels a partir de uma imagem SVG.
 	 * @param assetName -> (String) nome do arquivo dentro da pasta "/view/assets/" com extensão .svg

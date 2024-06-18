@@ -2,10 +2,10 @@ package view.frames;
 
 import controller.entities.SubFoodController;
 import model.entities.SubFood;
+import utils.interfaces.IDoAction;
 import utils.view.LanguageUtil;
 import view.components.buttons.StdButton;
 import view.components.generics.GenericJFrame;
-import view.components.utils.IDoAction;
 import view.pages.customer.diet.food.SelectNewAlimentPanel;
 
 public class NewSubFoodFrame extends SubFrame {

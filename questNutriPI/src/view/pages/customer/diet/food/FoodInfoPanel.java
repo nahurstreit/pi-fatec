@@ -13,6 +13,7 @@ import model.entities.Food;
 import model.entities.SubFood;
 import utils.FoodUtil;
 import utils.interfaces.ActionFunction;
+import utils.interfaces.IDoAction;
 import utils.validations.Validate;
 import utils.view.LanguageUtil;
 import view.components.QuestNutriJOP;
@@ -22,10 +23,13 @@ import view.components.forms.FormSection;
 import view.components.generics.GenericJFrame;
 import view.components.generics.GenericJPanel;
 import view.components.tables.AlimentNutritionalTable;
-import view.components.utils.IDoAction;
 import view.pages.customer.diet.food.subfood.DietSubFoodPanel;
 import view.pages.generics.GenericPage;
 
+/**
+ * Painel que exibe informações detalhadas de uma Food, incluindo seu alimento base,
+ * informações nutricionais, opções de alimentos substitutos e funcionalidades de edição e exclusão.
+ */
 public class FoodInfoPanel extends GenericPage {
     private static final long serialVersionUID = 1L;
     
@@ -59,6 +63,15 @@ public class FoodInfoPanel extends GenericPage {
     private GenericJPanel holderNoSub = new GenericJPanel().ltGridBag();
     private JLabel lblNoSubFoodYet;
 
+    /**
+     * Construtor para inicializar o FoodInfoPanel com o painel proprietário, o frame que chamou, o objeto Food
+     * e uma ação a ser executada após a atualização.
+     *
+     * @param ownerPanel   Painel genérico proprietário que contém este painel.
+     * @param callerFrame  Frame genérico chamador que contém este painel.
+     * @param food         Objeto Food que representa o alimento exibido neste painel.
+     * @param afterUpdate  Ação a ser executada após a atualização do alimento.
+     */
     public FoodInfoPanel(GenericJPanel ownerPanel, GenericJFrame callerFrame, Food food, IDoAction afterUpdate) {
         super(ownerPanel);
         setCallerFrame(callerFrame);
@@ -94,7 +107,7 @@ public class FoodInfoPanel extends GenericPage {
 	        										  			 				, false);
 	        
 	        deleteFoodBtn = new FormBoxInput(this).setLbl("")
-					  						   	  .setButtonBox(StdButton.stdBtnConfig(new LanguageUtil("Deletar", "Delete").get())
+					  						   	  .setButtonBox(StdButton.stdBtnConfig(new LanguageUtil("Excluir", "Delete").get())
 					  						   			  				 .setAction(() -> {
 					  						   			  					 if(FoodController.deleteFood(food)) {
 					  						   			  						 afterUpdate.execute();
@@ -164,7 +177,7 @@ public class FoodInfoPanel extends GenericPage {
 	        upperLblCurrentViewing.setFont(STD_REGULAR_FONT.deriveFont(10f));
 	        subFoodInfo.add(upperLblCurrentViewing, subFoodInfo.gbc.fill("HORIZONTAL").grid(0).wgt(1.0, 0).insets(20, 20, 0, 20));
 	        
-	        currentViewingSubFood = new JLabel(new LanguageUtil("Nenhum.", "None").get());
+	        currentViewingSubFood = new JLabel(new LanguageUtil("Nenhum.", "None.").get());
 	        currentViewingSubFood.setFont(STD_BOLD_FONT.deriveFont(13f));
 	        subFoodInfo.add(currentViewingSubFood, subFoodInfo.gbc.fill("HORIZONTAL").grid(0, 1).wgt(1.0, 0).insets(0, 20, 0, 20));
 	        
@@ -238,10 +251,16 @@ public class FoodInfoPanel extends GenericPage {
         }
     }
     
+    /**
+     * Método privado para atualizar a tabela de informações nutricionais do alimento atual.
+     */
     private void updateCurrentFoodInfoTable() {
         currentTable.setModel(new AlimentNutritionalTable(food.aliment, food.quantity, FoodUtil.calculateTotalNutrients(food.meal)));
     }
     
+    /**
+     * Método privado para escolher um novo alimento.
+     */
     private void chooseAnotherFood() {
         FoodController.openFoodUpdate(getCallerFrame(), food, () -> {
         	currentAlimentTitle.setValue(this.food.aliment.name);
@@ -250,6 +269,9 @@ public class FoodInfoPanel extends GenericPage {
         });
     }
     
+    /**
+     * Método privado para salvar as informações do alimento.
+     */
     private void saveFood() {
     	if(Validate.formFields(foodQuantityInput)) {
     		if(FoodController.updateFoodInfo(food, foodUnityQtInput.getValue(), foodQuantityInput.getValue())) {
@@ -262,6 +284,11 @@ public class FoodInfoPanel extends GenericPage {
     	}
     }
     
+    /**
+     * Método para obter o ID da subFood que está sendo visualizada.
+     *
+     * @return O ID da subFood, ou 0 se não houver subFood selecionada.
+     */
     public int getLookingId() {
     	if(lookingSubFood != null) {
     		return lookingSubFood.idSubFood;
@@ -269,6 +296,9 @@ public class FoodInfoPanel extends GenericPage {
     	return 0;
     }
     
+    /**
+     * Método para limpar a tabela de informações nutricionais da subFood.
+     */
     public void emptySubFoodTable() {
 		subFoodTable.setModel(new DefaultTableModel());
     }

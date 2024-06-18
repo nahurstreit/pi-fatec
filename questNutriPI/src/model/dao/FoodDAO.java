@@ -4,13 +4,17 @@ import java.util.List;
 
 import model.entities.Food;
 
+/**
+ * Classe abstrata que define operações de acesso a dados para a entidade Food.
+ * Implementa operações genéricas definidas em GenericDAO para Food.
+ */
 public abstract class FoodDAO extends GenericDAO<Food> {
 
 	/**
 	 * Método que encontra todos os registros de Food e retorna uma lista de todas
 	 * as Foods que correspondem aos parâmetros fornecidos
 	 *
-	 * @param Parâmetros de filtro opcionais para a consulta devem ser escritos de
+	 * @param params Parâmetros de filtro opcionais para a consulta devem ser escritos de
 	 * acordo com a declaração das classes de entidade.
 	 * 
 	 * @return Lista de Foods que correspondem aos parâmetros fornecidos.
@@ -39,6 +43,11 @@ public abstract class FoodDAO extends GenericDAO<Food> {
 		return GenericDAO.findByPK(Food.class, id);
 	}
 	
+	/**
+	 * Método para encontrar a última Food salva.
+	 * 
+	 * @return Objeto Food da última Food salva.
+	 */
 	public static Food findLast() {
 		return GenericDAO.findLast(Food.class, " deactivatedAt IS NULL ");
 	}

@@ -21,6 +21,7 @@ import view.components.inputs.HintPasswordInputField;
 
 /**
  * Classe que define o painel de Login do sistema.
+ * Este painel contém campos para inserção de usuário e senha, além de um botão para realizar o login.
  */
 public class LoginPanel extends GenericJPanel {
 	private static final long serialVersionUID = 1L;
@@ -31,6 +32,10 @@ public class LoginPanel extends GenericJPanel {
 	private HintPasswordInputField password;
 	private StdButton button;
 	
+	/**
+	 * Construtor da classe LoginPanel.
+	 * Configura o layout GridBagLayout para o painel principal e adiciona os componentes de login.
+	 */
 	public LoginPanel() {
 		this.ltGridBag();
 		gbc.fill = GridBagConstraints.BOTH;
@@ -64,9 +69,10 @@ public class LoginPanel extends GenericJPanel {
 	}
 	
 	/**
-	 * Override do método de pintura do JPanel para colocar uma imagem no lugar de uma cor sólida.
-	 * 	@Override
+	 * Override do método paintComponent para desenhar uma imagem de fundo no painel de login.
+	 * @param g Objeto Graphics usado para desenhar componentes no painel.
 	 */
+	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Image bgImg = ImagesUtil.sizedImg("LoginPageBG", QuestNutri.app.getWidth(), QuestNutri.app.getHeight()).getImage();
@@ -75,9 +81,11 @@ public class LoginPanel extends GenericJPanel {
 	
 	/**
 	 * Adiciona os componentes de Input de login ao painel indicado.
-	 * @param panel -> JPanel que receberá os componentes de Login. Serão adicionados:
+	 * @param panel - JPanel que receberá os componentes de Login. Serão adicionados:
+	 * <ul>
 	 * <li><b>HintInputField</b> - Caixa de Texto para username</li> 
 	 * <li><b>HintPasswordInputField</b> - Caixa de Texto com dica de preenchimento de senha</li>
+	 * </ul>
 	 * 
 	 * @see view.components.inputs.HintInputField
 	 */
@@ -127,10 +135,8 @@ public class LoginPanel extends GenericJPanel {
 	}
 	
 	/**
-	 * Adiciona o componente de Botão de login ao painel indicado.
-	 * @param panel -> JPanel que receberá o botão de Login. Será adicionado:
-	 * <li><b>StdButton</b> - Botão para executar a função QuestNutri.doLogin()</li>
-	 * @see QuestNutri#doLogin()
+	 * Método privado para adicionar o botão de login ao painel indicado.
+	 * @param panel JPanel que receberá o botão de login.
 	 */
 	private void placeBtn(JPanel panel) {
 		button = new StdButton(new LanguageUtil("Entrar", "Login").get(), () -> QuestNutri.doLogin(tfUser.getText(), password.getRealText()));
@@ -142,6 +148,9 @@ public class LoginPanel extends GenericJPanel {
         panel.add(button, gbc.insets(0,0,20,0).yP());
 	}
 	
+	/**
+	 * Método para adicionar o logotipo da aplicação ao painel de logotipo.
+	 */
 	public void placeLogo() {
 		logoPanel.add(QuestNutri.loadSVG());
 		this.revalidate();
