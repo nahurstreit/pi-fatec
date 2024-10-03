@@ -1,0 +1,25 @@
+{
+  "name": "quest-nutri",
+  "version": "1.0.0",
+  "scripts": {
+    "install": "npm run install:backend && npm run install:frontend",
+    "install:backend": "cd backend && npm install",
+    "install:frontend": "cd frontend && npm install",
+    "start": "npm run start:backend && npm run start:frontend",
+    "start:backend": "cd backend && npm start",
+    "start:frontend": "cd frontend && npm start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "sequelize": "^6.33.0",
+    "sqlite3": "^5.1.6",
+    "swagger-ui-express": "^5.0.0",
+    "validate": "^5.2.0"
+  }
+}
