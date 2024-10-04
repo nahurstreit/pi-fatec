@@ -9,7 +9,7 @@ export default async (): Promise<boolean> => {
         await mongoose.connect(uri)
         console.log(`Connection stablished`)
         return true
-    } catch(err) {
+    } catch (err) {
         console.log(err)
         return false
     }
