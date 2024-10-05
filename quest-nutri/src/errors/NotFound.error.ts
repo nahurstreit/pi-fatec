@@ -1,7 +1,7 @@
-import BaseError from "./BaseError.error"
+import BaseError from './BaseError.error'
 
 export default class NotFound extends BaseError {
-    constructor(message:string=`Page not found`) {
-        super(message, 404)
-    }
+	constructor(message:string=`Page not found`) {
+		super(message, 404)
+	}
 }

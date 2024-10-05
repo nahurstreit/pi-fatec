@@ -1,10 +1,13 @@
 import { Router } from 'express'
 import patientRoutes from './patients'
 import nutritionistRoutes from './nutritionists'
+import authRoutes from './auth'
+import { authNutritionist } from '../middlewares/auth/auth.middleware'
 
 const routes = Router()
+routes.use('/auth', authRoutes)
 routes.use('/patient', patientRoutes)
-routes.use('/nutritionist', nutritionistRoutes)
+routes.use('/nutritionist', authNutritionist, nutritionistRoutes)
 
 //routes.use('/docs', swagger)
 

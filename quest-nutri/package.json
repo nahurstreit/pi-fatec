@@ -5,7 +5,9 @@
   "scripts": {
     "start": "node dist/server.js",
     "build": "tsc",
-    "dev": "nodemon --exec ts-node-dev src/server.ts"
+    "dev": "ts-node-dev src/server.ts",
+    "lint": "eslint . --fix",
+    "cycle:diet": "ts-node-dev src/scripts/resetPatientDailyDiet.ts"
   },
   "keywords": [],
   "author": "",
@@ -13,15 +15,22 @@
   "description": "",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/mongoose": "^5.11.96",
     "@types/node": "^22.7.4",
+    "@typescript-eslint/eslint-plugin": "^8.8.0",
+    "@typescript-eslint/parser": "^8.8.0",
+    "eslint": "^9.12.0",
     "nodemon": "^3.1.7",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.6.2"

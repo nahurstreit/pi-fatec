@@ -1,15 +1,13 @@
 import { Router } from 'express'
 import patientController from '../../controllers/patient.controller'
+import { validateDto } from '../../middlewares/validate/validateDto.middleware'
+import { UpdatePatientDto } from '../../models/patient/dto/update.patient.dto'
+import { authAndInjectPatient } from '../../middlewares/auth/auth.middleware'
 
-const patientRoutes = Router()
+const patientRoutes = Router({mergeParams: true})
 
-patientRoutes.route('/')
-.get(patientController.getAll)
-.post(patientController.create)
-
-patientRoutes.route('/:id')
-.get(patientController.getById)
-.patch(patientController.updateById)
-.delete(patientController.deleteById)
+patientRoutes.route('/').all(authAndInjectPatient)
+	.get(patientController.getById)
+	.patch(validateDto(UpdatePatientDto) ,patientController.updateById)
 
 export default patientRoutes
