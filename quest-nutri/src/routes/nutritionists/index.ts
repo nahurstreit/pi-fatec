@@ -5,21 +5,22 @@ import { validateDto } from '../../middlewares/validate/validateDto.middleware'
 import { CreatePatientDto } from '../../models/patient/dto/create.patient.dto'
 import { UpdatePatientDto } from '../../models/patient/dto/update.patient.dto'
 import dietRoutes from '../patients/diet/diet.routes'
+import fctx from '../../controllers/findContext.controller'
 
 const nutritionistRoutes = Router()
 
-nutritionistRoutes.route('/')
+nutritionistRoutes.route('/').all(fctx.findNutritionist)
 	.get(nutritionistController.getById)
 
-nutritionistRoutes.route('/patient')
+nutritionistRoutes.route('/patient').all(fctx.findNutritionist)
 	.get(patientController.getAll)
 	.post(validateDto(CreatePatientDto), patientController.create)
 
-nutritionistRoutes.route('/patient/:patientId')
-	.get(patientController.getById)
+nutritionistRoutes.route('/patient/:patientId').all(fctx.findNutritionist, fctx.injectPatient, fctx.findPatient)
+	.get(patientController.getPatient)
 	.patch(validateDto(UpdatePatientDto), patientController.updateById)
 	.delete(patientController.deleteById)
 
-nutritionistRoutes.use('/patient/:patientId/diet', dietRoutes)
+nutritionistRoutes.use('/patient/:patientId/diet', fctx.injectPatient, dietRoutes)
 
 export default nutritionistRoutes

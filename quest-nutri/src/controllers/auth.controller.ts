@@ -8,6 +8,7 @@ import Unauthorized from '../errors/Unauthorized.error'
 import patientService from '../services/patient.service'
 import ShouldNeverHappen from '../errors/ShouldNeverHappen.error'
 import { generatePasswordResetToken } from '../utils/password.reset.util'
+import adminService from '../services/admin.service'
 
 class AuthController {
 	async register(req: Request, res: Response, next: NextFunction): Promise<void | any> {
@@ -17,21 +18,6 @@ class AuthController {
 			}
 			const nutritionist = await nutritionistService.create(req.body)
 			return res.status(200).json(nutritionist)
-		} catch (error) {
-			next(error)
-		}
-	}
-
-	async loginUser(service: any, email: string, password: string, userType: 'nutritionist' | 'patient', next: NextFunction): Promise<string | any> {
-		try {
-			const user = await service.findByEmail(email)
-			if(!user) throw new NotFound(`${userType.charAt(0).toUpperCase() + userType.slice(1)} not found`)
-
-			if(!bcrypt.compareSync(password, user.password)) throw new Unauthorized('Invalid password')
-            
-			const payload = { [`${userType}Id`]: user._id, role: userType }
-			const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1h' })
-			return token
 		} catch (error) {
 			next(error)
 		}
@@ -92,6 +78,20 @@ class AuthController {
 			if(!patient) throw new NotFound('E-mail not found')
 			if(!bcrypt.compareSync(password, patient.password)) throw new Unauthorized('Invalid password')
 			const payload = { patientId: patient._id, role: 'patient' }
+			const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1h' })
+			return res.status(200).json({token})
+		} catch (error) {
+			next(error)
+		}
+	}
+
+	async adminLogin(req: Request, res: Response, next: NextFunction): Promise<void | any> {
+		try {
+			const { email, password } = req.body
+			const admin = await adminService.findByEmail(email)
+			if(!admin) throw new NotFound('E-mail not found')
+			if(!bcrypt.compareSync(password, admin.password)) throw new Unauthorized('Invalid password')
+			const payload = { adminId: admin._id, role: 'admin' }
 			const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1h' })
 			return res.status(200).json({token})
 		} catch (error) {

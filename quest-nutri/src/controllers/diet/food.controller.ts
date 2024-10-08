@@ -1,9 +1,9 @@
 import { NextFunction, Response } from 'express'
-import { DietContextRequest } from '../findContext.controller'
+import { ContextRequest } from '../findContext.controller'
 import ShouldNeverHappen from '../../errors/ShouldNeverHappen.error'
 
 class FoodController {
-	async getAllFoods(req: DietContextRequest, res: Response, next: NextFunction): Promise<void | any> {
+	async getAllFoods(req: ContextRequest, res: Response, next: NextFunction): Promise<void | any> {
 		try {
 			return res.status(200).json(req.meal?.foods)
 		} catch (error) {
@@ -11,7 +11,7 @@ class FoodController {
 		}
 	}
 
-	async getFoodById(req: DietContextRequest, res: Response, next: NextFunction): Promise<void | any> {
+	async getFoodById(req: ContextRequest, res: Response, next: NextFunction): Promise<void | any> {
 		try {
 			return res.status(200).json(req.food)
 		} catch (error) {
@@ -20,7 +20,7 @@ class FoodController {
 	}
 
 
-	async createFood(req: DietContextRequest, res: Response, next: NextFunction): Promise<void | any> {
+	async createFood(req: ContextRequest, res: Response, next: NextFunction): Promise<void | any> {
 		try {
 			req.meal?.foods?.push(req.body)
 			await req.patient?.save()
@@ -31,7 +31,7 @@ class FoodController {
 	}
 
 	// Atualizar um alimento específico
-	async updateFood(req: DietContextRequest, res: Response, next: NextFunction): Promise<void | any> {
+	async updateFood(req: ContextRequest, res: Response, next: NextFunction): Promise<void | any> {
 		try {
 			if(!req.food) throw new ShouldNeverHappen('Food context not found')
 
@@ -48,7 +48,7 @@ class FoodController {
 		}
 	}
 
-	async deleteFood(req: DietContextRequest, res: Response, next: NextFunction): Promise<void | any> {
+	async deleteFood(req: ContextRequest, res: Response, next: NextFunction): Promise<void | any> {
 		try {
 			if (!req.food) throw new ShouldNeverHappen('Food context not found')
 

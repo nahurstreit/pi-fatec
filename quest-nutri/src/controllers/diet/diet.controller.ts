@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
-import { DietContextRequest } from '../findContext.controller'
+import { ContextRequest } from '../findContext.controller'
 import ShouldNeverHappen from '../../errors/ShouldNeverHappen.error'
 
 class DietController {
-	async getAllDiets(req: DietContextRequest, res: Response, next: NextFunction): Promise<void | any> {
+	async getAllDiets(req: ContextRequest, res: Response, next: NextFunction): Promise<void | any> {
 		try {
 			return res.status(200).json(req.patient?.diets)
 		} catch (error) {
@@ -11,7 +11,7 @@ class DietController {
 		}
 	}
 
-	async getDietById(req: DietContextRequest, res: Response, next: NextFunction): Promise<void | any> {
+	async getDietById(req: ContextRequest, res: Response, next: NextFunction): Promise<void | any> {
 		try {
 			return res.status(200).json(req.diet)
 		} catch (error) {
@@ -19,7 +19,7 @@ class DietController {
 		}
 	}
 
-	async createDiet(req: DietContextRequest, res: Response, next: NextFunction): Promise<void | any> {
+	async createDiet(req: ContextRequest, res: Response, next: NextFunction): Promise<void | any> {
 		try {
 			req.patient?.diets?.push(req.body)
 			return res.status(201).json(await req.patient?.save())
@@ -28,7 +28,7 @@ class DietController {
 		}
 	}
 
-	async updateDiet(req: DietContextRequest, res: Response, next: NextFunction): Promise<void | any> {
+	async updateDiet(req: ContextRequest, res: Response, next: NextFunction): Promise<void | any> {
 		try {	
 			req.diet!.name = req.body.name || req.diet!.name
 			req.diet!.meals = req.body.meals || req.diet!.meals
@@ -41,7 +41,7 @@ class DietController {
 		}
 	}
 
-	async deleteDiet(req: DietContextRequest, res: Response, next: NextFunction): Promise<void | any> {
+	async deleteDiet(req: ContextRequest, res: Response, next: NextFunction): Promise<void | any> {
 		try {	
 			req.patient!.diets = req.patient!.diets?.filter(diet => diet._id !== req.diet!._id)
 	
@@ -53,7 +53,7 @@ class DietController {
 		}
 	}
 
-	async createMeal(req: DietContextRequest, res: Response, next: NextFunction): Promise<void | any> {
+	async createMeal(req: ContextRequest, res: Response, next: NextFunction): Promise<void | any> {
 		try {
 			req.diet?.meals?.push(req.body)
 			await req.patient?.save()

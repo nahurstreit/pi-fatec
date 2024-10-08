@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import findContextController from '../../../controllers/findContext.controller'
+import fctx from '../../../controllers/findContext.controller'
 import dietController from '../../../controllers/diet/diet.controller'
 import mealController from '../../../controllers/diet/meal.controller'
 import foodController from '../../../controllers/diet/food.controller'
@@ -12,31 +12,29 @@ import { UpdateFoodDto } from '../../../models/patient/diet/food/dto/update.food
 
 const dietRoutes = Router({mergeParams: true})
 
-const fcx = findContextController
-
-dietRoutes.route('/').all(fcx.findPatient)
+dietRoutes.route('/').all(fctx.findPatient)
 	.get(dietController.getAllDiets)
 	.post(validateDto(DietDto), dietController.createDiet)
 
-dietRoutes.route('/:dietId').all(fcx.findPatient, fcx.findDiet)
+dietRoutes.route('/:dietId').all(fctx.findPatient, fctx.findDiet)
 	.get(dietController.getDietById)
 	.patch(validateDto(DietDto), dietController.updateDiet)
 	.delete(dietController.deleteDiet)
 
-dietRoutes.route('/:dietId/meal').all(fcx.findPatient, fcx.findDiet)
+dietRoutes.route('/:dietId/meal').all(fctx.findPatient, fctx.findDiet)
 	.get(mealController.getAllMeals)
 	.post(validateDto(CreateMealDto),mealController.createMeal)
 
-dietRoutes.route('/:dietId/meal/:mealId').all(fcx.findPatient, fcx.findDiet, fcx.findMeal)
+dietRoutes.route('/:dietId/meal/:mealId').all(fctx.findPatient, fctx.findDiet, fctx.findMeal)
 	.get(mealController.getMealById)
 	.patch(validateDto(UpdateMealDto), mealController.updateMeal)
 	.delete(mealController.deleteMeal)
 
-dietRoutes.route('/:dietId/meal/:mealId/food').all(fcx.findPatient, fcx.findDiet, fcx.findMeal)
+dietRoutes.route('/:dietId/meal/:mealId/food').all(fctx.findPatient, fctx.findDiet, fctx.findMeal)
 	.get(foodController.getAllFoods)
 	.post(validateDto(CreateFoodDto),foodController.createFood)
 
-dietRoutes.route('/:dietId/meal/:mealId/food/:foodId').all(fcx.findPatient, fcx.findDiet, fcx.findMeal, fcx.findFood)
+dietRoutes.route('/:dietId/meal/:mealId/food/:foodId').all(fctx.findPatient, fctx.findDiet, fctx.findMeal, fctx.findFood)
 	.get(foodController.getFoodById)
 	.patch(validateDto(UpdateFoodDto),foodController.updateFood)
 	.delete(foodController.deleteFood)

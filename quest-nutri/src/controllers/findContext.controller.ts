@@ -5,19 +5,57 @@ import { IPatient } from '../models/patient/Patient.model'
 import { Diet } from '../models/patient/diet/Diet.interface'
 import { Meal } from '../models/patient/diet/meal/Meal.interface'
 import { Food } from '../models/patient/diet/food/Food.interface'
+import { INutritionist } from '../models/nutritionist/Nutritionist.model'
+import nutritionistService from '../services/nutritionist.service'
+import ShouldNeverHappen from '../errors/ShouldNeverHappen.error'
 
-export interface DietContextRequest extends Request {
+export interface ContextRequest extends Request {
+	nutritionist?: INutritionist
     patient?: IPatient
     diet?: Diet
     meal?: Meal
     food?: Food
 }
 
-class FindPatientDietContextController {
-	async findPatient(req: DietContextRequest, res: Response, next: NextFunction): Promise<void | any> {
+class FindContextController {
+	async injectNutritionist(req: ContextRequest, res: Response, next: NextFunction): Promise<void | any> {
+		try {
+			const { nutritionistId } = req.params
+			if(!nutritionistId) throw new ShouldNeverHappen('While injecting a nutritionist to headers')
+			req.headers.nutritionistId = nutritionistId
+			next()
+		} catch (error) {
+			next(error)
+		}
+	}
+
+	async findNutritionist(req: ContextRequest, res: Response, next: NextFunction): Promise<void | any> {
+		try {
+			const { nutritionistId } = req.headers
+			const nutritionist = await nutritionistService.findById(nutritionistId as string)
+			if(!nutritionist) throw new NotFound('Nutritionist not found')
+			req.nutritionist = nutritionist
+			next()
+		} catch (error) {
+			next(error)
+		}
+	}
+
+	async injectPatient(req: ContextRequest, res: Response, next: NextFunction): Promise<void | any> {
 		try {
 			const { patientId } = req.params
-			const patient = await patientService.findById(patientId)
+			if(!patientId) throw new ShouldNeverHappen('While injecting a patient to headers')
+			req.headers.patientId = patientId
+			next()
+		} catch (error) {
+			next(error)
+		}
+	}
+
+	async findPatient(req: ContextRequest, res: Response, next: NextFunction): Promise<void | any> {
+		try {
+			const { patientId } = req.headers
+			const patient = await patientService.findById(patientId as string)
 			if(!patient) throw new NotFound('Patient not found')
 			req.patient = patient
 			next()
@@ -26,7 +64,7 @@ class FindPatientDietContextController {
 		}
 	}
 
-	async findDiet(req: DietContextRequest, res: Response, next: NextFunction): Promise<void | any> {
+	async findDiet(req: ContextRequest, res: Response, next: NextFunction): Promise<void | any> {
 		try {
 			const diet = req.patient?.diets?.find(diet => diet._id == req.params.dietId)
 			if(!diet) throw new NotFound('Diet not found')
@@ -37,7 +75,7 @@ class FindPatientDietContextController {
 		}
 	}
 
-	async findMeal(req: DietContextRequest, res: Response, next: NextFunction): Promise<void | any> {
+	async findMeal(req: ContextRequest, res: Response, next: NextFunction): Promise<void | any> {
 		try {
 			const meal = req.diet?.meals?.find(meal => meal._id == req.params.mealId)
 			if(!meal) throw new NotFound('Meal not found')
@@ -48,7 +86,7 @@ class FindPatientDietContextController {
 		}
 	}
 
-	async findFood(req: DietContextRequest, res: Response, next: NextFunction): Promise<void | any> {
+	async findFood(req: ContextRequest, res: Response, next: NextFunction): Promise<void | any> {
 		try {
 			const food = req.meal?.foods?.find(food => food._id == req.params.foodId)
 			if(!food) throw new NotFound('Food not found')
@@ -60,4 +98,4 @@ class FindPatientDietContextController {
 	}
 }
 
-export default new FindPatientDietContextController()
+export default new FindContextController()

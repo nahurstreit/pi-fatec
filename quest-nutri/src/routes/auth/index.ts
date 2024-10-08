@@ -16,6 +16,9 @@ authRoutes.route('/login/nutritionist')
 authRoutes.route('/login/patient')
 	.post(validateDto(LoginDto), authController.patientLogin)
 
+authRoutes.route('/login/admin')
+	.post(authController.adminLogin)
+
 authRoutes.route('/password/reset/patient/send')
 	.post(validateDto(SendPasswordResetDto), authController.sendResetPasswordToken)
     
