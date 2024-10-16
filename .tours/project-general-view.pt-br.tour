@@ -1,0 +1,838 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "[Aplicação] Funcionamento Geral",
+  "steps": [
+    {
+      "title": "orientações",
+      "description": "Este tutorial tem como objetivo facilitar o entendimento do express no backend da aplicação QuestNutri. Fique atento aos arquivos que estão abertos para que não se perca no fluxo."
+    },
+    {
+      "file": "quest-nutri/src/app.ts",
+      "description": "Primeiramente fazemos a criação de uma instância do express, cujo padrão de nomenclatura é app.",
+      "line": 6,
+      "title": "ideias iniciais #1"
+    },
+    {
+      "file": "quest-nutri/src/app.ts",
+      "description": "Em seguida, usamos o método 'use' da instância do express, para registrar os middlewares que a aplicação deverá usar em sua execução.",
+      "line": 8,
+      "title": "ideias iniciais #2"
+    },
+    {
+      "file": "quest-nutri/src/app.ts",
+      "selection": {
+        "start": {
+          "line": 8,
+          "character": 1
+        },
+        "end": {
+          "line": 9,
+          "character": 1
+        }
+      },
+      "description": "O express.json() é um middleware imbutido na lib do express que faz o body das requisições ser parseado para JSON.",
+      "title": "ideias iniciais #3"
+    },
+    {
+      "file": "quest-nutri/src/routes/index.ts",
+      "description": "Uma instância de Router é então criada, que tem como objetivo modularizar a responsabilidade de manipular as rotas da aplicação.\r\n",
+      "line": 8,
+      "title": "ideias iniciais #4"
+    },
+    {
+      "file": "quest-nutri/src/routes/index.ts",
+      "selection": {
+        "start": {
+          "line": 9,
+          "character": 8
+        },
+        "end": {
+          "line": 9,
+          "character": 11
+        }
+      },
+      "description": "No express, sempre que o método 'use' é chamado, um novo middleware será registrado.",
+      "title": "explicação 'use' em express #1"
+    },
+    {
+      "file": "quest-nutri/src/routes/index.ts",
+      "selection": {
+        "start": {
+          "line": 9,
+          "character": 12
+        },
+        "end": {
+          "line": 9,
+          "character": 19
+        }
+      },
+      "description": "Caso o primeiro argumento de use seja uma string, fará com que aquele middleware seja tratado como um caminho base ou prefixo de rota, isto é, os middlewares registrados com aquele 'use' serão apenas aplicados à rotas que tenham aquele caminho.",
+      "title": "explicação 'use' em express #2"
+    },
+    {
+      "file": "quest-nutri/src/routes/index.ts",
+      "selection": {
+        "start": {
+          "line": 9,
+          "character": 21
+        },
+        "end": {
+          "line": 9,
+          "character": 31
+        }
+      },
+      "description": "Em seguida, são passados os diversos middlewares que serão aplicados àquele prefixo em específico.",
+      "title": "explicação 'use' em express #3"
+    },
+    {
+      "file": "quest-nutri/src/routes/index.ts",
+      "selection": {
+        "start": {
+          "line": 9,
+          "character": 21
+        },
+        "end": {
+          "line": 9,
+          "character": 31
+        }
+      },
+      "description": "Aqui, authRoutes atua como o middleware da rota '/auth', mas é ao mesmo tempo um outro roteador, assim como routes.",
+      "title": "exemplo middleware em use #1"
+    },
+    {
+      "file": "quest-nutri/src/routes/auth/index.ts",
+      "selection": {
+        "start": {
+          "line": 8,
+          "character": 1
+        },
+        "end": {
+          "line": 8,
+          "character": 28
+        }
+      },
+      "description": "Depois de authRoutes ser instanciado como um novo roteador;",
+      "title": "exemplo middleware em use #2"
+    },
+    {
+      "file": "quest-nutri/src/routes/auth/index.ts",
+      "selection": {
+        "start": {
+          "line": 9,
+          "character": 1
+        },
+        "end": {
+          "line": 10,
+          "character": 30
+        }
+      },
+      "description": "A instância de authRoutes usa os métodos route([prefixo]), que tem por objetivo definir métodos HTTP aceitos naquele caminho base.",
+      "title": "exemplo middleware em use #3"
+    },
+    {
+      "file": "quest-nutri/src/routes/auth/index.ts",
+      "selection": {
+        "start": {
+          "line": 11,
+          "character": 2
+        },
+        "end": {
+          "line": 11,
+          "character": 68
+        }
+      },
+      "description": "Em seguida, utliza o método de classe 'post', disponibilizado pelo express, que permite aquele caminho '/register', aceitar requisições realizadas com o método HTTP POST.",
+      "title": "exemplo middleware em use #4"
+    },
+    {
+      "file": "quest-nutri/src/routes/auth/index.ts",
+      "selection": {
+        "start": {
+          "line": 11,
+          "character": 8
+        },
+        "end": {
+          "line": 11,
+          "character": 67
+        }
+      },
+      "description": "Dentro do método de classe 'post', define quais são os middlewares que serão acionados quando aquele método HTTP for usado na rota definida pelo método 'route'.",
+      "title": "exemplo middleware em use #5"
+    },
+    {
+      "file": "quest-nutri/src/routes/auth/index.ts",
+      "selection": {
+        "start": {
+          "line": 8,
+          "character": 1
+        },
+        "end": {
+          "line": 8,
+          "character": 28
+        }
+      },
+      "description": "Os principais métodos HTTP já estão incorporados como métodos de classe na biblioteca do express.",
+      "title": "métodos http em métodos de classe #1"
+    },
+    {
+      "file": "quest-nutri/src/routes/auth/index.ts",
+      "selection": {
+        "start": {
+          "line": 10,
+          "character": 1
+        },
+        "end": {
+          "line": 10,
+          "character": 30
+        }
+      },
+      "description": "Nessa situação, seria possível usar: authRoutes.post('/register', middlewares...)",
+      "title": "métodos http em métodos de classe #2"
+    },
+    {
+      "file": "quest-nutri/src/routes/auth/index.ts",
+      "selection": {
+        "start": {
+          "line": 10,
+          "character": 12
+        },
+        "end": {
+          "line": 10,
+          "character": 17
+        }
+      },
+      "description": "Contudo, ao usar o método 'route', torna-se necessário a definição do prefixo apenas uma vez.",
+      "title": "métodos http em métodos de classe #3"
+    },
+    {
+      "file": "quest-nutri/src/routes/nutritionists/index.ts",
+      "selection": {
+        "start": {
+          "line": 13,
+          "character": 3
+        },
+        "end": {
+          "line": 13,
+          "character": 6
+        }
+      },
+      "description": "Podemos ver em outro roteador o uso de outros métodos HTTP como métodos de classe de um roteador.",
+      "title": "métodos http em métodos de classe #4"
+    },
+    {
+      "file": "quest-nutri/src/routes/nutritionists/index.ts",
+      "selection": {
+        "start": {
+          "line": 16,
+          "character": 3
+        },
+        "end": {
+          "line": 16,
+          "character": 6
+        }
+      },
+      "description": "Os principais usados em nossa aplicação são: get -> quando é preciso buscar dados",
+      "title": "métodos http em métodos de classe #5"
+    },
+    {
+      "file": "quest-nutri/src/routes/nutritionists/index.ts",
+      "selection": {
+        "start": {
+          "line": 17,
+          "character": 3
+        },
+        "end": {
+          "line": 17,
+          "character": 7
+        }
+      },
+      "description": "post -> para quando é necessário enviar dados ao servidor por meio do corpo (body) da requisição.",
+      "title": "métodos http em métodos de classe #6"
+    },
+    {
+      "file": "quest-nutri/src/routes/nutritionists/index.ts",
+      "selection": {
+        "start": {
+          "line": 21,
+          "character": 3
+        },
+        "end": {
+          "line": 21,
+          "character": 8
+        }
+      },
+      "description": "patch -> quando é preciso enviar algum conteúdo no corpo (body) da requisição, e o objetivo é atualizar algum conteúdo que já existe no banco de dados.",
+      "title": "métodos http em métodos de classe #7"
+    },
+    {
+      "file": "quest-nutri/src/routes/nutritionists/index.ts",
+      "selection": {
+        "start": {
+          "line": 22,
+          "character": 3
+        },
+        "end": {
+          "line": 22,
+          "character": 9
+        }
+      },
+      "description": "delete -> quando a intenção é apenas deletar um determinado conteúdo do banco de dados.",
+      "title": "métodos http em métodos de classe #8"
+    },
+    {
+      "file": "quest-nutri/src/app.ts",
+      "description": "App então declara o uso de 'routes' como um novo middleware, usando o prefixo de '/api/v1'. \r\n",
+      "line": 9,
+      "title": "explicação 'api/v1' #1"
+    },
+    {
+      "file": "quest-nutri/src/app.ts",
+      "selection": {
+        "start": {
+          "line": 9,
+          "character": 1
+        },
+        "end": {
+          "line": 9,
+          "character": 27
+        }
+      },
+      "description": "Perceba que app também pode utilizar o método 'use', assim como router.",
+      "title": "explicação 'api/v1' #2"
+    },
+    {
+      "file": "quest-nutri/src/app.ts",
+      "selection": {
+        "start": {
+          "line": 9,
+          "character": 1
+        },
+        "end": {
+          "line": 9,
+          "character": 27
+        }
+      },
+      "description": "O método 'use' é amplamente utilizado no express e é uma maneira de modularizar e reaproveitar mesmas abordagens em diferentes situações.",
+      "title": "explicação 'api/v1' #3"
+    },
+    {
+      "file": "quest-nutri/src/app.ts",
+      "selection": {
+        "start": {
+          "line": 9,
+          "character": 1
+        },
+        "end": {
+          "line": 9,
+          "character": 27
+        }
+      },
+      "description": "Ou seja, quando a rota '/api/v1/' for acessada, será utilizado o roteador routes para lidar com as particularidades daquele caminho, que por sua vez, terá mais middlewares registrados para lidar com as diversas situações da aplicação.",
+      "title": "explicação 'api/v1' #4"
+    },
+    {
+      "file": "quest-nutri/src/app.ts",
+      "selection": {
+        "start": {
+          "line": 9,
+          "character": 9
+        },
+        "end": {
+          "line": 9,
+          "character": 18
+        }
+      },
+      "description": "Utilizamos o prefixo 'api' para explicitamente sabermos que estamos interagindo com uma API. ",
+      "title": "explicação 'api/v1' #5"
+    },
+    {
+      "file": "quest-nutri/src/app.ts",
+      "selection": {
+        "start": {
+          "line": 9,
+          "character": 15
+        },
+        "end": {
+          "line": 9,
+          "character": 17
+        }
+      },
+      "description": "Adicionalmente usamos o prefixo 'v1' para que seja possível manter versões diferentes de uma mesma API ativa.",
+      "title": "explicação 'api/v1' #6"
+    },
+    {
+      "file": "quest-nutri/src/middlewares/auth/auth.middleware.ts",
+      "description": "Por padrão, o express sempre envia três argumentos aos middlewares.",
+      "line": 10,
+      "title": "argumentos dos middlewares"
+    },
+    {
+      "file": "quest-nutri/src/middlewares/auth/auth.middleware.ts",
+      "selection": {
+        "start": {
+          "line": 10,
+          "character": 40
+        },
+        "end": {
+          "line": 10,
+          "character": 52
+        }
+      },
+      "description": "Request (req): Objeto que representa a requisição HTTP feita pelo cliente;",
+      "title": "argumentos dos middlewares: req"
+    },
+    {
+      "file": "quest-nutri/src/middlewares/auth/auth.middleware.ts",
+      "selection": {
+        "start": {
+          "line": 10,
+          "character": 54
+        },
+        "end": {
+          "line": 10,
+          "character": 67
+        }
+      },
+      "description": "Response (res): Objeto de resposta, usado para enviar uma resposta de volta ao cliente;",
+      "title": "argumentos dos middlewares: res"
+    },
+    {
+      "file": "quest-nutri/src/middlewares/auth/auth.middleware.ts",
+      "selection": {
+        "start": {
+          "line": 10,
+          "character": 69
+        },
+        "end": {
+          "line": 10,
+          "character": 87
+        }
+      },
+      "description": "NextFunction (next): Função que chama o próximo middleware registrado na cadeia. Se não for chamado, a requisição não avança para o próximo middleware ou rota.",
+      "title": "argumentos dos middlewares: next"
+    },
+    {
+      "file": "quest-nutri/src/middlewares/auth/auth.middleware.ts",
+      "selection": {
+        "start": {
+          "line": 17,
+          "character": 4
+        },
+        "end": {
+          "line": 17,
+          "character": 10
+        }
+      },
+      "description": "Quando a função next é chamada sem nenhum argumento, o express segue a execução da aplicação para o próximo middleware registrado.",
+      "title": "explicação next #1"
+    },
+    {
+      "file": "quest-nutri/src/middlewares/error/errorHandler.middleware.ts",
+      "selection": {
+        "start": {
+          "line": 7,
+          "character": 1
+        },
+        "end": {
+          "line": 8,
+          "character": 1
+        }
+      },
+      "description": "Contudo, é importante destacar que o express permite a criação de um middleware especial, que recebe um argumento extra além dos três que são automaticamente enviados.",
+      "title": "explicação next #2"
+    },
+    {
+      "file": "quest-nutri/src/middlewares/error/errorHandler.middleware.ts",
+      "selection": {
+        "start": {
+          "line": 7,
+          "character": 38
+        },
+        "end": {
+          "line": 7,
+          "character": 48
+        }
+      },
+      "description": "É comum criarmos esse middleware especial para lidar com erros de execução. E em nossa aplicação chamamos esse middleware especial de errorHandler.",
+      "title": "explicação next #3"
+    },
+    {
+      "file": "quest-nutri/src/middlewares/auth/auth.middleware.ts",
+      "selection": {
+        "start": {
+          "line": 22,
+          "character": 3
+        },
+        "end": {
+          "line": 22,
+          "character": 23
+        }
+      },
+      "description": "Com o middleware especial errorHandler, podemos desviar o fluxo de execução do código, ao passar um argumento para a função next.",
+      "title": "explicação next #4"
+    },
+    {
+      "file": "quest-nutri/src/middlewares/auth/auth.middleware.ts",
+      "description": "Dessa forma, caso algum argumento seja enviado à função next, o middleware especial será ativado no lugar do próximo middleware registrado, ignorando completamente a fila de middlewares.",
+      "line": 22,
+      "title": "explicação next #5"
+    },
+    {
+      "file": "quest-nutri/src/controllers/admin.controller.ts",
+      "selection": {
+        "start": {
+          "line": 12,
+          "character": 4
+        },
+        "end": {
+          "line": 12,
+          "character": 15
+        }
+      },
+      "description": "Isso nos permite em uma situação de erro, capturá-la em um try-catch e desviar o fluxo padrão para encerrar a interação com o backend, retornando um erro.",
+      "title": "explicação next #5"
+    },
+    {
+      "file": "quest-nutri/src/errors/BaseError.error.ts",
+      "selection": {
+        "start": {
+          "line": 3,
+          "character": 22
+        },
+        "end": {
+          "line": 3,
+          "character": 31
+        }
+      },
+      "description": "Em nossa aplicação, fazemos o controle dos erros do sistema com uma classe utilitária chamada de BaseError.",
+      "title": "explicação BaseError #1"
+    },
+    {
+      "file": "quest-nutri/src/errors/BaseError.error.ts",
+      "selection": {
+        "start": {
+          "line": 13,
+          "character": 2
+        },
+        "end": {
+          "line": 13,
+          "character": 28
+        }
+      },
+      "description": "A classe BaseError possui um método chamado sendMessage que recebe o objeto de resposta do express e incorpora um status e uma mensagem de erro como resposta àquela requisição.",
+      "title": "explicação BaseError #2"
+    },
+    {
+      "file": "quest-nutri/src/errors/NotFound.error.ts",
+      "selection": {
+        "start": {
+          "line": 3,
+          "character": 22
+        },
+        "end": {
+          "line": 3,
+          "character": 49
+        }
+      },
+      "description": "Isso nos permite criar diferentes tipos de erro possíveis no sistema, que tenham status HTTP e mensagens padronizadas.",
+      "title": "explicação BaseError #3"
+    },
+    {
+      "file": "quest-nutri/src/errors/NotFound.error.ts",
+      "description": "Como exemplo, definimos a classe NotFound como sendo o erro quando frente a uma requisição, o recurso solicitado não pôde ser encontrado.",
+      "line": 5,
+      "title": "explicação BaseError #4"
+    },
+    {
+      "file": "quest-nutri/src/errors/NotFound.error.ts",
+      "selection": {
+        "start": {
+          "line": 5,
+          "character": 3
+        },
+        "end": {
+          "line": 5,
+          "character": 22
+        }
+      },
+      "description": "NotFound herda as características de BaseError e define seu status HTTP como 404, sem possibilidade de alterar, e uma mensagem que pode ser modificada, cujo valor padrão é 'Page not found'.",
+      "title": "explicação BaseError #5"
+    },
+    {
+      "file": "quest-nutri/src/controllers/admin.controller.ts",
+      "selection": {
+        "start": {
+          "line": 9,
+          "character": 4
+        },
+        "end": {
+          "line": 9,
+          "character": 53
+        }
+      },
+      "description": "Durante a programação do código, em trechos favoráveis um novo objeto NotFound pode ser criado enviando uma mensagem personalizada, mas ainda mantendo o status 404.",
+      "title": "explicação BaseError #6"
+    },
+    {
+      "file": "quest-nutri/src/controllers/auth.controller.ts",
+      "selection": {
+        "start": {
+          "line": 30,
+          "character": 22
+        },
+        "end": {
+          "line": 30,
+          "character": 60
+        }
+      },
+      "description": "Quando erros acontecem durante a execução, fazemos o throw de uma nova instância de erro.",
+      "title": "explicação do uso de throw #1"
+    },
+    {
+      "file": "quest-nutri/src/controllers/auth.controller.ts",
+      "selection": {
+        "start": {
+          "line": 36,
+          "character": 4
+        },
+        "end": {
+          "line": 36,
+          "character": 15
+        }
+      },
+      "description": "Que por sua vez é capturado pelo catch e é repassado ao next;",
+      "title": "explicação do uso de throw #2"
+    },
+    {
+      "file": "quest-nutri/src/middlewares/error/errorHandler.middleware.ts",
+      "selection": {
+        "start": {
+          "line": 7,
+          "character": 25
+        },
+        "end": {
+          "line": 7,
+          "character": 37
+        }
+      },
+      "description": "Que então é enviado para o middleware que lida com erros, desviando o fluxo de código.",
+      "title": "explicação do uso de throw #3"
+    },
+    {
+      "file": "quest-nutri/src/middlewares/error/errorHandler.middleware.ts",
+      "selection": {
+        "start": {
+          "line": 17,
+          "character": 34
+        },
+        "end": {
+          "line": 17,
+          "character": 63
+        }
+      },
+      "description": "Que por sua vez, ativa a mensagem daquele erro, quando este for da classe BaseError.",
+      "title": "explicação do uso de throw #4"
+    },
+    {
+      "file": "quest-nutri/src/app.ts",
+      "selection": {
+        "start": {
+          "line": 11,
+          "character": 1
+        },
+        "end": {
+          "line": 11,
+          "character": 22
+        }
+      },
+      "description": "É importante destacar que o middleware especial de erros é o último registrado.",
+      "title": "explicação do uso de throw #5"
+    },
+    {
+      "file": "quest-nutri/src/app.ts",
+      "selection": {
+        "start": {
+          "line": 6,
+          "character": 1
+        },
+        "end": {
+          "line": 6,
+          "character": 22
+        }
+      },
+      "description": "Por fim, os próximos passos demosntração o fluxo de execução da aplicação.",
+      "title": "fluxo final"
+    },
+    {
+      "file": "quest-nutri/src/app.ts",
+      "selection": {
+        "start": {
+          "line": 6,
+          "character": 1
+        },
+        "end": {
+          "line": 6,
+          "character": 22
+        }
+      },
+      "description": "Primeiro é criada uma instância do express, chamada app.",
+      "title": "fluxo final #1"
+    },
+    {
+      "file": "quest-nutri/src/app.ts",
+      "selection": {
+        "start": {
+          "line": 8,
+          "character": 1
+        },
+        "end": {
+          "line": 8,
+          "character": 24
+        }
+      },
+      "description": "É definido um middleware que faz o parse da requisição como JSON.",
+      "title": "fluxo final #2"
+    },
+    {
+      "file": "quest-nutri/src/app.ts",
+      "selection": {
+        "start": {
+          "line": 9,
+          "character": 1
+        },
+        "end": {
+          "line": 9,
+          "character": 27
+        }
+      },
+      "description": "É definido um prefixo de rota 'api/v1', que usa os middlewares definidos no roteador 'routes'.",
+      "title": "fluxo final #3"
+    },
+    {
+      "file": "quest-nutri/src/routes/index.ts",
+      "selection": {
+        "start": {
+          "line": 8,
+          "character": 1
+        },
+        "end": {
+          "line": 8,
+          "character": 24
+        }
+      },
+      "description": "Routes faz a mesma segmentação de prefixos e atribui aos seus respectivos middlewares de interação.",
+      "title": "fluxo final #4"
+    },
+    {
+      "file": "quest-nutri/src/routes/index.ts",
+      "selection": {
+        "start": {
+          "line": 9,
+          "character": 11
+        },
+        "end": {
+          "line": 9,
+          "character": 19
+        }
+      },
+      "description": "Caso algum prefixo seja atendido, os middlewares indicados serão registrados.",
+      "title": "fluxo final #5"
+    },
+    {
+      "file": "quest-nutri/src/routes/index.ts",
+      "selection": {
+        "start": {
+          "line": 12,
+          "character": 1
+        },
+        "end": {
+          "line": 12,
+          "character": 45
+        }
+      },
+      "description": "Caso nenhum dos prefixos sejam atendidos, nenhuma execução acontece em routes.",
+      "title": "fluxo final #6"
+    },
+    {
+      "file": "quest-nutri/src/app.ts",
+      "selection": {
+        "start": {
+          "line": 10,
+          "character": 1
+        },
+        "end": {
+          "line": 10,
+          "character": 25
+        }
+      },
+      "description": "Se nenhum middleware de routes for chamado, e nenhum deles usar o objeto res para retornar alguma resposta ao cliente, o próximo middleware de app, 'notFoundHandler' é chamado.",
+      "title": "fluxo final #7"
+    },
+    {
+      "file": "quest-nutri/src/middlewares/error/notFoundHandler.middleware.ts",
+      "selection": {
+        "start": {
+          "line": 5,
+          "character": 2
+        },
+        "end": {
+          "line": 5,
+          "character": 22
+        }
+      },
+      "description": "A função de notFoundHandler é em passar um novo objeto NotFound ao next.",
+      "title": "fluxo final #8"
+    },
+    {
+      "file": "quest-nutri/src/middlewares/error/errorHandler.middleware.ts",
+      "selection": {
+        "start": {
+          "line": 7,
+          "character": 1
+        },
+        "end": {
+          "line": 7,
+          "character": 98
+        }
+      },
+      "description": "Que por sua vez, cai na função de lidar com os erros.",
+      "title": "fluxo final #9"
+    },
+    {
+      "file": "quest-nutri/src/app.ts",
+      "selection": {
+        "start": {
+          "line": 13,
+          "character": 16
+        },
+        "end": {
+          "line": 13,
+          "character": 19
+        }
+      },
+      "description": "Com tudo isso configurado, o objeto app é exportado.",
+      "title": "fluxo final #10"
+    },
+    {
+      "file": "quest-nutri/src/server.ts",
+      "selection": {
+        "start": {
+          "line": 8,
+          "character": 1
+        },
+        "end": {
+          "line": 8,
+          "character": 11
+        }
+      },
+      "description": "E posteriormente tem seu servidor inicializado em um arquivo separado.",
+      "title": "fluxo final #11"
+    },
+    {
+      "file": "quest-nutri/src/server.ts",
+      "description": "Não fazemos a execução do servidor no mesmo arquivo de app, pois em algumas bibliotecas de teste, o objeto app é necessário para executar os testes.",
+      "title": "fluxo final #12"
+    }
+  ],
+  "ref": "quarto-semestre"
+}

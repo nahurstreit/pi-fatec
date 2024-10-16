@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from 'express'
-import jwt from 'jsonwebtoken'
 import patientService from '../services/patient.service'
 import NotFound from '../errors/NotFound.error'
 import ShouldNeverHappen from '../errors/ShouldNeverHappen.error'

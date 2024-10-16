@@ -1,0 +1,607 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "[Aplicação] Estrutura Geral",
+  "steps": [
+    {
+      "file": "quest-nutri/src/models/patient/Patient.model.ts",
+      "selection": {
+        "start": {
+          "line": 1,
+          "character": 1
+        },
+        "end": {
+          "line": 1,
+          "character": 64
+        }
+      },
+      "description": "Em nossa aplicação utilizamos o banco de dados não relacional MongoDB e a biblioteca de ODM chamada 'mongoose'.",
+      "title": "Models #1"
+    },
+    {
+      "file": "quest-nutri/src/models/patient/Patient.model.ts",
+      "selection": {
+        "start": {
+          "line": 51,
+          "character": 1
+        },
+        "end": {
+          "line": 51,
+          "character": 56
+        }
+      },
+      "description": "O mongoose disponibiliza um método chamado 'model', que mapeia um determinado schema e atribui, no banco de dados, a uma determinada colection.",
+      "title": "Models #2"
+    },
+    {
+      "file": "quest-nutri/src/models/patient/Patient.model.ts",
+      "selection": {
+        "start": {
+          "line": 19,
+          "character": 14
+        },
+        "end": {
+          "line": 19,
+          "character": 50
+        }
+      },
+      "description": "Para criar um model, portanto, é necessário criar o que chamamos de schema.",
+      "title": "Models #3"
+    },
+    {
+      "file": "quest-nutri/src/models/patient/Patient.model.ts",
+      "selection": {
+        "start": {
+          "line": 19,
+          "character": 41
+        },
+        "end": {
+          "line": 19,
+          "character": 49
+        }
+      },
+      "description": "Perceba que o Schema recebe uma interface entre os símbolos de maior e menor: <interface>.",
+      "title": "Models #4"
+    },
+    {
+      "file": "quest-nutri/src/models/patient/Patient.model.ts",
+      "selection": {
+        "start": {
+          "line": 5,
+          "character": 1
+        },
+        "end": {
+          "line": 5,
+          "character": 43
+        }
+      },
+      "description": "O Schema espera uma interface para entender o que de fato existirá na estrutura do schema.",
+      "title": "Models #5"
+    },
+    {
+      "file": "quest-nutri/src/models/patient/Patient.model.ts",
+      "selection": {
+        "start": {
+          "line": 7,
+          "character": 5
+        },
+        "end": {
+          "line": 7,
+          "character": 19
+        }
+      },
+      "description": "Na interface, serão definidos os campos que aquele Schema e, consequentemente, a entidade terão.",
+      "title": "Models #6"
+    },
+    {
+      "file": "quest-nutri/src/models/patient/Patient.model.ts",
+      "selection": {
+        "start": {
+          "line": 23,
+          "character": 1
+        },
+        "end": {
+          "line": 25,
+          "character": 4
+        }
+      },
+      "description": "As definições particulares dos campos definidos na interface serão feitas no Schema.",
+      "title": "Models #7"
+    },
+    {
+      "file": "quest-nutri/src/models/patient/Patient.model.ts",
+      "selection": {
+        "start": {
+          "line": 39,
+          "character": 3
+        },
+        "end": {
+          "line": 39,
+          "character": 14
+        }
+      },
+      "description": "Como exemplo, podemos definir um valor padrão para um campo.",
+      "title": "Models #8"
+    },
+    {
+      "file": "quest-nutri/src/models/patient/Patient.model.ts",
+      "selection": {
+        "start": {
+          "line": 35,
+          "character": 3
+        },
+        "end": {
+          "line": 35,
+          "character": 22
+        }
+      },
+      "description": "Ou então a referência de uma outra entidade do sistema.",
+      "title": "Models #9"
+    },
+    {
+      "file": "quest-nutri/src/models/patient/Patient.model.ts",
+      "selection": {
+        "start": {
+          "line": 51,
+          "character": 1
+        },
+        "end": {
+          "line": 51,
+          "character": 56
+        }
+      },
+      "description": "Depois disso usamos o método model do mongoose para criar de fato esse mapeamento de entidade.",
+      "title": "Models #10"
+    },
+    {
+      "file": "quest-nutri/src/repositories/base.repository.ts",
+      "selection": {
+        "start": {
+          "line": 4,
+          "character": 17
+        },
+        "end": {
+          "line": 4,
+          "character": 58
+        }
+      },
+      "description": "Em nosso projeto, utilizamos a ideia de adaptadores em uma classe denominada BaseRepository.",
+      "title": "Repositories #1"
+    },
+    {
+      "file": "quest-nutri/src/repositories/base.repository.ts",
+      "selection": {
+        "start": {
+          "line": 4,
+          "character": 23
+        },
+        "end": {
+          "line": 4,
+          "character": 37
+        }
+      },
+      "description": "Essa classe tem por objetivo, fornecer uma linguagem padrão às camadas superiores, desacoplando a lógica de programação das bibliotecas que utilizamos.",
+      "title": "Repositories #2"
+    },
+    {
+      "file": "quest-nutri/src/repositories/base.repository.ts",
+      "selection": {
+        "start": {
+          "line": 1,
+          "character": 23
+        },
+        "end": {
+          "line": 1,
+          "character": 33
+        }
+      },
+      "description": "Atualmente nossa aplicação usa o banco de dados não relacional 'MongoDB' e o ODM 'mongoose'.",
+      "title": "Repositories #3"
+    },
+    {
+      "file": "quest-nutri/src/repositories/base.repository.ts",
+      "selection": {
+        "start": {
+          "line": 12,
+          "character": 27
+        },
+        "end": {
+          "line": 12,
+          "character": 48
+        }
+      },
+      "description": "O mongoose, por ser um ODM, disponibiliza métodos de classe para realizar consultas no banco de dados.",
+      "title": "Repositories #4"
+    },
+    {
+      "file": "quest-nutri/src/repositories/base.repository.ts",
+      "selection": {
+        "start": {
+          "line": 12,
+          "character": 27
+        },
+        "end": {
+          "line": 12,
+          "character": 48
+        }
+      },
+      "description": "Como exemplo, o mongoose disponibiliza os métodos find(), para encontrar registros no banco de dados.",
+      "title": "Repositories #5"
+    },
+    {
+      "file": "quest-nutri/src/repositories/base.repository.ts",
+      "selection": {
+        "start": {
+          "line": 28,
+          "character": 37
+        },
+        "end": {
+          "line": 28,
+          "character": 49
+        }
+      },
+      "description": "Ou então o método create, que cria novos registros.",
+      "title": "Repositories #6"
+    },
+    {
+      "file": "quest-nutri/src/repositories/base.repository.ts",
+      "selection": {
+        "start": {
+          "line": 12,
+          "character": 27
+        },
+        "end": {
+          "line": 12,
+          "character": 48
+        }
+      },
+      "description": "Fato é que, todos esses métodos disponibilizados são inerentes ao mongoose e não refletem todas as implementação de todos os ODM do mercado.",
+      "title": "Repositories #7"
+    },
+    {
+      "file": "quest-nutri/src/repositories/base.repository.ts",
+      "selection": {
+        "start": {
+          "line": 12,
+          "character": 27
+        },
+        "end": {
+          "line": 12,
+          "character": 48
+        }
+      },
+      "description": "Assim, caso mantivermos ao longo da aplicação a utilização direta desses métodos, ficaremos reféns de sempre utilizar o mongoose.",
+      "title": "Repositories #8"
+    },
+    {
+      "file": "quest-nutri/src/repositories/base.repository.ts",
+      "selection": {
+        "start": {
+          "line": 12,
+          "character": 27
+        },
+        "end": {
+          "line": 12,
+          "character": 48
+        }
+      },
+      "description": "Portanto, em nossa aplicação, utilizamos Repository como uma maneira de fornecer uma interface imutável ao longo do código para as demais camadas.",
+      "title": "Repositories #9"
+    },
+    {
+      "file": "quest-nutri/src/services/patient.service.ts",
+      "selection": {
+        "start": {
+          "line": 6,
+          "character": 16
+        },
+        "end": {
+          "line": 6,
+          "character": 54
+        }
+      },
+      "description": "Isso nos permite desacoplar o mongoose de nossa aplicação, tornando mais fácil tanto a manutenção quanto o desenvolvimento futuro.",
+      "title": "Repositories #10"
+    },
+    {
+      "file": "quest-nutri/src/services/patient.service.ts",
+      "selection": {
+        "start": {
+          "line": 6,
+          "character": 16
+        },
+        "end": {
+          "line": 6,
+          "character": 54
+        }
+      },
+      "description": "Assim, outras partes do código não se comunicam diretamente com o ODM, mas sim com o Repository.",
+      "title": "Repositories #11"
+    },
+    {
+      "file": "quest-nutri/src/repositories/patient.repository.ts",
+      "selection": {
+        "start": {
+          "line": 4,
+          "character": 7
+        },
+        "end": {
+          "line": 4,
+          "character": 57
+        }
+      },
+      "description": "A partir de BaseRepository, uma nova classe é criada para cada uma das entidades do sistema que precisem ter coleções no banco de dados.",
+      "title": "Repositories #12"
+    },
+    {
+      "file": "quest-nutri/src/repositories/patient.repository.ts",
+      "selection": {
+        "start": {
+          "line": 6,
+          "character": 3
+        },
+        "end": {
+          "line": 6,
+          "character": 22
+        }
+      },
+      "description": "Para isso, basta apenas passar o Model da entidade ao método super.",
+      "title": "Repositories #13"
+    },
+    {
+      "file": "quest-nutri/src/repositories/base.repository.ts",
+      "selection": {
+        "start": {
+          "line": 8,
+          "character": 3
+        },
+        "end": {
+          "line": 8,
+          "character": 21
+        }
+      },
+      "description": "O modelo passado será armazenado na classe.",
+      "title": "Repositories #14"
+    },
+    {
+      "file": "quest-nutri/src/repositories/base.repository.ts",
+      "selection": {
+        "start": {
+          "line": 12,
+          "character": 16
+        },
+        "end": {
+          "line": 12,
+          "character": 26
+        }
+      },
+      "description": "E os métodos do mongoose serão ativados através do modelo armazenado.",
+      "title": "Repositories #15"
+    },
+    {
+      "file": "quest-nutri/src/repositories/patient.repository.ts",
+      "selection": {
+        "start": {
+          "line": 4,
+          "character": 7
+        },
+        "end": {
+          "line": 4,
+          "character": 25
+        }
+      },
+      "description": "Isso fará com que essa classe agora tenha disponível todos os métodos definidos em BaseRepository.",
+      "title": "Repositories #16"
+    },
+    {
+      "file": "quest-nutri/src/repositories/base.repository.ts",
+      "selection": {
+        "start": {
+          "line": 4,
+          "character": 23
+        },
+        "end": {
+          "line": 4,
+          "character": 57
+        }
+      },
+      "description": "O que nos permite atribuir comportamentos já mapeados pelo BaseRepository à entidades recém-criadas.",
+      "title": "Repositories #17"
+    },
+    {
+      "file": "quest-nutri/src/services/patient.service.ts",
+      "selection": {
+        "start": {
+          "line": 4,
+          "character": 1
+        },
+        "end": {
+          "line": 4,
+          "character": 21
+        }
+      },
+      "description": "Services são uma camada que nos permite aplicar regras de negócio específicas da entidade.",
+      "title": "Services #1"
+    },
+    {
+      "file": "quest-nutri/src/services/patient.service.ts",
+      "selection": {
+        "start": {
+          "line": 5,
+          "character": 8
+        },
+        "end": {
+          "line": 5,
+          "character": 17
+        }
+      },
+      "description": "Apesar de aparentarem ter a mesma função de um repository, sua função se concentra muito mais em definir possíveis regras de negócio do que em como se comunicar com o banco de dados.",
+      "title": "Services #2"
+    },
+    {
+      "file": "quest-nutri/src/services/patient.service.ts",
+      "selection": {
+        "start": {
+          "line": 17,
+          "character": 1
+        },
+        "end": {
+          "line": 19,
+          "character": 3
+        }
+      },
+      "description": "Como exemplo, no service de Patient, existe um método específico para encontrar o paciente pelo email e o único retorno é a hash da senha, armazenada no banco de dados.",
+      "title": "Services #3"
+    },
+    {
+      "file": "quest-nutri/src/services/patient.service.ts",
+      "selection": {
+        "start": {
+          "line": 9,
+          "character": 1
+        },
+        "end": {
+          "line": 11,
+          "character": 3
+        }
+      },
+      "description": "Ou então, esse método que retorna todos os patients de um nutritionist.",
+      "title": "Services #4"
+    },
+    {
+      "file": "quest-nutri/src/services/patient.service.ts",
+      "selection": {
+        "start": {
+          "line": 9,
+          "character": 1
+        },
+        "end": {
+          "line": 11,
+          "character": 3
+        }
+      },
+      "description": "Esse é um método exclusivo desse service, e sua implementação não faria sentido em um Repository que tem como função ser um idioma imutável para se comunicar com o banco de dados, independente da implementação.",
+      "title": "Services #5"
+    },
+    {
+      "file": "quest-nutri/src/services/patient.service.ts",
+      "selection": {
+        "start": {
+          "line": 4,
+          "character": 1
+        },
+        "end": {
+          "line": 4,
+          "character": 21
+        }
+      },
+      "description": "Portanto, a principal função do service é em aplicar regras de negócio à situações específicas, tirando a responsabilidade direta de camadas superiores, como os controllers.",
+      "title": "Services #6"
+    },
+    {
+      "file": "quest-nutri/src/controllers/patient.controller.ts",
+      "selection": {
+        "start": {
+          "line": 11,
+          "character": 1
+        },
+        "end": {
+          "line": 10,
+          "character": 24
+        }
+      },
+      "description": "A camada de controller é responsável por receber requisições HTTP, repassá-las aos respectivos services e por fim devolver o resultado da interação.",
+      "title": "Controllers #1"
+    },
+    {
+      "file": "quest-nutri/src/controllers/patient.controller.ts",
+      "selection": {
+        "start": {
+          "line": 10,
+          "character": 7
+        },
+        "end": {
+          "line": 10,
+          "character": 24
+        }
+      },
+      "description": "Em nossa aplicação os controllers seguem algumas premissas fundamentais;",
+      "title": "Controllers #2"
+    },
+    {
+      "file": "quest-nutri/src/controllers/patient.controller.ts",
+      "selection": {
+        "start": {
+          "line": 10,
+          "character": 7
+        },
+        "end": {
+          "line": 10,
+          "character": 25
+        }
+      },
+      "description": "(1) Controllers são sempre específicos. Sua função sempre será controlar UMA entidade/particularidade.",
+      "title": "Controllers #3"
+    },
+    {
+      "file": "quest-nutri/src/controllers/patient.controller.ts",
+      "selection": {
+        "start": {
+          "line": 10,
+          "character": 7
+        },
+        "end": {
+          "line": 10,
+          "character": 24
+        }
+      },
+      "description": "Isto é, o PatientController sempre controlará apenas o Patient. Ainda que um Nutritionist esteja alterando um Patient, quem controlará essa interação sempre será PatientController. ",
+      "title": "Controllers #4"
+    },
+    {
+      "file": "quest-nutri/src/controllers/patient.controller.ts",
+      "selection": {
+        "start": {
+          "line": 10,
+          "character": 7
+        },
+        "end": {
+          "line": 10,
+          "character": 24
+        }
+      },
+      "description": "(2) Controllers NÃO devem criar ou controlar contextos a não ser que essa seja sua função direta.",
+      "title": "Controllers #5"
+    },
+    {
+      "file": "quest-nutri/src/controllers/patient.controller.ts",
+      "selection": {
+        "start": {
+          "line": 10,
+          "character": 7
+        },
+        "end": {
+          "line": 10,
+          "character": 24
+        }
+      },
+      "description": "A maior parte dos Controllers deve assumir que o contexto geral já foi definido antes de chegar a ele.",
+      "title": "Controllers #6"
+    },
+    {
+      "file": "quest-nutri/src/controllers/patient.controller.ts",
+      "selection": {
+        "start": {
+          "line": 10,
+          "character": 7
+        },
+        "end": {
+          "line": 10,
+          "character": 24
+        }
+      },
+      "description": "Consulte o tutorial de contexto para mais informações sobre os controllers.",
+      "title": "Controllers #7"
+    }
+  ],
+  "ref": "quarto-semestre"
+}
