@@ -1,0 +1,527 @@
+{
+    "openapi":"3.0.0",
+    "info": {
+        "title": "",
+        "description": "",
+        "contact": {
+            "email": "email@gmail.com"
+        },
+         "version":"1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3000/api/v1",
+            "description": "API de desenvolvimento."
+        },
+        {
+            "url": "http://www.api/v1.com.br",
+            "description": "API de produção."
+        }
+    ],
+    "paths": {
+        "/auth/register":{
+            "post":{
+                "summary": "Nutritionist registration",
+                "description": "This route registers a new Nutritionist",
+                "tags": ["Auth"],
+                "security":[{"bearerAuth": []}],
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/Nutritionist"
+                            },
+                            "examples": {
+                                "nutritionist":{
+                                    "value":{
+                                      "name":"Pedro",
+                                      "email":"newNutritionist123@gmail.com",
+                                      "password":"nutritionist123"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400":{
+                        "description": "Email already in use"
+                    },
+                    "200":{
+                        "description": "OK",
+                        "content": {
+                            "aplication/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/Nutritionist"
+                                }
+                            }
+                        }
+                    }
+                }             
+            }
+        },
+        "/auth/login/nutritionist":{
+            "post":{
+                "summary": "Nutritionist login",
+                "description": "This route is for the nutritionist to log in",
+                "tags": ["Auth"],
+                "security":[{"bearerAuth": []}],
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/Login"
+                            },
+                            "examples": {
+                                "login-nutritionist":{
+                                    "value":{
+                                      "email":"newNutritionist123@gmail.com",
+                                      "password":"nutritionist123"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "404":{
+                        "description": "Email not found"
+                    },
+                    "401":{
+                        "description": "Invalid password"
+                    },
+                   "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "description": "JWT token"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }             
+            }
+        },
+        "/auth/login/patient":{
+            "post":{
+                "summary": "Patient login",
+                "description": "This route is for the patient to log in",
+                "tags": ["Auth"],
+                "security":[{"bearerAuth": []}],
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/Login"
+                            },
+                            "examples": {
+                                "login-nutritionist":{
+                                    "value":{
+                                      "email":"patient123@gmail.com",
+                                      "password":"patient123"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "404":{
+                        "description": "Email not found"
+                    },
+                    "401":{
+                        "description": "Invalid password"
+                    },
+                   "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "description": "JWT token"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }             
+            }
+        },
+        "/auth/login/admin":{
+            "post":{
+                "summary": "Administrator login",
+                "description": "This route is for the administrator to log in",
+                "tags": ["Auth"],
+                "security":[{"bearerAuth": []}],
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/Login"
+                            },
+                            "examples": {
+                                "login-nutritionist":{
+                                    "value":{
+                                      "email":"lucas",
+                                      "password":"lucas"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "404":{
+                        "description": "Email not found"
+                    },
+                    "401":{
+                        "description": "Invalid password"
+                    },
+                   "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "description": "JWT token"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }             
+            }
+        },
+        "/auth/password/reset/patient/send":{
+            "post":{
+                "summary": "Send a token to the patient for reset password",
+                "description": "This route sends a token to the patient to reset the password",
+                "tags": ["Auth"],
+                "security":[{"bearerAuth": []}],
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/PasswordReset"
+                            },
+                            "examples": {
+                                "email-patient":{
+                                    "value":{
+                                      "email":"patient123@gmail.com"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "404":{
+                        "description": "There's no user with this email"
+                    },
+                   "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "description": "JWT token"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }             
+            }
+        },
+        "/auth/password/reset/patient/validate/{token}":{
+            "post":{
+                "summary": "Reset patient password",
+                "description": "This route resets the patient's password",
+                "tags": ["Auth"],
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "description": "Token sent to patient to change password",
+                        "required": true
+                    }
+                ],
+                "security":[{"bearerAuth": []}],
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/NewPassword"
+                            },
+                            "examples": {
+                                "password-patient":{
+                                    "value":{
+                                      "password":"newPassword123"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "500":{
+                        "description": "Reseting a patient's password"
+                    },
+
+                   "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "description": "Password updated successfully"
+                                }
+                            }
+                        }
+                    }
+                }             
+            }
+        },
+        "/admin":{
+            "post":{
+                "summary": "Administrator registration",
+                "description": "This route registers a new administrator",
+                "tags": ["Administrator"],
+                "security":[{"bearerAuth": []}],
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/Administrator"
+                            },
+                            "examples": {
+                                "administrator":{
+                                    "value":{
+                                      "email":"adminTest@email.com",
+                                      "password":"admin123"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401":{
+                        "description": "Token not provided"
+                    },
+                    "400":{
+                        "description": "Invalid token"
+                    },
+                    "200":{
+                        "description": "OK",
+                        "content": {
+                            "aplication/json":{
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Administrator"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/manage-self/{adminId}":{
+            "get":{
+                "summary": "Administrator by ID",
+                "description": "This route returns an administrator by ID",
+                "tags": ["Administrator"],
+                "parameters": [
+                    {
+                        "name": "adminId",
+                        "in": "path",
+                        "description": "Id to perform the administrator search in the database",
+                        "required": true
+                    }
+                ],
+                "security":[{"bearerAuth": []}],
+                "responses": {
+                    "404":{
+                        "description": "Admin not found"
+                    },
+
+                    "200":{
+                        "description": "OK",
+                        "content": {
+                            "aplication/json":{
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/AdminSummary"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch":{
+                "summary": "Update the administrator",
+                "description": "This route updates the administrator's registration",
+                "tags": ["Administrator"],
+                "parameters": [
+                    {
+                        "name": "adminId",
+                        "in": "path",
+                        "description": "Id to perform the administrator search in the database",
+                        "required": true
+                    }
+                ],
+                "security":[{"bearerAuth": []}],
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/Administrator"
+                            },
+                            "examples": {
+                                "administrator":{
+                                    "value":{
+                                      "email":"upadtedAdminTest@email.com",
+                                      "password":"UpdatedAdmin123"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "404":{
+                        "description": "Admin not found"
+                    },
+                    "200":{
+                        "description": "OK",
+                        "content": {
+                            "aplication/json":{
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/AdminSummary"
+                                }
+                            }
+                        }
+                    } 
+                }
+            },
+            "delete":{
+                "summary": "Delete Administrator by ID",
+                "description": "This route deletes the administrator by ID",
+                "tags": ["Administrator"],
+                "parameters": [
+                    {
+                        "name": "adminId",
+                        "in": "path",
+                        "description": "Id to perform the administrator search in the database",
+                        "required": true
+                    }
+                ],
+                "security":[{"bearerAuth": []}],
+                "responses": {
+                    "404":{
+                        "description": "Admin not found"
+                    },
+
+                    "200":{
+                        "description": "Admin deleted"
+                    }
+                }
+            }
+        }
+        
+    },
+    "components": {
+        "schemas": {
+            "Administrator":{
+                "type": "object",
+                "properties": {
+                    "email":{
+                        "type": "string"
+                    },
+                    "password":{
+                        "type": "string"
+                    }
+                }
+            },
+            "AdminSummary":{
+                "type": "object",
+                "properties": {
+                    "Id":{
+                        "type": "string"
+                    },
+                    "email":{
+                        "type": "string"
+                    }
+                }
+            },
+            "Nutritionist":{
+                "type": "object",
+                "properties": {
+                    "name":{
+                        "type": "string"
+                    },
+                    "email":{
+                        "type": "string"
+                    },
+                    "password":{
+                        "type": "string"
+                    }
+                }
+            },
+            "Login":{
+                "type": "object",
+                "properties": {
+                    "email":{
+                        "type": "string"
+                    },
+                    "password":{
+                        "type": "string"
+                    }
+                }
+            },
+            "PasswordReset":{
+                "type": "object",
+                "properties": {
+                    "email":{
+                        "type": "string"
+                    }
+                }
+            },
+            "NewPassword":{
+                "type": "object",
+                "properties": {
+                    "password":{
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth":{
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
